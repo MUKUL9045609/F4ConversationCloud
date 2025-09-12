@@ -1,0 +1,6 @@
+@F4ConversationCloud.WebUI_HostAddress = http://localhost:5105
+
+GET {{F4ConversationCloud.WebUI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
