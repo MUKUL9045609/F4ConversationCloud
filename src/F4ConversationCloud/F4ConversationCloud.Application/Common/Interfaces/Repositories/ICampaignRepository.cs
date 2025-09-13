@@ -1,0 +1,19 @@
+﻿using F4ConversationCloud.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace F4ConversationCloud.Application.Common.Interfaces.Repositories
+{
+    public interface ICampaignRepository
+    {
+        Task<int> CreateCampaign(Campaign campaign);
+        Task<List<Campaign>> GetCampaigns();
+        Task<Campaign> GetCampaignById(int id);
+        Task<int> UpdateCampaign(Campaign campaign);
+        Task<bool> ActivateCampaign(int id);
+        Task<bool> DeactivateCampaign(int id);
+    }
+}

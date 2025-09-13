@@ -1,0 +1,111 @@
+@import "variables";
+@import "mixin";
+
+.modal-wrapper {
+    .modal-content {
+        padding: 30px 25px;
+
+        .modal-header {
+            border-bottom: none;
+            padding: 0;
+
+            h5 {
+                font-size: 14px;
+                color: $textColor;
+            }
+        }
+
+        .modal-body {
+            padding: 20px 0;
+
+            p {
+                font-size: 12px;
+                color: $textColor;
+            }
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 0;
+        }
+    }
+
+    .primary-btn {
+        border: 1px solid $tabs !important;
+        background-color: $tabs !important;
+        color: $white !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        border-radius: 8px !important;
+        max-width: fit-content !important;
+        height: 35px;
+        line-height: 20px !important;
+
+        &:hover {
+            color: $tabs !important;
+            background-color: $white !important;
+            border: 1px solid $tabs !important;
+        }
+
+        &:focus {
+            box-shadow: none !important;
+        }
+
+        &.disabled {
+            background-color: #D9D9D9 !important;
+            border-color: #D9D9D9 !important;
+        }
+    }
+
+    .secondary-btn {
+        border: 1px solid $tabs !important;
+        background-color: $white !important;
+        color: $tabs !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        border-radius: 8px !important;
+        max-width: fit-content !important;
+        height: 35px;
+        line-height: 20px !important;
+
+        &:hover {
+            color: $white !important;
+            background-color: $tabs !important;
+        }
+
+        &:focus {
+            box-shadow: none !important;
+        }
+
+        &.disabled {
+            background-color: #D9D9D9 !important;
+            border-color: #D9D9D9 !important;
+        }
+    }
+
+    .danger-btn {
+        border: 1px solid $red !important;
+        background-color: $red !important;
+        color: $white !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        border-radius: 8px !important;
+        max-width: fit-content !important;
+        height: 35px;
+        line-height: 20px !important;
+
+        &:hover {
+            color: $red !important;
+            background-color: $white !important;
+        }
+
+        &:focus {
+            box-shadow: none !important;
+        }
+
+        &.disabled {
+            background-color: #D9D9D9 !important;
+            border-color: #D9D9D9 !important;
+        }
+    }
+}
