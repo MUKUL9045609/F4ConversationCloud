@@ -1,0 +1,416 @@
+﻿@using System.Web
+@model BuldanaUrban.Application.Common.OnBoardingRequestResposeModel.RegisterUserModel;
+
+@{
+    ViewData["Title"] = "Step-1";
+}
+<style>
+    .disable-click {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.6;
+    }
+</style>
+<div class="stepswrapper">
+    <a href="@Url.Action("Login","Onboarding")" class="back-btn"> Back</a>
+    <div class="d-flex justify-content-end flex-column">
+        <span class="step-count">STEP <span>01/03</span></span>
+        <span class="step-info">Residency Info.</span>
+    </div>
+
+    <a href="@Url.Action("CompleteYourProfile", "Onboarding")" class="back-btn" id="nextbtn"> Next</a>
+</div>
+<div class="bx_wrap">
+    <h4>Create Your Business Account!</h4>
+    <p>For the purpose of industry regulation, your details are required.</p>
+
+    <form  id="firststepform" class="login-form mt-4" asp-action="RegisterIndividualAccount" method="post">
+              @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="form-label">Your Full Name <sup>*</sup></label>
+                    <input asp-for="FirstName" type="text"
+                           class="form-control flex-grow-1"
+                           placeholder="Enter Full Name"
+                           id="fullName"
+                           pattern="^[a-zA-Z\s'-]+$"
+                            />
+                    <span asp-validation-for="FirstName" class="error-message text-danger small" id="fullNameError"></span>
+                </div>
+
+
+                <div>
+                    <label asp-for="Email" class="form-label">Email address <sup>*</sup></label>
+                     <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid" >
+                    <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
+                     <span asp-validation-for="EmailOtpVerified" class="error-message text-danger small" id="emailvarifyerror"></span>
+                    <div class="verifyBtnLink" id="sendmail">
+                       <span>Verify Email</span>
+                    </div>
+
+                </div>
+
+              
+                <div class="mb-3" id="codeSection" style="display: none;">
+                    <label for="emailCode" class="form-label">Enter 6 Digit Verification Code</label>
+                    <div class="d-flex gap-2">
+                <input type="number" asp-for="OTP" class="form-control flex-grow-1" placeholder="Enter OTP" id="otp">
+                         <button id="varifyOtp" type="button" class="btn verifyBtn" >Verify</button>
+                    </div>
+                    <div class="otp-timer">
+                        <span class="otp-text d-none">
+                            Time remaining: <span class="fw-bold" id="timeRemaining">5:00</span>
+                        </span>
+                <a id="resendotp" class="verifyBtnLink">Resend OTP</a>
+                    </div>
+                    <span asp-validation-for="OTP" class="error-message text-danger small" id="OtpError"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PassWord" class="form-label">Create Password <sup>*</sup></label>
+                    <div class="input-group">
+
+                <input asp-for="PassWord" type="text" class="form-control flex-grow-1" placeholder="Enter Password" id="password" />
+                        <span class="input-group-text toggle-password" data-target="password" id="passicon">
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup>*</sup></label>
+                    <div class="input-group">
+
+                <input asp-for="ConfirmPassword" type="text" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                <span class="input-group-text toggle-password" data-target="confirmPassword" id="cpassicon">
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
+                </div>
+                <div class="form-check d-flex justify-content-end terms-check gap-2">
+                    <input asp-for="TermsCondition" class="form-check-input" id="agreeTerms" />
+                    <label class="form-check-label" for="agreeTerms">
+                        <a href="https://fortune4.in/terms-and-conditions/" target="_blank">
+                            I agree to terms & conditions
+                        </a>
+                    </label>
+                </div>
+                <div class="form-check d-flex justify-content-end terms-check gap-2">
+                    <span asp-validation-for="TermsCondition" class="error-message text-danger small text-end"></span>
+               </div>
+       
+           <input type="hidden" asp-for="EmailOtpVerified" id="OTP">
+
+       
+        <button type="submit"   class="btn login-btn">Register Account</button>
+        </form>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <input type="hidden" id="tempDataMessage" value="@TempData["SuccessMessage"]" />
+    }
+   
+</div>
+
+@section Scripts {
+   @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
+
+   <script>
+
+
+ 
+            document.addEventListener('DOMContentLoaded', function() {
+                const tempMessageElement = document.getElementById('tempDataMessage');
+                if (tempMessageElement) {
+                    const message = tempMessageElement.value;
+                    if (message) {  
+                        showToast(message, 'warning');  
+                    }
+                }
+            });
+
+   </script>
+
+
+    <script>
+                // #region Resend otp-- >
+
+$(document).ready(function () {
+                        let timerDuration = 1 * 60;
+                        let interval;
+
+                        function startTimer() {
+                            clearInterval(interval);
+
+                            let remaining = timerDuration;
+
+                                    $("#resendotp").addClass("d-none");
+                            $(".otp-text").removeClass("d-none");
+                            $("#timeRemaining").text(formatTime(remaining));
+
+                            interval = setInterval(function () {
+                                remaining--;
+
+                                if (remaining >= 0) {
+                                    $("#timeRemaining").text(formatTime(remaining));
+                                }
+
+                                if (remaining < 0) {
+                                    clearInterval(interval);
+                                    $(".otp-text").addClass("d-none");
+                                            $("#resendotp").removeClass("d-none");
+                                }
+                            }, 1000);
+                        }
+
+                        function formatTime(seconds) {
+                            let minutes = Math.floor(seconds / 60);
+                            let secs = seconds % 60;
+                            return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+                        }
+
+
+                        $("#sendmail").click(function () {
+                            startTimer();
+                        });
+
+                  $("#resendotp").click(function () {
+
+   
+                            let email = $('#emailid').val().trim();
+                                $("#loader").show();
+
+                        $.ajax({
+                                url: "@Url.ActionLink("VarifyMail", "Onboarding")",
+                                type: "POST",
+                                data: JSON.stringify({
+                                    UserEmailId: email,
+                                    OTP_Source: "EMAIL"
+                                }),
+                                contentType: "application/json; charset=utf-8",
+                                success: function (response) {
+                                    if (response.status === true) {
+                                            $('#codeSection').show();
+                                        // alert("OTP sent successfully!");
+                                        showToast("OTP sent successfully!", "success");
+                                    }
+                                    else if(response.status === false && response.message === "Email already exists")
+                                    {
+                                        $('#emailError').text('Email already exists. Please use a different email.');
+                                    }
+                                    else {
+                                        showToast("Failed to send OTP. Please try again.", "danger");
+                                    }
+
+                                },
+                                error: function (xhr) {
+                                    showToast("technical Error", "danger");
+                                },
+                                    complete: function () {
+                                    $("#loader").hide();
+                                }
+                        });
+
+
+
+                        });
+                    });
+
+
+//#region send mail --
+
+$(document).ready(function () {
+
+
+        $('#sendmail').click(function(){
+            let email = $('#emailid').val().trim();
+
+            if(email === ''){
+                // $('#sendmail').prop('disabled', true);
+                $('#emailError').text('Please enter your email address.');
+                return;
+            } else {
+                $('#emailError').text('');
+                    //    $('#sendmail').prop('disabled', false);
+            }
+
+            let emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+            if (!emailPattern.test(email)) {
+                $('#emailError').text('Please enter a valid email address');
+
+                return;
+            }
+            $("#loader").show();
+            $.ajax({
+                url:"@Url.ActionLink("VarifyMail", "Onboarding")",
+                type: "POST",
+                data: JSON.stringify({
+                    UserEmailId: email,
+                    //UserPhoneNumber: $('#phone').val(),
+                    OTP_Source: "EMAIL"
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response.status === true) {
+                            $('#codeSection').show();
+                            showToast("OTP sent successfully!", "success");
+                            $('#sendmail').addClass('disabled-btn');
+                            $('#sendmail span').text('');
+                    }
+                    else if(response.status === false && response.message === "Email already exists")
+                    {
+                        $('#emailError').text('Email already exists. Please use a different email.');
+
+                            showToast("Email already exists. Please use another one.", "warning");
+                    }
+                    else {
+                                showToast("Failed to send OTP. Please try again.", "danger");
+                    }
+
+                },
+                error: function (xhr) {
+                                    showToast("technical Error", "danger");
+                },
+                complete: function () {
+                    $("#loader").hide();
+                }
+            });
+
+        });
+
+    });
+
+// varify mail otp
+$(document).ready(function () {
+
+        $('#varifyOtp').click(function () {
+            let Otp = $('#otp').val();
+                    let email = $('#emailid').val().trim();
+
+            if (Otp === '' || email === '') {
+                $('#OtpError').text('Please enter the OTP and email.');
+                otpVerified = false;
+                return;
+            }
+               $("#loader").show();
+            $.ajax({
+                url:"@Url.ActionLink("VerifyOtp", "Onboarding")",
+                type: "POST",
+                data: JSON.stringify({
+                    UserEmailId: email,
+                    OTP: Otp,
+                    OTP_Source: "EMAIL"
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+
+                    $('#OTP').val(response.status);
+
+                    if (response.status === true) {
+
+                        showToast("OTP verified successfully!", "success");
+                        $('#OtpError').text('');
+                        $('#codeSection').hide();
+                        $('#sendmail').addClass('disabled-btn');
+                        $('#sendmail span').text('');
+                        $('#emailvarifyerror').hide();
+
+                       $('#emailid')
+                        .prop('readonly', true)
+                        .removeClass('is-invalid')
+                        .addClass('form-control flex-grow-1 success');
+                    } else {
+                        $('#OtpError').text('Invalid OTP. Please try again.');
+
+                    }
+                },
+                error: function (xhr) {
+                    $('#OtpError').text('Failed to verify OTP. Please try again.');
+
+                },
+                complete: function () {
+
+                        $("#loader").hide();
+                }
+            });
+        });
+
+});
+    </script>
+
+    <script>
+         $(document).ready(function () {
+         
+            $('input.input-validation-error, select.input-validation-error, textarea.input-validation-error')
+                .addClass('is-invalid')
+                .removeClass('input-validation-error');
+
+                 
+                 $("#fullName").on("input", function () {
+                    let regex = /^[a-zA-Z\s'-]+$/;
+                    if (!regex.test($(this).val())) {
+                        $("#fullNameError").text("Full Name can only contain letters, spaces, hyphen (-), or apostrophe (')");
+                        $(this).addClass("is-invalid");
+                    } else {
+                        $("#fullNameError").text("");
+                        $(this).removeClass("is-invalid").addClass("is-valid");
+                    }
+                 });
+
+
+                       const disbleform = $('#emailid,#otp,#password,#confirmPassword,#agreeTerms,#OTP').val();
+
+                        if (disbleform !='') {
+                            $('input, select, textarea, button').prop('disabled', true);
+                            $('#nextbtn').show();
+                         $('#sendmail, #passicon, #cpassicon')
+                                    .addClass('disabled')
+                                    .css({
+                                        'pointer-events': 'none',
+                                        'opacity': '0.5'
+                                    });
+
+                        }
+                        else {
+
+                            $('#sendmail, #passicon, #cpassicon')
+                                .removeClass('disabled');
+
+                                 $('#nextbtn').hide();
+                            $('input, select, textarea, button').prop('disabled', false);
+                         }
+                    
+        });
+
+       
+    </script>
+
+
+
+
+    #<!-- #region Hide and show pass -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+                togglePasswordIcons.forEach(iconContainer => {
+                    iconContainer.addEventListener('click', function() {
+                        const targetId = this.dataset.target;
+                        const passwordInput = document.getElementById(targetId);
+                        const eyeIcon = this.querySelector('i');
+
+
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+
+
+                        eyeIcon.classList.toggle('fa-eye');
+                        eyeIcon.classList.toggle('fa-eye-slash');
+                    });
+                });
+            });
+    </script>
+    <!-- #endregion -->
+}
