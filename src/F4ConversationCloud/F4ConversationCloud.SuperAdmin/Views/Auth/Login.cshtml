@@ -1,0 +1,69 @@
+﻿@model LoginViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Fortune4 Cloud Coversation</title>
+    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div class="loginWrapper">
+        <div class="loginBox">
+            <h3 class="template_login_title text-center">Login</h3>
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="from-group">
+                    <label class="form-label">User Name</label>
+                    <input type="email" asp-for="UserName" class="form-control" placeholder="name@example.com" aria-describedby="emailHelp">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="from-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Password" autocomplete="off">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <a asp-action="ForgotPassword" class="form-text text-muted text-right d-block">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-sign">Sign In</button>
+            </form>
+        </div>
+    </div>
+    <div class="toastWrap">
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/unobtrusiveHelper.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+
+            if (toastMsg != null && toastMsg != undefined) {
+                if (toastMsg.type === "Success")
+                    commonHelper.showSuccess(toastMsg.message);
+                else if (toastMsg.type === "Error")
+                    commonHelper.showError(toastMsg.message);
+            }
+        });
+        $(window).on('load', function () {
+            $('.loader-wrapper').fadeOut('slow');
+        });
+    </script>
+</body>
+</html>

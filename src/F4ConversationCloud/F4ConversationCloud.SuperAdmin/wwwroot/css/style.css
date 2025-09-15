@@ -3478,3 +3478,39 @@ body {
   margin-left: 0px;
   transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out, margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
 }/*# sourceMappingURL=style.css.map */
+
+.toastWrap {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    z-index: 1056;
+}
+
+    .toastWrap .toast {
+        margin-bottom: 20px;
+    }
+
+.alert-toast {
+    border: 0px;
+}
+
+.bg-danger {
+    background-color: #FED1D5 !important;
+}
+
+.bg-success {
+    background-color: #ceeace !important;
+}
+
+.toast div {
+    padding: 10px;
+}
+
+.toast .toast-body {
+    padding: 0px;
+}
+
+.toast p {
+    margin-bottom: 0px;
+    font-size: 13px;
+}

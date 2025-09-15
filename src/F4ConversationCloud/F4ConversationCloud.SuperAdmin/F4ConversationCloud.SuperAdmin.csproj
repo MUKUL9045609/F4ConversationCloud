@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\F4ConversationCloud.Application\F4ConversationCloud.Application.csproj" />
+    <ProjectReference Include="..\F4ConversationCloud.Infrastructure\F4ConversationCloud.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

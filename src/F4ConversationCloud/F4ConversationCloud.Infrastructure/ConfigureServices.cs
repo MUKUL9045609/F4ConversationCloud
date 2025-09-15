@@ -17,7 +17,6 @@ namespace F4ConversationCloud.Infrastructure
         {
             services.AddSingleton<DbContext>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IMessageService, MessageService>();
 
@@ -30,6 +29,8 @@ namespace F4ConversationCloud.Infrastructure
 
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<ICampaignService, CampaignService>();
+            services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
+            services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
 
             return services;
         }
