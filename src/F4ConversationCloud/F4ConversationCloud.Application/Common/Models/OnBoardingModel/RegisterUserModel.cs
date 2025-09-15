@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel
 {
-    public class RegisterUserModel:IValidatableObject
+    public class RegisterUserModel
     {
         [Required(ErrorMessage = "Full Name is required")]
         [RegularExpression(@"^[a-zA-Z\s'-]+$", ErrorMessage = "Full Name can only contain letters, spaces, and - ' characters")]
@@ -21,11 +21,17 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string Email { get; set; }
 
         public string? OTP { get; set; }
-        public string? PhoneNumber { get; set; }
+
+        [Required (ErrorMessage = "Phone number is required")]
+        public string PhoneNumber { get; set; }
 
         public string? FullPhoneNumber { get; set; }
-        public string? Address { get; set; }
-        public string? Country { get; set; }
+
+        [Required(ErrorMessage = "Address is required Select please select ")]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "Country is required")]
+        public string Country { get; set; }
         public string? BankVarificationNumber { get; set; }
 
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
@@ -49,28 +55,28 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         [MustBeTrue(ErrorMessage = "You must agree to the terms & conditions")]
         public bool TermsCondition { get; set; }
         public bool EmailOtpVerified { get; set; } = false;
-        public bool PhoneOtpVerified { get; set; } = false;
+        //public bool PhoneOtpVerified { get; set; } = false;
 
-        public string Role { get; set; } = "Customer";
+        public string Role { get; set; } = "Client";
 
-        public int CurrentStep { get; set; }
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-          if (CurrentStep == 2)
-            {
+        //public int CurrentStep { get; set; }
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //  if (CurrentStep == 2)
+        //    {
                 
-                if (string.IsNullOrEmpty(PhoneNumber))
-                    yield return new ValidationResult("Phone number is required", new[] { nameof(PhoneNumber) });
+        //        if (string.IsNullOrEmpty(PhoneNumber))
+        //            yield return new ValidationResult("Phone number is required", new[] { nameof(PhoneNumber) });
 
                 
-                if (string.IsNullOrEmpty(Address))
-                    yield return new ValidationResult("Address is required", new[] { nameof(Address) });
+        //        if (string.IsNullOrEmpty(Address))
+        //            yield return new ValidationResult("Address is required", new[] { nameof(Address) });
 
-                if (string.IsNullOrEmpty(Country))
-                    yield return new ValidationResult("Country is required", new[] { nameof(Country) });
+        //        if (string.IsNullOrEmpty(Country))
+        //            yield return new ValidationResult("Country is required", new[] { nameof(Country) });
 
-            }
-        }
+        //    }
+        //}
     }
     public class MustBeTrueAttribute : ValidationAttribute
     {

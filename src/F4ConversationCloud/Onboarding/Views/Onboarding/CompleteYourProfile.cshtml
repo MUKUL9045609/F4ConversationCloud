@@ -47,7 +47,7 @@
                        oninput="this.value = this.value.replace(/\D/g, '');" />
             </div>
             <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
-            <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span>
+            @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
 
              <input type="hidden" asp-for="FullPhoneNumber" id="FullPhoneNumberid" /> 
 
@@ -86,7 +86,7 @@
 
         <button type="submit" class="btn login-btn">Save & Continue</button>
 
-        <input type="hidden" asp-for="PhoneOtpVerified" id="PhoneOtpVerified"  />
+        @* <input type="hidden" asp-for="PhoneOtpVerified" id="PhoneOtpVerified"  /> *@
         <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
     </form>
 
