@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Step-3";
+}
+<div class="stepswrapper">
+    <a href="@Url.Action("CompleteYourProfile", "Onboarding")" class="back-btn"> Back</a>
+    <div class="d-flex justify-content-end flex-column">
+        <span class="step-count">STEP <span>03/03</span></span>
+        <span class="step-info">Residency Info.</span>
+    </div>
+</div>
+<div class="bx_wrap">
+    <div>
+        <h4>Meta Login Required!</h4>
+        <p>
+            To continue using this application, you must log in with your Meta account.
+            This step is mandatory to ensure secure access and personalized experience.
+            Please click below to proceed.
+        </p>
+    </div>
+
+    <div class="btnWrap">
+        <a href="#" class="d-flex align-items-center gap-2 sign-google" onclick="launchWhatsAppSignup()"><i class="facebook-icon"></i> Continue with Facebook </a>
+    </div>
+ 
+
+</div>
+
+@section Scripts {
+<script>
+           
+        window.addEventListener('message', (event) => {
+          if (event.origin !== "https://www.facebook.com" && event.origin !== "https://web.facebook.com") {
+            return;
+          }
+
+          try {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'WA_EMBEDDED_SIGNUP') {
+              if (data.event === 'FINISH') {
+              
+                const waba_id = data.data.waba_id;
+                const phone_number_id = data.data.phone_number_id;
+                const business_id = data.data.business_id;
+
+                console.log("WABA ID:", waba_id);
+                console.log("Phone Number ID:", phone_number_id);
+                console.log("Business ID:", business_id);
+
+                
+                const metaResponse = {
+                  WabaId: waba_id,
+                  PhoneNumberId: phone_number_id,
+                  BusinessId: business_id
+                };
+
+                
+                fetch('/Onboarding/SaveMetaUserConfigurationDetails', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(metaResponse)
+                })
+                .then(res => {
+                  if (res.ok) {
+                    return res.json();
+                  } else {
+                    throw new Error('Network response was not ok');
+                  }
+                })
+                .then(responseData => {
+                  if (responseData.result) {
+                      window.location.href = '@Url.ActionLink("ThankYouPage", "Onboarding")';
+                     // showToast("WhatsApp Business Account linked successfully!", "success");
+                  } else {
+                       showToast("Failed Account linked", "danger");
+
+                    console.log('Failed: ' + responseData.message);
+                  }
+                })
+                .catch(error => {
+                  console.error("Error saving Meta config:", error);
+                   showToast("Something went wrong while saving WhatsApp configuration.", "danger");
+                });
+
+              } else if (data.event === 'CANCEL') {
+                const { current_step } = data.data;
+                console.warn("User cancelled at step:", current_step);
+              } else if (data.event === 'ERROR') {
+                const { error_message } = data.data;
+                console.error("Meta error:", error_message);
+                showToast("Meta error: " ,"danger");
+              }
+            }
+
+            document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+
+          } catch {
+            console.log('Non JSON Responses', event.data);
+          }
+        });
+
+</script>
+
+
+
+
+    <script>
+        const fbLoginCallback = (response) => {
+          if (response.authResponse) {
+            const code = response.authResponse.code;
+       
+          }
+          document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
+        }
+
+        const launchWhatsAppSignup = () => {
+          
+          FB.login(fbLoginCallback, {
+            config_id: '9869767589818097', 
+            response_type: 'code', 
+            override_default_response_type: true, 
+            extras: {"version":"v3"}
+          });
+        }
+    </script>
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId            : '2983579265274951',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v23.0'
+          });
+        };
+    </script>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js">
+    </script>
+
+
+
+
+
+}

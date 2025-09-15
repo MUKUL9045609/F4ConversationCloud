@@ -1,0 +1,396 @@
+﻿@model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.RegisterUserModel;
+
+@{
+    ViewData["Title"] = "Step-2";
+}
+<style>
+    .iti {
+        width: 100% !important
+    }
+
+    .disabled-btn {
+        pointer-events: none; 
+        opacity: 0.6; 
+        cursor: default;
+    }
+</style>
+<div class="stepswrapper">
+    <a href="@Url.Action("RegisterIndividualAccount","Onboarding")" class="back-btn"> Back</a>
+    <div class="d-flex justify-content-end flex-column">
+        <span class="step-count">STEP <span>02/03</span></span>
+        <span class="step-info">Residency Info.</span>
+    </div>
+    <a href="@Url.Action("BankVerification", "Onboarding")" class="back-btn" id="nextbtn"> Next</a>
+</div>
+<div class="bx_wrap">
+    <h4>Complete Your Profile!</h4>
+    <p>For the purpose of industry regulation, your details are required.</p>
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <input type="hidden" id="tempDataMessage" value="@TempData["SuccessMessage"]" />
+    }
+    <form id="secondstepform" class="login-form mt-4" asp-action="CompleteProfile" asp-controller="Onboarding" method="post">
+        <div>
+            <label class="form-label">Phone number <sup>*</sup></label>
+
+            <div class="d-flex">
+                <input asp-for="PhoneNumber" type="tel" class="form-control flex-grow-1"
+                       placeholder="Enter phone number"
+                       id="PhoneNumber"
+                       oninput="this.value = this.value.replace(/\D/g, '');" />
+            </div>
+            <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
+            <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span>
+
+             <input type="hidden" asp-for="FullPhoneNumber" id="FullPhoneNumberid" /> 
+
+            <span asp-validation-for="FullPhoneNumber" class="error-message text-danger small" id="phoneError"></span>
+            <div class="verifyBtnLink" id="varifyPhoneNumber"><span>Verify Phone No</span></div>
+        </div>
+
+        <div class="mb-3" id="codeSection" style="display: none;">
+            <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
+            <div class="d-flex gap-2">
+                <input type="number" class="form-control flex-grow-1" placeholder="Enter OTP" id="otp">
+                <button type="button" id="varifyOtp" class="btn verifyBtn">Verify</button>
+            </div>
+            <div class="otp-timer">
+                <span class="otp-text d-none">
+                    Time remaining: <span class="fw-bold" id="timeRemaining">5:00</span>
+                </span>
+                <a id="resetBtn" class="verifyBtnLink">Resend OTP</a>
+            </div>
+            <span asp-validation-for="OTP" class="error-message text-danger small" id="OtpError"></span>
+        </div>
+
+       
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">Your address <sup>*</sup></label>
+            <textarea asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here"></textarea>
+            <span asp-validation-for="Address" class="error-message text-danger small"></span>
+        </div>
+
+     
+        <div class="mb-3">
+            <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
+            <select id="countrySelect" name="Country" class="form-select"></select>
+            <span asp-validation-for="Country" class="error-message text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn login-btn">Save & Continue</button>
+
+        <input type="hidden" asp-for="PhoneOtpVerified" id="PhoneOtpVerified"  />
+        <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
+    </form>
+
+</div>
+
+
+
+
+
+@section Scripts {
+   @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
+    <script>
+        $('#secondstepform :input').each(function () {
+      const fromvalue = $('input.input-validation-error,input, select.input-validation-error, textarea.input-validation-error').val();
+            if (fromvalue != '' ) {
+            
+                $('input, select, textarea, button').prop('disabled', true);
+                $('#nextbtn').show();
+                $('#varifyPhoneNumber, #passicon, #cpassicon')
+                    .addClass('disabled')
+                    .css({
+                        'pointer-events': 'none',
+                        'opacity': '0.5'
+                    });
+            } else {
+               
+                $('#sendmail, #passicon, #cpassicon').removeClass('disabled');
+                 $('#nextbtn').hide();
+                $('input, select, textarea, button').prop('disabled', false);
+            }
+        });
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tempMessageElement = document.getElementById('tempDataMessage');
+            if (tempMessageElement) {
+                const message = tempMessageElement.value;
+                if (message) {
+                    showToast(message, 'warning');
+                }
+            }
+        });
+
+    </script>
+    <script>
+
+        // varify mobile number
+        $(document).ready(function () {
+            $('#PhoneNumber').on('input', function () {
+                let number = $(this).val().trim();
+
+                if (number === '') {
+                    $('#phoneError').text('Please enter your Phone Number.').show();
+                } else if (!/^\d{10}$/.test(number)) {
+                    $('#phoneError').text('Please enter a valid 10-digit phone number.').show();
+                } else {
+                    $('#phoneError').text('').hide();
+                }
+            });
+            $('#varifyPhoneNumber').click(function () {
+                let number = $('#PhoneNumber').val().trim();
+
+                if (number === '') {
+                    $('#phoneError').text('Please enter your Phone Number.').show();
+                    return;
+
+                }
+                else {
+                    $('#phoneError').text('').hide();
+                }
+                $("#loader").show();
+                $.ajax({
+                    url: "@Url.ActionLink("VarifyMobileNo", "Onboarding")",
+                    type: "POST",
+                    data: JSON.stringify({
+                        UserPhoneNumber: number,
+                        OTP_Source: "PhoneNumber"
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+
+                        if (response.status === true) {
+                            // alert("OTP sent successfully!");
+                            showToast("OTP sent successfully!", "success");
+                            $('#varifyPhoneNumber').hide();
+                            $('#codeSection').show()
+                        }
+                        else if (response.status === false && response.message === "Phone Number already exists") {
+                            $('#phoneError').text('Phone Number already exists. Please use a different Phone Number.').show();
+                        } else {
+                            //  alert("Failed to send OTP. Please try again.");
+                            showToast("Failed to send OTP. Please try again!", "danger");
+                        }
+                    },
+                    error: function (xhr) {
+                        showToast("Failed to send OTP. Please try again!", "danger");
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    }
+
+                });
+            });
+
+
+        });
+
+        // resend otp
+        $(document).ready(function () {
+            let timerDuration = 0 * 60;
+            let interval;
+
+            function startTimer() {
+                clearInterval(interval);
+
+                let remaining = timerDuration;
+
+                $("#resetBtn").addClass("d-none");
+                $(".otp-text").removeClass("d-none");
+                $("#timeRemaining").text(formatTime(remaining));
+
+                interval = setInterval(function () {
+                    remaining--;
+
+                    if (remaining >= 0) {
+                        $("#timeRemaining").text(formatTime(remaining));
+                    }
+
+                    if (remaining < 0) {
+                        clearInterval(interval);
+                        $(".otp-text").addClass("d-none");
+                        $("#resetBtn").removeClass("d-none");
+                    }
+                }, 1000);
+            }
+
+            function formatTime(seconds) {
+                let minutes = Math.floor(seconds / 60);
+                let secs = seconds % 60;
+                return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+            }
+
+
+            $("#varifyPhoneNumber").click(function () {
+                startTimer();
+            });
+
+
+            $("#resetBtn").click(function () {
+
+                //  otpVerified = false;
+
+                let number = $("#PhoneNumber").val().trim();
+                $("#loader").show();
+
+                $.ajax({
+                    url: "@Url.Action("VarifyMobileNo", "Onboarding")",
+                    type: "POST",
+                    data: JSON.stringify({
+                        UserPhoneNumber: number,
+                        OTP_Source: "PhoneNumber"
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        if (response.status === true) {
+                            showToast("OTP sent successfully!", "success");
+                            startTimer();
+                             $('#varifyPhoneNumber').hide();
+                            $('#codeSection').show()
+                        }
+                        else {
+                            showToast("Failed to resend OTP. Please try again!", "danger");
+                        }
+                    },
+                    error: function (xhr) {
+                        showToast("Failed to resend OTP. Please try again!", "danger");
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    }
+                });
+
+            });
+        });
+
+
+        // verify otp
+        $(document).ready(function () {
+
+            $('#varifyOtp').click(function () {
+                let Otp = $('#otp').val().trim();
+                let number = $('#PhoneNumber').val().trim();
+
+                if (Otp === '') {
+                    $('#OtpError').text('Please enter the OTP.');
+                    return;
+                } else {
+                    $('#OtpError').text('');
+                }
+
+                $("#loader").show();
+                $.ajax({
+                    url: "@Url.ActionLink("VerifyOtp", "Onboarding")",
+                    type: "POST",
+                    data: JSON.stringify({
+                        UserPhoneNumber: number,
+                        OTP: Otp,
+                        OTP_Source: "PhoneNumber"
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $('#PhoneOtpVerified').val(response.status);
+                        if (response.status === true) {
+                            showToast("OTP verified successfully!", "success");
+                            $('#OtpError').text('');
+                            $('#codeSection').hide();
+                            $('#PhoneOtpVerifiederror').hide();
+                            $('#varifyPhoneNumber').addClass('disabled-btn');
+                            $('#varifyPhoneNumber span').text('');
+
+                            $('#PhoneNumber')
+                                .prop('readonly', true)
+                                .removeClass('is-invalid')
+                                .addClass('form-control flex-grow-1 success');
+
+
+                        } else {
+                            $('#OtpError').text('Invalid OTP. Please Enter Valid OTP.');
+                            otpVerified = false;
+                        }
+                    },
+                    error: function () {
+                        $('#OtpError').text('Failed to verify OTP. Please try again.');
+                        otpVerified = false;
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+
+
+    <script>
+         $(document).ready(function () {
+
+            $('input.input-validation-error, select.input-validation-error, textarea.input-validation-error')
+                .addClass('is-invalid')
+                .removeClass('input-validation-error');
+        });
+    </script>
+
+    <script>
+        fetch("/data/countries.json")
+            .then(res => res.json())
+            .then(data => {
+                const select = document.getElementById("countrySelect");
+
+                data.sort((a, b) => a.name.localeCompare(b.name));
+
+                data.forEach(country => {
+                const option = document.createElement("option");
+                option.value = country.name;
+                option.textContent = country.name;
+                select.appendChild(option);
+                });
+
+                select.value = "India";
+            })
+            .catch(err => console.error("Error fetching countries:", err));
+
+    </script>
+
+    <script>
+
+               document.addEventListener("DOMContentLoaded", function () {
+            var input = document.querySelector("#PhoneNumber");
+
+            if (input) {
+                var iti = window.intlTelInput(input, {
+                    initialCountry: "in", 
+                    separateDialCode: true, 
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+                });
+
+                
+                input.addEventListener("input", function () {
+                    var fullNumber = iti.getNumber();
+                    document.querySelector("#FullPhoneNumberid").value = fullNumber;
+                });
+
+              
+                document.querySelector("form").addEventListener("submit", function () {
+                    var fullNumber = iti.getNumber();
+                    document.querySelector("#FullPhoneNumberid").value = fullNumber;
+                });
+            }
+        });
+
+
+    </script>
+}
