@@ -1,7 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Services;
-using BuldanaUrban.Infrastructure.Service;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.Infrastructure.Repositories;
@@ -26,7 +25,7 @@ namespace F4ConversationCloud.Infrastructure
 
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddHttpContextAccessor(); 
-
+            services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
 
             services.AddScoped<ICampaignRepository, CampaignRepository>();

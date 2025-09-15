@@ -1,6 +1,5 @@
 ﻿
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using F4ConversationCloud.Application.Common.OnBoardingRequestResposeModel;
 
 using F4ConversationCloud.Infrastructure.Interfaces;
 using Dapper;

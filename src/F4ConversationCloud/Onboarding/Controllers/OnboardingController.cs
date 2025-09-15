@@ -2,7 +2,7 @@
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using Microsoft.AspNetCore.Mvc;
 // Remove or comment out the following line as the 'Helpers' namespace does not exist:
-// using F4ConversationCloud.Onboarding.Helpers;
+using F4ConversationCloud.Domain.Helpers;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController:Controller
