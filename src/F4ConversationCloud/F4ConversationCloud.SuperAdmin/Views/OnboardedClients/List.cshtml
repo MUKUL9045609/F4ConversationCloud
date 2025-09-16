@@ -7,7 +7,6 @@
     <div class="container-fluid">
         <h3 class="sub-heading">Client List</h3>
         <div class="card padding">
-
             <div class="filterWrapper form-wrapper">
                 <div class="filterwrap">
                     <ul class="filter-list">
@@ -33,8 +32,6 @@
                     </ul>
                     <button class="btn secondary-btn"><i class="reset"></i></button>
                 </div>
-
-
             </div>
             <div class="table-responsive">
                 <table class="table user-table">
@@ -56,7 +53,6 @@
                                 <a href="client-details.html">Buldana Urban</a>
                                 <span class="buisness-category">Bank</span>
                             </td>
-
                             <td>Buldana Urban Coop. Credit Society</td>
                             <td>08-22-2025, 06:04:55</td>
                             <td>Connected</td>
@@ -80,7 +76,6 @@
                                 <a href="client-details.html">BrightLeaf Organics</a>
                                 <span class="buisness-category">Bank</span>
                             </td>
-
                             <td>BrightLeaf Organics Co.</td>
                             <td>07-02-2025, 06:04:55</td>
                             <td>Offline</td>
@@ -98,7 +93,6 @@
                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled>Reject</button>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <td>3</td>
@@ -119,26 +113,38 @@
                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled>Reject</button>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="navigation example">
-                <ul class="pagination mt-5 d-flex justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">20</a></li>
-                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                </ul>
-            </nav>
-
+            @* <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" /> *@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function loadData() {
+            let searchString = $("[name=SearchString]").val();
+            let status = $("[name=Status]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("List", "Campaign")' +
+                '?SearchString=' + searchString +
+                '&Status=' + encodeURIComponent(status) +
+                '&PageNumber=' + pageNumber;
+        }
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                let searchString = $("[name=SearchString]").val();
+                let status = $("[name=Status]").val();
+
+                location.href = '@Url.Action("List", "Campaign")' +
+                    '?SearchString=' + searchString +
+                    '&Status=' + encodeURIComponent(status) +
+                    '&PageNumber=' + pageNumber;
+            }
+        });
+    </script>
+}

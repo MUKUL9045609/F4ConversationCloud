@@ -1,0 +1,50 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.PaginationViewModel
+@if (Model.TotalCount > 0)
+{
+    <div class="paginationWrapper">
+        <ul class="pagination">
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : string.Empty )"><button class="page-link prev" data-page-number="@(Model.PageNumber - 1)">Previous</button></li>
+            @{
+                var totalPages = (int)Math.Ceiling((decimal)Model.TotalCount / Model.PageSize);
+                var pageNumbers = new List<int>();
+
+                pageNumbers.Add(1);
+
+                if (Model.PageNumber > 3)
+                {
+                    pageNumbers.Add(-1);
+                }
+
+                for (int i = Math.Max(2, Model.PageNumber - 1); i <= Math.Min(totalPages - 1, Model.PageNumber + 1); i++)
+                {
+                    pageNumbers.Add(i);
+                }
+
+                if (Model.PageNumber < totalPages - 2)
+                {
+                    pageNumbers.Add(-1);
+                }
+
+                if (totalPages > 1)
+                {
+                    pageNumbers.Add(totalPages);
+                }
+            }
+
+            @foreach (var pageNumber in pageNumbers)
+            {
+                if (pageNumber == -1)
+                {
+                    <li class="page-item disabled"><button class="page-link">...</button></li>
+                }
+                else
+                {
+                    <li class="page-item @(Model.PageNumber == pageNumber ? "active" : "")">
+                        <button class="page-link" data-page-number="@pageNumber">@pageNumber</button>
+                    </li>
+                }
+            }
+            <li class="page-item @(Model.TotalCount == 0 || Model.PageNumber == Math.Ceiling((decimal)Model.TotalCount / (decimal)Model.PageSize) ? "disabled" : string.Empty )"><button class="page-link next" data-page-number="@(Model.PageNumber + 1)">Next</button></li>
+        </ul>
+    </div>
+}
