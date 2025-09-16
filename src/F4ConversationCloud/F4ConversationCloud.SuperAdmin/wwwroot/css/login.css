@@ -1,0 +1,49 @@
+.loginWrapper {
+  min-height: 100vh;
+  padding: 30px 0px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #e9e9e9;
+}
+.loginWrapper .loginBox {
+  max-width: 500px;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 30px 40px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.loginWrapper .loginBox .from-group {
+  margin-bottom: 15px;
+}
+.loginWrapper .loginBox .from-group .form-label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+.loginWrapper .loginBox .from-group .form-control {
+  padding: 0.4rem 0.5rem;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #D4D4D4;
+  font-size: 14px;
+  height: 42px;
+}
+.loginWrapper .loginBox .from-group .form-control:focus {
+  box-shadow: none;
+}
+.loginWrapper .loginBox .btn-sign {
+  background-color: #03A9F5;
+  color: #fff;
+  font-size: 14px;
+  width: 100%;
+  text-transform: uppercase;
+  margin-top: 27px;
+  padding: 10px 20px;
+}/*# sourceMappingURL=login.css.map */

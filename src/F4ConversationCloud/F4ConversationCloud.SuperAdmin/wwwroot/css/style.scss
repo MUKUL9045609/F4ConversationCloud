@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "modal";
+@import "cards";
+@import "tabs";
+@import "forms";
+@import "table";
+@import "pagination";
+@import "template-card";
+@import "button";
+@import "accordion";
+
+body {
+    font-family: "Poppins", sans-serif !important;
+}
+
+.page {
+    align-items: stretch;
+    display: flex;
+    width: 100%;
+    @import "header";
+    @import "side-navigation";
+    @import "main-content";
+}
+
+
+.campaign-type {
+    display: flex;
+    gap: 20px;
+
+    .select-type {
+        position: relative;
+        width: 55%;
+
+        .radio-button-container {
+            cursor: pointer;
+            width: 100%;
+            border: 1px solid #00000040;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: $textColor;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                
+                .icon-type {
+                    background-image: url("data:image/svg+xml,%3Csvg width='14' height='15' viewBox='0 0 14 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.01795 9.50024L8.01311 10.5L11 7.5L8.01381 4.5L7.01865 5.50047L8.30448 6.79295L3 6.79295L3 8.20705L8.30448 8.20705L7.01795 9.50024Z' fill='%23283342'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.9496 12.4496C14.6835 9.71582 14.6835 5.28418 11.9496 2.55036C9.21582 -0.183455 4.78418 -0.183455 2.05037 2.55036C-0.683453 5.28418 -0.683453 9.71582 2.05036 12.4496C4.78418 15.1835 9.21582 15.1835 11.9496 12.4496ZM11.0498 11.5498C12.1239 10.4757 12.7273 9.01898 12.7273 7.5C12.7273 5.98102 12.1239 4.52426 11.0498 3.45018C9.97574 2.3761 8.51898 1.77269 7 1.77269C5.48102 1.77269 4.02426 2.3761 2.95018 3.45018C1.8761 4.52426 1.27269 5.98102 1.27269 7.5C1.27269 9.01898 1.8761 10.4757 2.95018 11.5498C4.02426 12.6239 5.48102 13.2273 7 13.2273C8.51898 13.2273 9.97574 12.6239 11.0498 11.5498Z' fill='%23283342'/%3E%3C/svg%3E%0A");
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    width: 14px;
+                    height: 15px;
+                    display: block;
+                }
+            }
+
+            input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+            .checkmark {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                height: 22px;
+                width: 22px;
+                border-radius: 50%;
+                border: 2px solid $tabs;
+                transition: all 0.3s;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 11px;
+                    height: 11px;
+                    border-radius: 50%;
+                    background: $tabs;
+                }
+            }
+
+            input:checked~.checkmark {
+                border-color: $tabs;
+
+                &::after {
+                    display: block;
+                }
+            }
+
+            ul {
+                margin-top: 15px;
+                margin-bottom: 0;
+                padding-left: 20px;
+            }
+        }
+    }
+}
+
+.utility{
+        background-color: #E3EBF3;
+        padding: 5px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+}
+.canvasjs-chart-container{
+    font-family: "Poppins", sans-serif !important;
+    .canvasjs-chart-credit{
+        display: none;
+    }
+}
+.user-list{
+    padding: 0px;
+    list-style-type: none;
+    margin: 0px 0px 20px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    li{
+        width: 25%;
+        margin-bottom: 18px!important;
+    }
+    .formkey{
+        display: block;
+        font-size: 13px;
+        text-transform: uppercase;
+        color: #787676;
+        letter-spacing: 0.35px;
+    }
+    .formvalue{
+        font-size: 15px;
+        color: #000;
+    }
+}
+.customer-list{
+    list-style-type: none;
+    padding-left: 0px!important;
+    display: flex;
+    flex-wrap: wrap;
+    gap:15px;
+    li{width: 23.46%;text-align: center;border:1px solid #ddd;
+        padding: 20px;border-radius: 6px;margin-bottom:0px;background-color: #fbfbfb;
+        .count{font-size: 19px;font-weight: 600;display: block;margin-bottom: 6px;}
+        p{
+            margin-bottom: 0px;
+            color: #6f7072!important;
+            text-transform: uppercase;
+        }
+    }
+}
+
+.choose-picture {
+    background-color: #efefef;
+    padding: 20px;
+    height: 120px;
+    border-radius: 10px;
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+    position: relative;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    flex-direction: column;
+    .plus-logo {
+        height: 35px;
+        width: 35px;
+        background-color: #d2d2d2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        &::before{
+            content: "";
+            background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 12H20M12 4V20' stroke='%23767676' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-size: cover;
+            height: 15px;
+            width: 15px;
+            display: grid;
+        }
+    }
+    .form-control{
+        visibility: hidden;
+        position: absolute;
+    }
+    .choose-title{
+        color: #a3a1a1;
+        font-size: 13px;
+        bottom: 32px;
+        font-weight: 400;
+        letter-spacing: 0.9px;
+        line-height: 1;
+        white-space: nowrap;
+        margin-top: 7px;
+    }
+    .existing{
+        background-color: #fff;
+        padding: 3px 15px;
+        border-radius: 25px;
+        font-size: 10px;
+        font-weight: 500;
+        position: absolute;
+        bottom: 7px;
+        left: 5px;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    }
+}
+.logo-list{
+    list-style-type: none;
+    padding: 0px!important;
+    margin: 0px;
+    display: flex;
+    gap: 15px;
+    li{margin-bottom: 0px!important;}
+}
+.header-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 17px;
+    .back-btn{
+        background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 -6.5 36 36' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3Eleft-arrow%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='icons' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='ui-gambling-website-lined-icnos-casinoshunter' transform='translate(-342.000000, -159.000000)' fill='%23252528' fill-rule='nonzero'%3E%3Cg id='square-filled' transform='translate(50.000000, 120.000000)'%3E%3Cpath d='M317.108012,39.2902857 L327.649804,49.7417043 L327.708994,49.7959169 C327.889141,49.9745543 327.986143,50.2044182 328,50.4382227 L328,50.5617773 C327.986143,50.7955818 327.889141,51.0254457 327.708994,51.2040831 L327.6571,51.2479803 L317.108012,61.7097143 C316.717694,62.0967619 316.084865,62.0967619 315.694547,61.7097143 C315.30423,61.3226668 315.30423,60.6951387 315.694547,60.3080911 L324.702666,51.3738496 L292.99947,51.3746291 C292.447478,51.3746291 292,50.9308997 292,50.3835318 C292,49.8361639 292.447478,49.3924345 292.99947,49.3924345 L324.46779,49.3916551 L315.694547,40.6919089 C315.30423,40.3048613 315.30423,39.6773332 315.694547,39.2902857 C316.084865,38.9032381 316.717694,38.9032381 317.108012,39.2902857 Z M327.115357,50.382693 L316.401279,61.0089027 L327.002151,50.5002046 L327.002252,50.4963719 L326.943142,50.442585 L326.882737,50.382693 L327.115357,50.382693 Z' id='left-arrow' transform='translate(310.000000, 50.500000) scale(-1, 1) translate(-310.000000, -50.500000) '%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        background-size: 75%;
+        background-position: center;
+        background-repeat: no-repeat;
+        width:25px;height:18px;
+        display: inline-block;
+    }
+    .sub-heading{margin-bottom: 0px!important;}
+    .client-logo{
+        img{
+            width:220px;
+        }
+    }
+}
+.user-wrap{
+    display: flex;
+    gap: 10px;
+    .profile{
+        img{
+            height: 30px;
+            width: 30px;
+            border-radius: 100%;
+        }
+    }
+    .role{
+        font-size: 13px;
+        display: block;
+        color: #637381;
+    }
+    
+}
+.log{font-size: 13px;}
+.footer{
+    padding-inline-start: 15rem;
+    font-size: 13px;
+    text-align: center;
+    background-color: $white;
+    padding: 12.1px 14px;
+    border-top: 1px solid rgb(0 0 0 / 25%);
+}
+.filterWrapper{
+    display: flex;
+    align-items: end;
+    justify-content: space-between; 
+    gap: 10px;
+    flex: 1;
+    margin-bottom: 20px;
+    .filterwrap{
+        display: flex;
+        align-items: end;
+        gap: 10px;
+    }
+    .filter-list{
+        list-style-type: none;
+        padding: 0px!important;
+        display: flex;gap:10px;
+        margin-bottom: 0px;
+        flex: 1;
+        li{
+            width: 100%;
+            margin-bottom: 0px!important;
+        }
+    }
+    .btn{
+        padding: 12px 20px !important;
+    }
+}
+.buisness-category{font-size: 13px;color: #727374;display: block;}
+
+.burger {
+    height: 17px;
+    width: 22px;
+    display: inline-block;
+    cursor: pointer;
+    .bar{
+        background-color: #000;
+        width: 100%;
+        height: 2px;
+        display: block;
+        cursor: pointer;
+        &:first-child{
+            margin-bottom: 5px;
+        }
+        &:nth-child(2){
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.sidemenutoggle{
+    .app-sidebar{
+        margin-left: -260px;
+        transition: margin-left .35s ease-in-out, left .35s ease-in-out, margin-right .35s ease-in-out, right .35s ease-in-out;
+        
+    }
+    .app-header{
+        margin-left:0px;
+        transition: margin-left .35s ease-in-out, left .35s ease-in-out, margin-right .35s ease-in-out, right .35s ease-in-out;
+    }
+    
+}
+
