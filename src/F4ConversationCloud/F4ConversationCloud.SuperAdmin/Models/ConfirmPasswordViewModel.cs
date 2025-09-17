@@ -6,7 +6,6 @@ namespace F4ConversationCloud.SuperAdmin.Models
     {
         [Required]
         public int UserId { get; set; }
-
         [Display(Name = "Password")]
         [Required]
         [Compare("ConfirmPassword", ErrorMessage = " ")]
