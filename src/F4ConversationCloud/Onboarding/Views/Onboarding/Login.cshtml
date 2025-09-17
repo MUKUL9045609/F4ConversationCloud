@@ -1,25 +1,89 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.LoginResponse;
 @{
+    Layout = null;
+    ViewData["Title"] = "Login";
 }
-<div class="bx_wrap">
-    @using (Html.BeginForm("RegisterIndividualAccount", "Onboarding", FormMethod.Get, new { id = "step1Form" }))
-    {
-        <h4>Join Us!</h4>
-        <p>To begin this journey, tell us what type of account you’d be opening.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="css/gupshuplogin.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
 
-        <a href="javascript:void(0);" class="wrap_bx" onclick="document.getElementById('step1Form').submit();">
-            <div class="d-flex gap-3">
-                <div class="icon">
-                    <img src="../images/login/Individual.svg" />
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="left-section">
+
+            <span class="login-bg">
+                <div class="fortune4-login">
+                    <img src="images/logo.svg" />
                 </div>
-                <div class="wp-content">
-                    <h6>Get Started with Cloud Conversation</h6>
-                    <p>Manage your conversations, contacts, and workflows seamlessly on our business platform.</p>
-                </div>
+            </span>
+        </div>
+        <div class="right-section">
+            <div class="login-bx">
+                <h5 class="mb-4">Log in to your Account</h5>
+                <form asp-action="Login" asp-controller="Onboarding">
+                    <div class="form-group">
+                        <input asp-for="Email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email Address">
+                        <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
+                        <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
+                    </div>
+
+                    <a href="forgot-password.html" class="forgot">Forgot password?</a>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                @* <div class="or"><span>or</span></div> *@
+
+                
+
+
+
+
+
+
+
+
             </div>
-            <span class="arrow"></span>
-        </a>
-    }
-</div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/swiper-bundle.min.js"></script>
+
+    <script>
+        $("nav ul ul").hide();
+        $("nav > ul > li > a").on("click", function (e) {
+            e.stopPropagation();
+            $("nav ul ul").slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $("li").has("ul").find("a").not("ul ul a").addClass("caret");
+
+        var swiper = new Swiper(".useCasesSwiper", {
+            spaceBetween: 30,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            loop: true,
+        });
+    </script>
+</body>
+</html>

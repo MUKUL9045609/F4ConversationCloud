@@ -1,9 +1,9 @@
 ﻿
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-
-using F4ConversationCloud.Infrastructure.Interfaces;
 using Dapper;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Infrastructure.Interfaces;
 
 
 namespace F4ConversationCloud.Infrastructure.Repositories
@@ -30,12 +30,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 parameters.Add("LastName", command.LastName);
                 parameters.Add("Email", command.Email);
                 parameters.Add("PassWord", command.PassWord);
-                parameters.Add("CreatedBy", command.CreatedBy);
-                parameters.Add("ModifedBy", command.ModifedBy);
-                parameters.Add("PhoneNumber", command.PhoneNumber);
+                parameters.Add("ClientTimeZone", command.Timezone);
+                parameters.Add("Stage", command.Stage);
+                parameters.Add("PhoneNumber", command.FullPhoneNumber);
                 parameters.Add("Address", command.Address);
                 parameters.Add("Country", command.Country);
-                parameters.Add("BankVarificationNumber", command.BankVarificationNumber);
                 parameters.Add("role", command.Role);   
                 var NewUserId =  await _repository.InsertUpdateAsync("[sp_RegisterNewUser]", parameters);
 
@@ -49,6 +48,23 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             }
            
 
+        }
+
+        public async Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid) {
+
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("UserId", UserId);
+                parameters.Add("stageId", Stageid);
+
+                return await _repository.InsertUpdateAsync("[sp_UpdateClientFormStage]", parameters);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         public async Task<int> InsertOTPAsync(VarifyMobileNumberModel command)
@@ -141,6 +157,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             {
                 return null;
             }
+        }
+
+        public async Task<LoginViewModel> ValidateClientCreadiatial(string Email)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@EmailId", Email);
+                return await _repository.GetByValuesAsync<LoginViewModel>("[sp_ValidateClientCreadiatial]", parameters);
+            }
+            catch (Exception)
+            {
+
+              return await Task.FromResult<LoginViewModel>(null);
+            }
+           
         }
     }
 }

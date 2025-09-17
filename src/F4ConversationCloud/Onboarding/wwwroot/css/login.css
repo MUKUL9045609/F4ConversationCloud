@@ -501,7 +501,19 @@
     color: #727272;
 }
 .disabled-btn {
-    pointer-events: none; /* prevents click */
-    opacity: 0.6; /* makes it look disabled */
+    pointer-events: none;
+    opacity: 0.6;
     cursor: default;
 }
+
+
+.disable-click {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+
+.iti {
+    width: 100% !important
+}
+

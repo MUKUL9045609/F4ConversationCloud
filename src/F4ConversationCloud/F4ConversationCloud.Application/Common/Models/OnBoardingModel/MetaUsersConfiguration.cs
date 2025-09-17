@@ -8,7 +8,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 {
     public class MetaUsersConfiguration
     {
-        public int OnboardingUserId { get; set; }
+        public int? OnboardingUserId { get; set; }
         public string CompanyName { get; set; }
         public string WabaId { get; set; }
         public string PhoneNumberId { get; set; }

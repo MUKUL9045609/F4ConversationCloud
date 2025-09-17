@@ -1,10 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Step-3";
+    ViewData["Title"] = "Meta Onboarding";
 }
 <div class="stepswrapper">
-    <a href="@Url.Action("CompleteYourProfile", "Onboarding")" class="back-btn"> Back</a>
+    <a href="@Url.Action("RegisterIndividualAccount", "Onboarding")" class="back-btn"> Back</a>
     <div class="d-flex justify-content-end flex-column">
-        <span class="step-count">STEP <span>03/03</span></span>
+        <span class="step-count">STEP <span>02/02</span></span>
         <span class="step-info">Residency Info.</span>
     </div>
 </div>
@@ -26,6 +26,7 @@
 </div>
 
 @section Scripts {
+    <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
 <script>
            
         window.addEventListener('message', (event) => {
@@ -70,7 +71,7 @@
                 .then(responseData => {
                   if (responseData.result) {
                       window.location.href = '@Url.ActionLink("ThankYouPage", "Onboarding")';
-                     // showToast("WhatsApp Business Account linked successfully!", "success");
+                    
                   } else {
                        showToast("Failed Account linked", "danger");
 
@@ -85,10 +86,13 @@
               } else if (data.event === 'CANCEL') {
                 const { current_step } = data.data;
                 console.warn("User cancelled at step:", current_step);
-              } else if (data.event === 'ERROR') {
+                 showToast(current_step ,"danger");
+              }
+              else if (data.event === 'ERROR') {
                 const { error_message } = data.data;
                 console.error("Meta error:", error_message);
-                showToast("Meta error: " ,"danger");
+
+                showToast("Meta error: "+error_message ,"danger");
               }
             }
 

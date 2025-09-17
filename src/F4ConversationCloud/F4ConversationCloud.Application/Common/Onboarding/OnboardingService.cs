@@ -3,8 +3,11 @@ using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
-using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Helpers;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -37,7 +40,7 @@ namespace F4ConversationCloud.Application.Common.Services
                     };
 
                     var insertOTPResponse = await _authRepository.InsertOTPAsync(InsertOTPCommand);
-                    if (insertOTPResponse <= 0)
+                    if (insertOTPResponse == 0)
                     {
                         return new VarifyUserDetailsResponse
                         {
@@ -176,14 +179,14 @@ namespace F4ConversationCloud.Application.Common.Services
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Email = request.Email,
-                    PhoneNumber = request.PhoneNumber,
+                    
                     Address = request.Address,
                     Country = request.Country,
-                    BankVarificationNumber = request.BankVarificationNumber,
+                    Timezone = request.Timezone,
                     PassWord = PasswordHasherHelper.HashPassword(request.PassWord),
                     IsActive = request.IsActive,
-                    CreatedBy = request.CreatedBy,
-                    ModifedBy = request.ModifedBy,
+                    Stage = request.Stage,
+                    FullPhoneNumber= request.FullPhoneNumber,
                     Role = request.Role,
                 };
 
@@ -220,10 +223,7 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         }
 
-        public Task<int> SendOTPAsync()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request)
         {
@@ -264,6 +264,7 @@ namespace F4ConversationCloud.Application.Common.Services
         }
 
 
+
         public async Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request)
         {
             try
@@ -293,5 +294,54 @@ namespace F4ConversationCloud.Application.Common.Services
 
         }
 
+
+        public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
+        {
+
+            try
+            {
+               
+                 var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
+                    if (ClientDetails is null)
+                        return new LoginResponse
+                        {
+                            Message = "InvalidEmail",
+                            IsSuccess = false,
+
+                        };
+                    var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
+                        if (!isPasswordValid)
+                        {
+                            return new LoginResponse
+                            {
+                                Message = "InvalidPassword",
+                                IsSuccess = false,
+                            };
+                        }
+                return new LoginResponse()
+                {
+                    Message = "Login Success",
+                    IsSuccess = true,
+                    Data = new LoginViewModel
+                    {
+                        UserId = ClientDetails.UserId,
+                        Email = ClientDetails.Email,
+                        Stage = ClientDetails.Stage,
+                    }
+                };
+
+            }
+            catch (Exception)
+            {
+                return new LoginResponse
+                {
+                    Message = "Technical Error",
+                    IsSuccess = false,
+                };
+
+            }
+
+
+        }
     }
 }
