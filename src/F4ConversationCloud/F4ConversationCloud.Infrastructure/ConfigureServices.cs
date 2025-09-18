@@ -5,6 +5,7 @@ using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.Infrastructure.Repositories;
 using F4ConversationCloud.Infrastructure.Service;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,6 +32,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             return services;
         }
