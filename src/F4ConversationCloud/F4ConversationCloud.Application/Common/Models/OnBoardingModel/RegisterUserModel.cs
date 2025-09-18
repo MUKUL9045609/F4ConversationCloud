@@ -55,7 +55,9 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public bool TermsCondition { get; set; }
         public bool EmailOtpVerified { get; set; } = false;
         public string Role { get; set; } = "Client";
-        public string? Timezone { get; set; }
+
+        [Required(ErrorMessage = "Select Time Zones")]
+        public string Timezone { get; set; }
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }
 
@@ -78,8 +80,9 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string PhoneNumber { get;  }
         public string Address { get;  }
         public string Country { get;  }
-        public string clientTimeZone { get;  }
+        public string TimeZone { get;  }
         public string Role { get; }
+        public bool TermsCondition { get; set; }
         public ClientFormStage Stage { get; }
 
 

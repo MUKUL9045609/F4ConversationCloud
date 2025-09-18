@@ -46,7 +46,10 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         {
                             if (response.Data.Stage.Equals(ClientFormStage.draft)) {
                                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
+
+                                        clientdetails.TermsCondition = true;
                                     TempData.Put("registrationform", clientdetails);
+                                TempData["WarringMessage"] = "You have already registered Please Complete Meta Onboarding !";
                                 return RedirectToAction("BankVerification");
                             }
                             else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
@@ -302,8 +305,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
         }
 
-        [HttpPost("confirmpassword")]
-        public async Task<IActionResult> ConfirmPassword(ConfirmPasswordViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> SetPassword(ConfirmPasswordViewModel model)
         {
             try
             {

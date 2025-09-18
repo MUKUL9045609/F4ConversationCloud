@@ -70,16 +70,21 @@
     <script src="~/js/unobtrusiveHelper.js"></script>
 
     <script>
-        $(document).ready(function () {
-            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+          $(document).ready(function () {
+              var errorMessage = '@TempData["ErrorMessage"]';
+              var warningMessage = '@TempData["WarningMessage"]';
+              var showSuccessMessage = '@TempData["SuccessMessage"]';
+              if (errorMessage) {
+                  showToast(errorMessage, "danger");
+              }
 
-            if (toastMsg != null && toastMsg != undefined) {
-                if (toastMsg.type === "Success")
-                    commonHelper.showSuccess(toastMsg.message);
-                else if (toastMsg.type === "Error")
-                    commonHelper.showError(toastMsg.message);
-            }
-        });
+              if (warningMessage) {
+                  showToast(warningMessage, "warning");
+              }
+              if (showSuccessMessage) {
+                  showToast(warningMessage, "success");
+              }
+          });
         $(window).on('load', function () {
             $('.loader-wrapper').fadeOut('slow');
         });

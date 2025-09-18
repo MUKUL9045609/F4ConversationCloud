@@ -27,6 +27,23 @@
 
 @section Scripts {
     <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+             var errorMessage = '@TempData["ErrorMessage"]';
+             var warningMessage = '@TempData["WarningMessage"]';
+             var showSuccessMessage = '@TempData["SuccessMessage"]';
+             if (errorMessage) {
+                 showToast(errorMessage, "danger");
+             }
+
+             if (warningMessage) {
+                 showToast(warningMessage, "warning");
+             }
+             if (showSuccessMessage) {
+                 showToast(warningMessage, "success");
+             }
+         });
+    </script>
 <script>
            
         window.addEventListener('message', (event) => {

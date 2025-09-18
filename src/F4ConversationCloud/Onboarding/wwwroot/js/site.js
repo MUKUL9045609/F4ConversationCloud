@@ -44,17 +44,7 @@ function showToast(message, type = "success", duration = 3000) {
     toast.show();
 }
 
-//*window.onload = function () {
-   /* const loader = document.getElementById('loader');
-    if (loader) {
-        loader.style.display = 'none';
-    }
-};*/
 
-// Show loader immediately when script runs
-//$("#loader").show();
-
-// Hide loader when page fully loaded
 window.onload = function () {
     $("#loader").fadeOut("slow");
 };
