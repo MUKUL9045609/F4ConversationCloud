@@ -1,10 +1,9 @@
-﻿
-using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 
 
 namespace F4ConversationCloud.Application.Common.Services

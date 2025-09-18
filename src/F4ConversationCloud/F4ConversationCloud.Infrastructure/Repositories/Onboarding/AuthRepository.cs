@@ -1,12 +1,10 @@
-﻿
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-
-using F4ConversationCloud.Infrastructure.Interfaces;
+﻿using F4ConversationCloud.Infrastructure.Interfaces;
 using Dapper;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 
 
-namespace F4ConversationCloud.Infrastructure.Repositories
+namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 {
     public class AuthRepository : IAuthRepository
     {

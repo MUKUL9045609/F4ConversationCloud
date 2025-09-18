@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static F4ConversationCloud.Application.Common.Models.CampaignDTO;
 
-namespace F4ConversationCloud.Application.Common.Interfaces.Services
+namespace F4ConversationCloud.Application.Common.Interfaces.Services.Client
 {
     public interface ICampaignService
     {

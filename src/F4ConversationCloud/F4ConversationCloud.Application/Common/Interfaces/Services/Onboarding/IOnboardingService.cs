@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 
-namespace F4ConversationCloud.Application.Common.Interfaces.IWebServices
+namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
 {
     public interface IOnboardingService
     {

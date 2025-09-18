@@ -1,5 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Domain.Entities;
 
 namespace F4ConversationCloud.Application.Common.Services
