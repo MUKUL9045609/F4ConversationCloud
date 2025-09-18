@@ -1,10 +1,11 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Extension;
 
-namespace F4ConversationCloud.Infrastructure.Service
+namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
     public class SuperAdminAuthService : ISuperAdminAuthService
     {
