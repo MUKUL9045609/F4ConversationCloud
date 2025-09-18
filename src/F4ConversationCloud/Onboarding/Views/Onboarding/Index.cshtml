@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="bx_wrap">
+    @using (Html.BeginForm("RegisterIndividualAccount", "Onboarding", FormMethod.Get, new { id = "step1Form" }))
+    {
+        <h4>Join Us!</h4>
+        <p>To begin this journey, tell us what type of account you’d be opening.</p>
+
+        <a href="javascript:void(0);" class="wrap_bx" onclick="document.getElementById('step1Form').submit();">
+            <div class="d-flex gap-3">
+                <div class="icon">
+                    <img src="../images/login/Individual.svg" />
+                </div>
+                <div class="wp-content">
+                    <h6>Get Started with Cloud Conversation</h6>
+                    <p>Manage your conversations, contacts, and workflows seamlessly on our business platform.</p>
+                </div>
+            </div>
+            <span class="arrow"></span>
+        </a>
+       @*  <div class="btnWrap">
+            <a href="@Url.Action("Login","Onboarding")" class="d-flex align-items-center gap-2 sign-google"><i class="facebook-icon"></i>Login</a>
+        </div> *@
+    }
+</div>

@@ -1,0 +1,106 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+.login-page .left-section {
+  width: 50%;
+}
+.login-page .left-section .login-bg {
+  background-image: url("../images/messenger.png");
+  background-size: 75%;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: calc(100vh - 20px);
+  display: block;
+  position: relative;
+}
+.login-page .left-section .fortune4-login {
+  max-width: 250px;
+  background-color: #5d70b4;
+  padding: 13px 20px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50px;
+  right: 40px;
+}
+.login-page .right-section {
+  width: 50%;
+  padding: 0px 50px;
+  display: flex;
+  align-items: center;
+}
+.login-page .right-section .login-bx {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  padding: 40px 50px;
+  border-radius: 20px;
+  width: 420px;
+  margin: 0 auto;
+}
+.login-page .right-section .login-bx .form-group {
+  margin-bottom: 15px;
+}
+.login-page .right-section .login-bx .form-group .form-control {
+  font-size: 15px;
+  height: 45px;
+}
+.login-page .right-section .login-bx .form-group .form-control:focus {
+  box-shadow: none;
+}
+.login-page .right-section .login-bx .captcha {
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+.login-page .right-section .login-bx .btn-primary {
+  background-color: #03A9F5;
+  border: 1px solid #03A9F5;
+  width: 100%;
+  margin-top: 36px;
+  padding: 11px 0px;
+  font-size: 15px;
+}
+.login-page .right-section .login-bx .btn-primary:focus {
+  box-shadow: none;
+}
+.login-page .right-section .login-bx .forgot {
+  font-size: 16px;
+  color: #03A9F5;
+  font-weight: 400;
+}
+.login-page .right-section .forgot-bx p {
+  font-size: 15px;
+}
+
+.or {
+  display: flex;
+  align-items: center;
+  color: #BABABA;
+  margin: 15px 0px;
+}
+.or span {
+  padding: 0px 34px;
+}
+.or::before {
+  content: "";
+  background-color: #ddd;
+  height: 1px;
+  width: 100%;
+  display: flex;
+}
+.or::after {
+  content: "";
+  background-color: #ddd;
+  height: 1px;
+  width: 100%;
+  display: flex;
+}
+
+.new-user {
+  font-size: 16px;
+  font-weight: 400;
+}
+.new-user a {
+  margin-left: 7px;
+}/*# sourceMappingURL=gupshuplogin.css.map */

@@ -132,7 +132,7 @@
   background-position: 80% 17%;
   background-repeat: no-repeat;
   height: auto;
-  width: 50%;
+  width: 42%;
   padding: 30px 50px 100px;
   display: block;
 }
@@ -175,8 +175,8 @@
   bottom: -20px;
 }
 .loginwrapper .loginBox .right-col {
-  padding: 30px 45px;
-  width: 50%;
+  padding: 30px;
+  width: 58%;
 }
 .loginwrapper .loginBox .right-col .tag-line {
   color: #8692A6;
@@ -312,6 +312,8 @@
   color: #03A9F5;
   text-align: right;
   cursor: pointer;
+  float:right;
+  margin-top:4px;
 }
 .loginwrapper .loginBox .right-col .verifyBtnLink span {
   border-bottom: 1px solid #03A9F5;
@@ -501,7 +503,56 @@
     color: #727272;
 }
 .disabled-btn {
-    pointer-events: none; /* prevents click */
-    opacity: 0.6; /* makes it look disabled */
+    pointer-events: none;
+    opacity: 0.6;
     cursor: default;
+}
+
+
+.disable-click {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+
+.iti {
+    width: 100% !important;
+    font-size:13px;
+        
+}
+.fa{
+    font-size:13px;
+}
+css add in login.css
+.select2-container .select2-selection--single {
+    height: auto !important;
+    font-weight: 400;
+    line-height: 1.5;
+    font-size: 13px;
+    padding: 8px;
+    color: #8692A6;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+}
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #8692A6 !important;
+        line-height: 1.5 !important;
+    }
+
+.select2-selection__rendered {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: auto;
+    top: 6px;
+    right: 7px;
+}
+
+.select2-results__option {
+    font-size: 14px;
 }

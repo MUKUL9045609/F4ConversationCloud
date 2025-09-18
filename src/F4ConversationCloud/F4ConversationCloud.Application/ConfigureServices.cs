@@ -1,6 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Services;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace F4ConversationCloud.Application
@@ -11,6 +12,7 @@ namespace F4ConversationCloud.Application
         {
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<IOnboardingService, OnboardingService>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             return services;
         }
     }
