@@ -37,7 +37,7 @@
                         <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
                     </div>
 
-                    <a href="forgot-password.html" class="forgot">Forgot password?</a>
+                    <a href="@Url.Action("forgotpassword","Onboarding")" class="forgot">Forgot password?</a>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -55,34 +55,33 @@
             </div>
         </div>
     </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"
-            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-            crossorigin="anonymous"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/swiper-bundle.min.js"></script>
+    <div class="toastWrap">
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/unobtrusiveHelper.js"></script>
 
     <script>
-        $("nav ul ul").hide();
-        $("nav > ul > li > a").on("click", function (e) {
-            e.stopPropagation();
-            $("nav ul ul").slideUp();
-            $(this).next().is(":visible") || $(this).next().slideDown();
+        $(document).ready(function () {
+            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+
+            if (toastMsg != null && toastMsg != undefined) {
+                if (toastMsg.type === "Success")
+                    commonHelper.showSuccess(toastMsg.message);
+                else if (toastMsg.type === "Error")
+                    commonHelper.showError(toastMsg.message);
+            }
         });
-
-        $("li").has("ul").find("a").not("ul ul a").addClass("caret");
-
-        var swiper = new Swiper(".useCasesSwiper", {
-            spaceBetween: 30,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            loop: true,
+        $(window).on('load', function () {
+            $('.loader-wrapper').fadeOut('slow');
         });
     </script>
 </body>

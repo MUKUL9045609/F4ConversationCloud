@@ -1,13 +1,12 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
-// Remove or comment out the following line as the 'Helpers' namespace does not exist:
+using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
-using System;
-using System.Threading.Tasks;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController:Controller
@@ -25,13 +24,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     return View();
                 }
-
+               
                 [HttpGet("Login")]
                 public async Task<IActionResult> Login()
                 {
                 
                     return View();
                 }
+
                  [HttpPost("Login")]
                  public async Task<IActionResult> Login(Loginrequest requst)
                  {
@@ -224,120 +224,120 @@ namespace F4ConversationCloud.Onboarding.Controllers
         {
             return View();
         }
-
-
-        [HttpGet("register-step2")]
-        public IActionResult CompleteYourProfile()
+        [HttpGet("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword()
         {
-            var step2form = TempData.Get<RegisterUserModel>("step2form");
-            if (step2form != null)
-            {
-                var existingData = new RegisterUserModel();
-                existingData = step2form;
-                return View(existingData);
-            }
-            var step1form = TempData.Get<RegisterUserModel>("registrationform");
-            if (step1form is null)
-            {
-                TempData["SuccessMessage"] = "Register details first!";
-                return RedirectToAction("RegisterIndividualAccount");
-
-
-            }
-            var model = new RegisterUserModel();
-            return View(model);
-        }
-
-
-        [HttpPost("register-step2")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CompleteProfile(RegisterUserModel command)
-        {
-            var step1form = TempData.Get<RegisterUserModel>("registrationform");
-
-            if (step1form == null)
-            {
-                ViewBag.ErrorMessage = "Session expired, please restart registration.";
-                return View("CompleteYourProfile", command);
-            }
-            step1form.PhoneNumber = command.PhoneNumber;
-            step1form.Address = command.Address;
-            step1form.Country = command.Country;
-            // step1form.CurrentStep = 2;
-
-            ModelState.Clear();
-            //if (!command.PhoneOtpVerified && !string.IsNullOrEmpty(command.PhoneNumber))
-            //{
-            //    ModelState.AddModelError(nameof(command.PhoneOtpVerified), "Phone number verification required");
-            //}
-            if (!TryValidateModel(step1form))
-            {
-                return View("CompleteYourProfile", command);
-            }
-
-            TempData.Put("step2form", step1form);
-            return RedirectToAction("BankVerification");
-        }
-
-
-
-
-
-
-        public async Task<IActionResult> VarifyMobileNo([FromBody] VarifyMobileNumberModel command)
-            {
-                var response = await _onboardingService.CheckMailOrPhoneNumberAsync(command);
-                //var response = await Mediator.Send(command);
-
-                return Json(new { response.status, response.message });
-            }
-
-
-
-            
-            [HttpPost]
-            public async Task<IActionResult> SubmitRegisterIndividualAccount(RegisterUserModel command)
-            {
-
-
-
-                var firstForm = TempData.Get<RegisterUserModel>("step2form");
-
-                if (firstForm == null)
-                {
-                    //return BadRequest("Session expired, please restart registration.");
-                    return View("CompleteYourProfile", command);
-                }
-                firstForm.PhoneNumber = command.PhoneNumber;
-                firstForm.Address = command.Address;
-                firstForm.Country = command.Country;
-                //firstForm.CurrentStep = 2;
-
-                ModelState.Clear();
-
-                if (!TryValidateModel(firstForm))
-                {
-
-                    return View("CompleteYourProfile", command);
-                }
-
-                TempData.Put("firstForm", firstForm);
-
-
-                //var result = await Mediator.Send(firstForm);
-                var result = await _onboardingService.RegisterUserAsync(firstForm);
-
-                TempData.Remove("RegisterUser");
-
-                //return Json(new { success = true });
-                return RedirectToAction("ThankYouPage");
-                //  return RedirectToAction("RegisterIndividualAccount");*/ 
-            }
-
-            public ActionResult Success()
+            try
             {
                 return View();
             }
+            catch (Exception ex)
+            {
+              return View();
+            }
         }
-    
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                bool success = await _onboardingService.ValidateClientEmailAsync(model.EmailId);
+
+                if (!success)
+                {
+                    ModelState.AddModelError("EmailId", "This Email is not Registered.");
+                    return View(model);
+                }
+
+                await _onboardingService.SendResetPasswordLink(model.EmailId);
+
+                TempData["SuccessMessage"] = "A reset link has been sent to your email address";
+
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                return View(model);
+            }
+        }
+
+        [HttpGet("confirmpassword/{id}")]
+        public async Task<IActionResult> ConfirmPassword([FromRoute] string id)
+        {
+            int userId = 0;
+
+            try
+            {
+                id = id.Replace("thisisslash", "/").Replace("thisisbackslash", @"\").Replace("thisisplus", "+");
+                string decToken = id.Decrypt();
+
+                int.TryParse(decToken.Split("|")[0], out userId);
+
+                if (userId == 0)
+                {
+                    TempData["ErrorMessage"] = "Invalid Url";
+
+                    return RedirectToAction("Login");
+                }
+
+                DateTime expiryTime = DateTime.Parse(decToken.Split("|")[1]);
+
+                if (expiryTime < DateTime.UtcNow)
+                {
+                    TempData["ErrorMessage"] = "Link Has been expired";
+
+                    return RedirectToAction("Login");
+                }
+
+                return View(new ConfirmPasswordViewModel { UserId = userId });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Invalid Url";
+
+                return RedirectToAction("Login");
+            }
+        }
+
+        [HttpPost("confirmpassword")]
+        public async Task<IActionResult> ConfirmPassword(ConfirmPasswordViewModel model)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                bool success = await _onboardingService.SetNewPassword(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password });
+
+                if (!success)
+                {
+                    TempData["ErrorMessage"] = "Something went wrong!";
+                    ModelState.AddModelError(string.Empty, "Something went wrong!");
+                    return View(model);
+                }
+
+                TempData["SuccessMessage"] = "Password reset successfull";
+
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "technical error ";
+
+                return View(model);
+            }
+        }
+
+
+
+
+
+
+
+    }
+
 }

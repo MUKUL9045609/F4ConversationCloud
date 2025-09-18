@@ -1,9 +1,11 @@
-﻿using System;
+﻿using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 
 namespace F4ConversationCloud.Application.Common.Interfaces.IWebServices
 {
@@ -21,5 +23,9 @@ namespace F4ConversationCloud.Application.Common.Interfaces.IWebServices
 
         Task<LoginResponse> OnboardingLogin(Loginrequest request);
         Task SendRegistrationSuccessEmailAsync(RegisterUserModel Request);
+
+        Task <bool> ValidateClientEmailAsync(string EmailId);
+        Task SendResetPasswordLink(string EmailId);
+        Task<bool> SetNewPassword(ConfirmPasswordModel model);
     }
 }
