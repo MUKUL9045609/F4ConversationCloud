@@ -5,6 +5,8 @@ using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController:Controller
@@ -73,7 +75,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                    return View();
                  }
             
-            [HttpGet("RegisterClientInfo")]
+            [HttpGet("register-Client-Info")]
             public async Task<IActionResult> RegisterIndividualAccount()
             {
                 
@@ -97,7 +99,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             }
 
-            [HttpPost("RegisterClientInfo")]
+            [HttpPost("Register-Client-Info")]
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> RegisterIndividualAccount(RegisterUserModel command)
              {
@@ -222,7 +224,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         {
             return View();
         }
-        [HttpGet("forgotpassword")]
+        [HttpGet("forgot-password")]
         public async Task<IActionResult> ForgotPassword()
         {
             try
@@ -234,7 +236,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
               return View();
             }
         }
-        [HttpPost("ForgotPassword")]
+        [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             try
