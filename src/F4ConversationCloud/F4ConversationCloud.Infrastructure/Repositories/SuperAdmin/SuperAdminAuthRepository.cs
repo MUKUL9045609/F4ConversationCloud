@@ -3,7 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Infrastructure.Interfaces;
 
-namespace F4ConversationCloud.Infrastructure.Repositories
+namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 {
     public class SuperAdminAuthRepository : ISuperAdminAuthRepository
     {

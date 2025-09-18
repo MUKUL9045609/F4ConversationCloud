@@ -1,10 +1,10 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using Dapper;
+﻿using Dapper;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
 
-namespace F4ConversationCloud.Infrastructure.Repositories
+namespace F4ConversationCloud.Infrastructure.Repositories.Client
 {
     public class CampaignRepository : ICampaignRepository
     {

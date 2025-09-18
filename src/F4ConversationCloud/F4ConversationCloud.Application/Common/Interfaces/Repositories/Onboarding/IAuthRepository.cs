@@ -4,7 +4,7 @@ using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 
 
-namespace F4ConversationCloud.Application.Common.Interfaces.Repositories
+namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding
 {
     public interface IAuthRepository
     {
