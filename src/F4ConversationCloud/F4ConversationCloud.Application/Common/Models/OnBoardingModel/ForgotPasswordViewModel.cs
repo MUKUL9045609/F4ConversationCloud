@@ -1,11 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace F4ConversationCloud.SuperAdmin.Models
+namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
 {
+    public class ForgotPasswordViewModel
+    {
+        [Required(ErrorMessage = "This Field is Required")]
+        [Display(Name = "User Name")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        public string EmailId { get; set; }
+    }
+
+    public class ResetPasswordViewModel
+    {
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string Password  { get; set; }
+        public string Stage { get; set; }
+    }
     public class ConfirmPasswordViewModel
     {
         [Required]
         public int UserId { get; set; }
+
         [Display(Name = "Password")]
         [Required]
         [Compare("ConfirmPassword", ErrorMessage = " ")]

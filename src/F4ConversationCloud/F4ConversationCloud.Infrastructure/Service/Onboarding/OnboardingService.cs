@@ -3,10 +3,16 @@ using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
@@ -17,10 +23,14 @@ namespace F4ConversationCloud.Application.Common.Services
     {
         private readonly IAuthRepository _authRepository;
         private readonly IMessageService _messageService;
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService)
+        private readonly IUrlHelper _urlHelper;
+
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
+            _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+
         }
 
         public async Task<VarifyUserDetailsResponse> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel request)
@@ -270,6 +280,12 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
+                var loginUrl = _urlHelper.Action(
+                         "Login",
+                         "Onboarding",
+                         null,
+                         "https"
+                     );
                 var emailRequest = new EmailRequest
                 {
                     ToEmail = request.UserEmailId,
@@ -281,7 +297,7 @@ namespace F4ConversationCloud.Application.Common.Services
                            "Please wait while your account is reviewed.<br/>" +
                            "You’ll be notified via email once approval is granted.<br/><br/>" +
                            "<b>For login, please use the following link:</b><br/>" +
-                           "<a href=\"https://https://onboarding.fortune4.org//Login\">on Boarding Login</a><br/><br/>" +
+                          $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
                            "Best regards,"
 
                 };
@@ -299,6 +315,16 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
+
+                var loginUrl = _urlHelper.Action(
+                        "Login",      
+                        "Onboarding",  
+                        null,          
+                        "https"        
+                    );
+
+
+
                 EmailRequest emailRequest = new EmailRequest()
                 {
                     ToEmail = Request.Email,
@@ -307,7 +333,7 @@ namespace F4ConversationCloud.Application.Common.Services
                            "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
                            "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
                            "To complete your Meta Registration, please use the link below:<br/><br/>" +
-                           "<a href=\"https://onboarding.fortune4.org/Login\">Onboarding Login</a><br/><br/>" +
+                           $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
                            "Best regards,"
 
                 };
@@ -371,5 +397,91 @@ namespace F4ConversationCloud.Application.Common.Services
 
 
         }
+
+        public async Task<bool> ValidateClientEmailAsync(string EmailId)
+        {
+            try
+            {
+                var userDetails = await _authRepository.ValidateEmailId(EmailId);
+
+                if (userDetails is null)
+                    return false;
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+               return false;
+            }
+           
+        }
+
+        public async Task SendResetPasswordLink(string EmailId)
+        {
+            try
+            {
+                var ClientDetails = await _authRepository.ValidateEmailId(EmailId);
+                string id = ClientDetails.Id.ToString();
+                string expiryTime = DateTime.UtcNow.AddMinutes(20).ToString();
+                string token = (id + "|" + expiryTime).Encrypt().Replace("/", "thisisslash").Replace("\\", "thisisbackslash").Replace("+", "thisisplus");
+
+                var resetUrl = _urlHelper.Action(
+                             "ConfirmPassword",      
+                             "Onboarding",           
+                             new { id = token },     
+                             "https"               
+                         );
+
+
+                EmailRequest email = new EmailRequest()
+                {
+                    ToEmail = ClientDetails.Email,
+                    Subject = "Password Reset",
+                    Body = "<h3>You can reset your password using the below link.</h3><br/>" +
+                                $"<a href=\"{resetUrl}\">Click Here</a>" +
+                               "<br/>Please note: This link will expire in 20 minutes."
+
+
+                }; 
+                await _messageService.SendEmail(email);
+              
+            }
+            catch (Exception)
+            {
+
+               
+            }
+            
+
+        }
+
+
+        public async Task<bool> SetNewPassword(ConfirmPasswordModel model)
+        {
+            try
+            {
+                var UpdateRequest = new ConfirmPasswordModel
+                {
+                    UserId = model.UserId,
+                    Password = PasswordHasherHelper.HashPassword(model.Password),
+
+                };
+
+
+                int result = await _authRepository.UpdatePasswordAsync(UpdateRequest);
+
+                return result is not 0;
+
+            }
+            catch (Exception)
+            {
+
+               return false;
+            }
+           
+        }
+
     }
 }

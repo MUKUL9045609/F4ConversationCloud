@@ -523,3 +523,36 @@
 .fa{
     font-size:13px;
 }
+css add in login.css
+.select2-container .select2-selection--single {
+    height: auto !important;
+    font-weight: 400;
+    line-height: 1.5;
+    font-size: 13px;
+    padding: 8px;
+    color: #8692A6;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+}
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #8692A6 !important;
+        line-height: 1.5 !important;
+    }
+
+.select2-selection__rendered {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: auto;
+    top: 6px;
+    right: 7px;
+}
+
+.select2-results__option {
+    font-size: 14px;
+}

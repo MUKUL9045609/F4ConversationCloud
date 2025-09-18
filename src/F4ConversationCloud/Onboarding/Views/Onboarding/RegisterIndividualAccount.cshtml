@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Register Form";
 }
+
 <div class="stepswrapper">
     <a href="@Url.Action("Index", "Onboarding")" class="back-btn"> Back</a>
     <div class="d-flex justify-content-end flex-column">
@@ -129,7 +130,7 @@
             </div>
               <div class="mb-3">
                             <label for="emailCode" class="form-label">Select Current Time Zone</label>
-                <select class="form-control" asp-for="Timezone">
+                <select class="form-control select2" asp-for="Timezone">
                     <option value="">Select Time Zone</option>
                     @foreach (var item in Model.TimeZones)
                     {
@@ -175,7 +176,12 @@
 
 @section Scripts {
     @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+        });
+    </script>
     <script>
 
 
@@ -457,7 +463,7 @@
 
     <script>
 
-               document.addEventListener("DOMContentLoaded", function () {
+     document.addEventListener("DOMContentLoaded", function () {
             var input = document.querySelector("#PhoneNumber");
 
             if (input) {

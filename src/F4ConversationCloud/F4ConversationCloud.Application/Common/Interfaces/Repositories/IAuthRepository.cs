@@ -1,4 +1,6 @@
-﻿using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+﻿using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 
 
@@ -17,6 +19,10 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories
 
         Task<LoginViewModel> ValidateClientCreadiatial(string email);
         Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
+
+        Task<ResetPasswordViewModel> ValidateEmailId(string ClientEmailId);
+
+        Task<int> UpdatePasswordAsync(ConfirmPasswordModel model);
 
 
     }

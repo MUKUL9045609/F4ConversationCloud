@@ -1,50 +1,120 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - F4ConversationCloud.SuperAdmin</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/F4ConversationCloud.SuperAdmin.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">F4ConversationCloud.SuperAdmin</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
+
+    <div class="page">
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a asp-controller="" asp-action="" class="main-sidebar-header"><img src="~/images/logo.svg" /></a>
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="index.html" class="home icon">Home</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "OnboardedClients" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="OnboardedClients" asp-action="List" class="users icon">Clients</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="reports.html" class="reports icon">Reports</a>
+                            </li>
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    <div class="profile-dropdown ms-auto">
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <span class="profile-name">@User.FindFirstValue(ClaimTypes.Name)?.Substring(0, 1)</span>
+                                    <div>
+                                        <p>@User.FindFirstValue(ClaimTypes.Name)</p>
+                                        <span class="profile-role">@User.FindFirstValue(ClaimTypes.Role)</span>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a asp-controller="Auth" asp-action="Logout" class="dropdown-item signout">Sign Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
             @RenderBody()
-        </main>
+            <footer class="footer">
+                <div class="container">
+                    <span class="text-muted">
+                        Copyright © <span id="year"> 2025 </span>. Designed by
+                        <a href="https://www.fortune4.in/" target="_blank"> <span> Fortune4 Technogies. </span> </a>
+                        All rights reserved
+                    </span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div class="toastWrap">
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - F4ConversationCloud.SuperAdmin - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/commonHelper.js" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready(function () {
+            commonHelper.showHideLoader(false);
+
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+
+            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+
+            if (toastMsg != null && toastMsg != undefined) {
+                if (toastMsg.type === "Success")
+                    commonHelper.showSuccess(toastMsg.message);
+                else if (toastMsg.type === "Error")
+                    commonHelper.showError(toastMsg.message);
+            }
+        });
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
