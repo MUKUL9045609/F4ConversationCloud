@@ -1,4 +1,4 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;

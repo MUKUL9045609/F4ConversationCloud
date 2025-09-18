@@ -1,4 +1,4 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.SuperAdmin.Models;

@@ -1,7 +1,4 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
-using F4ConversationCloud.Application.Common.Interfaces.Services;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace F4ConversationCloud.Application
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Interfaces.Services
+namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
 {
     public interface ISuperAdminAuthService
     {
