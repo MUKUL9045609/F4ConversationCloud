@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Interfaces.IWebServices
+namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
 {
     public interface IOnboardingService
     {
