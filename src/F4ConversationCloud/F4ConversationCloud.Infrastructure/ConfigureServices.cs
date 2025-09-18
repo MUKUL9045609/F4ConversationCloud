@@ -7,6 +7,7 @@ using F4ConversationCloud.Application.Common.Services;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.Infrastructure.Repositories;
+using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Service;
 using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using Microsoft.Extensions.Configuration;
