@@ -174,5 +174,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             }
            
         }
+
+        public async Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync()
+        {
+            DynamicParameters dp = new DynamicParameters();
+            return await _repository.GetListByValuesAsync<TimeZoneResponse>("[sp_GetTimeZones]", dp);
+        }
     }
 }

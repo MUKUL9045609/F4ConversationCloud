@@ -1,12 +1,13 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.IWebServices;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
-using Microsoft.AspNetCore.Mvc;
+using F4ConversationCloud.Domain.Enum;
 // Remove or comment out the following line as the 'Helpers' namespace does not exist:
 using F4ConversationCloud.Domain.Helpers;
-using System.Threading.Tasks;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using F4ConversationCloud.Domain.Enum;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
+using System;
+using System.Threading.Tasks;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController:Controller
@@ -75,7 +76,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                  }
             
             [HttpGet("RegisterClientInfo")]
-            public IActionResult RegisterIndividualAccount()
+            public async Task<IActionResult> RegisterIndividualAccount()
             {
                 
                 var step1form = TempData.Get<RegisterUserModel>("registrationform");
@@ -88,9 +89,13 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         ViewBag.IsReadOnly = true;
                     return View(existingData);
                 }
-                var model = new RegisterUserModel();
+                
+                     var model = new RegisterUserModel { 
+                        TimeZones = await _authRepository.GetTimeZonesAsync()
+                     };
+                
 
-                return View(model);
+            return View(model);
 
             }
 
@@ -117,7 +122,11 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                         TempData.Put("registrationform", command);
                         ViewBag.IsReadOnly = true;
-                        TempData["SuccessMessage"] = "Registration successful! Please complete your profile.";
+
+                        await _onboardingService.SendRegistrationSuccessEmailAsync(command);
+
+                        TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
+                    
                      
                         return RedirectToAction("BankVerification");
 
@@ -136,7 +145,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                    return View(command);
                 }
             }
-            [HttpGet("MetaOnBoarding")]
+            [HttpGet("meta-onboarding")]
             public IActionResult BankVerification()
             {
                 var step1form = TempData.Get<RegisterUserModel>("registrationform");
@@ -180,10 +189,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         var metaresponse = metaresult.status;
 
                         bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
-                            
-                        var formstage = ClientFormStage.metaregistered;
 
-                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(registertemp.UserId, formstage);
+                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(registertemp.UserId, ClientFormStage.metaregistered);
 
                         var message = "success";
                         TempData.Remove("registrationform");

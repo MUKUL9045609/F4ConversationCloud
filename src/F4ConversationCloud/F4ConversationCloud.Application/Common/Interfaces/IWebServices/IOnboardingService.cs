@@ -20,5 +20,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.IWebServices
         Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request);
 
         Task<LoginResponse> OnboardingLogin(Loginrequest request);
+        Task SendRegistrationSuccessEmailAsync(RegisterUserModel Request);
     }
 }

@@ -4,6 +4,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -274,11 +275,14 @@ namespace F4ConversationCloud.Application.Common.Services
                     ToEmail = request.UserEmailId,
                     Subject = "Your Meta Business Account Onboarding is Complete – Pending Admin Approval",
                     Body = "<p>Dear Customer,</p><br />" +
-                                "Thank you for completing your Meta Business Account onboarding process. 🎉 <br/>"+
-                                "Your account setup has been successfully submitted and is now pending admin approval.\r\nOur team will review your details shortly. Once approved, you will receive a confirmation email, and you can start managing your Meta Business Account without restrictions."+
-                                "Please wait while your account is reviewed.\r\n"
-                                + "You’ll be notified via email once approval is granted."
-                                + "Best regards,"
+                           "Thank you for completing your Meta Business Account onboarding process. 🎉 <br/>" +
+                           "Your account setup has been successfully submitted and is now pending admin approval.<br/>" +
+                           "Our team will review your details shortly. Once approved, you will receive a confirmation email, and you can start managing your Meta Business Account without restrictions.<br/>" +
+                           "Please wait while your account is reviewed.<br/>" +
+                           "You’ll be notified via email once approval is granted.<br/><br/>" +
+                           "<b>For login, please use the following link:</b><br/>" +
+                           "<a href=\"https://https://onboarding.fortune4.org//Login\">on Boarding Login</a><br/><br/>" +
+                           "Best regards,"
 
                 };
                 bool sendMail = await _messageService.SendEmail(emailRequest);
@@ -290,10 +294,34 @@ namespace F4ConversationCloud.Application.Common.Services
 
                 return false;
             }
+        }
+        public async Task SendRegistrationSuccessEmailAsync(RegisterUserModel Request)
+        {
+            try
+            {
+                EmailRequest emailRequest = new EmailRequest()
+                {
+                    ToEmail = Request.Email,
+                    Subject = "Your Fortune4 Registrations Completed – Pending Meta Onboarding",
+                    Body = "<p>Dear Customer,</p><br />" +
+                           "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
+                           "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
+                           "To complete your Meta Registration, please use the link below:<br/><br/>" +
+                           "<a href=\"https://onboarding.fortune4.org/Login\">Onboarding Login</a><br/><br/>" +
+                           "Best regards,"
+
+                };
+                await _messageService.SendEmail(emailRequest);
+            }
+            catch (Exception)
+            {
+
+                
+            }
             
 
+           
         }
-
 
         public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
         {

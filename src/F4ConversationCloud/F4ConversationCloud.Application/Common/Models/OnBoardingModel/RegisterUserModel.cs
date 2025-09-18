@@ -58,6 +58,8 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string? Timezone { get; set; }
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }
+
+        public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
     }
     public class MustBeTrueAttribute : ValidationAttribute
     {
@@ -126,6 +128,12 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
         public LoginViewModel Data { get; set; }
+    }
+
+    public class TimeZoneResponse {
+
+        public string name { get; set; }
+        public string current_utc_offset { get; set; }
     }
 }
 

@@ -16,6 +16,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories
         Task<UserDetailsViewModel> GetCustomerById(int userId);
 
         Task<LoginViewModel> ValidateClientCreadiatial(string email);
-        
+        Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
+
+
     }
 }
