@@ -27,8 +27,8 @@
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "OnboardedClients" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="OnboardedClients" asp-action="List" class="users icon">Clients</a>
                             </li>
-                            <li>
-                                <a href="user-management.html" class="user icon">User Management</a>
+                            <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "UserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="UserManagement" asp-action="List" class="user icon">User Management</a>
                             </li>
                             <li>
                                 <a href="activity-log.html" class="log icon">Activity Log</a>

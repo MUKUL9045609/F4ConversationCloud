@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
@@ -71,7 +72,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 return false;
             }
 
-            return roles.Contains(userDetails.Role);
+            return roles.Contains(userDetails.RoleName);
         }
     }
 }

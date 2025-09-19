@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -63,9 +64,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var userClaims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.MobilePhone, user.MobileNo),
+                new Claim(ClaimTypes.Role, user.RoleName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 

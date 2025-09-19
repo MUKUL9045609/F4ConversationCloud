@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;

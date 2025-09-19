@@ -19,31 +19,34 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Sr. No.")]
             public int SrNo { get; set; }
 
-            [Display(Name = "Name")]
+            [Display(Name = "User Name")]
             public string Name { get; set; }
 
-            [Display(Name = "Email")]
+            [Display(Name = "Email Address")]
             public string Email { get; set; }
 
             [Display(Name = "Mobile No.")]
             public string MobileNo { get; set; }
 
             [Display(Name = "Role")]
-            public string Role { get; set; }
+            public int Role { get; set; }
+
+            [Display(Name = "Role")]
+            public string RoleName { get; set; }
 
             [Display(Name = "Designation")]
             public string Designation { get; set; }
 
-            [Display(Name = "IPAddress")]
+            [Display(Name = "IP Address")]
             public string IPAddress { get; set; }
 
             public bool IsActive { get; set; }
 
-            [Display(Name = "Created Date")]
-            public DateTime CreatedDate { get; set; }
+            [Display(Name = "Created Date & Time")]
+            public DateTime CreatedOn { get; set; }
 
-            [Display(Name = "Modified Date")]
-            public DateTime? ModifiedDate { get; set; }
+            [Display(Name = "Last Updated")]
+            public DateTime? UpdatedOn { get; set; }
         }
     }
 }

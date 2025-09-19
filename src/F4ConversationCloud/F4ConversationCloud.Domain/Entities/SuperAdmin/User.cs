@@ -4,19 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
+namespace F4ConversationCloud.Domain.Entities.SuperAdmin
 {
-    public class UserListItemModel
+    public class User
     {
         public int Id { get; set; }
-        public int SrNo { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string MobileNo { get; set; }
         public string Password { get; set; }
         public int Role { get; set; }
-        public string RoleName { get; set; }
         public string Designation { get; set; }
         public string IPAddress { get; set; }
         public bool IsActive { get; set; }

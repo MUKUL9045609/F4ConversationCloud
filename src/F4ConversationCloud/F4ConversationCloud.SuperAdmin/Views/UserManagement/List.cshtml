@@ -1,0 +1,195 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.UserListViewModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h3 class="sub-heading">Users </h3>
+        <div class="card padding">
+            <div class="filterWrapper form-wrapper">
+                <div class="filterwrap">
+                    <ul class="filter-list">
+                        <li>
+                            <div>
+                                <label>Search</label>
+                                <div class="input-group">
+                                    <input type="text" asp-for="SearchString" class="form-control srcIcon" placeholder="Search" id="searchInput" />
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <label>Filter By</label>
+                                <select asp-for="Status" class="form-select" onchange="loadData()">
+                                    <option value="true">Active</option>
+                                    <option value="false">In Active</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="btn secondary-btn"><i class="reset"></i></button>
+                </div>
+                <div>
+                    <a href="@Url.Action("Create", "UserManagement")" type="button" class="btn primary-btn add d-flex">Add New User</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table user-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.SrNo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.RoleName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.CreatedOn)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.UpdatedOn)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.IPAddress)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.data.Any())
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">No Records Found</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.data)
+                            {
+                                <tr>
+                                    <td align="center">
+                                        @Html.DisplayFor(modelItem => item.SrNo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RoleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UpdatedOn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IPAddress)
+                                    </td>
+                                    <td>
+                                        <div class="action">
+                                            <form method="get" action="@Url.Action("Edit", "UserManagement", new { id = item.Id })">
+                                                <a method="get" class="edit-icon" asp-controller="UserManagement" asp-action="Edit" asp-route-id="@item.Id"></a>
+                                            </form>
+                                            @if (item.IsActive)
+                                            {
+                                                <a class="delete-blue" data-id="@item.Id" onclick="Deactivate(@item.Id)"></a>
+                                            }
+                                            else
+                                            {
+                                                <a class="reset" data-id="@item.Id" onclick="Activate(@item.Id)"></a>
+                                            }
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function Deactivate(id) {
+            commonHelper.showHideLoader(true);
+            var url = '@Url.Action("Deactivate", "UserManagement")/' + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: successCallback,
+                error: errorCallback
+            });
+        }
+
+        function Activate(id) {
+            commonHelper.showHideLoader(true);
+            var url = '@Url.Action("Activate", "UserManagement")/' + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: successCallback,
+                error: errorCallback
+            });
+        }
+
+        function successCallback(data) {
+            if (data) {
+                commonHelper.showSuccess('Record activity successfully.');
+                location.href = '@Url.Action("List", "UserManagement")';
+            } else {
+                commonHelper.showError('Failed to update user status.');
+            }
+            commonHelper.showHideLoader(false);
+        }
+
+        function errorCallback(xhr, errorType, error) {
+            console.error('Error:', errorType, error);
+            commonHelper.showSuccess('An error occurred while updating user status.');
+            commonHelper.showHideLoader(false);
+        }
+
+        function loadData() {
+            let searchString = $("[name=SearchString]").val();
+            let status = $("[name=Status]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("List", "UserManagement")' +
+                '?SearchString=' + searchString +
+                '&Status=' + encodeURIComponent(status) +
+                '&PageNumber=' + pageNumber;
+        }
+
+        $("#searchInput").on("keypress", function (e) {
+            if (e.which === 13) { 
+                loadData();
+            }
+        });
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                let searchString = $("[name=SearchString]").val();
+                let status = $("[name=Status]").val();
+
+                location.href = '@Url.Action("List", "UserManagement")' +
+                    '?SearchString=' + searchString +
+                    '&Status=' + encodeURIComponent(status) +
+                    '&PageNumber=' + pageNumber;
+            }
+        });
+    </script>
+}

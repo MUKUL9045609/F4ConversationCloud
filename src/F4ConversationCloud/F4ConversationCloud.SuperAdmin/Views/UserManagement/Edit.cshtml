@@ -1,0 +1,98 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.CreateUpdateUserViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+    var m = Model;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h3 class="sub-heading"><a href="@Url.Action("List", "UserManagement")" class="back"></a>Edit Users </h3>
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>First Name</label>
+                        <div class="input-group">
+                            <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter user name" />
+                        </div>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>Last Name</label>
+                        <div class="input-group">
+                            <input asp-for="LastName" type="text" class="form-control" placeholder="Enter Last name" />
+                        </div>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>Email Address</label>
+                        <div class="input-group">
+                            <input asp-for="Email" type="text" class="form-control" placeholder="Enter email address" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>Password</label>
+                        <div class="input-group">
+                            <input asp-for="Password" type="text" class="form-control" placeholder="Enter Phone Number" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>Phone Number</label>
+                        <div class="input-group">
+                            <input asp-for="MobileNo" type="text" class="form-control" placeholder="Enter Password" />
+                        </div>
+                        <span asp-validation-for="MobileNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>Role</label>
+                        <select asp-for="Role" asp-items="(IEnumerable<SelectListItem>)ViewBag.Roles" class="form-control">
+                            <option value="">--select--</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>Designation</label>
+                        <div class="input-group">
+                            <input asp-for="Designation" type="text" type="text" class="form-control" placeholder="Enter Designation" />
+                        </div>
+                        <span asp-validation-for="Designation" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label>IP Address</label>
+                        <div class="input-group">
+                            <input asp-for="IPAddress" type="text" class="form-control" placeholder="Enter IP Address" />
+                        </div>
+                        <span asp-validation-for="IPAddress" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-start gap-2 mt-3">
+                <button class="btn primary-btn" type="submit" value="Update">Save</button>
+                <button class="btn danger-btn" asp-controller="UserManagement" asp-action="List">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+}
