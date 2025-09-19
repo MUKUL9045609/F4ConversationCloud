@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -23,12 +24,14 @@ namespace F4ConversationCloud.Application.Common.Services
         private readonly IAuthRepository _authRepository;
         private readonly IMessageService _messageService;
         private readonly IUrlHelper _urlHelper;
+        private readonly IWhatsAppCloudeService _whatsAppCloude;
 
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IWhatsAppCloudeService whatsAppCloudeService)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
             _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+            _whatsAppCloude = whatsAppCloudeService;
 
         }
 
@@ -149,36 +152,51 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-                var response = await _authRepository.InsertMetaUsersConfigurationAsync(request);
-
-
-                if (response > 0)
+                if (!string.IsNullOrEmpty(request.PhoneNumberId))
                 {
-                    return new MetaUsersConfigurationResponse
+                    var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
+
+                    var insertConfig = new MetaUsersConfiguration
                     {
-                        status = true,
-                        Message = "Meta User Configuration Inserted Successfully"
+                        ClientId = request.ClientId,
+                        WabaId = request.WabaId,
+                        PhoneNumberId = request.PhoneNumberId,
+                        BusinessId = request.BusinessId,
+                        WhatsAppBotName = businessInfo.VerifiedName,
+                        Status = businessInfo.WhatsAppStatus,
+                        PhoneNumber = businessInfo.DisplayPhoneNumber,
+                        AppVersion = request.AppVersion,
                     };
-                }
-                else
-                {
-                    return new MetaUsersConfigurationResponse
+
+                    var response = await _authRepository.InsertMetaUsersConfigurationAsync(insertConfig);
+
+                    if (response > 0)
                     {
-                        status = false,
-                        Message = "Meta User Configuration Insertion Failed"
-                    };
+                        return new MetaUsersConfigurationResponse
+                        {
+                            status = true,
+                            Message = "Meta User Configuration Inserted Successfully"
+                        };
+                    }
                 }
-            }
-            catch (Exception)
-            {
 
                 return new MetaUsersConfigurationResponse
                 {
                     status = false,
-                    Message = "Technical Error "
+                    Message = "Meta User Configuration Insertion Failed"
+                };
+            }
+            catch (Exception ex)
+            {
+                // log exception (optional)
+                return new MetaUsersConfigurationResponse
+                {
+                    status = false,
+                    Message = "Technical Error"
                 };
             }
         }
+
 
         public async Task<RegisterUserResponse> RegisterUserAsync(RegisterUserModel request )
         {
@@ -482,5 +500,7 @@ namespace F4ConversationCloud.Application.Common.Services
            
         }
 
+
+       
     }
 }

@@ -84,7 +84,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string Role { get; }
         public bool TermsCondition { get; set; }
         public ClientFormStage Stage { get; }
-
+        public int UserId { get; set; }
 
     }
     public class RegisterUserResponse

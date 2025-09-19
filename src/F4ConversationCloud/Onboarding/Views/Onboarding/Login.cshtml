@@ -1,4 +1,4 @@
-﻿@model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.LoginResponse;
+﻿@model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.Loginrequest;
 @{
     Layout = null;
     ViewData["Title"] = "Login";
@@ -33,8 +33,9 @@
                         <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
                     </div>
                     <div class="form-group">
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
-                        <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
+                        PassWord
+                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
+                        <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
                     </div>
 
                     <a href="@Url.Action("forgotpassword","Onboarding")" class="forgot">Forgot password?</a>
@@ -55,8 +56,23 @@
             </div>
         </div>
     </div>
-    <div class="toastWrap">
-    </div>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <input type="hidden" class="temp-message" data-type="success" value="@TempData["SuccessMessage"]" />
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <input type="hidden" class="temp-message" data-type="warning" value="@TempData["WarningMessage"]" />
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <input type="hidden" class="temp-message" data-type="danger" value="@TempData["ErrorMessage"]" />
+    }
+    @if (TempData["Info"] != null)
+    {
+        <input type="hidden" class="temp-message" data-type="info" value="@TempData["Info"]" />
+    }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/commonhelper.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

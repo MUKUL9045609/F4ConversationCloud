@@ -24,6 +24,7 @@
  
 
 </div>
+<button id="saveMetaBtn" class="btn btn-primary">Save Meta Configuration</button>
 
 @section Scripts {
     <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
@@ -144,6 +145,41 @@
 
 
 
+    <script>
+        document.getElementById('saveMetaBtn').addEventListener('click', function () {
+            // Demo values (replace with dynamic data if needed)
+            const metaResponse = {
+                WabaId: "101600782940170",
+                PhoneNumberId: "651300701403441",
+                BusinessId: "101600782940170"
+            };
+
+            fetch('@Url.Action("SaveMetaUserConfigurationDetails", "Onboarding")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(metaResponse)
+            })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(responseData => {
+               if (responseData.result) {
+                    window.location.href = '@Url.Action("ThankYouPage", "Onboarding")';
+                } else {
+                    showToast(responseData.message, "danger");
+                    console.log('Failed: ' + responseData.message);
+                }
+            })
+            .catch(err => {
+                showToast("Technical Error!", "danger");
+                console.error(err);
+            });
+        });
+    </script>
 
 
 }

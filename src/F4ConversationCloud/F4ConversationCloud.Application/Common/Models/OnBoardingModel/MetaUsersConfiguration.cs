@@ -8,15 +8,17 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 {
     public class MetaUsersConfiguration
     {
-        public int? OnboardingUserId { get; set; }
-        public string CompanyName { get; set; }
-        public string WabaId { get; set; }
-        public string PhoneNumberId { get; set; }
-        public string BusinessId { get; set; }
-        public string AppName { get; set; }
+       
         public string AppVersion { get; set; } = "v23.0";
-        public string AccessToken { get; set; }
-        public DateTime? TokenExpiresAt { get; set; }
+        public string WabaId { get; set; }
+        public string BusinessId { get; set; }
+        public string PhoneNumberId { get; set; }
+        public int ClientId { get; set; }
+        public string CompanyName { get; set; }
+        public string WhatsAppBotName { get; set; }
+        public string Status { get; set; }
+        public string PhoneNumber { get; set; }
+       
     }
     public class MetaUsersConfigurationResponse
     {

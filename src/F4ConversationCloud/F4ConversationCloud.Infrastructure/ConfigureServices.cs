@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Infrastructure.Service.MetaServices;
 
 
 namespace F4ConversationCloud.Infrastructure
@@ -42,7 +44,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
             services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
+            services.AddScoped<IWhatsAppCloudeService, WhatsAppCloudeService>();
             return services;
         }
     }
