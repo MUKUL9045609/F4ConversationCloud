@@ -154,7 +154,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 var step1form = TempData.Get<RegisterUserModel>("registrationform");
                 if (step1form is null)
                 {
-                    TempData["SuccessMessage"] = "Register details first!";
+                    TempData["WarningMessage"] = "Register details first!";
                     return RedirectToAction("RegisterIndividualAccount");
                 }
                 return View();

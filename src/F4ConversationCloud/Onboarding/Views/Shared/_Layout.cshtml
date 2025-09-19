@@ -45,11 +45,27 @@
                         </div>
                     </div>
                 </div>
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <input type="hidden" class="temp-message" data-type="success" value="@TempData["SuccessMessage"]" />
+                }
+                @if (TempData["WarningMessage"] != null)
+                {
+                    <input type="hidden" class="temp-message" data-type="warning" value="@TempData["WarningMessage"]" />
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <input type="hidden" class="temp-message" data-type="danger" value="@TempData["ErrorMessage"]" />
+                }
                 <!-- Toast container -->
                 @RenderBody()
             </div>
         </div>
     </div>
+    <script>
+       
+    </script>
+ 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>

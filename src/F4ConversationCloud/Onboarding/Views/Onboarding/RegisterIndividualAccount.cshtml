@@ -81,7 +81,7 @@
                 <div class="d-flex">
                     <input asp-for="PhoneNumber" type="tel" class="form-control flex-grow-1"
                            placeholder="Enter phone number"
-                           id="PhoneNumber" maxlength="10" oninput="this.value = this.value.replace(/\s/g,'');" value="@Model.PhoneNumber" />
+                           id="PhoneNumber" maxlength="10" pattern="[0-9]*" oninput="this.value = this.value.replace(/\s/g,'');" value="@Model.PhoneNumber" />
                 </div>
                 <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
                 @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
@@ -200,45 +200,19 @@
         </div>
     </form>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <input type="hidden" id="temperrorMessage" value="@TempData["SuccessMessage"]" />
-    }
-    @if (TempData["WarningMessage"] != null)
-    {
-        <input type="hidden" id="tempwarnMessage" value="@TempData["WarningMessage"]" />
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <input type="hidden" id="temperrorMessage" value="@TempData["ErrorMessage"]" />
-    }
+  
 </div>
 
 @section Scripts {
     @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  
     <script>
         $(document).ready(function () {
             $(".select2").select2();
         });
     </script>
-    <script>
-        $(document).ready(function () {
-              var errorMessage = '#temperrorMessage.value()';
-              var warningMessage = '@TempData["WarningMessage"]';
-              var showSuccessMessage = '@TempData["SuccessMessage"]';
-              if (errorMessage) {
-                  showToast(errorMessage, "danger");
-              }
-
-              if (warningMessage) {
-                  showToast(warningMessage, "warning");
-              }
-              if (showSuccessMessage) {
-                  showToast(warningMessage, "success");
-              }
-          });
-    </script>
+   
 
 
     <script>
