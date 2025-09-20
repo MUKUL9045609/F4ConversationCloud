@@ -125,7 +125,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         ViewBag.IsReadOnly = false;
                         return View(command);
                     }
-                     command.Stage = ClientFormStage.draft;
+
+                    command.Stage = ClientFormStage.draft;
                     var isregister = await _onboardingService.RegisterUserAsync(command);
                     if (isregister.IsSuccess)
                     {
@@ -173,7 +174,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         {
             // var response = await Mediator.Send(command);
 
-            var response = await _onboardingService.CheckMailOrPhoneNumberAsync(command);
+            var response = await _onboardingService.CheckIsMailExitsAsync(command);
 
             return Json(new { response.status, response.message });
         }

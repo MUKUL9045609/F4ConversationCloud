@@ -15,7 +15,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
        
         Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request);
         
-        Task<VarifyUserDetailsResponse> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel request);
+        Task<VarifyUserDetailsResponse> CheckIsMailExitsAsync(VarifyMobileNumberModel request);
         Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request);
 
         Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId);

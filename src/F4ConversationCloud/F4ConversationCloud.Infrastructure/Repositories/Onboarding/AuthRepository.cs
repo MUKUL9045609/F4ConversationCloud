@@ -113,7 +113,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("UserEmailId", command.UserEmailId);
-                parameters.Add("UserPhoneNumber", command.UserPhoneNumber);
                 var response = await _repository.GetByValuesAsync<int>("[sp_CheckMailOrPhoneNumber]", parameters);
                 return response;
             }
