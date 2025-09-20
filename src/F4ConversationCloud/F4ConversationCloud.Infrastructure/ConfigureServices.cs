@@ -12,6 +12,7 @@ using F4ConversationCloud.Infrastructure.Repositories.Client;
 using F4ConversationCloud.Infrastructure.Repositories.Onboarding;
 using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Service;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
             services.AddScoped<IOnboardingService, OnboardingService>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IUserManagementRepository, UserManagementRepository>();
             services.AddScoped<IClientUserManagementService, ClientUserManagementService>();

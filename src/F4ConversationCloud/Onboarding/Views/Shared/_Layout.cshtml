@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="loginwrapper">
@@ -45,19 +45,37 @@
                         </div>
                     </div>
                 </div>
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <input type="hidden" class="temp-message" data-type="success" value="@TempData["SuccessMessage"]" />
+                }
+                @if (TempData["WarningMessage"] != null)
+                {
+                    <input type="hidden" class="temp-message" data-type="warning" value="@TempData["WarningMessage"]" />
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <input type="hidden" class="temp-message" data-type="danger" value="@TempData["ErrorMessage"]" />
+                }
                 <!-- Toast container -->
                 @RenderBody()
             </div>
         </div>
     </div>
+    <script>
+       
+    </script>
+ 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/unobtrusiveHelper.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

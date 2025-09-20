@@ -1,7 +1,17 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
-using F4ConversationCloud.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Extension;
+using F4ConversationCloud.Domain.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Newtonsoft.Json.Linq;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 
@@ -12,10 +22,14 @@ namespace F4ConversationCloud.Application.Common.Services
     {
         private readonly IAuthRepository _authRepository;
         private readonly IMessageService _messageService;
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService)
+        private readonly IUrlHelper _urlHelper;
+
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
+            _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+
         }
 
         public async Task<VarifyUserDetailsResponse> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel request)
@@ -36,7 +50,7 @@ namespace F4ConversationCloud.Application.Common.Services
                     };
 
                     var insertOTPResponse = await _authRepository.InsertOTPAsync(InsertOTPCommand);
-                    if (insertOTPResponse <= 0)
+                    if (insertOTPResponse == 0)
                     {
                         return new VarifyUserDetailsResponse
                         {
@@ -175,14 +189,14 @@ namespace F4ConversationCloud.Application.Common.Services
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Email = request.Email,
-                    PhoneNumber = request.PhoneNumber,
+                    
                     Address = request.Address,
                     Country = request.Country,
-                    BankVarificationNumber = request.BankVarificationNumber,
+                    Timezone = request.Timezone,
                     PassWord = PasswordHasherHelper.HashPassword(request.PassWord),
                     IsActive = request.IsActive,
-                    CreatedBy = request.CreatedBy,
-                    ModifedBy = request.ModifedBy,
+                    Stage = request.Stage,
+                    FullPhoneNumber= request.FullPhoneNumber,
                     Role = request.Role,
                 };
 
@@ -219,10 +233,7 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         }
 
-        public Task<int> SendOTPAsync()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request)
         {
@@ -263,20 +274,30 @@ namespace F4ConversationCloud.Application.Common.Services
         }
 
 
+
         public async Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request)
         {
             try
             {
+                var loginUrl = _urlHelper.Action(
+                         "Login",
+                         "Onboarding",
+                         null,
+                         "https"
+                     );
                 var emailRequest = new EmailRequest
                 {
                     ToEmail = request.UserEmailId,
                     Subject = "Your Meta Business Account Onboarding is Complete – Pending Admin Approval",
                     Body = "<p>Dear Customer,</p><br />" +
-                                "Thank you for completing your Meta Business Account onboarding process. 🎉 <br/>"+
-                                "Your account setup has been successfully submitted and is now pending admin approval.\r\nOur team will review your details shortly. Once approved, you will receive a confirmation email, and you can start managing your Meta Business Account without restrictions."+
-                                "Please wait while your account is reviewed.\r\n"
-                                + "You’ll be notified via email once approval is granted."
-                                + "Best regards,"
+                           "Thank you for completing your Meta Business Account onboarding process. 🎉 <br/>" +
+                           "Your account setup has been successfully submitted and is now pending admin approval.<br/>" +
+                           "Our team will review your details shortly. Once approved, you will receive a confirmation email, and you can start managing your Meta Business Account without restrictions.<br/>" +
+                           "Please wait while your account is reviewed.<br/>" +
+                           "You’ll be notified via email once approval is granted.<br/><br/>" +
+                           "<b>For login, please use the following link:</b><br/>" +
+                          $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
+                           "Best regards,"
 
                 };
                 bool sendMail = await _messageService.SendEmail(emailRequest);
@@ -288,8 +309,177 @@ namespace F4ConversationCloud.Application.Common.Services
 
                 return false;
             }
+        }
+        public async Task SendRegistrationSuccessEmailAsync(RegisterUserModel Request)
+        {
+            try
+            {
+
+                var loginUrl = _urlHelper.Action(
+                        "Login",      
+                        "Onboarding",  
+                        null,          
+                        "https"        
+                    );
+
+
+
+                EmailRequest emailRequest = new EmailRequest()
+                {
+                    ToEmail = Request.Email,
+                    Subject = "Your Fortune4 Registrations Completed – Pending Meta Onboarding",
+                    Body = "<p>Dear Customer,</p><br />" +
+                           "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
+                           "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
+                           "To complete your Meta Registration, please use the link below:<br/><br/>" +
+                           $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
+                           "Best regards,"
+
+                };
+                await _messageService.SendEmail(emailRequest);
+            }
+            catch (Exception)
+            {
+
+                
+            }
             
 
+           
+        }
+
+        public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
+        {
+
+            try
+            {
+               
+                 var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
+                    if (ClientDetails is null)
+                        return new LoginResponse
+                        {
+                            Message = "InvalidEmail",
+                            IsSuccess = false,
+
+                        };
+                    var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
+                        if (!isPasswordValid)
+                        {
+                            return new LoginResponse
+                            {
+                                Message = "InvalidPassword",
+                                IsSuccess = false,
+                            };
+                        }
+                return new LoginResponse()
+                {
+                    Message = "Login Success",
+                    IsSuccess = true,
+                    Data = new LoginViewModel
+                    {
+                        UserId = ClientDetails.UserId,
+                        Email = ClientDetails.Email,
+                        Stage = ClientDetails.Stage,
+                    }
+                };
+
+            }
+            catch (Exception)
+            {
+                return new LoginResponse
+                {
+                    Message = "Technical Error",
+                    IsSuccess = false,
+                };
+
+            }
+
+
+        }
+
+        public async Task<bool> ValidateClientEmailAsync(string EmailId)
+        {
+            try
+            {
+                var userDetails = await _authRepository.ValidateEmailId(EmailId);
+
+                if (userDetails is null)
+                    return false;
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+               return false;
+            }
+           
+        }
+
+        public async Task SendResetPasswordLink(string EmailId)
+        {
+            try
+            {
+                var ClientDetails = await _authRepository.ValidateEmailId(EmailId);
+                string id = ClientDetails.Id.ToString();
+                string expiryTime = DateTime.UtcNow.AddMinutes(20).ToString();
+                string token = (id + "|" + expiryTime).Encrypt().Replace("/", "thisisslash").Replace("\\", "thisisbackslash").Replace("+", "thisisplus");
+
+                var resetUrl = _urlHelper.Action(
+                             "ConfirmPassword",      
+                             "Onboarding",           
+                             new { id = token },     
+                             "https"               
+                         );
+
+
+                EmailRequest email = new EmailRequest()
+                {
+                    ToEmail = ClientDetails.Email,
+                    Subject = "Password Reset",
+                    Body = "<h3>You can reset your password using the below link.</h3><br/>" +
+                                $"<a href=\"{resetUrl}\">Click Here</a>" +
+                               "<br/>Please note: This link will expire in 20 minutes."
+
+
+                }; 
+                await _messageService.SendEmail(email);
+              
+            }
+            catch (Exception)
+            {
+
+               
+            }
+            
+
+        }
+
+
+        public async Task<bool> SetNewPassword(ConfirmPasswordModel model)
+        {
+            try
+            {
+                var UpdateRequest = new ConfirmPasswordModel
+                {
+                    UserId = model.UserId,
+                    Password = PasswordHasherHelper.HashPassword(model.Password),
+
+                };
+
+
+                int result = await _authRepository.UpdatePasswordAsync(UpdateRequest);
+
+                return result is not 0;
+
+            }
+            catch (Exception)
+            {
+
+               return false;
+            }
+           
         }
 
     }

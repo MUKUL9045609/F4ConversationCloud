@@ -1,42 +1,39 @@
 ﻿@using System.Web
 @model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.RegisterUserModel;
 @{
-    ViewData["Title"] = "Step-1";
+    ViewData["Title"] = "Register Form";
 }
-<style>
-    .disable-click {
-        pointer-events: none;
-        cursor: default;
-        opacity: 0.6;
+@functions {
+    string ReadonlyOrEmpty(bool isReadOnly)
+    {
+        return isReadOnly ? "readonly" : "";
     }
 
-    .iti {
-        width: 100% !important
+    string DisabledOrEmpty(bool isReadOnly)
+    {
+        return isReadOnly ? "disabled" : "";
     }
-
-    .disabled-btn {
-        pointer-events: none;
-        opacity: 0.6;
-        cursor: default;
-    }
-
-</style>
+}
 
 <div class="stepswrapper">
-    <a href="@Url.Action("Login", "Onboarding")" class="back-btn"> Back</a>
+    <a href="@Url.Action("Index", "Onboarding")" class="back-btn"> Back</a>
     <div class="d-flex justify-content-end flex-column">
-        <span class="step-count">STEP <span>01/03</span></span>
+        <span class="step-count">STEP <span>01/02</span></span>
         <span class="step-info">Residency Info.</span>
     </div>
 
-    <a href="@Url.Action("CompleteYourProfile", "Onboarding")" class="back-btn" id="nextbtn"> Next</a>
+    <a href="@Url.Action("BankVerification", "Onboarding")" class="next-btn" id="nextbtn"> Next</a>
 </div>
 <div class="bx_wrap">
     <h4>Create Your Business Account!</h4>
     <p>For the purpose of industry regulation, your details are required.</p>
 
-    <form id="firststepform" class="login-form mt-4" asp-action="RegisterIndividualAccount" method="post">
+    <form id="firststepform"
+          class="login-form mt-4 @(ViewBag.IsReadOnly ? "readonly-mode" : "")"
+          asp-action="RegisterIndividualAccount" method="post">
+
         @Html.AntiForgeryToken()
+        
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label asp-for="FirstName" class="form-label">Your Full Name <sup>*</sup></label>
@@ -45,6 +42,7 @@
                        placeholder="Enter Full Name"
                        id="fullName"
                        pattern="^[a-zA-Z\s'-]+$" />
+
                 <span asp-validation-for="FirstName" class="error-message text-danger small" id="fullNameError"></span>
             </div>
 
@@ -83,8 +81,7 @@
                 <div class="d-flex">
                     <input asp-for="PhoneNumber" type="tel" class="form-control flex-grow-1"
                            placeholder="Enter phone number"
-                           id="PhoneNumber"
-                           oninput="this.value = this.value.replace(/\D/g, '');" />
+                           id="PhoneNumber" maxlength="10" pattern="[0-9]*" oninput="this.value = this.value.replace(/\s/g,'');" value="@Model.PhoneNumber" />
                 </div>
                 <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
                 @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
@@ -112,7 +109,7 @@
 
             <div class="col-md-6 mb-3">
                 <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
-                <select id="countrySelect" name="Country" class="form-select"></select>
+                <select id="countrySelect" name="Country" class="form-select select2"></select>
                 <span asp-validation-for="Country" class="error-message text-danger small"></span>
 
             </div>
@@ -122,10 +119,18 @@
                 <label asp-for="PassWord" class="form-label">Create Password <sup>*</sup></label>
                 <div class="input-group">
 
-                    <input asp-for="PassWord" type="text" class="form-control flex-grow-1" placeholder="Enter Password" id="password" />
-                    <span class="input-group-text toggle-password" data-target="password" id="passicon">
-                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                    </span>
+                    @if (ViewBag.IsReadOnly)
+                    {
+                        <input type="text" class="form-control" value="**********" readonly />
+                    }
+                    else
+                    {
+                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
+                    }
+
+                <span class="input-group-text toggle-password" data-target="password" id="passicon">
+                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                </span>
                 </div>
                 <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
             </div>
@@ -133,14 +138,41 @@
             <div class="col-md-6 mb-3">
                 <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup>*</sup></label>
                 <div class="input-group">
-
-                    <input asp-for="ConfirmPassword" type="text" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                    @if (ViewBag.IsReadOnly)
+                    {
+                        <input type="text" class="form-control" value="**********" readonly />
+                    }
+                    else
+                    {
+                        <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                    }                  
                     <span class="input-group-text toggle-password" data-target="confirmPassword" id="cpassicon">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
                     </span>
                 </div>
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
             </div>
+              <div class="mb-3">
+                            <label for="emailCode" class="form-label">Select Current Time Zone</label>
+                <select class="form-control select2" asp-for="Timezone">
+                    <option value="">Select Time Zone</option>
+                    <option value="@Model.Timezone">@Model.Timezone</option>
+                    @foreach (var item in Model.TimeZones)
+                    {
+                        var settimean = item.name + item.current_utc_offset;
+                        if (Model.Timezone == settimean)
+                        {
+                            <option value="@settimean" selected>@settimean</option>
+                        }
+                        else
+                        {
+                            <option value="@settimean">@settimean</option>
+                        }
+                    }
+
+                </select>
+                <span asp-validation-for="Timezone" class="error-message text-danger small"></span>
+               </div>
 
             <div class="col-md-12 mb-3">
                 <label asp-for="Address" class="form-label">Your address <sup>*</sup></label>
@@ -168,38 +200,26 @@
         </div>
     </form>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <input type="hidden" id="tempDataMessage" value="@TempData["SuccessMessage"]" />
-    }
-
+  
 </div>
 
 @section Scripts {
     @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  
     <script>
-
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const tempMessageElement = document.getElementById('tempDataMessage');
-            if (tempMessageElement) {
-                const message = tempMessageElement.value;
-                if (message) {
-                    showToast(message, 'warning');
-                }
-            }
+        $(document).ready(function () {
+            $(".select2").select2();
         });
-
     </script>
+   
 
 
     <script>
                         // #region Resend otp-- >
 
                     $(document).ready(function () {
-                                let timerDuration = 1 * 60;
+                                let timerDuration = 5 * 60;
                                 let interval;
 
                                 function startTimer() {
@@ -405,48 +425,35 @@
     <script>
          $(document).ready(function () {
 
-            $('input.input-validation-error, select.input-validation-error, textarea.input-validation-error')
-                .addClass('is-invalid')
-                .removeClass('input-validation-error');
+           
+                
+        // make form readonly
+         let $form = $("#firststepform");
 
+            if ($form.hasClass("readonly-mode")) {
+                 
+                    $form.find("input, select, textarea, button").each(function () {
+                        let $element = $(this);
 
-                 $("#fullName").on("input", function () {
-                    let regex = /^[a-zA-Z\s'-]+$/;
-                    if (!regex.test($(this).val())) {
-                        $("#fullNameError").text("Full Name can only contain letters, spaces, hyphen (-), or apostrophe (')");
-                        $(this).addClass("is-invalid");
-                    } else {
-                        $("#fullNameError").text("");
-                        $(this).removeClass("is-invalid").addClass("is-valid");
-                    }
-                 });
-
-
-                       // const disbleform = $('#emailid,#otp,#password,#confirmPassword,#agreeTerms,#OTP').val();
-
-                       //  if (disbleform !='') {
-                       //      $('input, select, textarea, button').prop('disabled', true);
-                       //      $('#nextbtn').show();
-                       //   $('#sendmail, #passicon, #cpassicon')
-                       //              .addClass('disabled')
-                       //              .css({
-                       //                  'pointer-events': 'none',
-                       //                  'opacity': '0.5'
-                       //              });
-
-                       //  }
-                       //  else {
-
-                       //      $('#sendmail, #passicon, #cpassicon')
-                       //          .removeClass('disabled');
-
-                       //           $('#nextbtn').hide();
-                       //      $('input, select, textarea, button').prop('disabled', false);
-                       //   }
+                        if ($element.is("input") || $element.is("textarea")) {
+                            $element.prop("readonly", true);
+                        }
+                        if ($element.is("button") || $element.is("select")) {
+                            $element.prop("disabled", true);
+                        }
+                    });
+                        $('#nextbtn').prop("disabled",false);
+                        $('#sendmail, #passicon, #cpassicon,#agreeTerms')
+                            .addClass('disabled')
+                            .css({
+                                'pointer-events': 'none',
+                                'opacity': '0.5'
+                  });
+            } else {         
+                $('#nextbtn').prop("disabled",true);
+            }
 
         });
-
-
     </script>
 
     <script>
@@ -472,7 +479,7 @@
 
     <script>
 
-               document.addEventListener("DOMContentLoaded", function () {
+     document.addEventListener("DOMContentLoaded", function () {
             var input = document.querySelector("#PhoneNumber");
 
             if (input) {
@@ -498,7 +505,7 @@
 
 
     </script>
-        #<!-- #region Hide and show pass -->
+   #<!-- #region Hide and show pass -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
                 const togglePasswordIcons = document.querySelectorAll('.toggle-password');
