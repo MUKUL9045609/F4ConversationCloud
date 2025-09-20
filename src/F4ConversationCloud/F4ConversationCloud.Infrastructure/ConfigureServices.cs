@@ -28,20 +28,24 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IMessageService, MessageService>();
-
             services.AddScoped<IAPILogService, APILogService>();
-
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddHttpContextAccessor(); 
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
-
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<ICampaignService, CampaignService>();
+
+
+            //Super Admin Services and Repositories
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
             services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IUserManagementRepository, UserManagementRepository>();
+            services.AddScoped<IClientUserManagementService, ClientUserManagementService>();
+            services.AddScoped<IClientUserManagementRepository, ClientUserManagementRepository>();
 
             return services;
         }

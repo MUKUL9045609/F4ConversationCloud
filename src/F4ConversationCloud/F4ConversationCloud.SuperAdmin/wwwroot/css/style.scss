@@ -5,7 +5,6 @@
 @import "forms";
 @import "table";
 @import "pagination";
-@import "template-card";
 @import "button";
 @import "accordion";
 
@@ -123,9 +122,11 @@ body {
     li{
         width: 25%;
         margin-bottom: 18px!important;
+        padding: 0px 8px;
     }
     .formkey{
-        display: block;
+        display: flex;
+        gap: 8px;
         font-size: 13px;
         text-transform: uppercase;
         color: #787676;
@@ -134,6 +135,7 @@ body {
     .formvalue{
         font-size: 15px;
         color: #000;
+        word-wrap: break-word;
     }
 }
 .customer-list{
@@ -224,7 +226,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 17px;
     .back-btn{
@@ -292,22 +294,31 @@ body {
         }
     }
     .btn{
-        padding: 12px 20px !important;
+        padding: 11px 20px !important;
+    }
+    .add{
+        padding: 9px 20px !important;
     }
 }
 .buisness-category{font-size: 13px;color: #727374;display: block;}
 
 .burger {
-    height: 17px;
-    width: 22px;
-    display: inline-block;
+    height: 30px;
+    width: 35px;
+    display: flex;
     cursor: pointer;
+    background-color: #eee;
+    padding: 7px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     .bar{
         background-color: #000;
         width: 100%;
         height: 2px;
         display: block;
         cursor: pointer;
+        transition: all .35s ease-in-out;
         &:first-child{
             margin-bottom: 5px;
         }
@@ -327,6 +338,91 @@ body {
         margin-left:0px;
         transition: margin-left .35s ease-in-out, left .35s ease-in-out, margin-right .35s ease-in-out, right .35s ease-in-out;
     }
+    .burger{
+        .bar{
+            &:first-child{
+                rotate: 46deg;
+                    transform: translate(4px, 3px);
+            }
+            &:nth-child(2){display: none;}
+            &:nth-child(3){
+                    rotate: -48deg;
+                    transform: translate(2px, -1px);
+            }
+        }
+    }
+
     
 }
+.message-icon {
+    background-image: url("data:image/svg+xml,%3Csvg width='25' height='26' viewBox='0 0 25 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.5 0.5C9.1859 0.50364 6.0086 1.82177 3.66518 4.16518C1.32177 6.5086 0.00364 9.6859 0 13V23.5413C0.00066 24.0605 0.20724 24.5584 0.57444 24.9256C0.94163 25.2928 1.43946 25.4993 1.95875 25.5H12.5C15.8152 25.5 18.9946 24.183 21.3388 21.8388C23.683 19.4946 25 16.3152 25 13C25 9.6848 23.683 6.50537 21.3388 4.16117C18.9946 1.81696 15.8152 0.5 12.5 0.5ZM12.5 23.5H2V13C2 10.9233 2.61581 8.8932 3.76957 7.16651C4.92332 5.4398 6.5632 4.09399 8.4818 3.29926C10.4004 2.50454 12.5116 2.29661 14.5484 2.70175C16.5852 3.1069 18.4562 4.10693 19.9246 5.57538C21.3931 7.04383 22.3931 8.9148 22.7982 10.9516C23.2034 12.9884 22.9955 15.0996 22.2007 17.0182C21.406 18.9368 20.0602 20.5767 18.3335 21.7304C16.6068 22.8842 14.5767 23.5 12.5 23.5ZM14 13.5C14 13.7967 13.912 14.0867 13.7472 14.3334C13.5824 14.58 13.3481 14.7723 13.074 14.8858C12.7999 14.9993 12.4983 15.0291 12.2074 14.9712C11.9164 14.9133 11.6491 14.7704 11.4393 14.5607C11.2296 14.3509 11.0867 14.0836 11.0288 13.7926C10.9709 13.5017 11.0006 13.2001 11.1142 12.926C11.2277 12.6519 11.42 12.4176 11.6666 12.2528C11.9133 12.088 12.2033 12 12.5 12C12.8978 12 13.2794 12.158 13.5607 12.4393C13.842 12.7206 14 13.1022 14 13.5ZM8.5 13.5C8.5 13.7967 8.412 14.0867 8.2472 14.3334C8.0824 14.58 7.8481 14.7723 7.574 14.8858C7.2999 14.9993 6.9983 15.0291 6.7074 14.9712C6.4164 14.9133 6.1491 14.7704 5.93934 14.5607C5.72956 14.3509 5.5867 14.0836 5.52882 13.7926C5.47094 13.5017 5.50065 13.2001 5.61418 12.926C5.72771 12.6519 5.91997 12.4176 6.1666 12.2528C6.4133 12.088 6.7033 12 7 12C7.3978 12 7.7794 12.158 8.0607 12.4393C8.342 12.7206 8.5 13.1022 8.5 13.5ZM19.5 13.5C19.5 13.7967 19.412 14.0867 19.2472 14.3334C19.0824 14.58 18.8481 14.7723 18.574 14.8858C18.2999 14.9993 17.9983 15.0291 17.7074 14.9712C17.4164 14.9133 17.1491 14.7704 16.9393 14.5607C16.7296 14.3509 16.5867 14.0836 16.5288 13.7926C16.4709 13.5017 16.5007 13.2001 16.6142 12.926C16.7277 12.6519 16.92 12.4176 17.1666 12.2528C17.4133 12.088 17.7033 12 18 12C18.3978 12 18.7794 12.158 19.0607 12.4393C19.342 12.7206 19.5 13.1022 19.5 13.5Z' fill='%2303A9F5'/%3E%3C/svg%3E");
+    background-size: 98%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+}
+.graph-cards{
+    .card{
+        background-color: rgba(3, 169, 245, 0.1019607843);
+    }
+}
+.pricing-wrap{
+    margin-bottom: 15px;
+    .sub-heading{margin-bottom: 0px!important;}
+}
+.reportrange{
+    white-space: nowrap;
+    padding: 0.475rem 1.95rem 0.475rem 0.75rem !important;
+}
+.toastWrap {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    z-index: 1056;
+}
 
+    .toastWrap .toast {
+        margin-bottom: 20px;
+    }
+
+.alert-toast {
+    border: 0px;
+}
+
+.bg-danger {
+    background-color: #FED1D5 !important;
+}
+
+.bg-success {
+    background-color: #ceeace !important;
+}
+
+.toast div {
+    padding: 10px;
+}
+
+.toast .toast-body {
+    padding: 0px;
+}
+
+.toast p {
+    margin-bottom: 0px;
+    font-size: 13px;
+}
+.daterangepicker .ranges li.active{
+    background-color: #03a9f5!important;
+}
+.applyBtn{
+    background-color: #03a9f5 !important;
+    padding: 4px 15px !important;
+    border: 1px solid #03a9f5 !important;
+    border-radius: 30px !important;
+}
+.cancelBtn{
+    background-color: #ddd;
+    padding: 4px 15px !important;
+    border-radius: 30px !important;
+    background-color: #eee!important;
+}
