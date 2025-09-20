@@ -32,6 +32,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[._@$!%*?&#])[A-Za-z\\d._@$!%*?&#]{8,}$", ErrorMessage = "Password should be atleast 8 Character long and it should contain atleast one Uppercase. one lowercase, one special charactor and one number")]
         public string Password { get; set; }
 
+        [Required]
         public string IPAddress { get; set; }
 
         [Display(Name = "Role")]
