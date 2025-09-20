@@ -81,7 +81,7 @@
                 <div class="d-flex">
                     <input asp-for="PhoneNumber" type="tel" class="form-control flex-grow-1"
                            placeholder="Enter phone number"
-                           id="PhoneNumber" maxlength="10" pattern="[0-9]*" oninput="this.value = this.value.replace(/\s/g,'');" value="@Model.PhoneNumber" />
+                           id="PhoneNumber" maxlength="10" oninput="this.value = this.value.replace(/\s/g,'');"  />
                 </div>
                 <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
                 @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
@@ -212,13 +212,11 @@
             $(".select2").select2();
         });
     </script>
-   
-
 
     <script>
-                        // #region Resend otp-- >
+       // #region Resend otp-- >
 
-                    $(document).ready(function () {
+        $(document).ready(function () {
                                 let timerDuration = 5 * 60;
                                 let interval;
 
@@ -443,12 +441,13 @@
                         }
                     });
                         $('#nextbtn').prop("disabled",false);
-                        $('#sendmail, #passicon, #cpassicon,#agreeTerms')
+                        $(' #passicon, #cpassicon,#agreeTerms')
                             .addClass('disabled')
                             .css({
                                 'pointer-events': 'none',
-                                'opacity': '0.5'
-                  });
+                                'opacity': '0.5'                  
+                             });
+                        $('#sendmail').hide();
             } else {         
                 $('#nextbtn').prop("disabled",true);
             }
@@ -505,27 +504,5 @@
 
 
     </script>
-   #<!-- #region Hide and show pass -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-                const togglePasswordIcons = document.querySelectorAll('.toggle-password');
-
-                togglePasswordIcons.forEach(iconContainer => {
-                    iconContainer.addEventListener('click', function() {
-                        const targetId = this.dataset.target;
-                        const passwordInput = document.getElementById(targetId);
-                        const eyeIcon = this.querySelector('i');
-
-
-                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                        passwordInput.setAttribute('type', type);
-
-
-                        eyeIcon.classList.toggle('fa-eye');
-                        eyeIcon.classList.toggle('fa-eye-slash');
-                    });
-                });
-            });
-    </script>
-    <!-- #endregion -->
+  
 }

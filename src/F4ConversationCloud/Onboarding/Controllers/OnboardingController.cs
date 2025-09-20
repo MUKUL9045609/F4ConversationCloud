@@ -1,12 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using Twilio.TwiML.Messaging;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController:Controller
@@ -195,15 +196,15 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         command.ClientId = registertemp.UserId;
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
-                        var metaresponse = metaresult.status;
 
-                        bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
+                      
+                            bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientId, ClientFormStage.metaregistered);
+                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientId, ClientFormStage.metaregistered);
 
-                        var message = "success";
-                        TempData.Remove("registrationform");
-                        return Json(new { result = true, message });
+                            var message = "success";
+                            TempData.Remove("registrationform");
+                            return Json(new { result = true, message });                      
                     }
                     else
                     {

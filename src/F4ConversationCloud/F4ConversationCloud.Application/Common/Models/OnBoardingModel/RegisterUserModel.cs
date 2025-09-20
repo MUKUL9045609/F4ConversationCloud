@@ -13,7 +13,8 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
     public class RegisterUserModel
     {
         [Required(ErrorMessage = "Full Name is required")]
-        [ RegularExpression(@"^[a-zA-Z\s'-]+$", ErrorMessage = "Full Name can only contain letters, spaces, and - ' characters")]
+        [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]
+        [NoWhitespace( ErrorMessage = "Name Cannot contain Empty Spaces.")]
         public string FirstName { get; set; }
 
         public string? LastName { get; set; }
@@ -24,10 +25,9 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 
         public string? OTP { get; }
 
+        [Display(Name = "Phone Number:")]
         [Required (ErrorMessage = "Phone number is required")]
-        [Phone(ErrorMessage ="Enter Valid Phone Number")]
-        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
-        [Display(Name = "Phone Number")]
+        [RegularExpression("^[6-9]{10}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
         public string PhoneNumber { get; set; }
 
         public string? FullPhoneNumber { get; set; }
@@ -38,10 +38,10 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         [Required(ErrorMessage = "Country is required")]
         public string Country { get; set; }
 
-        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
+      //  [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
         [Required(ErrorMessage = "Password is required")]
-        [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$",
+        [StringLength(16, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$",
         ErrorMessage = "Password must contain at least 1 letter, 1 number, and 1 special character.")]
         [DataType(DataType.Password)]
         public string PassWord { get; set; }
@@ -72,6 +72,19 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
             return new ValidationResult(ErrorMessage ?? "You must agree to the terms & conditions");
         }
     }
+    public class NoWhitespaceAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value is string str && string.IsNullOrWhiteSpace(str))
+            {
+                return new ValidationResult("The " + validationContext.DisplayName + " field cannot contain only whitespace.");
+            }
+            return ValidationResult.Success;
+        }
+    }
+
+
     public class UserDetailsViewModel
     {
         public string FirstName { get; }

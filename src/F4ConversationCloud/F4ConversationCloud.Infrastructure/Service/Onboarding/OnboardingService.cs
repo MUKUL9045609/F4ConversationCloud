@@ -178,6 +178,7 @@ namespace F4ConversationCloud.Application.Common.Services
                             Message = "Meta User Configuration Inserted Successfully"
                         };
                     }
+                   
                 }
 
                 return new MetaUsersConfigurationResponse
@@ -188,7 +189,7 @@ namespace F4ConversationCloud.Application.Common.Services
             }
             catch (Exception ex)
             {
-                // log exception (optional)
+                
                 return new MetaUsersConfigurationResponse
                 {
                     status = false,

@@ -53,7 +53,6 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception: " + ex.Message);
                 return new WhatsAppPhoneNumberInfoViewModel();
             }
         }
