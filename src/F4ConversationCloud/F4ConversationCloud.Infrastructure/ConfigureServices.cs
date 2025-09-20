@@ -42,6 +42,8 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IUserManagementRepository, UserManagementRepository>();
+            services.AddScoped<IClientUserManagementService, ClientUserManagementService>();
+            services.AddScoped<IClientUserManagementRepository, ClientUserManagementRepository>();
 
             return services;
         }
