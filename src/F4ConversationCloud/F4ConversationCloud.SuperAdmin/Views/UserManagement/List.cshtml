@@ -29,7 +29,7 @@
                             </div>
                         </li>
                     </ul>
-                    <button class="btn secondary-btn"><i class="reset"></i></button>
+                    <button class="btn secondary-btn" id="reset-filters"><i class="reset"></i></button>
                 </div>
                 <div>
                     <a href="@Url.Action("Create", "UserManagement")" type="button" class="btn primary-btn add d-flex">Add New User</a>
@@ -191,5 +191,12 @@
                     '&PageNumber=' + pageNumber;
             }
         });
+
+        $("#reset-filters").click(function(){
+            $("[name=SearchString]").val('');
+            $("[name=Status]").val(true);
+            loadData();
+        });
+
     </script>
 }
