@@ -50,7 +50,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     return View(model);
                 }
 
-                if (user.Password != model.Password)
+                if (user.Password.Decrypt() != model.Password)
                 {
                     ModelState.AddModelError("Password", "Please enter a valid password.");
                     return View(model);

@@ -88,7 +88,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 MobileNo = model.MobileNo,
-                Password = model.Password,
+                Password = model.Password.Encrypt(),
                 IPAddress = model.IPAddress,
                 Role = model.Role,
                 Designation = model.Designation
@@ -119,7 +119,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 MobileNo = user.MobileNo,
-                Password = user.Password,
+                Password = user.Password.Decrypt(),
                 IPAddress = user.IPAddress,
                 Designation = user.Designation,
                 Role = user.Role
@@ -136,7 +136,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
             Auth user = await _superAdminAuthService.CheckUserExists(model.Email);
 
-            if (user is not null)
+            if (user is not null && user.Email != model.Email)
             {
                 ModelState.AddModelError("Email", "This Email is Already Registered.");
                 return View(model);
@@ -149,7 +149,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 MobileNo = model.MobileNo,
-                Password = model.Password,
+                Password = (user != null && user.Password.Decrypt() != model.Password) ? model.Password.Encrypt() : model.Password,
                 IPAddress = model.IPAddress,
                 Role = model.Role,
                 Designation = model.Designation

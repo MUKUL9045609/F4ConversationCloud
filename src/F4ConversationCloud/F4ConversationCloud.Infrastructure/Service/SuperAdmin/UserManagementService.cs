@@ -26,7 +26,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 LastName = user.LastName,
                 Email = user.Email,
                 MobileNo = user.MobileNo,
-                Password = user.Password.Encrypt(),
+                Password = user.Password,
                 IPAddress = user.IPAddress,
                 Role = user.Role,
                 Designation = user.Designation

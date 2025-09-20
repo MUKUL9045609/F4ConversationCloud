@@ -39,7 +39,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public int Role { get; set; }
 
         [Display(Name = "Role")]
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
 
         [Display(Name = "Designation")]
         [Required]
