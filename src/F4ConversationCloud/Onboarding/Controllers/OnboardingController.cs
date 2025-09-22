@@ -102,7 +102,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
                 
                 var model = new RegisterUserModel { 
-                TimeZones = await _authRepository.GetTimeZonesAsync()
+                    TimeZones = await _authRepository.GetTimeZonesAsync(),
+
                 };
                 
 
