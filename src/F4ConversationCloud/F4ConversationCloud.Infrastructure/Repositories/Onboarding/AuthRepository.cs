@@ -53,7 +53,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 
         }
 
-        public async Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid) {
+        public async Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid)
+        {
 
             try
             {
@@ -112,7 +113,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("UserEmailId", command.UserEmailId);
-                parameters.Add("UserPhoneNumber", command.UserPhoneNumber);
                 var response = await _repository.GetByValuesAsync<int>("[sp_CheckMailOrPhoneNumber]", parameters);
                 return response;
             }
@@ -126,27 +126,27 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
         {
             try
             {
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
+
                 parameters.Add("WabaId", command.WabaId);
-                parameters.Add("AppName", command.AppName);
-                parameters.Add("AccessToken", command.AccessToken);
-                parameters.Add("AppVersion", command.AppVersion);
                 parameters.Add("BusinessId", command.BusinessId);
-                parameters.Add("CompanyName", command.CompanyName);
                 parameters.Add("PhoneNumberId", command.PhoneNumberId);
-                parameters.Add("OnboardingUserId", command.OnboardingUserId);
+                parameters.Add("ClientId", command.ClientId);
+                parameters.Add("WhatsAppBotName", command.WhatsAppBotName);
+                parameters.Add("Status", command.Status);
+                parameters.Add("PhoneNumber", command.PhoneNumber);
+                parameters.Add("AppVersion", command.AppVersion);
 
-
-                return await _repository.InsertUpdateAsync("[sp_InsertMetaUsersConfigurations]", parameters);
+                return await _repository.InsertUpdateAsync("[dbo].[sp_InsertMetaUsersConfigurations]", parameters);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-               return 0;
+               
+                return 0;
             }
-            
         }
-   
+
+
         public async Task<UserDetailsViewModel> GetCustomerById(int userId)
         {
             try
