@@ -58,5 +58,40 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\SuperAdminUsers.sql" />
+    <Build Include="dbo\Tables\SuperAdminRoles.sql" />
+    <Build Include="dbo\Tables\OTPMaster.sql" />
+    <Build Include="dbo\Tables\MetaUsersConfiguration.sql" />
+    <Build Include="dbo\Tables\client_info.sql" />
+    <Build Include="dbo\Functions\fn_getCurrentISTTime.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ValidateOTP.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ValidateClientCreadiatial.sql" />
+    <Build Include="dbo\Stored Procedures\sp_UpdateUserPassword.sql" />
+    <Build Include="dbo\Stored Procedures\sp_UpdateClientPassword.sql" />
+    <Build Include="dbo\Stored Procedures\sp_UpdateClientFormStage.sql" />
+    <Build Include="dbo\Stored Procedures\sp_RegisterNewUser.sql" />
+    <Build Include="dbo\Stored Procedures\sp_InsertOTP.sql" />
+    <Build Include="dbo\Stored Procedures\sp_InsertMetaUsersConfigurations.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetUserCount.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetUserById.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetTimeZones.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetRoleDropdown.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetFilteredUsers.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetFilteredClientUsers.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetCustomerById.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetClientUserCount.sql" />
+    <Build Include="dbo\Stored Procedures\sp_DeactivateSuperAdminUser.sql" />
+    <Build Include="dbo\Stored Procedures\sp_CreateUpdateUser.sql" />
+    <Build Include="dbo\Stored Procedures\sp_CheckUserExistsByMailId.sql" />
+    <Build Include="dbo\Stored Procedures\sp_CheckUserExists.sql" />
+    <Build Include="dbo\Stored Procedures\sp_CheckMailOrPhoneNumber.sql" />
+    <Build Include="dbo\Stored Procedures\sp_CheckEmailExists.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ActivateSuperAdminUser.sql" />
   </ItemGroup>
 </Project>
