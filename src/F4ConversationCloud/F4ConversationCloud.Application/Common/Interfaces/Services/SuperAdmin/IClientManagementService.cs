@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Client
+namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
 {
-    public interface IClientManagementRepository
+    public interface IClientManagementService
     {
     }
 }

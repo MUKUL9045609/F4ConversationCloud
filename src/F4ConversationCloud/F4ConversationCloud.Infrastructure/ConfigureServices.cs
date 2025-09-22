@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using F4ConversationCloud.Infrastructure.Service.Client;
 
 
 namespace F4ConversationCloud.Infrastructure

@@ -1,4 +1,4 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using Microsoft.AspNetCore.Mvc;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
