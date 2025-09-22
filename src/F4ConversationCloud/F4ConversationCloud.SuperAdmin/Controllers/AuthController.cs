@@ -174,7 +174,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 if (!ModelState.IsValid)
                     return View(model);
 
-                bool success = await _superAdminAuthService.ConfirmPassword(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password });
+                bool success = await _superAdminAuthService.ConfirmPassword(new ConfirmPasswordModel
+                {
+                    UserId = model.UserId,
+                    Password = model.Password.Encrypt()
+                });
 
                 if (!success)
                 {
