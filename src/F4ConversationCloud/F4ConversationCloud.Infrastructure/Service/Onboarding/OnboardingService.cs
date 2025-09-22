@@ -1,6 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
-using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Extension;
@@ -8,12 +7,9 @@ using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Newtonsoft.Json.Linq;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -23,20 +19,21 @@ namespace F4ConversationCloud.Application.Common.Services
         private readonly IAuthRepository _authRepository;
         private readonly IMessageService _messageService;
         private readonly IUrlHelper _urlHelper;
+        private readonly IWhatsAppCloudeService _whatsAppCloude;
 
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IWhatsAppCloudeService whatsAppCloudeService)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
             _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+            _whatsAppCloude = whatsAppCloudeService;
 
         }
 
-        public async Task<VarifyUserDetailsResponse> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel request)
+        public async Task<VarifyUserDetailsResponse> CheckIsMailExitsAsync(VarifyMobileNumberModel request)
         {
             try
             {
-                #region Insert OTP in DB if email or phone number not exist
                 int ismailExit = await _authRepository.CheckMailOrPhoneNumberAsync(request);
                 var CreateOTP = OtpGenerator.GenerateRandomOTP();
                 if (ismailExit != 1)
@@ -61,78 +58,34 @@ namespace F4ConversationCloud.Application.Common.Services
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(request.UserEmailId))
-                    {
                         return new VarifyUserDetailsResponse
                         {
                             status = false,
                             message = "Email already exists"
 
                         };
-                    }
-                    if (!string.IsNullOrEmpty(request.UserPhoneNumber))
-                    {
-                        return new VarifyUserDetailsResponse
-                        {
-                            status = false,
-                            message = "Phone Number already exists"
-                        };
-                    }
                 }
-                #endregion
-                #region Send OTP via Email
-                if (string.IsNullOrEmpty(request.UserPhoneNumber))
+                
+                
+             
+                var emailRequest = new EmailRequest
                 {
-                    var emailRequest = new EmailRequest
-                    {
-                        ToEmail = request.UserEmailId,
-                        Subject = "Your OTP Verification Code",
-                        Body= "<p>Dear Customer,</p><br />" +
-                             "Thank you for signing up with us. To verify your email, please enter the following <br/>" +
-                             "One Time Password (OTP): " + CreateOTP + " <br/>" +
-                             "This OTP is valid for 10 minutes from the receipt of this email.<br/>Best regards",
-                       // OTP = CreateOTP,
-                    };
-                    bool sendMail = await _messageService.SendEmail(emailRequest);
-                    return new VarifyUserDetailsResponse
-                    {
-                        status = sendMail,
-                        message = sendMail ? "Email sent successfully" : "Failed to send email"
-                    };
-                }
-                #endregion
-                #region Send OTP via SMS
-                if (string.IsNullOrEmpty(request.UserEmailId))
+                    ToEmail = request.UserEmailId,
+                    Subject = "Your OTP Verification Code",
+                    Body= "<p>Dear Customer,</p><br />" +
+                            "Thank you for signing up with us. To verify your email, please enter the following <br/>" +
+                            "One Time Password (OTP): " + CreateOTP + " <br/>" +
+                            "This OTP is valid for 10 minutes from the receipt of this email.<br/>Best regards",
+                    // OTP = CreateOTP,
+                };
+                bool sendMail = await _messageService.SendEmail(emailRequest);
+                return new VarifyUserDetailsResponse
                 {
-
-                    // var sendSms = await _messageService.SendVerificationSmsAsync(request.UserPhoneNumber, "Your OTP Verification Code is " + CreateOTP);
-
-                    /*  if (sendSms == null || sendSms.Status != "pending")
-                      {
-                          return new EmailSendResponse
-                          {
-                              status = false,
-                              message = "Failed to send SMS"
-                          };
-                      }
-                      */
-                    return new VarifyUserDetailsResponse
-                    {
-                        /*status = await _emailService.SendSms(SmsRequest),*/
-                        status = true,
-                        message = "SMS sent successfully"
-                    };
-                }
-                #endregion
-                else
-                {
-                    return new VarifyUserDetailsResponse
-                    {
-                        status = false,
-                        message = "Please provide either Email or Phone Number"
-                    };
-                }
-                ;
+                    status = sendMail? true:false,
+                    message = sendMail ? "Email sent successfully" : "Failed to send email"
+                };
+           
+                
             }
             catch (Exception)
             {
@@ -149,36 +102,52 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-                var response = await _authRepository.InsertMetaUsersConfigurationAsync(request);
-
-
-                if (response > 0)
+                if (!string.IsNullOrEmpty(request.PhoneNumberId))
                 {
-                    return new MetaUsersConfigurationResponse
+                    var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
+
+                    var insertConfig = new MetaUsersConfiguration
                     {
-                        status = true,
-                        Message = "Meta User Configuration Inserted Successfully"
+                        ClientId = request.ClientId,
+                        WabaId = request.WabaId,
+                        PhoneNumberId = request.PhoneNumberId,
+                        BusinessId = request.BusinessId,
+                        WhatsAppBotName = businessInfo.VerifiedName,
+                        Status = businessInfo.WhatsAppStatus,
+                        PhoneNumber = businessInfo.DisplayPhoneNumber,
+                        AppVersion = request.AppVersion,
                     };
-                }
-                else
-                {
-                    return new MetaUsersConfigurationResponse
+
+                    var response = await _authRepository.InsertMetaUsersConfigurationAsync(insertConfig);
+
+                    if (response > 0)
                     {
-                        status = false,
-                        Message = "Meta User Configuration Insertion Failed"
-                    };
+                        return new MetaUsersConfigurationResponse
+                        {
+                            status = true,
+                            Message = "Meta User Configuration Inserted Successfully"
+                        };
+                    }
+                   
                 }
-            }
-            catch (Exception)
-            {
 
                 return new MetaUsersConfigurationResponse
                 {
                     status = false,
-                    Message = "Technical Error "
+                    Message = "Meta User Configuration Insertion Failed"
+                };
+            }
+            catch (Exception ex)
+            {
+                
+                return new MetaUsersConfigurationResponse
+                {
+                    status = false,
+                    Message = "Technical Error"
                 };
             }
         }
+
 
         public async Task<RegisterUserResponse> RegisterUserAsync(RegisterUserModel request )
         {
@@ -482,5 +451,7 @@ namespace F4ConversationCloud.Application.Common.Services
            
         }
 
+
+       
     }
 }

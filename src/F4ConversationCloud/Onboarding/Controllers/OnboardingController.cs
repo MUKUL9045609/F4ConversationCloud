@@ -1,12 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using Twilio.TwiML.Messaging;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController:Controller
@@ -49,25 +50,32 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                                         clientdetails.TermsCondition = true;
                                     TempData.Put("registrationform", clientdetails);
-                                TempData["WarringMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                                TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
                                 return RedirectToAction("BankVerification");
                             }
                             else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
                             {
-                                TempData["WarringMessage"] = "You have already registered please Wait For Admin Approval !";         
-                                return View();
+                                TempData["Info"] = "You have already registered please Wait For Admin Approval !";         
+                                return View(requst);
                             }
 
                          }
                         else
                         {
-                            //TempData["ErrorMessage"] = response.Message;
+                    
 
-                            if (response.Message.Equals("InvalidEmail")) ;
-                                        ModelState.AddModelError(nameof(requst.Email),"Invalid Email");
-                            if (response.Message.Equals("InvalidPassword"));
-                                        ModelState.AddModelError(nameof(requst.PassWord),"Invalid Password");
-                                        return View(response);
+                            if (response.Message.Equals("InvalidEmail"))
+                            {
+                                ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
+                            }
+
+                            if (response.Message.Equals("InvalidPassword"))
+                            {
+                                ModelState.AddModelError(nameof(requst.PassWord), "Invalid Password");
+                            }
+
+                            return View(requst);
+
                          }
                     }
                     catch (Exception)
@@ -75,7 +83,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                        return View();
                     }
-                   return View();
+                   return View(requst);
                  }
             
             [HttpGet("register-Client-Info")]
@@ -93,12 +101,13 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     return View(existingData);
                 }
                 
-                     var model = new RegisterUserModel { 
-                        TimeZones = await _authRepository.GetTimeZonesAsync()
-                     };
+                var model = new RegisterUserModel { 
+                    TimeZones = await _authRepository.GetTimeZonesAsync(),
+
+                };
                 
 
-            return View(model);
+                 return View(model);
 
             }
 
@@ -117,7 +126,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         ViewBag.IsReadOnly = false;
                         return View(command);
                     }
-                     command.Stage = ClientFormStage.draft;
+
+                    command.Stage = ClientFormStage.draft;
                     var isregister = await _onboardingService.RegisterUserAsync(command);
                     if (isregister.IsSuccess)
                     {
@@ -165,7 +175,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         {
             // var response = await Mediator.Send(command);
 
-            var response = await _onboardingService.CheckMailOrPhoneNumberAsync(command);
+            var response = await _onboardingService.CheckIsMailExitsAsync(command);
 
             return Json(new { response.status, response.message });
         }
@@ -176,7 +186,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveMetaUserConfigurationDetails([FromBody] MetaUsersConfiguration command)
         {
             try
@@ -186,18 +195,18 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     var registertemp = TempData.Get<RegisterUserModel>("registrationform");
                     if (registertemp != null)
                     {
-                        command.OnboardingUserId = registertemp.UserId;
+                        command.ClientId = registertemp.UserId;
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
-                        var metaresponse = metaresult.status;
 
-                        bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
+                      
+                            bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(registertemp.UserId, ClientFormStage.metaregistered);
+                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientId, ClientFormStage.metaregistered);
 
-                        var message = "success";
-                        TempData.Remove("registrationform");
-                        return Json(new { result = true, message });
+                            var message = "success";
+                            TempData.Remove("registrationform");
+                            return Json(new { result = true, message });                      
                     }
                     else
                     {
