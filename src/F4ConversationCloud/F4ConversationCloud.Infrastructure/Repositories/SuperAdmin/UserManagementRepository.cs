@@ -5,12 +5,15 @@ using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Infrastructure.Interfaces;
+using F4ConversationCloud.Infrastructure.Persistence;
 
 namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 {
     public class UserManagementRepository : IUserManagementRepository
     {
         private readonly IGenericRepository<User> _repository;
+        private readonly DbContext _context;
+
         public UserManagementRepository(IGenericRepository<User> repository)
         {
             _repository = repository;
@@ -20,6 +23,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
         {
             DynamicParameters parameters = new DynamicParameters();
 
+            parameters.Add("userId", _context.SessionUserId);
             parameters.Add("id", user.Id);
             parameters.Add("firstName", user.FirstName);
             parameters.Add("lastName", user.LastName);
