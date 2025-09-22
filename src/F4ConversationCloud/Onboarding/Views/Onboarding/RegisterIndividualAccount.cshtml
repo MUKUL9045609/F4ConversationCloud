@@ -81,7 +81,7 @@
                 <div class="d-flex">
                     <input asp-for="PhoneNumber" type="tel" class="form-control flex-grow-1"
                            placeholder="Enter phone number"
-                           id="PhoneNumber" maxlength="10" oninput="this.value = this.value.replace(/\s/g,'');"  />
+                           id="PhoneNumber" maxlength="10"   />
                 </div>
                 <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
                 @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@

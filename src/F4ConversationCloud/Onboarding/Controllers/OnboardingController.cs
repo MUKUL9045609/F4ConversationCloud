@@ -101,12 +101,12 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     return View(existingData);
                 }
                 
-                     var model = new RegisterUserModel { 
-                        TimeZones = await _authRepository.GetTimeZonesAsync()
-                     };
+                var model = new RegisterUserModel { 
+                TimeZones = await _authRepository.GetTimeZonesAsync()
+                };
                 
 
-            return View(model);
+                 return View(model);
 
             }
 

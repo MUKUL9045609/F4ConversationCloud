@@ -42,11 +42,6 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
 
                 var content = await response.Content.ReadAsStringAsync();
 
-                //var options = new JsonSerializerOptions
-                //{
-                //    PropertyNameCaseInsensitive = true
-                //};
-
                 var info = JsonSerializer.Deserialize<WhatsAppPhoneNumberInfoViewModel>(content);
 
                 return info ?? new WhatsAppPhoneNumberInfoViewModel();
