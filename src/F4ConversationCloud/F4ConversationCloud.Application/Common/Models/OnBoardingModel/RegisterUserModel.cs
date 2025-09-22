@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Domain.Enum;
+﻿using F4ConversationCloud.Application.Common.Helper;
+using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel
 {
-    public class RegisterUserModel
+    public class RegisterUserModel : IValidatableObject
     {
         [Required(ErrorMessage = "Full Name is required")]
         [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]
@@ -51,8 +52,10 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string ConfirmPassword { get; set; }
         public bool IsActive { get; set; } = true;
 
-        [MustBeTrue(ErrorMessage = "You must agree to the terms & conditions")]
+        //[MustBeTrue(ErrorMessage = "You must agree to the terms & conditions")]
+        [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "This Field is Required.")]
         public bool TermsCondition { get; set; }
+        [Remote(action: "IsValidEmailOtpVerified", controller: "Validation", AdditionalFields = "Email", ErrorMessage = "This Field is Required.")]
         public bool EmailOtpVerified { get; set; } = false;
         public string Role { get; set; } = "Client";
 
@@ -62,6 +65,13 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public int UserId { get; set; }
 
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var validator = validationContext.GetService(typeof(ValidationHelper)) as ValidationHelper;
+            var task = Task.Run(() => validator?.Validate(this));
+            return task.Result;
+        }
     }
     public class MustBeTrueAttribute : ValidationAttribute
     {

@@ -10,167 +10,168 @@ using Microsoft.AspNetCore.Mvc;
 using Twilio.TwiML.Messaging;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
-    public class OnboardingController:Controller
+    public class OnboardingController : Controller
     {
+        private readonly IOnboardingService _onboardingService;
+        private readonly IAuthRepository _authRepository;
+        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository)
+        {
+            _onboardingService = onboardingService;
+            _authRepository = authRepository;
+        }
+        public IActionResult Index()
+        {
+            TempData.Remove("registrationform");
+            return View();
+        }
 
-      
-            private readonly IOnboardingService _onboardingService;
-            private readonly IAuthRepository _authRepository;
-            public OnboardingController(IOnboardingService onboardingService,IAuthRepository authRepository)
+        [HttpGet("Login")]
+        public async Task<IActionResult> Login()
+        {
+
+            return View();
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(Loginrequest requst)
+        {
+            try
             {
-                _onboardingService = onboardingService;
-                 _authRepository = authRepository;
-            }
-                public IActionResult Index()
+                if (!ModelState.IsValid)
                 {
-                    return View();
+                    return View(requst);
                 }
-               
-                [HttpGet("Login")]
-                public async Task<IActionResult> Login()
+                var response = await _onboardingService.OnboardingLogin(requst);
+                if (response.IsSuccess)
                 {
-                
-                    return View();
-                }
-
-                 [HttpPost("Login")]
-                 public async Task<IActionResult> Login(Loginrequest requst)
-                 {
-                    try
+                    if (response.Data.Stage.Equals(ClientFormStage.draft))
                     {
-                        if (!ModelState.IsValid)
-                        {
-                            return View(requst);
-                        }
-                         var response = await _onboardingService.OnboardingLogin(requst);
-                        if (response.IsSuccess)
-                        {
-                            if (response.Data.Stage.Equals(ClientFormStage.draft)) {
-                                var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
+                        var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
-                                        clientdetails.TermsCondition = true;
-                                    TempData.Put("registrationform", clientdetails);
-                                TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
-                                return RedirectToAction("BankVerification");
-                            }
-                            else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
-                            {
-                                TempData["Info"] = "You have already registered please Wait For Admin Approval !";         
-                                return View(requst);
-                            }
-
-                         }
-                        else
-                        {
-                    
-
-                            if (response.Message.Equals("InvalidEmail"))
-                            {
-                                ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
-                            }
-
-                            if (response.Message.Equals("InvalidPassword"))
-                            {
-                                ModelState.AddModelError(nameof(requst.PassWord), "Invalid Password");
-                            }
-
-                            return View(requst);
-
-                         }
-                    }
-                    catch (Exception)
-                    {
-
-                       return View();
-                    }
-                   return View(requst);
-                 }
-            
-            [HttpGet("register-Client-Info")]
-            public async Task<IActionResult> RegisterIndividualAccount()
-            {
-                
-                var step1form = TempData.Get<RegisterUserModel>("registrationform");
-                ViewBag.IsReadOnly = false;
-
-                if (step1form != null)
-                {
-                        var existingData = new RegisterUserModel();
-                        existingData = step1form;
-                        ViewBag.IsReadOnly = true;
-                    return View(existingData);
-                }
-                
-                var model = new RegisterUserModel { 
-                    TimeZones = await _authRepository.GetTimeZonesAsync(),
-
-                };
-                
-
-                 return View(model);
-
-            }
-
-            [HttpPost("Register-Client-Info")]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> RegisterIndividualAccount(RegisterUserModel command)
-             {
-                try
-                { // command.CurrentStep = 1;
-                    if (!command.EmailOtpVerified && command.Email != null)
-                    {
-                        ModelState.AddModelError(nameof(command.EmailOtpVerified), "Please verify your Email before proceeding.");
-                    }
-                    if (!ModelState.IsValid)
-                    {
-                        ViewBag.IsReadOnly = false;
-                        return View(command);
-                    }
-
-                    command.Stage = ClientFormStage.draft;
-                    var isregister = await _onboardingService.RegisterUserAsync(command);
-                    if (isregister.IsSuccess)
-                    {
-                       command.UserId = isregister.NewUserId;
-
-                        TempData.Put("registrationform", command);
-                        ViewBag.IsReadOnly = true;
-
-                        await _onboardingService.SendRegistrationSuccessEmailAsync(command);
-
-                        TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
-                    
-                     
+                        clientdetails.TermsCondition = true;
+                        TempData.Put("registrationform", clientdetails);
+                        TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
                         return RedirectToAction("BankVerification");
-
                     }
-                    else
+                    else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
                     {
-                        ViewBag.IsReadOnly = false;
-                        TempData["ErrorMessage"] = "Registration failed. Please try again.";
-                       return View(command);
+                        TempData["Info"] = "You have already registered please Wait For Admin Approval !";
+                        return View(requst);
                     }
 
                 }
-                catch (Exception)
+                else
                 {
 
-                   return View(command);
+
+                    if (response.Message.Equals("InvalidEmail"))
+                    {
+                        ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
+                    }
+
+                    if (response.Message.Equals("InvalidPassword"))
+                    {
+                        ModelState.AddModelError(nameof(requst.PassWord), "Invalid Password");
+                    }
+
+                    return View(requst);
+
                 }
             }
-            [HttpGet("meta-onboarding")]
-            public IActionResult BankVerification()
+            catch (Exception)
             {
-                var step1form = TempData.Get<RegisterUserModel>("registrationform");
-                if (step1form is null)
-                {
-                    TempData["WarningMessage"] = "Register details first!";
-                    return RedirectToAction("RegisterIndividualAccount");
-                }
+
                 return View();
             }
+            return View(requst);
+        }
 
-            
+        [HttpGet("register-Client-Info")]
+        public async Task<IActionResult> RegisterIndividualAccount()
+        {
+
+            var step1form = TempData.Get<RegisterUserModel>("registrationform");
+            ViewBag.IsReadOnly = false;
+            //step1form = null;
+            if (step1form != null)
+            {
+                var existingData = new RegisterUserModel();
+                existingData = step1form;
+                ViewBag.IsReadOnly = true;
+                return View(existingData);
+            }
+
+            var model = new RegisterUserModel
+            {
+                TimeZones = await _authRepository.GetTimeZonesAsync(),
+
+            };
+
+
+            return View(model);
+
+        }
+
+        [HttpPost("Register-Client-Info")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterIndividualAccount(RegisterUserModel command)
+        {
+            try
+            { // command.CurrentStep = 1;
+                if (!command.EmailOtpVerified && command.Email != null)
+                {
+                    ModelState.AddModelError(nameof(command.EmailOtpVerified), "Please verify your Email before proceeding.");
+                }
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.IsReadOnly = false;
+                    return View(command);
+                }
+
+                command.Stage = ClientFormStage.draft;
+                var isregister = await _onboardingService.RegisterUserAsync(command);
+                if (isregister.IsSuccess)
+                {
+                    command.UserId = isregister.NewUserId;
+
+                    TempData.Put("registrationform", command);
+                    ViewBag.IsReadOnly = true;
+
+                    await _onboardingService.SendRegistrationSuccessEmailAsync(command);
+
+                    TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
+
+
+                    return RedirectToAction("BankVerification");
+
+                }
+                else
+                {
+                    ViewBag.IsReadOnly = false;
+                    TempData["ErrorMessage"] = "Registration failed. Please try again.";
+                    return View(command);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return View(command);
+            }
+        }
+        [HttpGet("meta-onboarding")]
+        public IActionResult BankVerification()
+        {
+            var step1form = TempData.Get<RegisterUserModel>("registrationform");
+            if (step1form is null)
+            {
+                TempData["WarningMessage"] = "Register details first!";
+                return RedirectToAction("RegisterIndividualAccount");
+            }
+            return View();
+        }
+
+
         public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
         {
             // var response = await Mediator.Send(command);
@@ -199,14 +200,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
-                      
-                            bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientId, ClientFormStage.metaregistered);
+                        bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                            var message = "success";
-                            TempData.Remove("registrationform");
-                            return Json(new { result = true, message });                      
+                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientId, ClientFormStage.metaregistered);
+
+                        var message = "success";
+                        TempData.Remove("registrationform");
+                        return Json(new { result = true, message });
                     }
                     else
                     {
@@ -228,7 +229,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 var message = "Technical error! Please Contact To Admin ";
                 return Json(new { result = false });
             }
-           
+
 
         }
         [HttpGet("thank-you")]
@@ -245,7 +246,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
             catch (Exception ex)
             {
-              return View();
+                return View();
             }
         }
         [HttpPost("Forgot-Password")]
