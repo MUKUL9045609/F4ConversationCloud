@@ -28,7 +28,6 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         [Required(ErrorMessage = "Phone number is required")]
         [Phone(ErrorMessage = "Enter Valid Phone Number")]
         [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
-        [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         public string? FullPhoneNumber { get; set; }
