@@ -75,21 +75,21 @@
 
 
 
-            <div class="col-md-6">
-                <label class="form-label">Phone number <sup>*</sup></label>
+                <div class="col-md-6">
+                    <label class="form-label">Phone number <sup>*</sup></label>
 
-                <div class="d-flex">
-                    <input asp-for="PhoneNumber" type="tel" class="form-control flex-grow-1"
-                           placeholder="Enter phone number"
-                           id="PhoneNumber" maxlength="10"   />
+                    <div class="d-flex">
+                        <input asp-for="PhoneNumber" type="text" class="form-control flex-grow-1"
+                               placeholder="Enter phone number"
+                               id="PhoneNumber" maxlength="10"   />
+                    </div>
+                    <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
+                    @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
+
+                    <input type="hidden" asp-for="FullPhoneNumber" id="FullPhoneNumberid" />
+                    <span asp-validation-for="FullPhoneNumber" class="error-message text-danger small" id="phoneError"></span>
+                    @* <div class="verifyBtnLink" id="varifyPhoneNumber"><span>Verify Phone No</span></div> *@
                 </div>
-                <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
-                @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
-
-                <input type="hidden" asp-for="FullPhoneNumber" id="FullPhoneNumberid" />
-                <span asp-validation-for="FullPhoneNumber" class="error-message text-danger small" id="phoneError"></span>
-                @* <div class="verifyBtnLink" id="varifyPhoneNumber"><span>Verify Phone No</span></div> *@
-            </div>
 
             <div class="col-md-6 mb-3" id="codeSection" style="display: none;">
                 <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
@@ -125,7 +125,7 @@
                     }
                     else
                     {
-                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
+                        <input asp-for="PassWord" type="text" class="form-control" placeholder="Enter Password" id="password" />
                     }
 
                 <span class="input-group-text toggle-password" data-target="password" id="passicon">
@@ -144,7 +144,7 @@
                     }
                     else
                     {
-                        <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                        <input asp-for="ConfirmPassword" type="text" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
                     }                  
                     <span class="input-group-text toggle-password" data-target="confirmPassword" id="cpassicon">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
@@ -476,33 +476,38 @@
 
     </script>
 
+
     <script>
-
-     document.addEventListener("DOMContentLoaded", function () {
-            var input = document.querySelector("#PhoneNumber");
-
+        document.addEventListener("DOMContentLoaded", function () {
+            var input = document.getElementById("PhoneNumber");
+            var hiddenInput = document.getElementById("FullPhoneNumberid");
             if (input) {
                 var iti = window.intlTelInput(input, {
                     initialCountry: "in",
                     separateDialCode: true,
+                    nationalMode: false, 
+                    formatOnDisplay: false,
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
                 });
 
-
+                
                 input.addEventListener("input", function () {
-                    var fullNumber = iti.getNumber();
-                    document.querySelector("#FullPhoneNumberid").value = fullNumber;
+                    input.value = input.value.replace(/\s+/g, '').replace(/\D/g, '');
                 });
 
-
-                document.querySelector("form").addEventListener("submit", function () {
-                    var fullNumber = iti.getNumber();
-                    document.querySelector("#FullPhoneNumberid").value = fullNumber;
+                input.form.addEventListener("submit", function () {
+                    if (hiddenInput) {
+                        hiddenInput.value = iti.getNumber().replace(/\s+/g, '');
+                    }
                 });
+
+                if (input.value) {
+                    input.value = input.value.replace(/\s+/g, '').replace(/\D/g, '');
+                }
             }
         });
 
-
     </script>
+
   
 }
