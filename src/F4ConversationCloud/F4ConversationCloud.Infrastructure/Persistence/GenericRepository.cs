@@ -116,7 +116,6 @@ namespace F4ConversationCloud.Infrastructure.Persistence
             {
                 using (var connection = _context.CreateConnection())
                 {
-                    parameters.Add("userId", _context.SessionUserId);
                     return await connection.QueryFirstOrDefaultAsync<int>(spName, parameters, commandType: CommandType.StoredProcedure);
                 }
             }
