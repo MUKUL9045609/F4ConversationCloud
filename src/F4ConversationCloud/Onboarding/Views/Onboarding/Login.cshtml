@@ -33,9 +33,11 @@
                         <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
                     </div>
 
-                    <div class="form-group">
-                        
-                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
+                    <div class="form-group mb-3">
+                        <div class="d-flex password-wrap">
+                            <input asp-for="PassWord" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
+                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                        </div>
                         <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
                     </div>
 
