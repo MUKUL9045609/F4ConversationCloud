@@ -108,7 +108,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
                     var insertConfig = new MetaUsersConfiguration
                     {
-                        ClientId = request.ClientId,
+                        ClientInfoId = request.ClientInfoId,
                         WabaId = request.WabaId,
                         PhoneNumberId = request.PhoneNumberId,
                         BusinessId = request.BusinessId,
