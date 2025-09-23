@@ -15,7 +15,7 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public string ApprovalStatus { get; set; }
         public string Category { get; set; }
         public bool IsActive { get; set; }
-        public DateTime OnboardingOn { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }
     }
 }

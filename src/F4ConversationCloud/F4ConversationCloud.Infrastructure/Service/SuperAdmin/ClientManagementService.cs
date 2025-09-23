@@ -23,5 +23,15 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             return Tuple.Create(await _clientManagementRepository.GetFilteredAsync(filter), await _clientManagementRepository.GetCountAsync(filter));
         }
+
+        public async Task<ClientDetails> GetClientDetailsById(int id)
+        {
+            return await _clientManagementRepository.GetClientDetailsById(id);
+        }
+
+        public async Task<int> SaveClientPermission(ClientDetails clientDetails)
+        {
+            return await _clientManagementRepository.SaveClientPermission(clientDetails);
+        }
     }
 }

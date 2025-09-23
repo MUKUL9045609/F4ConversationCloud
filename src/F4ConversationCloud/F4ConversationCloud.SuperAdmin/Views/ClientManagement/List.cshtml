@@ -62,7 +62,9 @@
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
                                     <td>
-                                        <a href="client-details.html">@Html.DisplayFor(modelItem => item.ClientName)</a>
+                                        <form method="get" action="@Url.Action("ClientDetails", "ClientManagement", new { id = item.Id })">
+                                            <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ClientName)</a>
+                                        </form>
                                         <span class="buisness-category">@Html.DisplayFor(modelItem => item.Category)</span>
                                     </td>
                                     <td>
@@ -87,7 +89,7 @@
                         }
                     </tbody>
                 </table>
-            </div>  
+            </div>
             <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
         </div>
     </div>

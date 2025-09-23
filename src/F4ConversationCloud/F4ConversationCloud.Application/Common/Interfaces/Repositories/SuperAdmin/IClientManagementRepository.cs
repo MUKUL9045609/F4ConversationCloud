@@ -12,5 +12,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
     {
         Task<IEnumerable<ClientManagementListItemModel>> GetFilteredAsync(MasterListFilter filter);
         Task<int> GetCountAsync(MasterListFilter filter);
+        Task<ClientDetails> GetClientDetailsById(int Id);
+        Task<int> SaveClientPermission(ClientDetails clientDetails);
     }
 }

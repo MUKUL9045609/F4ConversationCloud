@@ -11,5 +11,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
     public interface IClientManagementService
     {
         Task<Tuple<IEnumerable<ClientManagementListItemModel>, int>> GetFilteredUsers(MasterListFilter filter);
+        Task<ClientDetails> GetClientDetailsById(int Id);
+        Task<int> SaveClientPermission(ClientDetails clientDetails);
     }
 }

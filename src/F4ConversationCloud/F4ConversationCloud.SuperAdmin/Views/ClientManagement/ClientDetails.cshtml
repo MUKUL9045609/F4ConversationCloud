@@ -1,0 +1,884 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="header-content">
+            <h3 class="sub-heading">
+                <a href="index.html" class="back"></a>
+                Buldana Urban Co-op. Credit Society Ltd.
+            </h3>
+
+        </div>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Client Details</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="client-tab" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab" aria-controls="client" aria-selected="false">Client Configuration</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Price Details</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <ul class="user-list">
+                    <li>
+                        <span class="formkey">Registered User Name</span>
+                        <span class="formvalue">@Model.RegisteredFirstName @Model.RegisteredLastName</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Phone Number</span>
+                        <span class="formvalue">@Model.RegisteredPhoneNumber</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Email Id</span>
+                        <span class="formvalue">@Model.RegisteredEmail</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Status</span>
+                        <span class="formvalue">@Model.Status</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Address</span>
+                        <span class="formvalue">@Model.RegisteredAddress</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Country</span>
+                        <span class="formvalue">@Model.RegisteredCountry</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Time Zone</span>
+                        <span class="formvalue">@Model.RegisteredTimeZone</span>
+                    </li>
+                </ul>
+
+                <div class="accordion-guide client-accordion">
+                    <div class="accordion" id="accordionWrap">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Onboarding Details
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                 data-bs-parent="#accordionWrap">
+                                <div class="accordion-body">
+                                    <ul class="user-list">
+                                        <li>
+                                            <span class="formkey">Business Type</span>
+                                            <span class="formvalue">@Model.Category</span>
+                                        </li>
+                                        <li>
+                                            <span class="formkey">WhatsApp Buisness Account Name</span>
+                                            <span class="formvalue">@Model.BusinessName</span>
+                                        </li>
+                                        <li>
+                                            <span class="formkey">WhatsApp Registered Number</span>
+                                            <span class="formvalue">@Model.PhoneNumber</span>
+                                        </li>
+                                        <li>
+                                            <span class="formkey">WhatsApp Business Account ID (WABA ID)</span>
+                                            <span class="formvalue">@Model.WABAId</span>
+                                        </li>
+
+                                        <li>
+                                            <span class="formkey">Business ID</span>
+                                            <span class="formvalue">@Model.BusinessId</span>
+                                        </li>
+                                        <li>
+                                            <span class="formkey">Phone Number ID</span>
+                                            <span class="formvalue">@Model.PhoneNumberId</span>
+                                        </li>
+
+                                        <li>
+                                            <span class="formkey">Created At</span>
+                                            <span class="formvalue">@Model.CreatedAt</span>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Flow Details
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                 data-bs-parent="#accordionWrap">
+                                <div class="accordion-body">
+                                    <table class="table user-table form-wrapper">
+                                        <tr>
+                                            <th>
+                                                Flow ID
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                    <span class="searchIcon"></span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                Flow Name
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                    <span class="searchIcon"></span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                Last Updated
+                                                <label class="datewrap" for="datepicker">
+                                                    <input type="text"
+                                                           id="datepicker"
+                                                           class="form-control datepicker search-form-control"
+                                                           placeholder="Select Date" />
+                                                    <span class="dateIcon"></span>
+                                                </label>
+                                            </th>
+                                            <th>
+                                                Status
+                                                <select class="form-select">
+                                                    <option selected>Select Status</option>
+                                                    <option>Published</option>
+                                                    <option>Draft</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>432680573139248</td>
+                                            <td>
+                                                <span>test_200834_v1</span>
+                                            </td>
+
+                                            <td>29 Jan 2025</td>
+                                            <td>
+                                                <span class="badge success">Published</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>619099986545854</td>
+                                            <td>
+                                                <span class="message-block">
+                                                    Meassage
+                                                    templates_w45ert_MARKETING_2e4
+                                                </span>
+                                            </td>
+
+
+                                            <td>23 May 2025</td>
+                                            <td>
+                                                <span class="badge warning">Draft</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>547695318424695</td>
+                                            <td>
+                                                <span class="message-block">
+                                                    test_200834_v1
+                                                </span>
+                                            </td>
+
+                                            <td>02 March 2025</td>
+                                            <td>
+                                                <span class="badge bgdark">Deprecated</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <nav aria-label="navigation example">
+                                        <ul class="pagination mt-5 d-flex justify-content-center">
+                                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThird">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
+                                    Template Details
+                                </button>
+                            </h2>
+                            <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird"
+                                 data-bs-parent="#accordionWrap">
+                                <div class="accordion-body">
+                                    <div class="filterWrapper form-wrapper justify-content-end">
+                                        <a href="create-templates.html" class="btn primary-btn add d-flex">Create Template</a>
+                                    </div>
+                                    <div class="table-responsive">
+
+                                        <table class="table user-table form-wrapper">
+                                            <tr>
+                                                <th>
+                                                    Template ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Template Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Category
+                                                    <select class="form-select">
+                                                        <option selected>Select Type</option>
+                                                        <option>Marketing</option>
+                                                        <option>Authentication</option>
+                                                        <option>Utility</option>
+                                                    </select>
+                                                </th>
+                                                <th>
+                                                    Language
+                                                    <select class="form-select">
+                                                        <option selected>Select Language</option>
+                                                        <option>English</option>
+                                                        <option>Hindi</option>
+
+                                                    </select>
+                                                </th>
+                                                <th>Message</th>
+                                                <th>
+                                                    Last Updated
+                                                    <label class="datewrap" for="datepicker">
+                                                        <input type="text"
+                                                               id="datepicker"
+                                                               class="form-control datepicker search-form-control"
+                                                               placeholder="Select Date" />
+                                                        <span class="dateIcon"></span>
+                                                    </label>
+
+                                                </th>
+                                                <th>
+                                                    Rejection Reason
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Status
+                                                    <select class="form-select">
+                                                        <option selected>Select Status</option>
+                                                        <option>Approved</option>
+                                                        <option>Rejected</option>
+
+                                                    </select>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td>6935503</td>
+                                                <td>whatsapp_template_177</td>
+                                                <td>Utility</td>
+                                                <td>English</td>
+                                                <td>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">View</a>
+                                                </td>
+                                                <td>2025-04-22, 06:04:55</td>
+                                                <td>
+                                                    -
+                                                </td>
+                                                <td><span class="badge success">Approved</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>9435503</td>
+                                                <td>integration_body_header</td>
+                                                <td>Marketing</td>
+                                                <td>Hindi</td>
+                                                <td>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">View</a>
+                                                </td>
+                                                <td>2025-06-02, 04:04:55</td>
+                                                <td>
+                                                    Reject Comment, Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                </td>
+                                                <td><span class="badge danger">Rejected</span></td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                    <nav aria-label="navigation example">
+                                        <ul class="pagination mt-5 d-flex justify-content-center">
+                                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFourth">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFourth" aria-expanded="false" aria-controls="collapseFourth">
+                                    Campaigns & Offers
+                                </button>
+                            </h2>
+                            <div id="collapseFourth" class="accordion-collapse collapse" aria-labelledby="headingFourth"
+                                 data-bs-parent="#accordionWrap">
+
+                                <div class="accordion-body">
+                                    <div class="table-responsive">
+                                        <table class="table user-table form-wrapper">
+                                            <tr>
+                                                <th>
+                                                    Campaign ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Campaign Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Type
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Duration
+                                                    <label class="datewrap" for="datepicker">
+                                                        <input type="text"
+                                                               id="datepicker"
+                                                               class="form-control datepicker search-form-control"
+                                                               placeholder="Select Date" />
+                                                        <span class="dateIcon"></span>
+                                                    </label>
+                                                </th>
+                                                <th>
+                                                    Status
+                                                    <select class="form-select">
+                                                        <option selected>Select Status</option>
+                                                        <option>Active</option>
+                                                        <option>Paused</option>
+
+                                                    </select>
+                                                </th>
+                                                <th>
+                                                    Amount
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Created By
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+
+                                            </tr>
+                                            <tr>
+                                                <td>CMP-00123</td>
+                                                <td>Diwali Festive Email Blast</td>
+                                                <td>Email</td>
+                                                <td>15 Oct 2025 - 05 Nov 2025 </td>
+                                                <td><span class="badge success">Active</span> </td>
+                                                <td>₹50,000 </td>
+                                                <td>admin@company.com</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CMP-00124</td>
+                                                <td>Instagram Product Teasers</td>
+                                                <td>Social</td>
+                                                <td>09 Sept 2025 - 30 Sept 2025 </td>
+                                                <td><span class="badge warning">Paused</span> </td>
+                                                <td>₹30,000</td>
+                                                <td>marketing@company.com</td>
+                                            </tr>
+
+
+                                        </table>
+                                    </div>
+                                    <nav aria-label="navigation example">
+                                        <ul class="pagination mt-5 d-flex justify-content-center">
+                                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSeven">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    Client Logo
+                                </button>
+                            </h2>
+                            <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                                 data-bs-parent="#accordionWrap">
+
+                                <div class="accordion-body">
+                                    <ul class="logo-list">
+                                        <li>
+                                            <label class="choose-picture">
+                                                <span class="plus-logo"></span>
+                                                <span class="choose-title">Choose Image</span>
+                                                <input type="file" class="form-control" disabled />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="choose-picture">
+                                                <img src="images/logo.png" />
+                                                <span class="existing">Existing</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- client details -->
+            <div class="tab-pane fade" id="client" role="tabpanel" aria-labelledby="client-tab">
+                <div class="tab-copy">
+                    <div class="">
+                        <h6 class="mb-3">Select Module Type</h6>
+                        <ul class="module-list">
+                            <li>
+                                <div class="form-check form-checkbox mb-2" id="check-Marketing">
+                                    <input class="form-check-input" type="checkbox" id="checkbox-marketing">
+                                    <label class="form-check-label ps-2" for="checkbox-marketing">Marketing</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-check form-checkbox mb-2" id="check-authentication">
+                                    <input class="form-check-input" type="checkbox" id="checkbox-authentication">
+                                    <label class="form-check-label ps-2" for="checkbox-authentication">Authentication</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-check form-checkbox mb-2" id="check-Utility">
+                                    <input class="form-check-input" type="checkbox" id="checkbox-utility">
+                                    <label class="form-check-label ps-2" for="checkbox-utility">Utility</label>
+                                </div>
+                            </li>
+                        </ul>
+                        <h6>Permissions</h6>
+                        <ul class="allow-user mb-4">
+                            <li>
+                                <div class="d-flex">
+                                    Allow Users Management<div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> </div>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                        <div class="marketing mb-5" id="marketing" style="display:none;">
+                            <h6>Role & Permissions For Marketing</h6>
+                            <table class="table">
+                                <tr>
+                                <thead>
+                                <th></th>
+                                <th class="text-center">Create</th>
+                                <th class="text-center">Add</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Delete</th>
+                                <th class="text-center">All Permissions</th>
+                                </thead>
+                                </tr>
+
+                                <tr>
+                                    <td>Templete Creation</td>
+                                    <td align="center">
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="marketing-create">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="marketing-add">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="marketing-edit">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="marketing-delete">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="marketing-all">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="authentication mb-5" id="authentication" style="display:none;">
+                            <h6>Role & Permissions For Authentication</h6>
+                            <table class="table">
+                                <tr>
+                                <thead>
+                                <th></th>
+                                <th class="text-center">Create</th>
+                                <th class="text-center">Add</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Delete</th>
+                                <th class="text-center">All Permissions</th>
+                                </thead>
+                                </tr>
+
+                                <tr>
+                                    <td>Templete Creation</td>
+                                    <td align="center">
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="authentication-create">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="authentication-add">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="authentication-edit">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="authentication-delete">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="authentication-all">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="utility-permission mb-5" id="utility" style="display:none;">
+                            <h6>Role & Permissions For Utility</h6>
+                            <table class="table">
+                                <tr>
+                                <thead>
+                                <th></th>
+                                <th class="text-center">Create</th>
+                                <th class="text-center">Add</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Delete</th>
+                                <th class="text-center">All Permissions</th>
+                                </thead>
+                                </tr>
+
+                                <tr>
+                                    <td>Templete Creation</td>
+                                    <td align="center">
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="utility-create">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="utility-add">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="utility-edit">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="utility-delete">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-checkbox d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="utility-all">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr />
+                        <ul class="user-list">
+
+                            <li>
+                                <span class="formkey">App API Key <span class="copy"></span></span>
+                                <span class="formvalue">sk_live_4c5d6f7g8h9j0klmnop123456789abcd <span class="show"></span>
+                            </li>
+                            <li>
+                                <span class="formkey">Token <span class="copy"></span></span>
+                                <span class="formvalue">EAAJZCwZA1xMIBABABkZClZAOqZCZDZCpZCmYZA6kBZCkZCmxyz1234567890abcdefgZCZD</span>
+                            </li>
+                        </ul>
+
+                        <div class="action mt-4">
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal10" id="approve-btn">Approve</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal11" id="reject-btn">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end client details -->
+            <!-- Price details -->
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="tab-copy">
+
+                    <div class="table-responsive">
+                        <table class="table user-table form-wrapper">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>Conversation Type </th>
+                                    <th>Message</th>
+                                    <th>Price</th>
+                                    <th>Markup Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+
+                                    <td>Marketing</td>
+                                    <td>54</td>
+                                    <td>&#8377;0.78</td>
+                                    <td>
+                                        <input class="form-control" value="&#8377;150" readonly />
+                                    </td>
+
+                                    <td>
+                                        <div class="action">
+                                            <a href="#" class="edit-icon"></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+
+                                    <td>Authentication</td>
+                                    <td>64</td>
+                                    <td>&#8377;0.75</td>
+                                    <td>
+                                        <input class="form-control" value="&#8377;105" readonly />
+                                    </td>
+
+                                    <td>
+                                        <div class="action">
+                                            <a href="#" class="edit-icon"></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+
+                                    <td>Utility</td>
+                                    <td>68</td>
+                                    <td>&#8377;0.73</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <input class="form-control" id="name" value="&#8377;105" readonly />
+                                            <button class="btn primary-btn" id="saveBtn" style="display: none;">Save</button>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="action">
+                                            <a href="#" class="edit-icon" id="editBtn"></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--end Price details -->
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#checkbox-marketing').change(function() {
+                if ($(this).is(':checked')) {
+                $('#marketing').show();
+                } else {
+                $('#marketing').hide();
+                }
+            });
+
+            $('#checkbox-authentication').change(function() {
+                if ($(this).is(':checked')) {
+                $('#authentication').show();
+                } else {
+                $('#authentication').hide();
+                }
+            });
+
+            $('#checkbox-utility').change(function() {
+                if ($(this).is(':checked')) {
+                $('#utility').show();
+                } else {
+                $('#utility').hide();
+                }
+            });
+
+            $('#editBtn').click(function() {
+                // Show the Save button
+                $('#saveBtn').show();
+
+                // Remove the readonly attribute from the input
+                $('#name').removeAttr('readonly');
+            });
+        });
+
+        document.querySelector('#approve-btn').addEventListener('click', function (e) {
+            const isMarketing = document.getElementById('checkbox-marketing').checked;
+            const isAuthentication = document.getElementById('checkbox-authentication').checked;
+            const isUtility = document.getElementById('checkbox-utility').checked;
+
+            let isValid = true;
+
+            function getPermissionValue(id) {
+                const checkbox = document.getElementById(id);
+                return checkbox ? checkbox.checked : false;
+            }
+
+            // Validate each selected module
+            if (isMarketing) {
+                if (!(
+                    getPermissionValue('marketing-create') ||
+                    getPermissionValue('marketing-add') ||
+                    getPermissionValue('marketing-edit') ||
+                    getPermissionValue('marketing-delete') ||
+                    getPermissionValue('marketing-all')
+                )) {
+                    commonHelper.showError("Please select at least one permission for Marketing.");
+                    isValid = false;
+                }
+            }
+
+            if (isAuthentication) {
+                if (!(
+                    getPermissionValue('authentication-create') ||
+                    getPermissionValue('authentication-add') ||
+                    getPermissionValue('authentication-edit') ||
+                    getPermissionValue('authentication-delete') ||
+                    getPermissionValue('authentication-all')
+                )) {
+                    commonHelper.showError("Please select at least one permission for Authentication.");
+                    isValid = false;
+                }
+            }
+
+            if (isUtility) {
+                if (!(
+                    getPermissionValue('utility-create') ||
+                    getPermissionValue('utility-add') ||
+                    getPermissionValue('utility-edit') ||
+                    getPermissionValue('utility-delete') ||
+                    getPermissionValue('utility-all')
+                )) {
+                    commonHelper.showError("Please select at least one permission for Utility.");
+                    isValid = false;
+                }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
+
+            // Prepare data for AJAX
+            const viewModel = {
+                IsMarketing: isMarketing,
+                IsAuthentication: isAuthentication,
+                IsUtility: isUtility,
+                MarketingCreate: getPermissionValue('marketing-create'),
+                MarketingAdd: getPermissionValue('marketing-add'),
+                MarketingEdit: getPermissionValue('marketing-edit'),
+                MarketingDelete: getPermissionValue('marketing-delete'),
+                MarketingAll: getPermissionValue('marketing-all'),
+                AuthenticationCreate: getPermissionValue('authentication-create'),
+                AuthenticationAdd: getPermissionValue('authentication-add'),
+                AuthenticationEdit: getPermissionValue('authentication-edit'),
+                AuthenticationDelete: getPermissionValue('authentication-delete'),
+                AuthenticationAll: getPermissionValue('authentication-all'),
+                UtilityCreate: getPermissionValue('utility-create'),
+                UtilityAdd: getPermissionValue('utility-add'),
+                UtilityEdit: getPermissionValue('utility-edit'),
+                UtilityDelete: getPermissionValue('utility-delete'),
+                UtilityAll: getPermissionValue('utility-all')
+            };
+
+            $.ajax({
+                url: '/ClientManagement/SaveClientDetails', 
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(viewModel),
+                success: function (response) {
+                    commonHelper.showSuccess('Permissions saved successfully!');
+                },
+                error: function (xhr, status, error) {
+                    commonHelper.showError('Error saving permissions: ' + error);
+                }
+            });
+        });
+    </script>
+}
