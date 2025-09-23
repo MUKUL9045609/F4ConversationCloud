@@ -20,8 +20,34 @@ namespace F4ConversationCloud.Application.Common.Meta.BussinessProfile
 
         [JsonPropertyName("status")]
         public string WhatsAppStatus { get; set; }
+
+        [JsonPropertyName("whatsapp_business_profile")]
+        public WhatsAppBusinessProfile WhatsAppBusinessProfile { get; set; }
     }
 
+    public class WhatsAppBusinessProfile
+    {
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
+
+        [JsonPropertyName("websites")]
+        public List<string> Websites { get; set; }
+
+        [JsonPropertyName("vertical")]
+        public string Vertical { get; set; }
+
+        [JsonPropertyName("data")]
+        public List<BusinessProfileData> Data { get; set; }
+    }
+
+    public class BusinessProfileData
+    {
+        [JsonPropertyName("vertical")]
+        public string Vertical { get; set; }
+
+        [JsonPropertyName("messaging_product")]
+        public string MessagingProduct { get; set; }
+    }
 
 
 }

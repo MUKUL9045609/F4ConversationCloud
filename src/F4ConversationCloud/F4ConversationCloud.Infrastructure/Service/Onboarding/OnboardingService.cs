@@ -1,4 +1,8 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
@@ -7,9 +11,6 @@ using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -106,6 +107,15 @@ namespace F4ConversationCloud.Application.Common.Services
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
 
+                    // Normalize fields (works for both formats)
+                    string category = businessInfo?.WhatsAppBusinessProfile?.Vertical
+                                      ?? businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
+
+                    //string messagingProduct = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.MessagingProduct;
+
+                    string email = businessInfo?.WhatsAppBusinessProfile?.Email;
+                    string website = businessInfo?.WhatsAppBusinessProfile?.Websites?.FirstOrDefault();
+
                     var insertConfig = new MetaUsersConfiguration
                     {
                         ClientInfoId = request.ClientInfoId,
@@ -116,6 +126,12 @@ namespace F4ConversationCloud.Application.Common.Services
                         Status = businessInfo.WhatsAppStatus,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
+
+                        // Store normalized business profile details
+                        ClientEmail = email,
+                        WebSite = website,
+                        Category = category,
+                       // MessagingProduct = messagingProduct
                     };
 
                     var response = await _authRepository.InsertMetaUsersConfigurationAsync(insertConfig);
@@ -128,7 +144,6 @@ namespace F4ConversationCloud.Application.Common.Services
                             Message = "Meta User Configuration Inserted Successfully"
                         };
                     }
-                   
                 }
 
                 return new MetaUsersConfigurationResponse
@@ -137,9 +152,8 @@ namespace F4ConversationCloud.Application.Common.Services
                     Message = "Meta User Configuration Insertion Failed"
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
                 return new MetaUsersConfigurationResponse
                 {
                     status = false,

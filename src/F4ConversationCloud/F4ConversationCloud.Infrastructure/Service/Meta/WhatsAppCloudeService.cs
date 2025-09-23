@@ -29,7 +29,9 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                 var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
                 var accessToken = _configuration["WhatsAppAPISettings:AccessToken"];
 
-                var requestUrl = $"{baseUrl}/{phoneNumberId}?fields=id,display_phone_number,verified_name,status&access_token={accessToken}";
+                string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(phoneNumberId)}" +
+                                    "?fields=id,display_phone_number,verified_name,whatsapp_business_profile{email,websites,vertical},status" +
+                                    $"&access_token={Uri.EscapeDataString(accessToken)}";
 
                 using var client = new HttpClient();
                 var response = await client.GetAsync(requestUrl);
@@ -37,16 +39,26 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    response.EnsureSuccessStatusCode();
+                    
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
 
-                var info = JsonSerializer.Deserialize<WhatsAppPhoneNumberInfoViewModel>(content);
+                var info = JsonSerializer.Deserialize<WhatsAppPhoneNumberInfoViewModel>(content,
+                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                string vertical = info?.WhatsAppBusinessProfile?.Vertical
+                                  ?? info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
+
+                string messagingProduct = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.MessagingProduct;
+
+                string email = info?.WhatsAppBusinessProfile?.Email;
+                List<string> websites = info?.WhatsAppBusinessProfile?.Websites;
+
 
                 return info ?? new WhatsAppPhoneNumberInfoViewModel();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new WhatsAppPhoneNumberInfoViewModel();
             }
