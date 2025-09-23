@@ -153,23 +153,8 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-                var registerRequest = new RegisterUserModel
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Email = request.Email,
-                    
-                    Address = request.Address,
-                    Country = request.Country,
-                    Timezone = request.Timezone,
-                    PassWord = PasswordHasherHelper.HashPassword(request.PassWord),
-                    IsActive = request.IsActive,
-                    Stage = request.Stage,
-                    FullPhoneNumber= request.FullPhoneNumber,
-                    Role = request.Role,
-                };
-
-                var register = await _authRepository.CreateUserAsync(registerRequest);
+                
+                var register = await _authRepository.CreateUserAsync(request);
 
                 if (register <= 0)
                 {

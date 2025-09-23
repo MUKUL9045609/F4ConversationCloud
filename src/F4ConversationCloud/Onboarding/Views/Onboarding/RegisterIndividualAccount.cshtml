@@ -1,5 +1,4 @@
-﻿@using System.Web
-@model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.RegisterUserModel;
+﻿@model Onboarding.Models.RegisterUserViewModel
 @{
     ViewData["Title"] = "Register Form";
 }
@@ -125,7 +124,7 @@
                     }
                     else
                     {
-                        <input asp-for="PassWord" type="text" class="form-control" placeholder="Enter Password" id="password" />
+                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
                     }
 
                 <span class="input-group-text toggle-password" data-target="password" id="passicon">
@@ -144,10 +143,10 @@
                     }
                     else
                     {
-                        <input asp-for="ConfirmPassword" type="text" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                        <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
                     }                  
                     <span class="input-group-text toggle-password" data-target="confirmPassword" id="cpassicon">
-                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
                     </span>
                 </div>
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
@@ -155,8 +154,9 @@
               <div class="mb-3">
                             <label for="emailCode" class="form-label">Select Current Time Zone</label>
                 <select class="form-control select2" asp-for="Timezone">
-                    <option value="">Select Time Zone</option>
+                    <option value="" selected disabled>Select Time Zone</option>
                     <option value="@Model.Timezone">@Model.Timezone</option>
+                 
                     @foreach (var item in Model.TimeZones)
                     {
                         var settimean = item.name + item.current_utc_offset;
@@ -206,10 +206,22 @@
 @section Scripts {
     @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  
+
+    
+    @* @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    } *@
     <script>
         $(document).ready(function () {
             $(".select2").select2();
+
+            // $('#agreeTerms').on('change', function () {
+            // if ($(this).is(':checked')) {
+            //     $('#agreeTerms').val(true);
+            // } else {
+            //     $('#agreeTerms').val(false);
+            // }
+            // });
         });
     </script>
 
@@ -217,102 +229,100 @@
        // #region Resend otp-- >
 
         $(document).ready(function () {
-                                let timerDuration = 5 * 60;
-                                let interval;
+            let timerDuration = 5 * 60;
+            let interval;
 
-                                function startTimer() {
-                                    clearInterval(interval);
+            function startTimer() {
+                clearInterval(interval);
 
-                                    let remaining = timerDuration;
+                let remaining = timerDuration;
 
-                                            $("#resendotp").addClass("d-none");
-                                    $(".otp-text").removeClass("d-none");
-                                    $("#timeRemaining").text(formatTime(remaining));
+                $("#resendotp").addClass("d-none");
+                $(".otp-text").removeClass("d-none");
+                $("#timeRemaining").text(formatTime(remaining));
 
-                                    interval = setInterval(function () {
-                                        remaining--;
+                interval = setInterval(function () {
+                    remaining--;
 
-                                        if (remaining >= 0) {
-                                            $("#timeRemaining").text(formatTime(remaining));
-                                        }
+                    if (remaining >= 0) {
+                        $("#timeRemaining").text(formatTime(remaining));
+                    }
 
-                                        if (remaining < 0) {
-                                            clearInterval(interval);
-                                            $(".otp-text").addClass("d-none");
-                                                    $("#resendotp").removeClass("d-none");
-                                        }
-                                    }, 1000);
-                                }
+                    if (remaining < 0) {
+                        clearInterval(interval);
+                        $(".otp-text").addClass("d-none");
+                                $("#resendotp").removeClass("d-none");
+                    }
+                }, 1000);
+            }
 
-                                function formatTime(seconds) {
-                                    let minutes = Math.floor(seconds / 60);
-                                    let secs = seconds % 60;
-                                    return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
-                                }
-
-
-                                $("#sendmail").click(function () {
-                                    startTimer();
-                                });
-
-                          $("#resendotp").click(function () {
+            function formatTime(seconds) {
+                let minutes = Math.floor(seconds / 60);
+                let secs = seconds % 60;
+                return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+            }
 
 
-                                    let email = $('#emailid').val().trim();
-                                        $("#loader").show();
+            $("#sendmail").click(function () {
+                startTimer();
+            });
 
-                                $.ajax({
-                                        url: "@Url.ActionLink("VarifyMail", "Onboarding")",
-                                        type: "POST",
-                                        data: JSON.stringify({
-                                            UserEmailId: email,
-                                            OTP_Source: "EMAIL"
-                                        }),
-                                        contentType: "application/json; charset=utf-8",
-                                        success: function (response) {
-                                            if (response.status === true) {
-                                                    $('#codeSection').show();
-                                                // alert("OTP sent successfully!");
-                                                showToast("OTP sent successfully!", "success");
-                                            }
-                                            else if(response.status === false && response.message === "Email already exists")
-                                            {
-                                                $('#emailError').text('Email already exists. Please use a different email.');
-                                            }
-                                            else {
-                                                showToast("Failed to send OTP. Please try again.", "danger");
-                                            }
-
-                                        },
-                                        error: function (xhr) {
-                                            showToast("technical Error", "danger");
-                                        },
-                                            complete: function () {
-                                            $("#loader").hide();
-                                        }
-                                });
+        $("#resendotp").click(function () {
 
 
+                let email = $('#emailid').val().trim();
+                    $("#loader").show();
 
-                                });
-                            });
+            $.ajax({
+                    url: "@Url.ActionLink("VarifyMail", "Onboarding")",
+                    type: "POST",
+                    data: JSON.stringify({
+                        UserEmailId: email,
+                        OTP_Source: "EMAIL"
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        if (response.status === true) {
+                                $('#codeSection').show();
+                            // alert("OTP sent successfully!");
+                            showToast("OTP sent successfully!", "success");
+                        }
+                        else if(response.status === false && response.message === "Email already exists")
+                        {
+                            $('#emailError').text('Email already exists. Please use a different email.');
+                        }
+                        else {
+                            showToast("Failed to send OTP. Please try again.", "danger");
+                        }
+
+                    },
+                    error: function (xhr) {
+                        showToast("technical Error", "danger");
+                    },
+                        complete: function () {
+                        $("#loader").hide();
+                    }
+            });
 
 
-        //#region send mail --
 
-        $(document).ready(function () {
+            });
+        });
+
+
+//#region send mail --
+
+$(document).ready(function () {
 
 
                 $('#sendmail').click(function(){
                     let email = $('#emailid').val().trim();
 
                     if(email === ''){
-                        // $('#sendmail').prop('disabled', true);
                         $('#emailError').text('Please enter your email address.');
                         return;
                     } else {
                         $('#emailError').text('');
-                            //    $('#sendmail').prop('disabled', false);
                     }
 
                     let emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
@@ -369,11 +379,11 @@
                     let Otp = $('#otp').val();
                             let email = $('#emailid').val().trim();
 
-                    if (Otp === '' || email === '') {
-                        $('#OtpError').text('Please enter the OTP and email.');
-                        otpVerified = false;
-                        return;
-                    }
+                    // if (Otp === '' || email === '') {
+                    //     $('#OtpError').text('Please enter the OTP and email.');
+                    //     otpVerified = false;
+                    //     return;
+                    // }
                        $("#loader").show();
                     $.ajax({
                         url:"@Url.ActionLink("VerifyOtp", "Onboarding")",
@@ -440,8 +450,8 @@
                             $element.prop("disabled", true);
                         }
                     });
-                        $('#nextbtn').prop("disabled",false);
-                        $(' #passicon, #cpassicon,#agreeTerms')
+                        //$('#nextbtn').prop("disabled",false);
+                        $(' #passicon, #cpassicon,#agreeTerms,#nextbtn')
                             .addClass('disabled')
                             .css({
                                 'pointer-events': 'none',
@@ -449,7 +459,7 @@
                              });
                         $('#sendmail').hide();
             } else {         
-                $('#nextbtn').prop("disabled",true);
+                $('#nextbtn').removeClass("disabled");
             }
 
         });

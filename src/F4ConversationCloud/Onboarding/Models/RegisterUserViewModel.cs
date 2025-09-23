@@ -1,21 +1,17 @@
 ﻿using F4ConversationCloud.Application.Common.Helper;
+using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel
+
+namespace Onboarding.Models
 {
-    public class RegisterUserModel : IValidatableObject
+    public class RegisterUserViewModel
     {
         [Required(ErrorMessage = "Full Name is required")]
         [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]
-       // [NoWhitespace( ErrorMessage = "Name Cannot contain Empty Spaces.")]
+        [Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
         public string FirstName { get; set; }
 
         public string? LastName { get; set; }
@@ -51,10 +47,11 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string ConfirmPassword { get; set; }
         public bool IsActive { get; set; } = true;
 
-        //[MustBeTrue(ErrorMessage = "You must agree to the terms & conditions")]
+        // [ValidationHelper.MustBeTrue(ErrorMessage = "You must agree to the terms & conditions")]
         [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "This Field is Required.")]
         public bool TermsCondition { get; set; }
-        [Remote(action: "IsValidEmailOtpVerified", controller: "Validation", AdditionalFields = "Email", ErrorMessage = "This Field is Required.")]
+
+        [Remote(action: "IsValidEmailOtpVerify", controller: "Validation", ErrorMessage = "This Field is Required.")]
         public bool EmailOtpVerified { get; set; } = false;
         public string Role { get; set; } = "Client";
 
@@ -65,38 +62,38 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var validator = validationContext.GetService(typeof(ValidationHelper)) as ValidationHelper;
-            var task = Task.Run(() => validator?.Validate(this));
-            return task.Result;
-        }
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    var validator = validationContext.GetService(typeof(ValidationHelper)) as ValidationHelper;
+        //    var task = Task.Run(() => validator?.Validate(this));
+        //    return task.Result;
+        //}
     }
     //public class MustBeTrueAttribute : ValidationAttribute
     //{
-    //    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    //    {
-    //        if (value is bool b && b) return ValidationResult.Success;
-    //    public class MustBeTrueAttribute : ValidationAttribute
-    //    {
-    //        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    //        {
-    //            if (value is bool b && b) return ValidationResult.Success;
+    //    //protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        //{
+        //    if (value is bool b && b) return ValidationResult.Success;
+        //public class MustBeTrueAttribute : ValidationAttribute
+        //{
+        //    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        //    {
+        //        if (value is bool b && b) return ValidationResult.Success;
 
-    //            return new ValidationResult(ErrorMessage ?? "You must agree to the terms & conditions");
-    //        }
-    //    }
-    //    public class NoWhitespaceAttribute : ValidationAttribute
-    //    {
-    //        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    //        {
-    //            if (value is string str && string.IsNullOrWhiteSpace(str))
-    //            {
-    //                return new ValidationResult("The " + validationContext.DisplayName + " field cannot contain only whitespace.");
-    //            }
-    //            return ValidationResult.Success;
-    //        }
-    //    }
+        //        return new ValidationResult(ErrorMessage ?? "You must agree to the terms & conditions");
+        //    }
+        //}
+        //public class NoWhitespaceAttribute : ValidationAttribute
+        //{
+        //    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        //    {
+        //        if (value is string str && string.IsNullOrWhiteSpace(str))
+        //        {
+        //            return new ValidationResult("The " + validationContext.DisplayName + " field cannot contain only whitespace.");
+        //        }
+        //        return ValidationResult.Success;
+        //    }
+        //}
     //}
     
 
@@ -124,21 +121,23 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public bool IsSuccess { get; set; }
     }
 
-    public class Loginrequest {
-        public string Email { get; set; }
-        public string PassWord { get; set; }
-    }
+    //public class LoginViewModel {
 
-    public class LoginViewModel
-    {
-        public int UserId { get; set; }
-        public string Email { get; set; }        
-        public bool IsSuccess { get; set; }
-        public string Message { get; set; }
-        public ClientFormStage Stage { get; set; }
-        public string Password { get; set; }
+        
 
-    }
+
+    //}
+
+    //public class LoginViewModel
+    //{
+    //    public int UserId { get; set; }
+    //    public string Email { get; set; }        
+    //    public bool IsSuccess { get; set; }
+    //    public string Message { get; set; }
+    //    public ClientFormStage Stage { get; set; }
+    //    public string Password { get; set; }
+
+    //}
     public class LoginResponse
     {
         public string Email { get; set; }
@@ -146,13 +145,9 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
-        public LoginViewModel Data { get; set; }
+       // public LoginViewModel Data { get; set; }
     }
 
-    public class TimeZoneResponse {
-
-        public string name { get; set; }
-        public string current_utc_offset { get; set; }
-    }
+   
 }
 

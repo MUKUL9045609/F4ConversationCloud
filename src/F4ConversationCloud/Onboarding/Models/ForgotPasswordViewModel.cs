@@ -1,4 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
 {
     public class ForgotPasswordViewModel
@@ -9,13 +15,13 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
         public string EmailId { get; set; }
     }
 
-    public class ResetPasswordResponseViewModel
-    {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string Password  { get; set; }
-        public string Stage { get; set; }
-    }
+    //public class ResetPasswordViewModel
+    //{
+    //    public int Id { get; set; }
+    //    public string Email { get; set; }
+    //    public string Password  { get; set; }
+    //    public string Stage { get; set; }
+    //}
     public class ConfirmPasswordViewModel
     {
         [Required]

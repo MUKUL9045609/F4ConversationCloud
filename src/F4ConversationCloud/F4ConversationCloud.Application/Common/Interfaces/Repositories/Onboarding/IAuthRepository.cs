@@ -3,7 +3,6 @@ using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeMode
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 
-
 namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding
 {
     public interface IAuthRepository
@@ -20,7 +19,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
         Task<LoginViewModel> ValidateClientCreadiatial(string email);
         Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
 
-        Task<ResetPasswordViewModel> ValidateEmailId(string ClientEmailId);
+        Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId);
 
         Task<int> UpdatePasswordAsync(ConfirmPasswordModel model);
 

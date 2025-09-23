@@ -1,35 +1,53 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using F4ConversationCloud.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class ValidationController : Controller
     {
-        public async Task<JsonResult> IsValidTermsCondition(bool termsAndCondition)
+        [AcceptVerbs("GET", "POST")]
+        public async Task<JsonResult> IsValidTermsCondition(bool TermsCondition)
         {
             try
             {
-                bool IsValid = true;
-
-                if (!termsAndCondition)
+                if (TermsCondition)
                 {
-                    IsValid = false;
+                    return Json(true); 
                 }
-
-                return Json(IsValid);
+                return Json(false);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return Json(false);
             }
         }
 
-        public async Task<JsonResult> IsValidEmailOtpVerified(bool termsAndCondition, string email)
+        public async Task<JsonResult> IsValidNoWhitespace(string FirstName)
+       {
+            try
+            {
+                bool isValid = !string.IsNullOrWhiteSpace(FirstName);
+                if (!isValid)
+                {
+                     return Json(false);
+                }
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                return Json(false);
+            }
+        }
+
+        
+        public async Task<JsonResult> IsValidEmailOtpVerify(bool EmailOtpVerified, string Email)
         {
             try
             {
                 bool IsValid = true;
 
-                if (!termsAndCondition && string.IsNullOrEmpty(email))
+                if (!EmailOtpVerified && string.IsNullOrEmpty(Email))
                 {
                     IsValid = false;
                 }
@@ -38,7 +56,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return Json(false);
             }
         }
     }

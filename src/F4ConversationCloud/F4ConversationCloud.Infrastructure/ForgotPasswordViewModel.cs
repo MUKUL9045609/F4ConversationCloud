@@ -1,4 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
 {
     public class ForgotPasswordViewModel
@@ -9,7 +15,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
         public string EmailId { get; set; }
     }
 
-    public class ResetPasswordResponseViewModel
+    public class ResetPasswordsViewModel
     {
         public int Id { get; set; }
         public string Email { get; set; }

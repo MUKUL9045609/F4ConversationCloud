@@ -1,11 +1,9 @@
 ﻿using F4ConversationCloud.Infrastructure.Interfaces;
 using Dapper;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
-using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 
 
@@ -184,22 +182,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             return await _repository.GetListByValuesAsync<TimeZoneResponse>("[sp_GetTimeZones]", dp);
         }
 
-        public Task<ResetPasswordViewModel> ValidateEmailId(string ClientEmailId)
-        {
-            try
-            {
-                dynamic parameters = new DynamicParameters();
-                parameters.Add("@email", ClientEmailId);
-                return _repository.GetByValuesAsync<ResetPasswordViewModel>("[sp_CheckUserExistsByMailId]", parameters);
-            }
-            catch (Exception)
-            {
-
-             return Task.FromResult<ResetPasswordViewModel>(null);
-            }
-           
-        }
-
+       
         public async Task<int> UpdatePasswordAsync(ConfirmPasswordModel model)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -209,5 +192,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 
             return await _repository.UpdateValuesAsync("sp_UpdateClientPassword", parameters);
         }
+
+        public Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId)
+        {
+            try
+            {
+                dynamic parameters = new DynamicParameters();
+                parameters.Add("@email", ClientEmailId);
+                return _repository.GetByValuesAsync<ResetPasswordResponseViewModel>("[sp_CheckUserExistsByMailId]", parameters);
+            }
+            catch (Exception)
+            {
+
+                return Task.FromResult<ResetPasswordResponseViewModel>(null);
+            }
+
+        }
+
     }
 }
