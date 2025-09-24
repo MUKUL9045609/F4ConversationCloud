@@ -24,7 +24,7 @@
  
 
 </div>
-@* <button id="saveMetaBtn" class="btn btn-primary">Save Meta Configuration</button> *@
+<button id="saveMetaBtn" class="btn btn-primary">Save Meta Configuration</button>
 
 @section Scripts {
     <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
@@ -145,14 +145,14 @@
 
 
     
-   @*  <script>
+    <script>
        // for test purpose only
         document.getElementById('saveMetaBtn').addEventListener('click', function () {
            
             const metaResponse = {
-                WabaId: "101600782940170",
-                PhoneNumberId: "651300701403441",
-                BusinessId: "101600782940170"
+                 WabaId: "1289432215843735",
+                 PhoneNumberId: "745504358656439",
+                 BusinessId: "1502717307541680"
             };
 
             fetch('@Url.Action("SaveMetaUserConfigurationDetails", "Onboarding")', {
@@ -180,7 +180,7 @@
                 console.error(err);
             });
         });
-    </script> *@
+    </script>
 
 
 }

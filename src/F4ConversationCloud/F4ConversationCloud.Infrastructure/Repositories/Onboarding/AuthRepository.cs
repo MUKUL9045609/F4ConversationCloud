@@ -136,6 +136,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("Status", command.Status);
                 parameters.Add("PhoneNumber", command.PhoneNumber);
                 parameters.Add("AppVersion", command.AppVersion);
+                parameters.Add("ClientEmail", command.ClientEmail);
+                parameters.Add("@WebSite", command.WebSite);
+                parameters.Add("@Category", command.Category);
 
                 return await _repository.InsertUpdateAsync("[dbo].[sp_InsertMetaUsersConfigurations]", parameters);
             }
