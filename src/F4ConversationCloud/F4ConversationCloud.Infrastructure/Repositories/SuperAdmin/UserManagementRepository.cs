@@ -14,9 +14,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
         private readonly IGenericRepository<User> _repository;
         private readonly DbContext _context;
 
-        public UserManagementRepository(IGenericRepository<User> repository)
+        public UserManagementRepository(IGenericRepository<User> repository, DbContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         public async Task<int> CreateUpdateAsync(User user)

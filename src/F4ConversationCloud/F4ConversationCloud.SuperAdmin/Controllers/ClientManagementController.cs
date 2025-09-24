@@ -1,7 +1,11 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using Dapper;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -82,8 +86,55 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveClientDetails([FromBody] ClientDetailsViewModel model)
+        public async Task<IActionResult> SaveClientDetails([FromBody] ClientDetailsViewModel model)
         {
+            if (model.IsMarketing)
+            {
+                var marketingPermissions = new ClientDetails
+                {
+                    TemplateType = (int)TemplateModuleType.Marketing,
+                    Create = model.MarketingCreate,
+                    Add = model.MarketingAdd,
+                    Edit = model.MarketingEdit,
+                    Delete = model.MarketingDelete,
+                    All = model.MarketingAll,
+                    AllowUserManagement = model.AllowUserManagement
+                };
+
+                await _clientManagement.SaveClientPermission(marketingPermissions);
+            }
+
+            if (model.IsAuthentication)
+            {
+                var authPermissions = new ClientDetails
+                {
+                    TemplateType = (int)TemplateModuleType.Authentication,
+                    Create = model.AuthenticationCreate,
+                    Add = model.AuthenticationAdd,
+                    Edit = model.AuthenticationEdit,
+                    Delete = model.AuthenticationDelete,
+                    All = model.AuthenticationAll,
+                    AllowUserManagement = model.AllowUserManagement
+                };
+
+                await _clientManagement.SaveClientPermission(authPermissions);
+            }
+
+            if (model.IsUtility)
+            {
+                var utilityPermissions = new ClientDetails
+                {
+                    TemplateType = (int)TemplateModuleType.Utility,
+                    Create = model.UtilityCreate,
+                    Add = model.UtilityAdd,
+                    Edit = model.UtilityEdit,
+                    Delete = model.UtilityDelete,
+                    All = model.UtilityAll,
+                    AllowUserManagement = model.AllowUserManagement
+                };
+
+                await _clientManagement.SaveClientPermission(utilityPermissions);
+            }
 
             return Ok(new { message = "Saved successfully" });
         }

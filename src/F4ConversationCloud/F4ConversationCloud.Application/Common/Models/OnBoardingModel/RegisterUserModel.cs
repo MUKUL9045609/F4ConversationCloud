@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel
 {
-    public class RegisterUserModel : IValidatableObject
+    public class RegisterUserModel
     {
         [Required(ErrorMessage = "Full Name is required")]
         [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]

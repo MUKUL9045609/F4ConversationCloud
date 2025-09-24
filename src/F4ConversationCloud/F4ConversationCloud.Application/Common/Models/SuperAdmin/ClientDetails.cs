@@ -29,23 +29,12 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public string RegisteredAddress { get; set; }
         public string RegisteredCountry { get; set; }
         public string RegisteredTimeZone{ get; set; }
-        public bool IsMarketing { get; set; }
-        public bool IsAuthentication { get; set; }
-        public bool IsUtility { get; set; }
-        public bool MarketingCreate { get; set; }
-        public bool MarketingAdd { get; set; }
-        public bool MarketingEdit { get; set; }
-        public bool MarketingDelete { get; set; }
-        public bool MarketingAll { get; set; }
-        public bool AuthenticationCreate { get; set; }
-        public bool AuthenticationAdd { get; set; }
-        public bool AuthenticationEdit { get; set; }
-        public bool AuthenticationDelete { get; set; }
-        public bool AuthenticationAll { get; set; }
-        public bool UtilityCreate { get; set; }
-        public bool UtilityAdd { get; set; }
-        public bool UtilityEdit { get; set; }
-        public bool UtilityDelete { get; set; }
-        public bool UtilityAll { get; set; }
+        public int TemplateType { get; set; }
+        public bool Create { get; set; }
+        public bool Add { get; set; }
+        public bool Edit { get; set; }
+        public bool Delete { get; set; }
+        public bool All { get; set; }
+        public bool AllowUserManagement { get; set; }
     }
 }
