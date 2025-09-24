@@ -1,5 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Domain.Helpers;
+using Newtonsoft.Json;
 using System.Text;
 
 
@@ -92,6 +94,47 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
 
             }
+        }
+
+        public async Task<T> CallExternalAPI<T>(string EndPoint, string MethodType, T RequestBody, Dictionary<string, string> OAUths, string APIType, Dictionary<string, string> QuerryStringParameters, bool AddLogs = true, bool IsExternalAPI = false, string BodyType = "json")
+        {
+            var ReturnResponse = (T)Activator.CreateInstance(typeof(T));
+            APIRequestModel<T> model = new APIRequestModel<T>();
+            try
+            {
+                model = new APIRequestModel<T>
+                {
+                    OAuths = OAUths,
+                    APIType = APIType,
+                    EndPoint = EndPoint,
+                    QuerryStringParameters = QuerryStringParameters,
+                    RequestBody = RequestBody,
+                    RequestType = MethodType,
+                    AddLogs = AddLogs,
+                    IsExternalAPI = IsExternalAPI,
+                    BodyType = BodyType
+                };
+
+                var response = GenericAPIHelper.CallAPIGeneric<T>(model);
+
+                bool IsSuccess = response.Status;
+                string ErrorMessage = response.ErrorMessage;
+                string rawResponse = await response.Response.Content.ReadAsStringAsync();
+                int StatusCode = (int)response.Response.StatusCode;
+                if (IsSuccess)
+                {
+                    ReturnResponse = JsonConvert.DeserializeObject<T>(rawResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
+            return ReturnResponse;
         }
     }
 }
