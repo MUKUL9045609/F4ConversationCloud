@@ -24,7 +24,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         public async Task<JsonResult> IsValidNoWhitespace(string FirstName)
-       {
+        {
             try
             {
                 bool isValid = !string.IsNullOrWhiteSpace(FirstName);
@@ -40,24 +40,16 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
         }
 
-        
-        public async Task<JsonResult> IsValidEmailOtpVerify(bool EmailOtpVerified, string Email)
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult IsValidEmailOtpVerify(bool EmailOtpVerified, string Email)
         {
-            try
+            if (!EmailOtpVerified)
             {
-                bool IsValid = true;
-
-                if (!EmailOtpVerified && string.IsNullOrEmpty(Email))
-                {
-                    IsValid = false;
-                }
-
-                return Json(IsValid);
+                return Json($"Email OTP for {Email} is not verified.");
             }
-            catch (Exception ex)
-            {
-                return Json(false);
-            }
+
+            return Json(true);
         }
+
     }
 }

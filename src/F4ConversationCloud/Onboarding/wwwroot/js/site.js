@@ -65,32 +65,23 @@ window.onload = function () {
     $("#loader").fadeOut("slow");
 };
 
-$(".toggle-password").click(function () {
-    $(this).toggleClass("fa-eye fa-eye-slash");
-    input = $(this).parent().find("input");
-    if (input.attr("type") == "password") {
-        input.attr("type", "text");
-    } else {
-        input.attr("type", "password");
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+    togglePasswordIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            const targetId = this.dataset.target;
+            const passwordInput = targetId
+                ? document.getElementById(targetId)
+                : this.parentElement.querySelector('input');
+
+            const eyeIcon = this.tagName.toLowerCase() === "i" ? this : this.querySelector('i');
+
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    });
 });
-
-//document.addEventListener('DOMContentLoaded', function () {
-//    const togglePasswordIcons = document.querySelectorAll('.toggle-password');
-
-//    togglePasswordIcons.forEach(iconContainer => {
-//        iconContainer.addEventListener('click', function () {
-//            const targetId = this.dataset.target;
-//            const passwordInput = document.getElementById(targetId);
-//            const eyeIcon = this.querySelector('i');
-
-
-//            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-//            passwordInput.setAttribute('type', type);
-
-
-//            eyeIcon.classList.toggle('fa-eye');
-//            eyeIcon.classList.toggle('fa-eye-slash');
-//        });
-//    });
-//});

@@ -146,7 +146,7 @@
                         <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
                     }                  
                     <span class="input-group-text toggle-password" data-target="confirmPassword" id="cpassicon">
-                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                            <i class="fa fa-eye-slash" aria-hidden="true"></i>       
                     </span>
                 </div>
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
@@ -204,7 +204,6 @@
 </div>
 
 @section Scripts {
-    @*  <script src="~/js/onboarding/OnboardingAjaxCall.js"></script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     
@@ -214,14 +213,6 @@
     <script>
         $(document).ready(function () {
             $(".select2").select2();
-
-            // $('#agreeTerms').on('change', function () {
-            // if ($(this).is(':checked')) {
-            //     $('#agreeTerms').val(true);
-            // } else {
-            //     $('#agreeTerms').val(false);
-            // }
-            // });
         });
     </script>
 
