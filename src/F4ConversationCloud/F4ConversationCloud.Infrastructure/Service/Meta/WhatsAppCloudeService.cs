@@ -44,16 +44,13 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
 
                 var content = await response.Content.ReadAsStringAsync();
 
-                var info = JsonSerializer.Deserialize<WhatsAppPhoneNumberInfoViewModel>(content,
-                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var info = JsonSerializer.Deserialize<WhatsAppPhoneNumberInfoViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                string vertical = info?.WhatsAppBusinessProfile?.Vertical
-                                  ?? info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
-
-                string messagingProduct = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.MessagingProduct;
-
+                string vertical = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
                 string email = info?.WhatsAppBusinessProfile?.Email;
                 List<string> websites = info?.WhatsAppBusinessProfile?.Websites;
+               
+                //string messagingProduct = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.MessagingProduct;
 
 
                 return info ?? new WhatsAppPhoneNumberInfoViewModel();

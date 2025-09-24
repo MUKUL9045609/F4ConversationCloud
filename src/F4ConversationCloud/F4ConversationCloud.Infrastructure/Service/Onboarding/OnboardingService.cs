@@ -107,11 +107,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
 
-                    // Normalize fields (works for both formats)
-                    string category = businessInfo?.WhatsAppBusinessProfile?.Vertical
-                                      ?? businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
-
-                    //string messagingProduct = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.MessagingProduct;
+                    string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
 
                     string email = businessInfo?.WhatsAppBusinessProfile?.Email;
                     string website = businessInfo?.WhatsAppBusinessProfile?.Websites?.FirstOrDefault();
@@ -127,11 +123,9 @@ namespace F4ConversationCloud.Application.Common.Services
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
 
-                        // Store normalized business profile details
                         ClientEmail = email,
                         WebSite = website,
                         Category = category,
-                       // MessagingProduct = messagingProduct
                     };
 
                     var response = await _authRepository.InsertMetaUsersConfigurationAsync(insertConfig);
