@@ -14,5 +14,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<int> GetCountAsync(MasterListFilter filter);
         Task<ClientDetails> GetClientDetailsById(int Id);
         Task<int> SaveClientPermission(ClientDetails clientDetails);
+        Task<bool> Reject(int Id, string Status, string RejectComment);
     }
 }

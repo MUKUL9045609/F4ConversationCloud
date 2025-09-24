@@ -5,7 +5,9 @@ using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Web.Mvc;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -27,12 +29,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 PageSize = model.PageSize,
             });
 
-            if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
+            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
             {
-                if (model.PageNumber > 1)
-                {
-                    TempData["ErrorMessage"] = "Invalid Page";
-                }
+                TempData["ErrorMessage"] = "Invalid Page";
                 return RedirectToAction("List");
             }
 
@@ -92,6 +91,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             {
                 var marketingPermissions = new ClientDetails
                 {
+                    Id = model.Id,
                     TemplateType = (int)TemplateModuleType.Marketing,
                     Create = model.MarketingCreate,
                     Add = model.MarketingAdd,
@@ -108,6 +108,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             {
                 var authPermissions = new ClientDetails
                 {
+                    Id = model.Id,
                     TemplateType = (int)TemplateModuleType.Authentication,
                     Create = model.AuthenticationCreate,
                     Add = model.AuthenticationAdd,
@@ -124,6 +125,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             {
                 var utilityPermissions = new ClientDetails
                 {
+                    Id = model.Id,
                     TemplateType = (int)TemplateModuleType.Utility,
                     Create = model.UtilityCreate,
                     Add = model.UtilityAdd,
@@ -137,6 +139,27 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
 
             return Ok(new { message = "Saved successfully" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id, string rejectComment)
+        {
+            if (string.IsNullOrWhiteSpace(rejectComment))
+            {
+                return BadRequest("Comment is required.");
+            }
+
+            var status = "Rejected";
+            var response = await _clientManagement.Reject(id, status, rejectComment);
+
+            if (response)
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
+            }
         }
     }
 }

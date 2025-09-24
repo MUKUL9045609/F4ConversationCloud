@@ -52,7 +52,7 @@
                         @if (!Model.data.Any())
                         {
                             <tr>
-                                <td colspan="5" class="text-center">No Records Found</td>
+                                <td colspan="6" class="text-center">No Records Found</td>
                             </tr>
                         }
                         else
@@ -94,3 +94,31 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function loadData() {
+            let searchString = '';
+            let status = $("[name=Status]").val('1');
+            let pageNumber = 1;
+            location.href = '@Url.Action("List", "ClientManagement")' +
+                '?SearchString=' + searchString +
+                '&Status=' + encodeURIComponent(status) +
+                '&PageNumber=' + pageNumber;
+        }
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                let searchString = '';
+                let status = $("[name=Status]").val('1');
+
+                location.href = '@Url.Action("List", "ClientManagement")' +
+                    '?SearchString=' + searchString +
+                    '&Status=' + encodeURIComponent(status) +
+                    '&PageNumber=' + pageNumber;
+            }
+        });
+
+    </script>
+}

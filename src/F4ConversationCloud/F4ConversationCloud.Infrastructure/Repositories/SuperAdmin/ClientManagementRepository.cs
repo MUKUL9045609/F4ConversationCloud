@@ -62,6 +62,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
         {
             DynamicParameters parameters = new DynamicParameters();
 
+            parameters.Add("MetaUserConfigurationId", clientDetails.Id);
             parameters.Add("userId", _context.SessionUserId);
             parameters.Add("TemplateType", clientDetails.TemplateType);
             parameters.Add("Create", clientDetails.Create);
@@ -72,6 +73,17 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("AllowUserManagement", clientDetails.AllowUserManagement);
 
             return await _repository.InsertUpdateAsync("sp_SaveClientPermission", parameters);
+        }
+
+        public async Task<bool> Reject(int Id, string status, string comment)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("userId", _context.SessionUserId);
+            parameters.Add("Id", Id);
+            parameters.Add("status", status);
+            parameters.Add("comment", comment);
+
+            return await _repository.InsertMultipleAsync("sp_UpdateClientRejectStatus", parameters);
         }
     }
 }

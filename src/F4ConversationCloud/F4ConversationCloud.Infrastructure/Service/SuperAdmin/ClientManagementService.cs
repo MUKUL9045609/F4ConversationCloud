@@ -33,5 +33,10 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             return await _clientManagementRepository.SaveClientPermission(clientDetails);
         }
+
+        public async Task<bool> Reject(int Id, string Status, string RejectComment)
+        {
+            return await _clientManagementRepository.Reject(Id, Status, RejectComment);
+        }
     }
 }

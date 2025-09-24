@@ -44,5 +44,6 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public bool UtilityDelete { get; set; }
         public bool UtilityAll { get; set; }
         public bool AllowUserManagement { get; set; }
+        public string RejectComment { get; set; }
     }
 }
