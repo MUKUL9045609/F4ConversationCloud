@@ -196,14 +196,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     var registertemp = TempData.Get<RegisterUserModel>("registrationform");
                     if (registertemp != null)
                     {
-                        command.ClientId = registertemp.UserId;
+                        command.ClientInfoId = registertemp.UserId;
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
 
                         bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientId, ClientFormStage.metaregistered);
+                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.metaregistered);
 
                         var message = "success";
                         TempData.Remove("registrationform");

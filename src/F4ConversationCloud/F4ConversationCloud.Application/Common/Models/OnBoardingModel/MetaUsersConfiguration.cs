@@ -13,7 +13,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string WabaId { get; set; }
         public string BusinessId { get; set; }
         public string PhoneNumberId { get; set; }
-        public int ClientId { get; set; }
+        public int ClientInfoId { get; set; }
         public string CompanyName { get; set; }
         public string WhatsAppBotName { get; set; }
         public string Status { get; set; }

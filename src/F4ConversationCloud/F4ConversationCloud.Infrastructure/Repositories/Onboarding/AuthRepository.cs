@@ -131,7 +131,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("WabaId", command.WabaId);
                 parameters.Add("BusinessId", command.BusinessId);
                 parameters.Add("PhoneNumberId", command.PhoneNumberId);
-                parameters.Add("ClientId", command.ClientId);
+                parameters.Add("ClientInfoId", command.ClientInfoId);
                 parameters.Add("WhatsAppBotName", command.WhatsAppBotName);
                 parameters.Add("Status", command.Status);
                 parameters.Add("PhoneNumber", command.PhoneNumber);

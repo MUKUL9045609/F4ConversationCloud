@@ -27,7 +27,6 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string? OTP { get; }
 
         [Required(ErrorMessage = "Phone number is required")]
-        [Phone(ErrorMessage = "Enter Valid Phone Number")]
         [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
         public string PhoneNumber { get; set; }
 
@@ -65,34 +64,28 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public int UserId { get; set; }
 
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public class MustBeTrueAttribute : ValidationAttribute
         {
-            var validator = validationContext.GetService(typeof(ValidationHelper)) as ValidationHelper;
-            var task = Task.Run(() => validator?.Validate(this));
-            return task.Result;
-        }
-    }
-    public class MustBeTrueAttribute : ValidationAttribute
-    {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            if (value is bool b && b) return ValidationResult.Success;
-
-            return new ValidationResult(ErrorMessage ?? "You must agree to the terms & conditions");
-        }
-    }
-    public class NoWhitespaceAttribute : ValidationAttribute
-    {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            if (value is string str && string.IsNullOrWhiteSpace(str))
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
             {
-                return new ValidationResult("The " + validationContext.DisplayName + " field cannot contain only whitespace.");
+                if (value is bool b && b) return ValidationResult.Success;
+
+                return new ValidationResult(ErrorMessage ?? "You must agree to the terms & conditions");
             }
-            return ValidationResult.Success;
+        }
+        public class NoWhitespaceAttribute : ValidationAttribute
+        {
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                if (value is string str && string.IsNullOrWhiteSpace(str))
+                {
+                    return new ValidationResult("The " + validationContext.DisplayName + " field cannot contain only whitespace.");
+                }
+                return ValidationResult.Success;
+            }
         }
     }
+    
 
 
     public class UserDetailsViewModel
