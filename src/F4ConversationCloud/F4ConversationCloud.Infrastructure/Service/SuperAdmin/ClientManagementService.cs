@@ -29,6 +29,11 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             return await _clientManagementRepository.GetClientDetailsById(id);
         }
 
+        public async Task<IEnumerable<ClientDetails>> GetClientDetailsByPhoneNumberId(string PhoneNumberId)
+        {
+            return await _clientManagementRepository.GetClientDetailsByPhoneNumberId(PhoneNumberId);
+        }
+
         public async Task<int> SaveClientPermission(ClientDetails clientDetails)
         {
             return await _clientManagementRepository.SaveClientPermission(clientDetails);

@@ -51,6 +51,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IClientUserManagementRepository, ClientUserManagementRepository>();
             services.AddScoped<IClientManagementService, ClientManagementService>();
             services.AddScoped<IClientManagementRepository, ClientManagementRepository>();
+            services.AddScoped<IWebhookService, WebhookService>();
             return services;
         }
     }
