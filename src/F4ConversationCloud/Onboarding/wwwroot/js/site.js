@@ -65,7 +65,7 @@ window.onload = function () {
     $("#loader").fadeOut("slow");
 };
 
-document.addEventListener('DOMContentLoaded', function () {
+/*document.addEventListener('DOMContentLoaded', function () {
     const togglePasswordIcons = document.querySelectorAll('.toggle-password');
 
     togglePasswordIcons.forEach(icon => {
@@ -84,4 +84,13 @@ document.addEventListener('DOMContentLoaded', function () {
             eyeIcon.classList.toggle('fa-eye-slash');
         });
     });
+});*/
+$(".toggle-password").click(function () {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    input = $(this).parent().find("input");
+    if (input.attr("type") == "password") {
+        input.attr("type", "text");
+    } else {
+        input.attr("type", "password");
+    }
 });

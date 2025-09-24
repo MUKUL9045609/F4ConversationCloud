@@ -18,7 +18,9 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string WhatsAppBotName { get; set; }
         public string Status { get; set; }
         public string PhoneNumber { get; set; }
-       
+
+        public string ApprovalStatus { get; set; }
+
     }
     public class MetaUsersConfigurationResponse
     {

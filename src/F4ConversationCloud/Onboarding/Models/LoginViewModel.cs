@@ -2,7 +2,7 @@
 
 namespace F4ConversationCloud.Onboarding.Models
 {
-    public class LoginViewModel
+    public class LoginRequestModel
     {
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter a valid email")]
@@ -15,6 +15,6 @@ namespace F4ConversationCloud.Onboarding.Models
         // [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$",
         //   ErrorMessage = "Password must contain at least 1 letter, 1 number, and 1 special character.")]
         [DataType(DataType.Password)]
-        public string PassWord { get; set; }
+        public string Password { get; set; }
     }
 }

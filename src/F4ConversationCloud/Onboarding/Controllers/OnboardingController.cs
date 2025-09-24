@@ -6,6 +6,7 @@ using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
+using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
 using System;
@@ -34,7 +35,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginViewModel requst)
+        public async Task<IActionResult> Login(LoginRequestModel requst)
         {
             try
             {

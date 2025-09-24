@@ -116,6 +116,7 @@ namespace F4ConversationCloud.Application.Common.Services
                         Status = businessInfo.WhatsAppStatus,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
+                        ApprovalStatus = "Pending"
                     };
 
                     var response = await _authRepository.InsertMetaUsersConfigurationAsync(insertConfig);

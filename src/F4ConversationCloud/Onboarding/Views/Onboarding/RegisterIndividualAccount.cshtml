@@ -21,7 +21,7 @@
         <span class="step-info">Residency Info.</span>
     </div>
 
-    <a href="@Url.Action("BankVerification", "Onboarding")" class="next-btn" id="nextbtn"> Next</a>
+    <a href="@Url.Action("BankVerification", "Onboarding")" class="next-btn" id="nextBtn"> Next</a>
 </div>
 <div class="bx_wrap">
     <h4>Create Your Business Account!</h4>
@@ -116,7 +116,7 @@
 
             <div class="col-md-6 mb-3">
                 <label asp-for="PassWord" class="form-label">Create Password <sup>*</sup></label>
-                <div class="input-group">
+               
 
                     @if (ViewBag.IsReadOnly)
                     {
@@ -124,31 +124,28 @@
                     }
                     else
                     {
-                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
-                    }
 
-                <span class="input-group-text toggle-password" data-target="password" id="passicon">
-                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                </span>
-                </div>
+                        <div class="d-flex password-wrap">
+                             <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
+                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                        </div>
+                    }
                 <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup>*</sup></label>
-                <div class="input-group">
                     @if (ViewBag.IsReadOnly)
                     {
                         <input type="text" class="form-control" value="**********" readonly />
                     }
                     else
                     {
-                        <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                        <div class="d-flex password-wrap">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                        </div>
                     }                  
-                    <span class="input-group-text toggle-password" data-target="confirmPassword" id="cpassicon">
-                            <i class="fa fa-eye-slash" aria-hidden="true"></i>       
-                    </span>
-                </div>
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
             </div>
               <div class="mb-3">
@@ -441,16 +438,16 @@ $(document).ready(function () {
                             $element.prop("disabled", true);
                         }
                     });
-                        //$('#nextbtn').prop("disabled",false);
-                        $(' #passicon, #cpassicon,#agreeTerms,#nextbtn')
+                        $('#nextBtn').prop("disabled",false);
+                        $(' #passicon, #cpassicon,#agreeTerms')
                             .addClass('disabled')
                             .css({
                                 'pointer-events': 'none',
                                 'opacity': '0.5'                  
                              });
                         $('#sendmail').hide();
-            } else {         
-                $('#nextbtn').removeClass("disabled");
+            } else {
+                $('#nextBtn').prop("disabled",true);
             }
 
         });
