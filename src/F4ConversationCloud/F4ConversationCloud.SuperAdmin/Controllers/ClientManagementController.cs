@@ -12,7 +12,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return View();  
         }
     }
 }
