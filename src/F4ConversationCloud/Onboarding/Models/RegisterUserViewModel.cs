@@ -10,7 +10,7 @@ namespace Onboarding.Models
   public class RegisterUserViewModel
         {
             [Required(ErrorMessage = "Full Name is required")]
-            [RegularExpression(@"^[a-zA-Z\s']+$ ", ErrorMessage = "Full Name can only contain letters And spaces")]
+            [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]
             [Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
             public string FirstName { get; set; }
 
@@ -62,40 +62,5 @@ namespace Onboarding.Models
 
         }
     
-    public class UserDetailsViewModel
-    {
-        public string FirstName { get; }
-        public string LastName { get;  }
-        public string Email { get;  }
-        public string PhoneNumber { get;  }
-        public string Address { get;  }
-        public string Country { get;  }
-        public string TimeZone { get;  }
-        public string Role { get; }
-        public bool TermsCondition { get; set; }
-        public ClientFormStage Stage { get; }
-        public int UserId { get; set; }
-
-    }
-    public class RegisterUserResponse
-    {
-
-        public int NewUserId { get; set; }
-        public string Message { get; set; }
-        public bool IsSuccess { get; set; }
-    }
-
-  
-    public class LoginResponse
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-
-        public string Message { get; set; }
-        public bool IsSuccess { get; set; }
-      
-    }
-
-   
 }
 

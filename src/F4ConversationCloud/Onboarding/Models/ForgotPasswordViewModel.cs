@@ -14,14 +14,6 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
         public string EmailId { get; set; }
     }
-
-    //public class ResetPasswordViewModel
-    //{
-    //    public int Id { get; set; }
-    //    public string Email { get; set; }
-    //    public string Password  { get; set; }
-    //    public string Stage { get; set; }
-    //}
     public class ConfirmPasswordViewModel
     {
         [Required]
