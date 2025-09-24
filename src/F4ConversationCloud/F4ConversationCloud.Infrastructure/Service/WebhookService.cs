@@ -13,8 +13,9 @@ namespace F4ConversationCloud.Infrastructure.Service
 {
     public class WebhookService : IWebhookService
     {
-        public WebhookService() { 
-        
+        public WebhookService()
+        {
+
         }
 
 
@@ -26,14 +27,14 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             try
             {
-                apiUrl = ""; 
+                apiUrl = "";
 
                 string requestJson = JsonConvert.SerializeObject(requestBody);
 
                 var result = await APICallingHelper.BindMainAPIRequestModel<dynamic, dynamic>(
                     apiUrl,
                     methodType,
-                    requestBody,
+                    requestBody.Entry[0].Changes,
                     headers,
                     "",
                     null,
@@ -41,7 +42,11 @@ namespace F4ConversationCloud.Infrastructure.Service
                     true
                 );
 
-                return result;
+                return new
+                {
+                    Success = false,
+
+                };
             }
             catch (Exception ex)
             {
@@ -55,4 +60,6 @@ namespace F4ConversationCloud.Infrastructure.Service
         }
 
     }
+
 }
+

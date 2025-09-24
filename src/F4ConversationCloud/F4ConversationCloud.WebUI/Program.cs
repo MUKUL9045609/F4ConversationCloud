@@ -1,3 +1,5 @@
+using F4ConversationCloud.Infrastructure;
+using F4ConversationCloud.Infrastructure.Service;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,11 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 });
+
+builder.Services.AddHttpClient<WebhookService>();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 
 builder.Services.AddCors(options =>
 {
