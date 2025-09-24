@@ -6,8 +6,10 @@ using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
+using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
-using Twilio.TwiML.Messaging;
+using Onboarding.Models;
+using System;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController : Controller
@@ -33,7 +35,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(Loginrequest requst)
+        public async Task<IActionResult> Login(LoginRequestModel requst)
         {
             try
             {
@@ -41,7 +43,11 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     return View(requst);
                 }
-                var response = await _onboardingService.OnboardingLogin(requst);
+                var response = await _onboardingService.OnboardingLogin(new Loginrequest() {
+                          Email= requst.Email,
+                         PassWord= requst.Password
+                });
+
                 if (response.IsSuccess)
                 {
                     if (response.Data.Stage.Equals(ClientFormStage.draft))
@@ -62,16 +68,13 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
                 else
                 {
-
-
                     if (response.Message.Equals("InvalidEmail"))
                     {
                         ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
                     }
-
                     if (response.Message.Equals("InvalidPassword"))
                     {
-                        ModelState.AddModelError(nameof(requst.PassWord), "Invalid Password");
+                        ModelState.AddModelError(nameof(requst.Password), "Invalid Password");
                     }
 
                     return View(requst);
@@ -90,21 +93,20 @@ namespace F4ConversationCloud.Onboarding.Controllers
         public async Task<IActionResult> RegisterIndividualAccount()
         {
 
-            var step1form = TempData.Get<RegisterUserModel>("registrationform");
+            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
             ViewBag.IsReadOnly = false;
             //step1form = null;
             if (step1form != null)
             {
-                var existingData = new RegisterUserModel();
+                var existingData = new RegisterUserViewModel();
                 existingData = step1form;
                 ViewBag.IsReadOnly = true;
                 return View(existingData);
             }
-
-            var model = new RegisterUserModel
+           
+            var model = new RegisterUserViewModel
             {
-                TimeZones = await _authRepository.GetTimeZonesAsync(),
-
+                TimeZones = await _authRepository.GetTimeZonesAsync()
             };
 
 
@@ -114,7 +116,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterIndividualAccount(RegisterUserModel command)
+        public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
         {
             try
             { // command.CurrentStep = 1;
@@ -129,7 +131,22 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
 
                 command.Stage = ClientFormStage.draft;
-                var isregister = await _onboardingService.RegisterUserAsync(command);
+                var registerRequest = new RegisterUserModel
+                {
+                    FirstName = command.FirstName,
+                    LastName = command.LastName,
+                    Email = command.Email,
+                    Address = command.Address,
+                    Country = command.Country,
+                    Timezone = command.Timezone,
+                    PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
+                    IsActive = command.IsActive,
+                    Stage = command.Stage,
+                    FullPhoneNumber = command.FullPhoneNumber,
+                    Role = command.Role,
+                };
+                
+                var isregister = await _onboardingService.RegisterUserAsync(registerRequest);
                 if (isregister.IsSuccess)
                 {
                     command.UserId = isregister.NewUserId;
@@ -137,7 +154,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     TempData.Put("registrationform", command);
                     ViewBag.IsReadOnly = true;
 
-                    await _onboardingService.SendRegistrationSuccessEmailAsync(command);
+                    await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
 
                     TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
@@ -162,7 +179,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         [HttpGet("meta-onboarding")]
         public IActionResult BankVerification()
         {
-            var step1form = TempData.Get<RegisterUserModel>("registrationform");
+            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
             if (step1form is null)
             {
                 TempData["WarningMessage"] = "Register details first!";
@@ -175,7 +192,10 @@ namespace F4ConversationCloud.Onboarding.Controllers
         public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
         {
             // var response = await Mediator.Send(command);
-
+            if ( command.UserEmailId != null)
+            {
+                ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
+            }
             var response = await _onboardingService.CheckIsMailExitsAsync(command);
 
             return Json(new { response.status, response.message });
@@ -193,7 +213,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             {
                 if (command.PhoneNumberId != null && command.WabaId != null && command.BusinessId != null)
                 {
-                    var registertemp = TempData.Get<RegisterUserModel>("registrationform");
+                    var registertemp = TempData.Get<RegisterUserViewModel>("registrationform");
                     if (registertemp != null)
                     {
                         command.ClientInfoId = registertemp.UserId;
