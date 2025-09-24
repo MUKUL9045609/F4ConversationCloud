@@ -107,10 +107,10 @@ namespace F4ConversationCloud.Application.Common.Services
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
 
-                    string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
 
-                    string email = businessInfo?.WhatsAppBusinessProfile?.Email;
-                    string website = businessInfo?.WhatsAppBusinessProfile?.Websites?.FirstOrDefault();
+                    string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
+                    string email = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Email;
+                    string websites = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Websites[0];
 
                     var insertConfig = new MetaUsersConfiguration
                     {
@@ -122,9 +122,8 @@ namespace F4ConversationCloud.Application.Common.Services
                         Status = businessInfo.WhatsAppStatus,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
-
                         ClientEmail = email,
-                        WebSite = website,
+                        WebSite = websites,
                         Category = category,
                     };
 

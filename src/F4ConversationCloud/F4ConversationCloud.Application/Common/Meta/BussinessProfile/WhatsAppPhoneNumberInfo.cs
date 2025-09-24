@@ -27,14 +27,6 @@ namespace F4ConversationCloud.Application.Common.Meta.BussinessProfile
 
     public class WhatsAppBusinessProfile
     {
-        [JsonPropertyName("email")]
-        public string Email { get; set; }
-
-        [JsonPropertyName("websites")]
-        public List<string> Websites { get; set; }
-
-        [JsonPropertyName("vertical")]
-        public string Vertical { get; set; }
 
         [JsonPropertyName("data")]
         public List<BusinessProfileData> Data { get; set; }
@@ -45,8 +37,12 @@ namespace F4ConversationCloud.Application.Common.Meta.BussinessProfile
         [JsonPropertyName("vertical")]
         public string Vertical { get; set; }
 
-        [JsonPropertyName("messaging_product")]
-        public string MessagingProduct { get; set; }
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
+
+        [JsonPropertyName("websites")]
+        public List<string> Websites { get; set; }
+        
     }
 
 

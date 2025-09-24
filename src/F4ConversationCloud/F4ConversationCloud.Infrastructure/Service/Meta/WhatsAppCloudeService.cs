@@ -47,10 +47,9 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                 var info = JsonSerializer.Deserialize<WhatsAppPhoneNumberInfoViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 string vertical = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
-                string email = info?.WhatsAppBusinessProfile?.Email;
-                List<string> websites = info?.WhatsAppBusinessProfile?.Websites;
+                string email = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault() ?.Email;
+                List<string> websites = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Websites;
                
-                //string messagingProduct = info?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.MessagingProduct;
 
 
                 return info ?? new WhatsAppPhoneNumberInfoViewModel();
