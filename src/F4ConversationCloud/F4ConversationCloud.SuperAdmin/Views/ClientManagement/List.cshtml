@@ -1,0 +1,96 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.ClientManagementViewModel
+@{
+    ViewData["Title"] = "Client List";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h3 class="sub-heading">Client List</h3>
+        <div class="card padding">
+            <div class="table-responsive">
+                <table class="table user-table form-wrapper">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.ClientName)
+                                <select class="form-select">
+                                    <option selected>Select Client</option>
+                                    <option>Buldana Urban</option>
+                                </select>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.CreatedAt)
+                                <label class="datewrap" for="datepicker">
+                                    <input type="text"
+                                           id="datepicker"
+                                           class="form-control datepicker search-form-control"
+                                           placeholder="Select Date" />
+                                    <span class="dateIcon"></span>
+                                </label>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Status)
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
+                            </th>
+                            <th>Reject Comments</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.ApprovalStatus)
+                                <select class="form-select">
+                                    <option selected>Select Status</option>
+                                    <option>Approve</option>
+                                    <option>Reject</option>
+                                    <option>Pending</option>
+                                </select>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.data.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">No Records Found</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.data)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
+                                    <td>
+                                        <form method="get" action="@Url.Action("ClientDetails", "ClientManagement", new { id = item.Id })">
+                                            <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ClientName)</a>
+                                        </form>
+                                        <span class="buisness-category">@Html.DisplayFor(modelItem => item.Category)</span>
+                                    </td>
+                                    <td>
+                                        <span>@Html.DisplayFor(modelItem => item.CreatedAt)</span>
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                    <td>
+                                        <span class="message-block">
+                                            -
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var badgeClass = item.ApprovalStatus == "Approved" ? "success"
+                                            : item.ApprovalStatus == "Reject" ? "danger"
+                                            : "warning";
+                                        }
+                                        <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.ApprovalStatus)</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+        </div>
+    </div>
+</div>

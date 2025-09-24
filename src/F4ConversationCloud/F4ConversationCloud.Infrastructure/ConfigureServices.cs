@@ -42,9 +42,9 @@ namespace F4ConversationCloud.Infrastructure
             //Super Admin Services and Repositories
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
-            services.AddScoped<IOnboardingService, OnboardingService>();
+            //services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IWhatsAppCloudeService, WhatsAppCloudeService>();
+            //services.AddScoped<IWhatsAppCloudeService, WhatsAppCloudeService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IUserManagementRepository, UserManagementRepository>();
             services.AddScoped<IClientUserManagementService, ClientUserManagementService>();
