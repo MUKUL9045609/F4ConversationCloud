@@ -1,21 +1,17 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
-using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Helpers;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Service
 {
     public class WebhookService : IWebhookService
     {
-        public WebhookService()
+        private readonly IClientManagementService _clientManagement;
+        public WebhookService(IClientManagementService clientManagement)
         {
-
+            _clientManagement = clientManagement;
         }
 
 
@@ -27,14 +23,16 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             try
             {
-                apiUrl = "";
+                
+                var phonenumberId = requestBody.Entry[0].Changes[0].Value.Metadata.PhoneNumberId;
+                var response =  _clientManagement.GetClientDetailsByPhoneNumberId(phonenumberId).Result;
 
                 string requestJson = JsonConvert.SerializeObject(requestBody);
 
                 var result = await APICallingHelper.BindMainAPIRequestModel<dynamic, dynamic>(
-                    apiUrl,
+                    response.FirstOrDefault().WebHookUrl,
                     methodType,
-                    requestBody.Entry[0].Changes,
+                    requestBody.Entry[0],
                     headers,
                     "",
                     null,
@@ -44,7 +42,8 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 return new
                 {
-                    Success = false,
+                    Success = true,
+                    Message = "Message Send SuccessFully."
 
                 };
             }
@@ -52,6 +51,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
+                    Message = "Message not send.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace

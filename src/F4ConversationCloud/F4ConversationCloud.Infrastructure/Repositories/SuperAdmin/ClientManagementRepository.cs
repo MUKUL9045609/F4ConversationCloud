@@ -53,6 +53,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             return await _repositoryDetails.GetByIdAsync("sp_GetClientDetailsById", parameters);
         }
 
+        public async Task<IEnumerable<ClientDetails>> GetClientDetailsByPhoneNumberId(string PhoneNumberId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("PhoneNumberId", PhoneNumberId);
+
+            return await _repositoryDetails.GetListByValuesAsync<ClientDetails>("sp_GetClientDetailsByPhoneNumberId", parameters);
+        }
+
         public async Task<int> SaveClientPermission(ClientDetails clientDetails)
         {
             DynamicParameters parameters = new DynamicParameters();
