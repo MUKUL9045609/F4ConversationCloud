@@ -48,6 +48,9 @@ namespace F4ConversationCloud.Domain.Entities
 
         [JsonPropertyName("messages")]
         public List<Message> Messages { get; set; }
+
+        [JsonPropertyName("statuses")]
+        public List<Status> statuses { get; set; }
     }
 
     public class Metadata
@@ -100,7 +103,7 @@ namespace F4ConversationCloud.Domain.Entities
         [JsonPropertyName("button")]
         public Button Button { get; set; }
 
-       
+
     }
 
     public class Button
@@ -159,4 +162,40 @@ namespace F4ConversationCloud.Domain.Entities
         [JsonPropertyName("description")]
         public string Description { get; set; }
     }
+
+    public class Conversation
+    {
+        public string id { get; set; }
+        public string expiration_timestamp { get; set; }
+        public Origin origin { get; set; }
+    }
+
+    public class Origin
+    {
+        public string type { get; set; }
+    }
+
+    public class Pricing
+    {
+        public bool billable { get; set; }
+        public string pricing_model { get; set; }
+        public string category { get; set; }
+        public string type { get; set; }
+    }
+
+    public class Root
+    {
+        public List<Status> statuses { get; set; }
+    }
+
+    public class Status
+    {
+        public string id { get; set; }
+        public string status { get; set; }
+        public string timestamp { get; set; }
+        public string recipient_id { get; set; }
+        public Conversation conversation { get; set; }
+        public Pricing pricing { get; set; }
+    }
 }
+
