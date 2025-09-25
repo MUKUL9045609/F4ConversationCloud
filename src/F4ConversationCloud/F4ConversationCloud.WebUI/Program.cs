@@ -1,5 +1,7 @@
 using F4ConversationCloud.Infrastructure;
 using F4ConversationCloud.Infrastructure.Service;
+using F4ConversationCloud.WebUI.Services;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +30,27 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+
+    // Optional: log specific request/response headers
+    logging.RequestHeaders.Add("sec-ch-ua");
+    logging.ResponseHeaders.Add("my-response-header");
+
+    // Optional: include media types you want to log as plain text
+    logging.MediaTypeOptions.AddText("application/javascript");
+
+    // Optional: limit the size of logged request/response bodies
+    logging.RequestBodyLogLimit = 4096;
+    logging.ResponseBodyLogLimit = 4096;
+});
+
 var app = builder.Build();
+
+app.UseHttpLogging();
+app.UseMiddleware<LoggingMiddleware>();
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
