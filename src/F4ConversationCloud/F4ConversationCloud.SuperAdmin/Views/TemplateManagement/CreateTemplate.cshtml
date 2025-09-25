@@ -1,0 +1,281 @@
+﻿@{
+    ViewData["Title"] = "create template";
+}
+
+<div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+
+                    <div class="profile-dropdown ms-auto">
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <span class="profile-name">D</span>
+                                    <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-between headerWrap mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <h3 class="sub-heading mb-0">
+                                    <a href="#" class="back"></a>Create Template
+                                </h3>
+
+                            </div>
+                            <!-- <div>
+                                <button type="button" class="btn primary-btn" data-bs-toggle="modal"
+                                        data-bs-target="#createTemplate">
+                                    View Sample Template
+                                </button>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Template name<sup>*</sup></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Give your message template a name.</label>
+                                        <input type="email"
+                                               class="form-control"
+                                               id="exampleInputEmail1"
+                                               placeholder="Template name"
+                                               aria-describedby="emailHelp" />
+                                        <div id="emailHelp" class="form-text">
+                                            Template names can only contain small letters, numbers and
+                                            underscores.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Category<sup>*</sup></h3>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">
+                                            Choose what type of message template you want to
+                                            create.
+                                        </label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="flexRadioDefault"
+                                                           id="flexRadioDefault1" />
+                                                    <label class="form-check-label"
+                                                           for="flexRadioDefault1">
+                                                        Marketing
+                                                    </label>
+                                                </div>
+                                                <p>
+                                                    Send promo offers, product offers and more to
+                                                    increase awareness and engagement.
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="flexRadioDefault"
+                                                           id="flexRadioDefault2" />
+                                                    <label class="form-check-label"
+                                                           for="flexRadioDefault2">
+                                                        Authentication
+                                                    </label>
+                                                </div>
+                                                <p>
+                                                    Send promo offers, product offers and more to
+                                                    increase awareness and engagement.
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input class="form-check-input"
+                                                           type="radio"
+                                                           name="flexRadioDefault"
+                                                           id="flexRadioDefault3" />
+                                                    <label class="form-check-label"
+                                                           for="flexRadioDefault3">
+                                                        Marketing
+                                                    </label>
+                                                </div>
+                                                <p>
+                                                    Send promo offers, product offers and more to
+                                                    increase awareness and engagement.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Language<sup>*</sup></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">
+                                            Choose which languages your message template will be sent
+                                            in.
+                                        </label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>select languages</option>
+                                            <option value="1">English (UK)</option>
+                                            <option value="2">English (US)</option>
+                                            <option value="3">Hindi</option>
+                                            <option value="4">Marathi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Types Of Variables<sup>*</sup></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>Template Labels</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Header <span class="key">Optional</span></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">
+                                            Add a 60 character title to your message. Only one variable
+                                            is supported in the header.
+                                        </label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>Select</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Body <span class="key">Optional</span></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">
+                                            Enter the text for your message in the language you have
+                                            selected.
+                                        </label>
+                                        <div class="note d-flex align-items-center">
+                                            <span class="exclamatory"></span>
+                                            <p>
+                                                The text limit in the body should be less than 550
+                                                characters and emojis should be less than 10 to avoid
+                                                any template rejection
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Footer <span class="key">Optional</span></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Add a 60 character footer to your message. Variables are not supported in the footer.</label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>Footer Text</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Button <span class="key">Optional</span></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Please choose buttons to be added to the template. You can choose upto 10 buttons</label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>Footer Text</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex gap-3">
+                                        <button class="btn secondary-btn add-btn d-flex">Quick Reply</button>
+                                        <button class="btn secondary-btn add-btn d-flex">Add CTA</button>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn danger-btn">Clear All</button>
+                                    <button class="btn primary-btn">Preview and Submit</button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="template-preview">
+                                    <h4>Preview</h4>
+                                    <div class="template-white-card">
+                                        <span><img src="images/card-img-03.webp"></span>
+                                        <div class="description">
+                                            <p>Dear {{1}}</p>
+                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="container">
+                    <span class="text-muted">
+                        Copyright © <span id="year"> 2025 </span>. Designed by
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a>
+                        All rights reserved
+                    </span>
+                </div>
+            </footer>
+
+
+        </div>
