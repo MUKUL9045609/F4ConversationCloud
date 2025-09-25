@@ -33,7 +33,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 
                 var result = await _logService.CallExternalAPI<dynamic>(response.FirstOrDefault().WebHookUrl,
                                                                     methodType,
-                                                                    requestBody.Entry,
+                                                                    requestBody,
                                                                     headers,
                                                                     "Webhook Callback",
                                                                     null,
