@@ -130,6 +130,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     return View(command);
                 }
 
+                int TotalRegisteredClient = await _authRepository.sp_GetRegisteredClientCountAsync();
+
                 command.Stage = ClientFormStage.draft;
                 var registerRequest = new RegisterUserModel
                 {
@@ -144,6 +146,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     Stage = command.Stage,
                     FullPhoneNumber = command.FullPhoneNumber,
                     Role = command.Role,
+                    ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
                 
                 var isregister = await _onboardingService.RegisterUserAsync(registerRequest);
