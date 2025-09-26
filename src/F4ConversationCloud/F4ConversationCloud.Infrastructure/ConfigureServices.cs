@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Infrastructure.Service.MetaServices;
+using F4ConversationCloud.Infrastructure.Service.Meta;
 
 
 namespace F4ConversationCloud.Infrastructure
@@ -53,6 +54,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IClientManagementRepository, ClientManagementRepository>();
             services.AddScoped<IWebhookService, WebhookService>();
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
+            services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
             return services;
         }
     }
