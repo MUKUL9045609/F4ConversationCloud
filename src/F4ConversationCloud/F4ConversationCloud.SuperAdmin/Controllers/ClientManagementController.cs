@@ -1,7 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using Dapper;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Web.Mvc;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -15,20 +21,19 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
         {
-            var response = await _clientManagement.GetFilteredUsers(new MasterListFilter
+            var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
             {
-                SearchString = model.SearchString ?? String.Empty,
-                Status = model.Status,
+                ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                StatusFilter = model.StatusFilter ?? String.Empty,
+                OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
                 PageNumber = model.PageNumber,
                 PageSize = model.PageSize,
             });
 
-            if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
+            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
             {
-                if (model.PageNumber > 1)
-                {
-                    TempData["ErrorMessage"] = "Invalid Page";
-                }
+                TempData["ErrorMessage"] = "Invalid Page";
                 return RedirectToAction("List");
             }
 
@@ -82,10 +87,81 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveClientDetails([FromBody] ClientDetailsViewModel model)
+        public async Task<IActionResult> SaveClientDetails([FromBody] ClientDetailsViewModel model)
         {
+            if (model.IsMarketing)
+            {
+                var marketingPermissions = new ClientDetails
+                {
+                    Id = model.Id,
+                    TemplateType = (int)TemplateModuleType.Marketing,
+                    Create = model.MarketingCreate,
+                    Add = model.MarketingAdd,
+                    Edit = model.MarketingEdit,
+                    Delete = model.MarketingDelete,
+                    All = model.MarketingAll,
+                    AllowUserManagement = model.AllowUserManagement
+                };
+
+                await _clientManagement.SaveClientPermission(marketingPermissions);
+            }
+
+            if (model.IsAuthentication)
+            {
+                var authPermissions = new ClientDetails
+                {
+                    Id = model.Id,
+                    TemplateType = (int)TemplateModuleType.Authentication,
+                    Create = model.AuthenticationCreate,
+                    Add = model.AuthenticationAdd,
+                    Edit = model.AuthenticationEdit,
+                    Delete = model.AuthenticationDelete,
+                    All = model.AuthenticationAll,
+                    AllowUserManagement = model.AllowUserManagement
+                };
+
+                await _clientManagement.SaveClientPermission(authPermissions);
+            }
+
+            if (model.IsUtility)
+            {
+                var utilityPermissions = new ClientDetails
+                {
+                    Id = model.Id,
+                    TemplateType = (int)TemplateModuleType.Utility,
+                    Create = model.UtilityCreate,
+                    Add = model.UtilityAdd,
+                    Edit = model.UtilityEdit,
+                    Delete = model.UtilityDelete,
+                    All = model.UtilityAll,
+                    AllowUserManagement = model.AllowUserManagement
+                };
+
+                await _clientManagement.SaveClientPermission(utilityPermissions);
+            }
 
             return Ok(new { message = "Saved successfully" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id, string rejectComment)
+        {
+            if (string.IsNullOrWhiteSpace(rejectComment))
+            {
+                return BadRequest("Comment is required.");
+            }
+
+            var status = "Rejected";
+            var response = await _clientManagement.Reject(id, status, rejectComment);
+
+            if (response)
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
+            }
         }
     }
 }
