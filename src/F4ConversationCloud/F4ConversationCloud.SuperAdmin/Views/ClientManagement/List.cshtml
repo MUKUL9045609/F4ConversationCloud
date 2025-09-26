@@ -14,36 +14,36 @@
                             <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.ClientName)
-                                <select class="form-select">
-                                    <option selected>Select Client</option>
-                                    <option>Buldana Urban</option>
-                                </select>
+                                <div class="input-group">
+                                    <input type="text" asp-for="ClientNameSearch" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.CreatedAt)
                                 <label class="datewrap" for="datepicker">
-                                    <input type="text"
-                                           id="datepicker"
-                                           class="form-control datepicker search-form-control"
-                                           placeholder="Select Date" />
-                                    <span class="dateIcon"></span>
+                                    <input type="date" asp-for="OnboardingOnFilter"
+                                           class="form-control search-form-control"
+                                           placeholder="Select Date" onchange="loadData()" />
                                 </label>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Status)
-                                <div class="input-group">
-                                    <input type="text" class="form-control srcIcon" placeholder="Search">
-                                    <span class="searchIcon"></span>
-                                </div>
+                                <select asp-for="StatusFilter" class="form-select" onchange="loadData()">
+                                    <option value="" selected>Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Connected">Connected</option>
+                                    <option value="Offline">Offline</option>
+                                </select>
                             </th>
                             <th>Reject Comments</th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.ApprovalStatus)
-                                <select class="form-select">
-                                    <option selected>Select Status</option>
-                                    <option>Approve</option>
-                                    <option>Reject</option>
-                                    <option>Pending</option>
+                                <select asp-for="ApprovalStatusFilter" class="form-select" onchange="loadData()">
+                                    <option value="" selected>Select Status</option>
+                                    <option value="Approve">Approve</option>
+                                    <option value="Reject">Reject</option>
+                                    <option value="Pending">Pending</option>
                                 </select>
                             </th>
                         </tr>
@@ -98,25 +98,39 @@
 @section Scripts {
     <script>
         function loadData() {
-            let searchString = '';
-            let status = $("[name=Status]").val('1');
-            let pageNumber = 1;
+            var clientNameSearch = $("[name=ClientNameSearch]").val();
+            var onboardingFilter = $("[name=OnboardingOnFilter]").val();
+            var statusFilter = $("[name=StatusFilter]").val();
+            var approvalStatusFilter = $("[name=ApprovalStatusFilter]").val();
+            var pageNumber = 1;
             location.href = '@Url.Action("List", "ClientManagement")' +
-                '?SearchString=' + searchString +
-                '&Status=' + encodeURIComponent(status) +
+                '?clientNameSearch=' + clientNameSearch +
+                '&onboardingOnFilter=' + encodeURIComponent(onboardingFilter) +
+                '&statusFilter=' + encodeURIComponent(statusFilter) +
+                '&approvalStatusFilter=' + encodeURIComponent(approvalStatusFilter) +
                 '&PageNumber=' + pageNumber;
         }
 
         $(".page-link").click(function () {
             var pageNumber = $(this).data("page-number");
             if (pageNumber !== undefined && pageNumber !== null) {
-                let searchString = '';
-                let status = $("[name=Status]").val('1');
+                var clientNameSearch = $("[name=ClientNameSearch]").val();
+                var onboardingFilter = $("[name=OnboardingOnFilter]").val();
+                var statusFilter = $("[name=StatusFilter]").val();
+                var approvalStatusFilter = $("[name=ApprovalStatusFilter]").val();
 
                 location.href = '@Url.Action("List", "ClientManagement")' +
-                    '?SearchString=' + searchString +
-                    '&Status=' + encodeURIComponent(status) +
+                    '?clientNameSearch=' + clientNameSearch +
+                    '&onboardingOnFilter=' + encodeURIComponent(onboardingFilter) +
+                    '&statusFilter=' + encodeURIComponent(statusFilter) +
+                    '&approvalStatusFilter=' + encodeURIComponent(approvalStatusFilter) +
                     '&PageNumber=' + pageNumber;
+            }
+        });
+
+        $("#searchInput").on("keypress", function (e) {
+            if (e.which === 13) {
+                loadData();
             }
         });
 

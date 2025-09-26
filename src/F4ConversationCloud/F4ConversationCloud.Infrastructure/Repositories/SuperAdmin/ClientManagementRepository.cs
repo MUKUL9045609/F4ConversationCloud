@@ -5,6 +5,7 @@ using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
+using F4ConversationCloud.SuperAdmin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,22 +28,26 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             _context = context;
         }
 
-        public async Task<int> GetCountAsync(MasterListFilter filter)
+        public async Task<int> GetCountAsync(ClientManagementListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("searchString", filter.SearchString);
-            parameters.Add("status", filter.Status);
+            parameters.Add("clientNameSearch", filter.ClientNameSearch);
+            parameters.Add("statusFilter", filter.StatusFilter);
+            parameters.Add("onboardingOnFilter", filter.OnboardingOnFilter);
+            parameters.Add("approvalStatusFilter", filter.ApprovalStatusFilter);
 
             return await _repository.GetCountAsync("sp_GetClientsCount", parameters);
         }
 
-        public async Task<IEnumerable<ClientManagementListItemModel>> GetFilteredAsync(MasterListFilter filter)
+        public async Task<IEnumerable<ClientManagementListItemModel>> GetFilteredAsync(ClientManagementListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("searchString", filter.SearchString);
-            parameters.Add("status", filter.Status);
+            parameters.Add("clientNameSearch", filter.ClientNameSearch);
+            parameters.Add("statusFilter", filter.StatusFilter);
+            parameters.Add("onboardingOnFilter", filter.OnboardingOnFilter);
+            parameters.Add("approvalStatusFilter", filter.ApprovalStatusFilter);
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
 

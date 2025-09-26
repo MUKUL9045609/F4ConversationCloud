@@ -21,10 +21,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
         {
-            var response = await _clientManagement.GetFilteredUsers(new MasterListFilter
+            var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
             {
-                SearchString = model.SearchString ?? String.Empty,
-                Status = model.Status,
+                ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                StatusFilter = model.StatusFilter ?? String.Empty,
+                OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
                 PageNumber = model.PageNumber,
                 PageSize = model.PageSize,
             });
