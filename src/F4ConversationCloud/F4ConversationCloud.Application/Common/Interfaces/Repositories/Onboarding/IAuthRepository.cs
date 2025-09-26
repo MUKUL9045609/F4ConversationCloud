@@ -22,6 +22,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
         Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId);
 
         Task<int> UpdatePasswordAsync(ConfirmPasswordModel model);
+        Task<int> sp_GetRegisteredClientCountAsync();
 
 
     }
