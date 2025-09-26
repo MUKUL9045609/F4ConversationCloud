@@ -64,6 +64,27 @@ document.addEventListener('DOMContentLoaded', function () {
 window.onload = function () {
     $("#loader").fadeOut("slow");
 };
+
+/*document.addEventListener('DOMContentLoaded', function () {
+    const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+    togglePasswordIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            const targetId = this.dataset.target;
+            const passwordInput = targetId
+                ? document.getElementById(targetId)
+                : this.parentElement.querySelector('input');
+
+            const eyeIcon = this.tagName.toLowerCase() === "i" ? this : this.querySelector('i');
+
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    });
+});*/
 $(".toggle-password").click(function () {
     $(this).toggleClass("fa-eye fa-eye-slash");
     input = $(this).parent().find("input");

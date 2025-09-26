@@ -1,45 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using F4ConversationCloud.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class ValidationController : Controller
     {
-        public async Task<JsonResult> IsValidTermsCondition(bool termsAndCondition)
+        [AcceptVerbs("GET", "POST")]
+        public async Task<JsonResult> IsValidTermsCondition(bool TermsCondition)
         {
             try
             {
-                bool IsValid = true;
-
-                if (!termsAndCondition)
+                if (TermsCondition)
                 {
-                    IsValid = false;
+                    return Json(true); 
                 }
-
-                return Json(IsValid);
+                return Json(false);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return Json(false);
             }
         }
 
-        public async Task<JsonResult> IsValidEmailOtpVerified(bool termsAndCondition, string email)
+        public async Task<JsonResult> IsValidNoWhitespace(string FirstName)
         {
             try
             {
-                bool IsValid = true;
-
-                if (!termsAndCondition && string.IsNullOrEmpty(email))
+                bool isValid = !string.IsNullOrWhiteSpace(FirstName);
+                if (!isValid)
                 {
-                    IsValid = false;
+                     return Json(false);
                 }
-
-                return Json(IsValid);
+                return Json(true);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return Json(false);
             }
         }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult IsValidEmailOtpVerify(bool EmailOtpVerified, string Email)
+        {
+            if (!EmailOtpVerified)
+            {
+                return Json($"Email OTP for {Email} is not verified.");
+            }
+
+            return Json(true);
+        }
+
     }
 }

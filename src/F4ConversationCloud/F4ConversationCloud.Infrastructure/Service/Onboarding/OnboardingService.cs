@@ -1,4 +1,8 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
@@ -7,9 +11,6 @@ using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -106,6 +107,11 @@ namespace F4ConversationCloud.Application.Common.Services
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
 
+
+                    string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
+                    string email = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Email;
+                    string websites = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Websites[0];
+
                     var insertConfig = new MetaUsersConfiguration
                     {
                         ClientInfoId = request.ClientInfoId,
@@ -116,6 +122,10 @@ namespace F4ConversationCloud.Application.Common.Services
                         Status = businessInfo.WhatsAppStatus,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
+                        ApprovalStatus = "Pending",
+                        ClientEmail = email,
+                        WebSite = websites,
+                        Category = category,
                     };
 
                     var response = await _authRepository.InsertMetaUsersConfigurationAsync(insertConfig);
@@ -128,7 +138,6 @@ namespace F4ConversationCloud.Application.Common.Services
                             Message = "Meta User Configuration Inserted Successfully"
                         };
                     }
-                   
                 }
 
                 return new MetaUsersConfigurationResponse
@@ -137,9 +146,8 @@ namespace F4ConversationCloud.Application.Common.Services
                     Message = "Meta User Configuration Insertion Failed"
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
                 return new MetaUsersConfigurationResponse
                 {
                     status = false,
@@ -153,23 +161,8 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-                var registerRequest = new RegisterUserModel
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Email = request.Email,
-                    
-                    Address = request.Address,
-                    Country = request.Country,
-                    Timezone = request.Timezone,
-                    PassWord = PasswordHasherHelper.HashPassword(request.PassWord),
-                    IsActive = request.IsActive,
-                    Stage = request.Stage,
-                    FullPhoneNumber= request.FullPhoneNumber,
-                    Role = request.Role,
-                };
-
-                var register = await _authRepository.CreateUserAsync(registerRequest);
+                
+                var register = await _authRepository.CreateUserAsync(request);
 
                 if (register <= 0)
                 {

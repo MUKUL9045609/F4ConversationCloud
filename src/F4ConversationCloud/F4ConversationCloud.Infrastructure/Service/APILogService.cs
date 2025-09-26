@@ -1,6 +1,12 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Domain.Helpers;
+using F4ConversationCloud.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Text;
+using Twilio.TwiML;
 
 
 namespace F4ConversationCloud.Infrastructure.Service
@@ -9,10 +15,12 @@ namespace F4ConversationCloud.Infrastructure.Service
     {
         private readonly IFileUploadService _fileUploadService;
         private readonly string FolderName = "Logs";
+        private readonly IAPILogRepository _repository;
 
-        public APILogService(IFileUploadService fileUploadService)
+        public APILogService(IFileUploadService fileUploadService, IAPILogRepository repository)
         {
             _fileUploadService = fileUploadService;
+            _repository = repository;
         }
         public async Task GenerateLog(APILogModel aPILogModel)
         {
@@ -92,6 +100,52 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
 
             }
+        }
+
+        public async Task<T> CallExternalAPI<T>(string EndPoint, string MethodType, T RequestBody, Dictionary<string, string> OAUths, string APIType, Dictionary<string, string> QuerryStringParameters, bool AddLogs = true, bool IsExternalAPI = false, string BodyType = "json")
+        {
+            var ReturnResponse = (T)Activator.CreateInstance(typeof(T));
+            APIRequestModel<T> model = new APIRequestModel<T>();
+            bool isSuccess = false;
+            string errorMessage = null;
+            string rawResponse = null;
+            int statusCode = 0;
+            try
+            {
+                model = new APIRequestModel<T>
+                {
+                    OAuths = OAUths,
+                    APIType = APIType,
+                    EndPoint = EndPoint,
+                    QuerryStringParameters = QuerryStringParameters,
+                    RequestBody = RequestBody,
+                    RequestType = MethodType,
+                    AddLogs = AddLogs,
+                    IsExternalAPI = IsExternalAPI,
+                    BodyType = BodyType
+                };
+
+                var response = GenericAPIHelper.CallAPIGeneric<T>(model);
+
+                isSuccess = response.Status;
+                errorMessage = response.ErrorMessage;
+                rawResponse = await response.Response.Content.ReadAsStringAsync();
+                statusCode = (int)response.Response.StatusCode;
+                if (isSuccess)
+                {
+                    ReturnResponse = JsonConvert.DeserializeObject<T>(rawResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                errorMessage = ex.Message;
+            }
+            finally
+            {
+                int insertedId = await _repository.SaveApiResponseAsync(isSuccess: isSuccess,errorMessage: errorMessage,rawResponse: rawResponse,statusCode: statusCode);
+            }
+            return ReturnResponse;
         }
     }
 }

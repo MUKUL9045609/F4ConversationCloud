@@ -29,6 +29,7 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public string RegisteredAddress { get; set; }
         public string RegisteredCountry { get; set; }
         public string RegisteredTimeZone{ get; set; }
+        public string WebHookUrl { get; set; }
         public int TemplateType { get; set; }
         public bool Create { get; set; }
         public bool Add { get; set; }

@@ -1,11 +1,9 @@
 ﻿using F4ConversationCloud.Infrastructure.Interfaces;
 using Dapper;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
-using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 
 
@@ -38,7 +36,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("PhoneNumber", command.FullPhoneNumber);
                 parameters.Add("Address", command.Address);
                 parameters.Add("Country", command.Country);
-                parameters.Add("role", command.Role);   
+                parameters.Add("role", command.Role);
+                parameters.Add("@ClientId", command.ClientId);
                 var NewUserId =  await _repository.InsertUpdateAsync("[sp_RegisterNewUser]", parameters);
 
                 return NewUserId;
@@ -136,6 +135,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("Status", command.Status);
                 parameters.Add("PhoneNumber", command.PhoneNumber);
                 parameters.Add("AppVersion", command.AppVersion);
+                parameters.Add("@ApprovalStatus", command.ApprovalStatus);
+                parameters.Add("ClientEmail", command.ClientEmail);
+                parameters.Add("@WebSite", command.WebSite);
+                parameters.Add("@Category", command.Category);
 
                 return await _repository.InsertUpdateAsync("[dbo].[sp_InsertMetaUsersConfigurations]", parameters);
             }
@@ -184,22 +187,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             return await _repository.GetListByValuesAsync<TimeZoneResponse>("[sp_GetTimeZones]", dp);
         }
 
-        public Task<ResetPasswordViewModel> ValidateEmailId(string ClientEmailId)
-        {
-            try
-            {
-                dynamic parameters = new DynamicParameters();
-                parameters.Add("@email", ClientEmailId);
-                return _repository.GetByValuesAsync<ResetPasswordViewModel>("[sp_CheckUserExistsByMailId]", parameters);
-            }
-            catch (Exception)
-            {
-
-             return Task.FromResult<ResetPasswordViewModel>(null);
-            }
-           
-        }
-
+       
         public async Task<int> UpdatePasswordAsync(ConfirmPasswordModel model)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -209,5 +197,36 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 
             return await _repository.UpdateValuesAsync("sp_UpdateClientPassword", parameters);
         }
+
+        public Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId)
+        {
+            try
+            {
+                dynamic parameters = new DynamicParameters();
+                parameters.Add("@email", ClientEmailId);
+                return _repository.GetByValuesAsync<ResetPasswordResponseViewModel>("[sp_CheckUserExistsByMailId]", parameters);
+            }
+            catch (Exception)
+            {
+
+                return Task.FromResult<ResetPasswordResponseViewModel>(null);
+            }
+
+        }
+
+        public async Task<int> sp_GetRegisteredClientCountAsync()
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                var response = await _repository.GetByValuesAsync<int>("[sp_GetRegisteredClientCount]", parameters);
+                return response;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
     }
 }

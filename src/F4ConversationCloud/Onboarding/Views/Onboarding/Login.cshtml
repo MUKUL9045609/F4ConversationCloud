@@ -1,4 +1,4 @@
-﻿@model F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel.Loginrequest;
+﻿@model F4ConversationCloud.Onboarding.Models.LoginRequestModel;
 @{
     Layout = null;
     ViewData["Title"] = "Login";
@@ -33,10 +33,12 @@
                         <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
                     </div>
 
-                    <div class="form-group">
-                        
-                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
-                        <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
+                    <div class="form-group mb-3">
+                        <div class="d-flex password-wrap">
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
+                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                        </div>
+                        <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
                     </div>
 
                     <a href="@Url.Action("forgotpassword","Onboarding")" class="forgot">Forgot password?</a>
@@ -44,16 +46,6 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
                 @* <div class="or"><span>or</span></div> *@
-
-                
-
-
-
-
-
-
-
-
             </div>
         </div>
     </div>
