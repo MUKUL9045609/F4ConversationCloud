@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
 {
-    public interface IWhatsAppCloudeService
+    public interface IF4AppCloudeService
     {
         Task<WhatsAppPhoneNumberInfoViewModel> GetWhatsAppPhoneNumberDetailsAsync(string phoneNumberId);
     }

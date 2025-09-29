@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Service.MetaServices
 {
-    public class WhatsAppCloudeService : IWhatsAppCloudeService
+    public class F4AppCloudeService : Application.Common.Interfaces.Services.Meta.IF4AppCloudeService
     {
         private readonly HttpClient _httpClient;
         private IConfiguration _configuration { get; }
-        public WhatsAppCloudeService(HttpClient httpClient, IConfiguration configuration)
+        public F4AppCloudeService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _configuration = configuration;
@@ -71,13 +71,7 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                           .ToList();
         }
 
-        public async Task CreateTemplate(WhatsAppTemplateRequest request)
-        { 
-            
-            
         
-        
-        }
 
     }
 }
