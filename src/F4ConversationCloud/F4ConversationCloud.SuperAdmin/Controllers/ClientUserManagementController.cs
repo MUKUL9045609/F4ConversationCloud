@@ -1,7 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -15,20 +21,35 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(ClientUserListViewModel model)
         {
-            var response = await _clientUserManagementService.GetFilteredUsers(new MasterListFilter
+            model.RolesList = Enum.GetValues(typeof(ClientRole))
+                     .Cast<ClientRole>()
+                     .Select(e => new SelectListItem
+                     {
+                         Value = ((int)e).ToString(),
+                         Text = e.GetType()
+                                 .GetMember(e.ToString())
+                                 .First()
+                                 .GetCustomAttribute<DisplayAttribute>()?
+                                 .Name ?? e.ToString()
+                     })
+                     .ToList();
+
+            var response = await _clientUserManagementService.GetFilteredUsers(new ClientUserManagementListFilter
             {
-                SearchString = model.SearchString ?? String.Empty,
-                Status = model.Status,
+                BusinessFilter = model.BusinessFilter ?? String.Empty,
+                NameFilter = model.NameFilter ?? String.Empty,
+                EmailFilter = model.EmailFilter ?? String.Empty,
+                RoleFilter = model.RoleFilter,
+                CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
+                UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
+                Status = model.Status ?? String.Empty,
                 PageNumber = model.PageNumber,
                 PageSize = model.PageSize,
             });
 
-            if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
+            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
             {
-                if (model.PageNumber > 1)
-                {
-                    TempData["ErrorMessage"] = "Invalid Page";
-                }
+                TempData["ErrorMessage"] = "Invalid Page";
                 return RedirectToAction("List");
             }
 
@@ -39,10 +60,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 SrNo = x.SrNo,
                 Name = x.FirstName + " " + x.LastName,
                 Email = x.Email,
-                Role = x.Role,
+                Role = ((ClientRole)(int)x.Role).GetDisplayName(),
                 IsActive = x.IsActive,
                 CreatedOn = x.CreatedOn,
-                UpdatedOn = x.UpdatedOn
+                UpdatedOn = x.UpdatedOn,
+                BusinessName = x.BusinessName,
+                Category = x.Category,
+                ClientId = x.ClientId
             });
 
             return View(model);

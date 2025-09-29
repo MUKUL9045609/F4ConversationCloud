@@ -10,6 +10,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
 {
     public interface IClientUserManagementService
     {
-        Task<Tuple<IEnumerable<ClientUserListItemModel>, int>> GetFilteredUsers(MasterListFilter filter);
+        Task<Tuple<IEnumerable<ClientUserListItemModel>, int>> GetFilteredUsers(ClientUserManagementListFilter filter);
     }
 }

@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h3 class="sub-heading">Client Users </h3>
         <div class="card padding">
-            @* <div class="filterWrapper form-wrapper">
+           @*  <div class="filterWrapper form-wrapper">
                 <div class="filterwrap">
                     <ul class="filter-list">
                         <li>
@@ -39,53 +39,52 @@
                                 @Html.DisplayNameFor(model => model.Columns.SrNo)
                             </th>
                             <th>
-                                Client Name
+                                @Html.DisplayNameFor(model => model.Columns.BusinessName)
                                 <div class="input-group">
-                                    <input type="text" class="form-control srcIcon" placeholder="Search">
-                                    <span class="searchIcon"></span>
+                                    <input asp-for="BusinessFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
                                 </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Name)
                                 <div class="input-group">
-                                    <input type="text" class="form-control srcIcon" placeholder="Search">
-                                    <span class="searchIcon"></span>
+                                    <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
                                 </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Email)
                                 <div class="input-group">
-                                    <input type="text" class="form-control srcIcon" placeholder="Search">
-                                    <span class="searchIcon"></span>
+                                    <input asp-for="EmailFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
                                 </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Role)
-                                <div class="input-group">
-                                    <input type="text" class="form-control srcIcon" placeholder="Search">
-                                    <span class="searchIcon"></span>
-                                </div>
+                                <select asp-for="RoleFilter" asp-items="Model.RolesList" class="form-select" onchange="loadData()">
+                                    <option value="0">Select Role</option>
+                                </select>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.CreatedOn)
-                                <input type="text"
-                                       id="datepicker1"
+                                <input asp-for="CreatedOnFilter" type="date"
+                                       id="datepicker"
                                        class="form-control datepicker search-form-control"
-                                       placeholder="Select Date" />
+                                       placeholder="Select Date" onchange="loadData()" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.UpdatedOn)
-                                <input type="text"
-                                       id="datepicker1"
+                                <input asp-for="UpdatedOnFilter" type="date"
+                                       id="datepicker"
                                        class="form-control datepicker search-form-control"
-                                       placeholder="Select Date" />
+                                       placeholder="Select Date" onchange="loadData()" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.IsActive)
-                                <select class="form-select">
-                                    <option selected>Select Status</option>
-                                    <option>Disabled</option>
-                                    <option>Enabled</option>
+                                <select asp-for="Status" class="form-select" onchange="loadData()">
+                                    <option value="" selected>Select Status</option>
+                                    <option value="Disabled">Disabled</option>
+                                    <option value="Enabled">Enabled</option>
                                 </select>
                             </th>
                         </tr>
@@ -106,16 +105,16 @@
                                         @Html.DisplayFor(modelItem => item.SrNo)
                                     </td>
                                     <td>
-                                        <span class="text-black fw-semibold d-block">Buldana Urban</span>
-                                        <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
-                                        <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                        <span class="text-black fw-semibold d-block">@Html.DisplayFor(modelItem => item.BusinessName)</span>
+                                        <span class="buisness-category"><span class="fw-medium">Category : </span>@Html.DisplayFor(modelItem => item.Category)</span>
+                                        <span class="buisness-category"><span class="fw-medium">Client Id : </span>@Html.DisplayFor(modelItem => item.ClientId)</span>
                                     </td>
                                     <td>
                                         <span class="text-black fw-medium d-block">
                                             @Html.DisplayFor(modelItem => item.Name)
                                         </span>
                                         <a href="clients-subuser-listing.html" class="text-decoration-none fw-light">
-                                            <span class="">Users :</span> 2
+                                            <span class="">Users :</span> 0
                                         </a>
                                     </td>
                                     <td>
@@ -162,11 +161,21 @@
 @section Scripts {
     <script>
         function loadData() {
-            let searchString = $("[name=SearchString]").val();
+            let businessFilter = $("[name=BusinessFilter]").val();
+            let nameFilter = $("[name=NameFilter]").val();
+            let emailFilter = $("[name=EmailFilter]").val();
+            let roleFilter = $("[name=RoleFilter]").val();
+            let createdOnFilter = $("[name=CreatedOnFilter]").val();
+            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
             let status = $("[name=Status]").val();
             let pageNumber = 1;
             location.href = '@Url.Action("List", "ClientUserManagement")' +
-                '?SearchString=' + searchString +
+                '?BusinessFilter=' + businessFilter +
+                '&NameFilter=' + encodeURIComponent(nameFilter) +
+                '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
                 '&Status=' + encodeURIComponent(status) +
                 '&PageNumber=' + pageNumber;
         }
@@ -180,12 +189,22 @@
         $(".page-link").click(function () {
             var pageNumber = $(this).data("page-number");
             if (pageNumber !== undefined && pageNumber !== null) {
-                let searchString = $("[name=SearchString]").val();
-                let status = $("[name=Status]").val();
+                let businessFilter = $("[name=BusinessFilter]").val();
+            let nameFilter = $("[name=NameFilter]").val();
+            let emailFilter = $("[name=EmailFilter]").val();
+            let roleFilter = $("[name=RoleFilter]").val();
+            let createdOnFilter = $("[name=CreatedOnFilter]").val();
+            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
+            let status = $("[name=Status]").val();
 
                 location.href = '@Url.Action("List", "ClientUserManagement")' +
-                    '?SearchString=' + searchString +
-                    '&Status=' + encodeURIComponent(status) +
+                    '?BusinessFilter=' + businessFilter +
+                '&NameFilter=' + encodeURIComponent(nameFilter) +
+                '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
+                '&Status=' + encodeURIComponent(status) +
                     '&PageNumber=' + pageNumber;
             }
         });

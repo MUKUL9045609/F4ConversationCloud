@@ -1,16 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
     public class ClientUserListViewModel
     {
-        public string SearchString { get; set; } = string.Empty;
-        public bool Status { get; set; } = true;
+        public string BusinessFilter { get; set; } = string.Empty;
+        public string NameFilter { get; set; } = string.Empty;
+        public string EmailFilter { get; set; } = string.Empty;
+        public int RoleFilter { get; set; } = 0;
+        public string CreatedOnFilter { get; set; } = string.Empty;
+        public string UpdatedOnFilter { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public int TotalCount { get; set; } = 0;
         public ClientUserListViewItem Columns { get; set; } = new ClientUserListViewItem();
         public IEnumerable<ClientUserListViewItem> data { get; set; } = new List<ClientUserListViewItem>();
+        public IEnumerable<SelectListItem> RolesList { get; set; }
 
         public class ClientUserListViewItem
         {
@@ -36,6 +43,12 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Last Updated")]
             public DateTime? UpdatedOn { get; set; }
+            [Display(Name = "Client Name")]
+            public string BusinessName { get; set; }
+            [Display(Name = "Category")]
+            public string Category { get; set; }
+            [Display(Name = "ClientId")]
+            public string ClientId { get; set; }
         }
     }
 }
