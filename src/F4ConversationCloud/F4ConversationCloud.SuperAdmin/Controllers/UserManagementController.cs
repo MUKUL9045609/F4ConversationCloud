@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
@@ -24,18 +25,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(UserListViewModel model)
         {
-            model.RolesList = Enum.GetValues(typeof(SuperAdminRole))
-                     .Cast<SuperAdminRole>()
-                     .Select(e => new SelectListItem
-                     {
-                         Value = ((int)e).ToString(),
-                         Text = e.GetType()
-                                 .GetMember(e.ToString())
-                                 .First()
-                                 .GetCustomAttribute<DisplayAttribute>()?
-                                 .Name ?? e.ToString()
-                     })
-                     .ToList();
+            model.RolesList = EnumExtensions.ToSelectList<SuperAdminRole>();
 
             var response = await _userManagementService.GetFilteredUsers(new UserManagementListFilter
             {

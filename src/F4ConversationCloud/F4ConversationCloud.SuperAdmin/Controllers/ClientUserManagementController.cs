@@ -21,18 +21,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(ClientUserListViewModel model)
         {
-            model.RolesList = Enum.GetValues(typeof(ClientRole))
-                     .Cast<ClientRole>()
-                     .Select(e => new SelectListItem
-                     {
-                         Value = ((int)e).ToString(),
-                         Text = e.GetType()
-                                 .GetMember(e.ToString())
-                                 .First()
-                                 .GetCustomAttribute<DisplayAttribute>()?
-                                 .Name ?? e.ToString()
-                     })
-                     .ToList();
+            model.RolesList = EnumExtensions.ToSelectList<ClientRole>();
 
             var response = await _clientUserManagementService.GetFilteredUsers(new ClientUserManagementListFilter
             {
