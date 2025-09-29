@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
+﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
+using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

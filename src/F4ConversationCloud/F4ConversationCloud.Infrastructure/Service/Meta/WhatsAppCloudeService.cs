@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.BussinessProfile;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -70,8 +71,13 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                           .ToList();
         }
 
-
-
+        public async Task CreateTemplate(WhatsAppTemplateRequest request)
+        { 
+            
+            
+        
+        
+        }
 
     }
 }
