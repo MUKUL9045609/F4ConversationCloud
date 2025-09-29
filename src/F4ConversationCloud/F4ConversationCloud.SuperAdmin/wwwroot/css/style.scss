@@ -237,7 +237,11 @@ body {
         width:25px;height:18px;
         display: inline-block;
     }
-    .sub-heading{margin-bottom: 0px!important;}
+    .sub-heading{
+        margin-bottom: 0px!important;
+        a{color: #000;text-decoration: none;}
+        .back{margin-right: 10px;}
+    }
     .client-logo{
         img{
             width:220px;

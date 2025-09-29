@@ -5,9 +5,14 @@
 
 <div class="content">
     <div class="container-fluid">
-        <h3 class="sub-heading">Users </h3>
+        <div class="d-flex justify-content-between mb-3">
+            <h3 class="sub-heading mb-0">Users </h3>
+            <div>
+                <a href="@Url.Action("Create", "UserManagement")" type="button" class="btn primary-btn add d-flex">Add New User</a>
+            </div>
+        </div>
         <div class="card padding">
-            <div class="filterWrapper form-wrapper">
+            @* <div class="filterWrapper form-wrapper">
                 <div class="filterwrap">
                     <ul class="filter-list">
                         <li>
@@ -34,9 +39,9 @@
                 <div>
                     <a href="@Url.Action("Create", "UserManagement")" type="button" class="btn primary-btn add d-flex">Add New User</a>
                 </div>
-            </div>
+            </div> *@
             <div class="table-responsive">
-                <table class="table user-table">
+                <table class="table user-table form-wrapper">
                     <thead>
                         <tr>
                             <th>
@@ -44,21 +49,48 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Name)
+                                <div class="input-group">
+                                    <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Email)
+                                <div class="input-group">
+                                    <input asp-for="EmailFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.RoleName)
+                                <select asp-for="RoleFilter" asp-items="Model.RolesList" class="form-select" onchange="loadData()">
+                                    <option value="0">Select Role</option>
+                                </select>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.CreatedOn)
+                                <input asp-for="CreatedOnFilter" type="date"
+                                       id="datepicker"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" onchange="loadData()" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.UpdatedOn)
+                                <input asp-for="UpdatedOnFilter" type="date"
+                                       id="datepicker"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" onchange="loadData()" />
                             </th>
-                            <th>
+                            @* <th>
                                 @Html.DisplayNameFor(model => model.Columns.IPAddress)
+                            </th> *@
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.IsActive)
+                                <select asp-for="StatusFilter" class="form-select" onchange="loadData()">
+                                    <option value="" selected>Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
                             </th>
                             <th>Actions</th>
                         </tr>
@@ -94,8 +126,15 @@
                                         @Html.DisplayFor(modelItem => item.UpdatedOn)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.IPAddress)
+                                        @{
+                                            var badgeClass = item.IsActive ? "success" : "danger";
+                                            var badge = item.IsActive ? "Active" : "InActive";
+                                        }
+                                        <span class="badge @badgeClass">@badge</span>
                                     </td>
+                                    @* <td>
+                                        @Html.DisplayFor(modelItem => item.IPAddress)
+                                    </td> *@
                                     <td>
                                         <div class="action">
                                             <form method="get" action="@Url.Action("Edit", "UserManagement", new { id = item.Id })">
@@ -164,17 +203,25 @@
         }
 
         function loadData() {
-            let searchString = $("[name=SearchString]").val();
-            let status = $("[name=Status]").val();
+            let nameFilter = $("[name=NameFilter]").val();
+            let emailFilter = $("[name=EmailFilter]").val();
+            let roleFilter = $("[name=RoleFilter]").val();
+            let createdOnFilter = $("[name=CreatedOnFilter]").val();
+            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
+            let statusFilter = $("[name=StatusFilter]").val();
             let pageNumber = 1;
             location.href = '@Url.Action("List", "UserManagement")' +
-                '?SearchString=' + searchString +
-                '&Status=' + encodeURIComponent(status) +
+                '?NameFilter=' + nameFilter +
+                '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
+                '&StatusFilter=' + encodeURIComponent(statusFilter) +
                 '&PageNumber=' + pageNumber;
         }
 
         $("#searchInput").on("keypress", function (e) {
-            if (e.which === 13) { 
+            if (e.which === 13) {
                 loadData();
             }
         });
@@ -182,21 +229,29 @@
         $(".page-link").click(function () {
             var pageNumber = $(this).data("page-number");
             if (pageNumber !== undefined && pageNumber !== null) {
-                let searchString = $("[name=SearchString]").val();
-                let status = $("[name=Status]").val();
+                let nameFilter = $("[name=NameFilter]").val();
+            let emailFilter = $("[name=EmailFilter]").val();
+            let roleFilter = $("[name=RoleFilter]").val();
+            let createdOnFilter = $("[name=CreatedOnFilter]").val();
+            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
+            let statusFilter = $("[name=StatusFilter]").val();
 
                 location.href = '@Url.Action("List", "UserManagement")' +
-                    '?SearchString=' + searchString +
-                    '&Status=' + encodeURIComponent(status) +
+                    '?NameFilter=' + nameFilter +
+                '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
+                '&StatusFilter=' + encodeURIComponent(statusFilter) +
                     '&PageNumber=' + pageNumber;
             }
         });
 
-        $("#reset-filters").click(function(){
-            $("[name=SearchString]").val('');
-            $("[name=Status]").val(true);
-            loadData();
-        });
+        // $("#reset-filters").click(function(){
+        //     $("[name=SearchString]").val('');
+        //     $("[name=Status]").val(true);
+        //     loadData();
+        // });
 
     </script>
 }

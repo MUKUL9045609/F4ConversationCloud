@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h3 class="sub-heading">Client Users </h3>
         <div class="card padding">
-            <div class="filterWrapper form-wrapper">
+            @* <div class="filterWrapper form-wrapper">
                 <div class="filterwrap">
                     <ul class="filter-list">
                         <li>
@@ -30,31 +30,63 @@
                     </ul>
                     <button class="btn secondary-btn" id="reset-filters"><i class="reset"></i></button>
                 </div>
-            </div>
+            </div> *@
             <div class="table-responsive">
-                <table class="table user-table">
+                <table class="table user-table form-wrapper">
                     <thead>
                         <tr>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.SrNo)
                             </th>
                             <th>
+                                Client Name
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Columns.Name)
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Email)
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Role)
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.CreatedOn)
+                                <input type="text"
+                                       id="datepicker1"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.UpdatedOn)
+                                <input type="text"
+                                       id="datepicker1"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.IsActive)
+                                <select class="form-select">
+                                    <option selected>Select Status</option>
+                                    <option>Disabled</option>
+                                    <option>Enabled</option>
+                                </select>
                             </th>
                         </tr>
                     </thead>
@@ -74,7 +106,17 @@
                                         @Html.DisplayFor(modelItem => item.SrNo)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <span class="text-black fw-semibold d-block">Buldana Urban</span>
+                                        <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
+                                        <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-black fw-medium d-block">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </span>
+                                        <a href="clients-subuser-listing.html" class="text-decoration-none fw-light">
+                                            <span class="">Users :</span> 2
+                                        </a>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Email)
@@ -88,14 +130,24 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.UpdatedOn)
                                     </td>
-                                    @if (item.IsActive)
+                                    <td>
+                                        @{
+                                            var check = (item.IsActive ? "checked" : "");
+                                        }
+                                        <div class="action">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" @check>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @* @if (item.IsActive)
                                     {
                                         <td><span class="badge success">Active</span></td>
                                     }
                                     else
                                     {
                                         <td><span class="badge danger">Inactive</span></td>
-                                    }
+                                    } *@
                                 </tr>
                             }
                         }
@@ -138,11 +190,11 @@
             }
         });
 
-        $("#reset-filters").click(function(){
-            $("[name=SearchString]").val('');
-            //$("[name=Status]").val(true);
-            loadData();
-        });
+        // $("#reset-filters").click(function(){
+        //     $("[name=SearchString]").val('');
+        //     //$("[name=Status]").val(true);
+        //     loadData();
+        // });
 
     </script>
 }
