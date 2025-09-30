@@ -48,14 +48,14 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Name)
                                 <div class="input-group">
-                                    <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="nameSearchInput">
                                     <span class="searchIcon" onclick="loadData()"></span>
                                 </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Email)
                                 <div class="input-group">
-                                    <input asp-for="EmailFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <input asp-for="EmailFilter" type="text" class="form-control srcIcon" placeholder="Search" id="emailSearchInput">
                                     <span class="searchIcon" onclick="loadData()"></span>
                                 </div>
                             </th>
@@ -181,7 +181,19 @@
         }
 
         $("#searchInput").on("keypress", function (e) {
-            if (e.which === 13) {
+            if (e.which == 13) {
+                loadData();
+            }
+        });
+
+        $("#nameSearchInput").on("keypress", function (e) {
+            if (e.which == 13) {
+                loadData();
+            }
+        });
+
+        $("#emailSearchInput").on("keypress", function (e) {
+            if (e.which == 13) {
                 loadData();
             }
         });
