@@ -1,16 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
     public class UserListViewModel
     {
-        public string SearchString { get; set; } = string.Empty;
-        public bool Status { get; set; } = true;
+        public string NameFilter { get; set; } = string.Empty;
+        public string EmailFilter { get; set; } = string.Empty;
+        public int RoleFilter { get; set; } = 0;
+        public string CreatedOnFilter { get; set; } = string.Empty;
+        public string UpdatedOnFilter { get; set; } = string.Empty;
+        public string StatusFilter { get; set; } = string.Empty;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public int TotalCount { get; set; } = 0;
         public UserListViewItem Columns { get; set; } = new UserListViewItem();
         public IEnumerable<UserListViewItem> data { get; set; } = new List<UserListViewItem>();
+        public IEnumerable<SelectListItem> RolesList { get; set; }
 
         public class UserListViewItem
         {
@@ -39,7 +45,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "IP Address")]
             public string IPAddress { get; set; }
-
+            [Display(Name = "Status")]
             public bool IsActive { get; set; }
 
             [Display(Name = "Created Date & Time")]

@@ -20,21 +20,31 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             _repository = repository;
         }
 
-        public async Task<int> GetCountAsync(MasterListFilter filter)
+        public async Task<int> GetCountAsync(ClientUserManagementListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("searchString", filter.SearchString);
+            parameters.Add("businessFilter", filter.BusinessFilter);
+            parameters.Add("nameFilter", filter.NameFilter);
+            parameters.Add("emailFilter", filter.EmailFilter);
+            parameters.Add("roleFilter", filter.RoleFilter);
+            parameters.Add("createdOnFilter", filter.CreatedOnFilter);
+            parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
             parameters.Add("status", filter.Status);
 
             return await _repository.GetCountAsync("sp_GetClientUserCount", parameters);
         }
 
-        public async Task<IEnumerable<ClientUserListItemModel>> GetFilteredAsync(MasterListFilter filter)
+        public async Task<IEnumerable<ClientUserListItemModel>> GetFilteredAsync(ClientUserManagementListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("searchString", filter.SearchString);
+            parameters.Add("businessFilter", filter.BusinessFilter);
+            parameters.Add("nameFilter", filter.NameFilter);
+            parameters.Add("emailFilter", filter.EmailFilter);
+            parameters.Add("roleFilter", filter.RoleFilter);
+            parameters.Add("createdOnFilter", filter.CreatedOnFilter);
+            parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
             parameters.Add("status", filter.Status);
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
@@ -36,6 +37,8 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public DateTime CreatedAt { get; set; }
 
             public DateTime? UpdatedOn { get; set; }
+            [Display(Name = "Client Id")]
+            public string? ClientId { get; set; }
         }
     }
 }

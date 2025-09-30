@@ -1,11 +1,15 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -21,10 +25,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(UserListViewModel model)
         {
-            var response = await _userManagementService.GetFilteredUsers(new MasterListFilter
+            model.RolesList = EnumExtensions.ToSelectList<SuperAdminRole>();
+
+            var response = await _userManagementService.GetFilteredUsers(new UserManagementListFilter
             {
-                SearchString = model.SearchString ?? String.Empty,
-                Status = model.Status,
+                NameFilter = model.NameFilter ?? String.Empty,
+                EmailFilter = model.EmailFilter ?? String.Empty,
+                RoleFilter = model.RoleFilter,
+                CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
+                UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
+                StatusFilter = model.StatusFilter ?? String.Empty,
                 PageNumber = model.PageNumber,
                 PageSize = model.PageSize,
             });

@@ -5,6 +5,7 @@ using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
+using F4ConversationCloud.SuperAdmin.Models;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -35,7 +36,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             return id;
         }
 
-        public async Task<Tuple<IEnumerable<UserListItemModel>, int>> GetFilteredUsers(MasterListFilter filter)
+        public async Task<Tuple<IEnumerable<UserListItemModel>, int>> GetFilteredUsers(UserManagementListFilter filter)
         {
             return Tuple.Create(await _userManagementRepository.GetFilteredAsync(filter), await _userManagementRepository.GetCountAsync(filter));
         }

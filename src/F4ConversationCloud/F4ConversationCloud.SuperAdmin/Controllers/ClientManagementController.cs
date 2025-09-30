@@ -48,7 +48,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 IsActive = x.IsActive,
                 CreatedAt = x.CreatedAt,
                 UpdatedOn = x.UpdatedOn,
-                Category = x.Category
+                Category = x.Category,
+                ClientId = x.ClientId
             });
 
             return View(model);

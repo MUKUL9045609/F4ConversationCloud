@@ -65,12 +65,13 @@
                                         <form method="get" action="@Url.Action("ClientDetails", "ClientManagement", new { id = item.Id })">
                                             <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ClientName)</a>
                                         </form>
-                                        <span class="buisness-category">@Html.DisplayFor(modelItem => item.Category)</span>
+                                        <span class="buisness-category"><span class="fw-medium">Category :</span> @Html.DisplayFor(modelItem => item.Category)</span>
+                                        <span class="buisness-category"><span class="fw-medium">Client Id :</span> @Html.DisplayFor(modelItem => item.ClientId)</span>
                                     </td>
                                     <td>
                                         <span>@Html.DisplayFor(modelItem => item.CreatedAt)</span>
                                     </td>
-                                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                    <td><span class="online">@Html.DisplayFor(modelItem => item.Status)</span></td>
                                     <td>
                                         <span class="message-block">
                                             -
