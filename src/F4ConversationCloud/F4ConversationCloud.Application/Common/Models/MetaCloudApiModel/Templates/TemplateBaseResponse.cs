@@ -12,7 +12,7 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonPropertyName("data")]
         public List<TemplateData> Data { get; set; }
         [JsonPropertyName("components")]
-        public List<WhatsAppBusinessHSMWhatsAppHSMComponentGet> Components { get; set; }
+        public List<CreateTemplateComponent> Components { get; set; }
 
         [JsonPropertyName("paging")]
         public TemplatePaging Paging { get; set; }
@@ -23,7 +23,7 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         public string Name { get; set; }
 
         [JsonPropertyName("components")]
-        public List<WhatsAppBusinessHSMWhatsAppHSMComponentGet> Components { get; set; }
+        public List<CreateTemplateComponent> Components { get; set; }
 
         [JsonPropertyName("language")]
         public string Language { get; set; }

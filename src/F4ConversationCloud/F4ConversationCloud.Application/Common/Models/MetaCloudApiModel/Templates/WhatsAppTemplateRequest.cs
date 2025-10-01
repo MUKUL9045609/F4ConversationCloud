@@ -9,15 +9,15 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
 {
     public class WhatsAppTemplateRequest
     {
-        [JsonPropertyName("data")]
+        //[JsonPropertyName("data")]
 
-        public TemplateData Data { get; set; }
+        //public TemplateData Data { get; set; }
 
         [JsonPropertyName("components")]
-        public List<WhatsAppBusinessHSMWhatsAppHSMComponentGet> Components { get; set; }
+        public List<CreateTemplateComponent> Components { get; set; }
 
-        [JsonPropertyName("paging")]
-        public TemplatePaging Paging { get; set; }
+        //[JsonPropertyName("paging")]
+        //public TemplatePaging Paging { get; set; }
 
 
         [JsonPropertyName("name")]
@@ -35,7 +35,7 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
     }
 
 
-    public class WhatsAppBusinessHSMWhatsAppHSMComponentGet
+    public class CreateTemplateComponent
     {
        
         [JsonPropertyName("example")]

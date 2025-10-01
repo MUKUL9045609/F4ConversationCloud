@@ -77,17 +77,17 @@ namespace F4ConversationCloud.Infrastructure
 
             var noOpPolicy = Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>();
 
-          //  services.AddTransient<IWhatsAppBusinessClientFactory, WhatsAppBusinessClientFactory>();
+           //services.AddTransient<IWhatsAppBusinessClientFactory, WhatsAppBusinessClientFactory>();
 
-            //services.AddSingleton(new WhatsAppBusinessCloudApiConfig
-            //{
-            //    WhatsAppBusinessPhoneNumberId = whatsAppConfig.WhatsAppBusinessPhoneNumberId,
-            //    WhatsAppBusinessAccountId = whatsAppConfig.WhatsAppBusinessAccountId,
-            //    WhatsAppBusinessId = whatsAppConfig.WhatsAppBusinessId,
-            //    AccessToken = whatsAppConfig.AccessToken,
-            //    AppName = whatsAppConfig.AppName,
-            //    Version = whatsAppConfig.Version
-            //});
+            services.AddSingleton(new WhatsAppBusinessCloudApiConfig
+            {
+                WhatsAppBusinessPhoneNumberId = whatsAppConfig.WhatsAppBusinessPhoneNumberId,
+                WhatsAppBusinessAccountId = whatsAppConfig.WhatsAppBusinessAccountId,
+                WhatsAppBusinessId = whatsAppConfig.WhatsAppBusinessId,
+                AccessToken = whatsAppConfig.AccessToken,
+                AppName = whatsAppConfig.AppName,
+                Version = whatsAppConfig.Version
+            });
             // services.AddScoped<IWhatsAppTemplateManagementInterface, WhatsAppTemplateManagementInterface>();
             services.AddHttpClient<IMetaCloudAPIService, MetaCloudAPIService>(options =>
             {

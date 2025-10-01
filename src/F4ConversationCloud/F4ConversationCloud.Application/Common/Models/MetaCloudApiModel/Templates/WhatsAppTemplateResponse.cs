@@ -19,7 +19,7 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         public TemplateData Data { get; set; }
 
         [JsonPropertyName("components")]
-        public List<WhatsAppBusinessHSMWhatsAppHSMComponentGet> Components { get; set; }
+        public List<CreateTemplateComponent> Components { get; set; }
 
         [JsonPropertyName("paging")]
         public TemplatePaging Paging { get; set; }

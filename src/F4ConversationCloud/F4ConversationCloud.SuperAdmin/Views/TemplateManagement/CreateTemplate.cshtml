@@ -3,43 +3,11 @@
     ViewData["Title"] = "Create Template";
 }
 
-<div class="main-content">
-            <!-- Header Bar -->
-            <header class="app-header">
-                <div class="appheader-wrap">
-                    
-                    <span class="burger" id="toggleButton">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </span>
-                    
-                    <div class="profile-dropdown ms-auto"> 
-                        <div class="profile">
-                            <div class="dropdown">
-                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                <span class="profile-name">D</span> 
-                                <div>
-                                        <p>Dinesh Sharma</p>
-                                        <span class="profile-role">Super Admin</span>
-                                </div>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    
-                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+    
 
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <!-- End Header Bar -->
-
-            <div class="content">
+        <div class="content">
                 <div class="main-content">
-                <div class="container-fluid">
+                    <div class="container-fluid">
                     <div class="d-flex justify-content-between headerWrap mb-3">
                         <div class="d-flex align-items-center gap-2">
                             <h3 class="sub-heading mb-0">
@@ -55,29 +23,30 @@
                         </div> -->
                     </div>
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="card padding">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h3>Template name<sup>*</sup></h3>
-                                    <span class="question"></span>
-                                </div>
-                                <div class="template-question mb-3">
-                                    <label for="exampleInputEmail1" class="form-label"
-                                        >Give your message template a name.</label
-                                    >
-                                    <input
-                                        type="email"
-                                        class="form-control"
-                                        id="exampleInputEmail1"
-                                        placeholder="Template name"
-                                        aria-describedby="emailHelp"
-                                    />
-                                    <div id="emailHelp" class="form-text">
-                                        Template names can only contain small letters, numbers and
-                                        underscores.
+                        <form  asp-action="CreateTemplate" asp-controller="TemplateManagement" method="post">
+                            <div class="col-md-8">
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Template name<sup>*</sup></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label"
+                                            >Give your message template a name.</label
+                                        >
+                                        <input asp-for="TemplateName"
+                                            type="text"
+                                            class="form-control"
+                                            id="exampleInputEmail1"
+                                           placeholder="Eg.fortune_sale"
+                                            aria-describedby="emailHelp"
+                                        />
+                                        <div id="emailHelp" class="form-text">
+                                            Template names can only contain small letters, numbers and
+                                            underscores.
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
                             <div class="card padding">
                                 <div class="d-flex justify-content-between mb-3">
@@ -91,17 +60,17 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-check radio-btn mb-2">
-                                                <input
+                                                <input asp-for="Category"
                                                     class="form-check-input"
                                                     type="radio"
-                                                    name="flexRadioDefault"
+                                                 
                                                     id="flexRadioDefault1"
-                                                />
+                                                   value="UTILITY" />
                                                 <label
                                                     class="form-check-label"
                                                     for="flexRadioDefault1"
                                                 >
-                                                    Marketing
+                                                    Utility
                                                 </label>
                                             </div>
                                             <p>
@@ -111,12 +80,12 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-check radio-btn mb-2">
-                                                <input
+                                                <input asp-for="Category"
                                                     class="form-check-input"
                                                     type="radio"
-                                                    name="flexRadioDefault"
+                                                 
                                                     id="flexRadioDefault2"
-                                                />
+                                                   value="AUTHENTICATION" />
                                                 <label
                                                     class="form-check-label"
                                                     for="flexRadioDefault2"
@@ -132,11 +101,12 @@
                                         <div class="col-md-4">
                                             <div class="form-check radio-btn mb-2">
                                                 <input
+                                                    asp-for="Category"
                                                     class="form-check-input"
                                                     type="radio"
-                                                    name="flexRadioDefault"
+                                                    
                                                     id="flexRadioDefault3"
-                                                />
+                                                   value="MARKETING" />
                                                 <label
                                                     class="form-check-label"
                                                     for="flexRadioDefault3"
@@ -163,10 +133,10 @@
                                         >Choose which languages your message template will be sent
                                         in.</label
                                     >
-                                    <select class="form-select" aria-label="Default select example">
+                                    <select asp-for="Language" class="form-select" aria-label="Default select example">
                                         <option selected>select languages</option>
-                                        <option value="1">English (UK)</option>
-                                        <option value="2">English (US)</option>
+                                         <option value="en_US">English (US)</option>
+                                       
                                         <option value="3">Hindi</option>
                                         <option value="4">Marathi</option>
                                     </select>
@@ -194,12 +164,12 @@
                                 <div class="template-question mb-3">
                                     
                                     <select class="form-select" id="mySelect" aria-label="Default select example">
-                                        <option selected>Select Media</option>
-                                        <option value="1">None</option>
-                                        <option value="attatchment">Image</option>
-                                        <option value="attatchment">Video</option>
-                                        <option value="attatchment">Document</option>
-                                        <option value="5">Location</option>
+                                        <option selected disabled>Select Media</option>
+                                        <option value="Text">Text</option>
+                                        <option value="Image">Image</option>
+                                        <option value="Video">Video</option>
+                                        <option value="Document">Document</option>
+                                        <option value="Location">Location</option>
                                         
                                     </select>
                                     <div class="drag-file-wrapper" id="attatchment" style="display: none;">
@@ -214,6 +184,8 @@
                             <div class="card padding">
                                 <div class="d-flex justify-content-between mb-3">
                                     <h3>Header <span class="key">Optional</span></h3>
+                                <input type="hidden" asp-for="Components[0].Type" value="HEADER" />
+                                <input type="hidden" asp-for="Components[0].Format" value="TEXT" />
                                     <span class="question"></span>
                                 </div>
                                 <div class="template-question mb-3">
@@ -221,23 +193,32 @@
                                         >Add a 60 character title to your message. Only one variable
                                         is supported in the header.</label
                                     >
-                                   <input type="text" class="form-control" >
+                                <input type="text" id="Headerinput" asp-for="Components[0].Text" class="form-control">
                                    <div class="d-flex justify-content-end">
-                                        <button class="add-variables">Add Variables</button>
+                                        <a class="add-variables" id="AddHeaderVariable">Add Variables</a>
                                    </div>
                                 </div>
                             </div>
-                            <div class="card padding">
+                        <div class="card padding" style="display: none;">
+                            <h6>Variable samples</h6>
+                            <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
+                            <ul class="add-veriables" id="addHeader-veriables">
+                                
+                            </ul>
+                        </div>
+
+                        <div class="card padding">
                                 <div class="d-flex justify-content-between mb-3">
-                                    <h3>Body <span class="key">Optional</span></h3>
+                                    <h3>Body <span class="key">Required</span></h3>
+                                <input type="hidden" asp-for="Components[1].Type" value="BODY" />
                                     <span class="question"></span>
                                 </div>
                                 <div class="template-question mb-3">
-                                    <label for="exampleInputEmail1" class="form-label"
-                                        >Enter the text for your message in the language you have
-                                        selected.</label
-                                    >
-                                    <div class="note d-flex align-items-center">
+                                    <label for="exampleInputEmail1" class="form-label">
+                                        Enter the text for your message in the language you have
+                                        selected.
+                                    </label>
+                                    <div class="note d-flex align-items-center " >
                                         <span class="exclamatory"></span>
                                         <p>
                                             The text limit in the body should be less than 550
@@ -245,35 +226,49 @@
                                             any template rejection
                                         </p>
                                     </div>
-                                    
-                                    <div id="content" contenteditable="true" spellcheck="false">
-                                        Lorem, ipsum.
-                                    </div>
+                                    <br />
+                                    @* <div id="content" contenteditable="true" spellcheck="false">
+                                        
+                                    </div> *@
+                                <textarea id="body-text"  asp-for="Components[1].Text" class="form-control" placeholder="Body Text"></textarea>
+                              
+                       
                                     <div class="toolbar">
-                                        <button class="add-variables">Add Variables</button>
-                                        <div class="btn-toolbar">
-                                            
+                                    <a class="add-variables" id="addBodyvariables">Add Variables</a>
+                                        @* <div class="btn-toolbar">
+
                                             <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
-                                            <button onclick="formatDoc('underline')"><i class='bx bx-underline' ></i></button>
-                                            <button onclick="formatDoc('italic')"><i class='bx bx-italic' ></i></button>
-                                            <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough' ></i></button> 
-                                            <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol' ></i></button>
-                                            <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul' ></i></button>
-                                           
-                                        </div>
+                                            <button onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
+                                            <button onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
+                                            <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button>
+                                            <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
+                                            <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button>
+
+                                        </div> *@
                                     </div>
-                                         
+
                                 </div>
                             </div>
+
+                            <div class="card padding" style="display: none;">
+                                <h6>Variable samples</h6>
+                                <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
+                                <ul class="add-veriables">
+                                
+                                </ul>
+                            </div>
+                      
                             <div class="card padding">
                                 <div class="d-flex justify-content-between mb-3">
                                     <h3>Footer <span class="key">Optional</span></h3>
+                                <input type="hidden" asp-for="Components[2].Type" value="FOOTER" />
+
                                     <span class="question"></span>
                                 </div>
                                 <div class="template-question mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Add a 60 character footer to your message. Variables are not supported in the footer.</label
                                     >
-                                    <input class="form-control"/>
+                                <input class="form-control" asp-for="Components[2].Text" />
                                     <div class="d-flex justify-content-end">
                                         <button class="add-variables">Add Variables</button>
                                    </div>
@@ -282,6 +277,7 @@
                             <div class="card padding">
                                 <div class="d-flex justify-content-between mb-3">
                                     <h3>Button <span class="key">Optional</span></h3>
+                                <input type="hidden" asp-for="Components[3].Type" value="BUTTONS" />
                                     <span class="question"></span>
                                 </div>
                                 <div class="template-question mb-3">
@@ -342,9 +338,13 @@
                             </div>
                             <div class="d-flex gap-2">
                                 <button class="btn danger-btn">Clear All</button>
-                                <button class="btn primary-btn">Submit</button>
+                                <button class="btn primary-btn" type="submit">Submit</button>
                             </div>
                         </div>
+                        </form>
+
+
+
                         <div class="col-md-4">
                             <div class="template-preview">
                                 <h4>Preview</h4>
@@ -361,16 +361,128 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            </div>
+                 </div>
+         </div>
 
-            <footer class="footer"> 
-                <div class="container"> 
-                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
-                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
-                        All rights reserved 
-                    </span> 
-                </div> 
-		    </footer>
+            
 
- </div>
+ @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            let BodyvariableCount = 0;
+             let HeadervariableCount = 0;
+
+
+            $('#addBodyvariables').click(function () {
+                variableCount++;
+
+                if (variableCount === 1) {
+                    $('.card.padding').show();
+                }
+
+                const variable = `{{${variableCount}}}`;
+
+                const newRow = $(`
+                    <li style="margin-top: 10px;" data-variable="${variable}">
+                        <div class="d-flex gap-3">
+                            <div>
+                                <input type="text" class="form-control" value="${variable}" readonly>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control variable-value">
+                            </div>
+                            <button type="button" id="remove-variable"  class="btn btn-danger">Remove</button>
+                        </div>
+                    </li>
+                `);
+
+                $('.add-veriables').append(newRow);
+
+                updateTextarea(variable);
+
+          
+                newRow.find('#remove-variable').click(function () {
+                    removeFromTextarea(variable);
+                    newRow.remove();
+                    checkIfEmpty();
+                });
+            });
+
+             $('#AddHeaderVariable').click(function () {
+                 const addvarinInpute = $('#Headerinput');
+                 //let areaval = $('#Headerinput').val();
+                 HeadervariableCount++;
+
+                if (HeadervariableCount === 1) {
+                    $('.card.padding').show();
+                }
+
+                const variable = `{{${HeadervariableCount}}}`;
+
+                const newRow = $(`
+                    <li style="margin-top: 10px;" data-variable="${variable}">
+                        <div class="d-flex gap-3">
+                            <div>
+                                <input type="text" class="form-control" value="${variable}" readonly>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control variable-value">
+                            </div>
+                            <button type="button" id="remove-Header-var"  class="btn btn-danger">Remove</button>
+                        </div>
+                    </li>
+                `);
+
+                $('#addHeader-veriables').append(newRow);
+
+               // updateTextarea(variable);
+
+                
+                updateTextarea(variable,addvarinInpute)
+
+                newRow.find('#remove-Header-var').click(function () {
+                    
+                    removeFromTextarea(variable,addvarinInpute);
+                    newRow.remove();
+                    checkIfEmpty();
+                });
+            });
+        
+
+
+             function updateTextarea(variable,addvarinInpute) {
+                let textarea =addvarinInpute;
+                
+                let currentVal = textarea.val();
+               
+                if (!currentVal.includes(variable)) {
+                    if (currentVal.length > 0) currentVal += ' ';
+
+                    textarea.val(currentVal+variable);
+                    //textarea.val(currentVal + variable);
+                }
+            }
+
+            function removeFromTextarea(variable,addvarinInpute) {
+                debugger
+               const textarea = addvarinInpute;
+                let currentVal =  addvarinInpute.val();
+                const regex = new RegExp(variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                textarea.val(currentVal.replace(regex, '').replace(/\s+/g, ' ').trim());
+            }
+            function checkIfEmpty() {
+                if ($('#addHeader-veriables li').length === 0) {
+                    debugger
+                    $('.card.padding').hide();
+                    variableCount = 0;
+                }
+            }
+        });
+    </script>
+
+ }
+	
