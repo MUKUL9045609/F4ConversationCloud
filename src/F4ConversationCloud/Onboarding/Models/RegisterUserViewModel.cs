@@ -51,7 +51,7 @@ namespace Onboarding.Models
 
             [Remote(action: "IsValidEmailOtpVerify", controller: "Validation", AdditionalFields = "Email", ErrorMessage = "OTP must be verified.")]
             public bool EmailOtpVerified { get; set; } = false;
-            public string Role { get; set; } = "Client";
+            public int Role { get; set; } = 1;
 
             [Required(ErrorMessage = "Select Time Zones")]
             public string Timezone { get; set; }

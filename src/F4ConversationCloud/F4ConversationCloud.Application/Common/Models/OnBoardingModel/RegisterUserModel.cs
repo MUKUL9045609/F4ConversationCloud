@@ -26,7 +26,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public bool IsActive { get; set; } = true;
         public bool TermsCondition { get; set; }
         public bool EmailOtpVerified { get; set; } = false;
-        public string Role { get; set; } = "Client";
+        public int Role { get; set; }= 1;
         public string Timezone { get; set; }
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }

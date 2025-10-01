@@ -39,7 +39,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<ICampaignService, CampaignService>();
-
+            services.AddSingleton<HttpClient>();
 
             //Super Admin Services and Repositories
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
