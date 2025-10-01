@@ -36,6 +36,9 @@
                             <li>
                                 <a href="activity-log.html" class="log icon">Activity Log</a>
                             </li>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterPrice" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="MasterPrice" asp-action="List" class="billing icon">Master Price</a>
+                            </li>
                             <li>
                                 <a href="reports.html" class="reports icon">Reports</a>
                             </li>
