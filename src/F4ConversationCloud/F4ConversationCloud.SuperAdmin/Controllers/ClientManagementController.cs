@@ -1,22 +1,22 @@
-﻿using Dapper;
+﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Web.Mvc;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class ClientManagementController : BaseController
     {
         private readonly IClientManagementService _clientManagement;
-        public ClientManagementController(IClientManagementService clientManagement)
+        private readonly IMasterPriceService _masterPriceService;
+        public ClientManagementController(IClientManagementService clientManagement, IMasterPriceService masterPriceService)
         {
             _clientManagement = clientManagement;
+            _masterPriceService = masterPriceService;
         }
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
@@ -83,6 +83,22 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 RegisteredCountry = response.RegisteredCountry,
                 RegisteredTimeZone = response.RegisteredTimeZone
             };
+
+            var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();
+            var mappedMasterPrices = masterPriceData.Select(x => new MasterPrice
+            {
+                Id = x.Id,
+                SrNo = x.SrNo,
+                ConversationType = x.ConversationType,
+                Price = x.Price,
+                FromDate = x.FromDate,
+                ToDate = x.ToDate,
+                CreatedOn = x.CreatedOn,
+                IsActive = x.IsActive,
+                ConversationTypeName = ((TemplateModuleType)x.ConversationType).GetDisplayName()
+            }).ToList();
+
+            model.masterPrices = mappedMasterPrices;
 
             return View(model);
         }
