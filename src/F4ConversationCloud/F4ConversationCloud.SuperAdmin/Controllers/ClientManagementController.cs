@@ -51,7 +51,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     CreatedAt = x.CreatedAt,
                     UpdatedOn = x.UpdatedOn,
                     Category = x.Category,
-                    ClientId = x.ClientId
+                    ClientId = x.ClientId,
+                    RejectComment = x.RejectComment
                 });
 
                 return View(model);

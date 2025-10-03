@@ -18,5 +18,6 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string? ClientId { get; set; }
+        public string? RejectComment { get; set; }
     }
 }
