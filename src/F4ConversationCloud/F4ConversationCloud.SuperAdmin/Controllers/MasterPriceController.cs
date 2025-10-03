@@ -1,16 +1,11 @@
 ﻿using BuldanaUrban.Domain.Helpers;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
-using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
-using System.Reflection;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -72,8 +67,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     return View(model);
                 }
 
-                int id = await _masterPriceService.CreateAsync(new MasterPrice() 
-                { 
+                int id = await _masterPriceService.CreateAsync(new MasterPrice()
+                {
                     ConversationType = model.ConversationType,
                     Price = model.Price,
                     FromDate = model.FromDate,

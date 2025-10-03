@@ -193,7 +193,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     return BadRequest("Comment is required.");
                 }
 
-                var status = "Rejected";
+                var status = "Reject";
                 var response = await _clientManagement.Reject(id, status, rejectComment);
 
                 if (response)
