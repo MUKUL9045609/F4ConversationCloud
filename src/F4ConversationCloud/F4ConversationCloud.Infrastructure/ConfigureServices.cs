@@ -39,14 +39,14 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<ICampaignService, CampaignService>();
-
+            services.AddSingleton<HttpClient>();
 
             //Super Admin Services and Repositories
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
-            //services.AddScoped<IOnboardingService, OnboardingService>();
+            services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            //services.AddScoped<IWhatsAppCloudeService, WhatsAppCloudeService>();
+            services.AddScoped<IWhatsAppCloudeService, WhatsAppCloudeService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IUserManagementRepository, UserManagementRepository>();
             services.AddScoped<IClientUserManagementService, ClientUserManagementService>();

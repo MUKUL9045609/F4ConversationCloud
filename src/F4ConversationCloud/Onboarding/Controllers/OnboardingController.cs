@@ -145,7 +145,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     IsActive = command.IsActive,
                     Stage = command.Stage,
                     FullPhoneNumber = command.FullPhoneNumber,
-                    Role = command.Role,
+                    Role = ClientRole.Admin,
                     ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
                 
