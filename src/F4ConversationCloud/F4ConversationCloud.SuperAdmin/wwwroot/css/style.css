@@ -3573,8 +3573,9 @@ body {
 }
 
 .toast p {
-  margin-bottom: 0px;
-  font-size: 13px;
+    margin-bottom: 0px;
+    font-size: 13px;
+    color: white;
 }
 
 .daterangepicker .ranges li.active {
