@@ -17,7 +17,7 @@
         <!-- side Bar -->
         <aside class="app-sidebar">
             <div class="sidenav-content">
-                <a asp-controller="ClientManagement" asp-action="List" class="main-sidebar-header"><img src="~/images/logo.svg" /></a>
+                <a asp-controller="Dashboard" asp-action="Index" class="main-sidebar-header"><img src="~/images/logo.svg" /></a>
                 <div class="main-side-navigation">
                     <nav>
                         <ul>
@@ -108,7 +108,7 @@
 
     <script>
         $(document).ready(function () {
-            commonHelper.showHideLoader(false);
+            commonHelper.showHideLoader(true);
 
             $('#toggleButton').on('click', function() {
                 $('body').toggleClass('sidemenutoggle');
@@ -122,6 +122,7 @@
                 else if (toastMsg.type === "Error")
                     commonHelper.showError(toastMsg.message);
             }
+            commonHelper.showHideLoader(false);
         });
 
     </script>
