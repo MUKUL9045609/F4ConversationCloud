@@ -1,10 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin
 {
@@ -13,5 +8,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<int> CreateAsync(MasterPrice masterPrice);
         Task<IEnumerable<MasterPrice>> GetFilteredAsync(MasterListFilter filter);
         Task<int> GetCountAsync(MasterListFilter filter);
+        Task<List<MasterPrice>> GetLatestRecordsByConversationType();
     }
 }

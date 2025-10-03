@@ -3,22 +3,16 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
-using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 {
     public class MasterPriceRepository : IMasterPriceRepository
     {
-        private readonly IGenericRepository<User> _repository;
+        private readonly IGenericRepository<MasterPrice> _repository;
         private readonly DbContext _context;
-        public MasterPriceRepository(IGenericRepository<User> repository, DbContext context)
+        public MasterPriceRepository(IGenericRepository<MasterPrice> repository, DbContext context)
         {
             _repository = repository;
             _context = context;
@@ -53,6 +47,12 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             DynamicParameters parameters = new DynamicParameters();
 
             return await _repository.GetCountAsync("sp_GetMasterPriceCount", parameters);
+        }
+
+        public async Task<List<MasterPrice>> GetLatestRecordsByConversationType()
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            return (await _repository.GetListByParamAsync<MasterPrice>("GetLatestRecordsByConversationType", parameters)).ToList();
         }
     }
 }

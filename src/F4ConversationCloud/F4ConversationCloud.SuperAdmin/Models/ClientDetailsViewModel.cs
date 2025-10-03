@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using Microsoft.VisualBasic;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
@@ -45,5 +46,6 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public bool UtilityAll { get; set; }
         public bool AllowUserManagement { get; set; }
         public string RejectComment { get; set; }
+        public List<MasterPrice> masterPrices { get; set; }
     }
 }

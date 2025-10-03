@@ -51,5 +51,23 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
             return await _repository.GetListByValuesAsync<ClientUserListItemModel>("sp_GetFilteredClientUsers", parameters);
         }
+
+        public async Task<bool> Activate(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("Id", id);
+
+            return await _repository.RestoreAsync("sp_ActivateClientUser", parameters);
+        }
+
+        public async Task<bool> Deactivate(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("Id", id);
+
+            return await _repository.DeleteAsync("sp_DeactivateClientUser", parameters);
+        }
     }
 }

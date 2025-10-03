@@ -1,6 +1,12 @@
-﻿@model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
+﻿@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Enum
+@using System.ComponentModel.DataAnnotations
+@model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
 @{
     ViewData["Title"] = "Details";
+    var marketing = Model.masterPrices.FirstOrDefault(x => x.ConversationType == (int)TemplateModuleType.Marketing);
+    var authentication = Model.masterPrices.FirstOrDefault(x => x.ConversationType == (int)TemplateModuleType.Authentication);
+    var utility = Model.masterPrices.FirstOrDefault(x => x.ConversationType == (int)TemplateModuleType.Utility);
 }
 
 <div class="content">
@@ -576,11 +582,11 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Marketing</td>
-                                                    <td>22-03-2025 to 22-08-2025</td>
+                                                    <td>@marketing.ConversationTypeName</td>
+                                                    <td>@marketing.FromDate?.ToString("dd-MM-yyyy") to @marketing.ToDate.ToString("dd-MM-yyyy")</td>
                                                     <td>0</td>
                                                     <td>
-                                                        &#8377;00.00
+                                                        &#8377;@marketing.Price
                                                     </td>
                                                     <td>
                                                         <input class="form-control" id="name" value="&#8377;105" readonly />
@@ -588,7 +594,6 @@
                                                     <td>
                                                         <div class="action">
                                                             <a href="#" class="edit-icon" id="editBtn"></a>
-
                                                         </div>
                                                     </td>
 
@@ -660,12 +665,10 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-
-
-                                                    <td>Authentication</td>
-                                                    <td>22-03-2025 to  22-08-2025</td>
+                                                    <td>@authentication.ConversationTypeName</td>
+                                                    <td>@authentication.FromDate?.ToString("dd-MM-yyyy") to @authentication.ToDate.ToString("dd-MM-yyyy")</td>
                                                     <td>0</td>
-                                                    <td>&#8377;00.00</td>
+                                                    <td>&#8377;@authentication.Price</td>
                                                     <td>
                                                         <div class="d-flex gap-2">
                                                             <input class="form-control" id="name" value="&#8377;105" readonly />
@@ -737,7 +740,6 @@
                                         <table class="table user-table form-wrapper">
                                             <thead>
                                                 <tr>
-
                                                     <th>Conversation Type </th>
                                                     <th>Duration</th>
                                                     <th>Message</th>
@@ -748,13 +750,10 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Utility </td>
-                                                    <td>22-03-2025  to  22-08-2025</td>
+                                                    <td>@utility.ConversationTypeName</td>
+                                                    <td>@utility.FromDate?.ToString("dd-MM-yyyy") to @utility.ToDate.ToString("dd-MM-yyyy")</td>
                                                     <td>0</td>
-                                                    <td>
-                                                        &#8377;00.00
-
-                                                    </td>
+                                                    <td>&#8377;@utility.Price</td>
                                                     <td>
                                                         <input class="form-control" id="name" value="&#8377;105" readonly />
                                                     </td>

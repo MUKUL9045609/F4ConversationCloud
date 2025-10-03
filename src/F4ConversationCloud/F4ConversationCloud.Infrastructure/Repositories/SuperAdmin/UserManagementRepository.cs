@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;

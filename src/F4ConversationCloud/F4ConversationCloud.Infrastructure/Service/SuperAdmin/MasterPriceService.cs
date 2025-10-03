@@ -3,12 +3,6 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
-using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -37,6 +31,11 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         public async Task<Tuple<IEnumerable<MasterPrice>, int>> GetFilteredMasterPrices(MasterListFilter filter)
         {
             return Tuple.Create(await _masterPriceRepository.GetFilteredAsync(filter), await _masterPriceRepository.GetCountAsync(filter));
+        }
+
+        public async Task<List<MasterPrice>> GetLatestRecordsByConversationType()
+        {
+            return await _masterPriceRepository.GetLatestRecordsByConversationType();
         }
     }
 }

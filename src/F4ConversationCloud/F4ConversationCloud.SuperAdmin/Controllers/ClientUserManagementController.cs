@@ -1,13 +1,10 @@
 ﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -59,6 +56,52 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             });
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Deactivate([FromRoute] int id)
+        {
+            try
+            {
+                var affectedRows = await _clientUserManagementService.Deactivate(id);
+
+                if (affectedRows)
+                {
+                    TempData["SuccessMessage"] = "Account Deactivated successfully";
+                    return Ok(true);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error while Deactivating Account";
+                    return Ok(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var affectedRows = await _clientUserManagementService.Activate(id);
+
+                if (affectedRows)
+                {
+                    TempData["SuccessMessage"] = "Account Activated successfully";
+                    return Ok(true);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error while Activating Account";
+                    return Ok(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

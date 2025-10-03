@@ -130,12 +130,9 @@
                                         @Html.DisplayFor(modelItem => item.UpdatedOn)
                                     </td>
                                     <td>
-                                        @{
-                                            var check = (item.IsActive ? "checked" : "");
-                                        }
                                         <div class="action">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" @check>
+                                                <input class="form-check-input activity-switch" type="checkbox" data-id="@item.Id" @(item.IsActive ? "checked" : "")>
                                             </div>
                                         </div>
                                     </td>
@@ -157,6 +154,24 @@
         </div>
     </div>
 </div>
+
+<!-- Activity Modal -->
+<div class="modal fade comment-modal" id="activity-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="action-icon approved"></span>
+                <h4>Are you sure ?</h4>
+                <p id="activity-message"></p>
+                <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn success-btn" data-bs-dismiss="modal" id="confirm-activity">Yes </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end Activity modal -->
 
 @section Scripts {
     <script>
@@ -202,24 +217,82 @@
             var pageNumber = $(this).data("page-number");
             if (pageNumber !== undefined && pageNumber !== null) {
                 let businessFilter = $("[name=BusinessFilter]").val();
-            let nameFilter = $("[name=NameFilter]").val();
-            let emailFilter = $("[name=EmailFilter]").val();
-            let roleFilter = $("[name=RoleFilter]").val();
-            let createdOnFilter = $("[name=CreatedOnFilter]").val();
-            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
-            let status = $("[name=Status]").val();
+                let nameFilter = $("[name=NameFilter]").val();
+                let emailFilter = $("[name=EmailFilter]").val();
+                let roleFilter = $("[name=RoleFilter]").val();
+                let createdOnFilter = $("[name=CreatedOnFilter]").val();
+                let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
+                let status = $("[name=Status]").val();
 
                 location.href = '@Url.Action("List", "ClientUserManagement")' +
                     '?BusinessFilter=' + businessFilter +
-                '&NameFilter=' + encodeURIComponent(nameFilter) +
-                '&EmailFilter=' + encodeURIComponent(emailFilter) +
-                '&RoleFilter=' + encodeURIComponent(roleFilter) +
-                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
-                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
-                '&Status=' + encodeURIComponent(status) +
+                    '&NameFilter=' + encodeURIComponent(nameFilter) +
+                    '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                    '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                    '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                    '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
+                    '&Status=' + encodeURIComponent(status) +
                     '&PageNumber=' + pageNumber;
             }
         });
+
+        var switchStateBeforeClick = false;
+        var selectedClientId = null;
+
+        $(".activity-switch").click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            switchStateBeforeClick = $this.is(":checked");
+            selectedClientId = $this.data("id");
+
+            var message = switchStateBeforeClick
+                ? "Are you sure you want to enable this account"
+                : "Are you sure you want to disable this account";
+
+            $("#activity-message").text(message);
+
+            var modal = new bootstrap.Modal(document.getElementById('activity-modal'));
+            modal.show();
+        });
+
+        $("#confirm-activity").click(function () {
+            var url = '';
+            if (!switchStateBeforeClick){
+                url = '@Url.Action("Deactivate", "ClientUserManagement")/' + selectedClientId;
+            }
+            else{
+                url = '@Url.Action("activate", "ClientUserManagement")/' + selectedClientId;
+            }
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (data) {
+                    successCallback(data); 
+                },
+                error: function (xhr, errorType, error) {
+                    errorCallback(xhr, errorType, error); 
+                }
+            });
+
+            var modalEl = bootstrap.Modal.getInstance(document.getElementById('activity-modal'));
+            modalEl.hide();
+        });
+
+        function successCallback(data) {
+            if (data) {
+                location.href = '@Url.Action("List", "ClientUserManagement")';
+            } else {
+                location.href = '@Url.Action("List", "ClientUserManagement")';
+            }
+            commonHelper.showHideLoader(false);
+        }
+
+        function errorCallback(xhr, errorType, error) {
+            commonHelper.showSuccess('An error occurred while updating account status.');
+            commonHelper.showHideLoader(false);
+        }
 
         // $("#reset-filters").click(function(){
         //     $("[name=SearchString]").val('');

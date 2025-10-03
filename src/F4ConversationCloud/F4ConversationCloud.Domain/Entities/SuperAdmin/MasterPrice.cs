@@ -17,5 +17,6 @@ namespace F4ConversationCloud.Domain.Entities.SuperAdmin
         public DateTime ToDate { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool IsActive { get; set; }
+        public string ConversationTypeName { get; set; }
     }
 }

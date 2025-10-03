@@ -12,5 +12,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
     {
         Task<int> CreateAsync(MasterPrice masterPrice);
         Task<Tuple<IEnumerable<MasterPrice>, int>> GetFilteredMasterPrices(MasterListFilter filter);
+        Task<List<MasterPrice>> GetLatestRecordsByConversationType();
     }
 }
