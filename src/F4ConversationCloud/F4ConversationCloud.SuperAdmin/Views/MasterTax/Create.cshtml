@@ -1,0 +1,76 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.MasterTaxViewModel
+@{
+    ViewData["Title"] = "Master Tax";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between mb-3">
+            <h3 class="sub-heading mb-0">Master Tax</h3>
+        </div>
+        <div class="card padding">
+            <div>
+                <form asp-action="Create" method="post" enctype="multipart/form-data" class="form-wrapper">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row align-items-end">
+                        <div class="col-md-3">
+                            <div class="mb-2">
+                                <label class="mb-0">SGST % <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input asp-for="SGST" type="number" class="form-control" placeholder="Enter Price" readonly>
+                                </div>
+                                <span asp-validation-for="SGST" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-2">
+                                <label class="mb-0">CGST % <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input asp-for="CGST" type="number" class="form-control" placeholder="Enter Price" readonly>
+                                </div>
+                                <span asp-validation-for="CGST" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-2">
+                                <label class="mb-0">IGST % <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input asp-for="IGST" type="number" class="form-control" placeholder="Enter Price" readonly>
+                                </div>
+                                <span asp-validation-for="IGST" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-2">
+                                <button class="btn primary-btn me-2 mt-3" type="submit">Save</button>
+                                <button class="btn secondary-btn mt-3" onclick="EditBtn()" type="button">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var Id = @Html.Raw(Model.Id);
+            if (Id <= 0){
+                EditBtn();
+            }
+        });
+
+        function EditBtn(){
+            $("#SGST").prop("readonly", false);
+            $("#CGST").prop("readonly", false);
+            $("#IGST").prop("readonly", false);
+        }
+    </script>
+}

@@ -57,6 +57,8 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IAPILogRepository, APILogRepository>();
             services.AddScoped<IMasterPriceRepository, MasterPriceRepository>();
             services.AddScoped<IMasterPriceService, MasterPriceService>();
+            services.AddScoped<IMasterTaxRepository, MasterTaxRepository>();
+            services.AddScoped<IMasterTaxService, MasterTaxService>();
 
             return services;
         }

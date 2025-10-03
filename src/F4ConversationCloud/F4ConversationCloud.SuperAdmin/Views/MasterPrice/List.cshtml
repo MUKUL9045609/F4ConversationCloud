@@ -6,10 +6,8 @@
 
 <div class="content">
     <div class="container-fluid">
-
         <div class="d-flex justify-content-between mb-3">
             <h3 class="sub-heading mb-0">Master Price</h3>
-
         </div>
         <div class="card padding">
             <div>
@@ -69,7 +67,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="table-responsive">
                     <table class="table user-table">
                         <thead>
@@ -79,7 +76,6 @@
                                 <th>@Html.DisplayNameFor(model => model.MasterPriceFilterModel.Columns.FromDate)</th>
                                 <th>@Html.DisplayNameFor(model => model.MasterPriceFilterModel.Columns.Price)</th>
                             </tr>
-
                         </thead>
                         <tbody>
                             @if (Model.MasterPriceFilterModel.data.Any())
@@ -97,7 +93,7 @@
                             else
                             {
                                 <tr>
-                                    <td colspan="8" class="text-center">No campaigns available.</td>
+                                    <td colspan="4" class="text-center">No data available.</td>
                                 </tr>
                             }
                         </tbody>

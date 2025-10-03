@@ -22,7 +22,7 @@
                     <nav>
                         <ul>
                             <li>
-                                <a href="index.html" class="home icon">Home</a>
+                                <a href="index.html" class="home icon">Dashboard</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="ClientManagement" asp-action="List" class="users icon">Clients</a>
@@ -34,16 +34,19 @@
                                 <a asp-controller="ClientUserManagement" asp-action="List" class="user icon">Client User Management</a>
                             </li>
                             <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
                                 <a href="activity-log.html" class="log icon">Activity Log</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterPrice" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="MasterPrice" asp-action="List" class="billing icon">Master Price</a>
                             </li>
-                            <li>
-                                <a href="reports.html" class="reports icon">Reports</a>
-                            </li>
-                            <li>
-                                <a href="usages.html" class="usages icon">Usages</a>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterTax" && ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")">
+                                <a asp-controller="MasterTax" asp-action="Create" class="tax icon">Master Tax</a>
                             </li>
                             <li>
                                 <a href="configuration.html" class="cofig icon">Configuration</a>
