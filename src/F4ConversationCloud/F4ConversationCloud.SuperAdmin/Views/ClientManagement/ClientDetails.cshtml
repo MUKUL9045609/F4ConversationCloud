@@ -1,6 +1,7 @@
 ﻿@using BuldanaUrban.Domain.Helpers
 @using F4ConversationCloud.Domain.Enum
 @using System.ComponentModel.DataAnnotations
+@using System.Web
 @model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
 @{
     ViewData["Title"] = "Details";
@@ -769,13 +770,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="mt-2 d-flex justify-content-end">
+                            <button class="btn primary-btn" id="save-btn">Save</button>
+                        </div>
                         <hr />
                         <ul class="user-list">
                         </ul>
                         <button class="btn primary-btn">Regenerate Key</button>
                         <hr />
                         <div class="action mt-4">
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal10" id="approve-btn">Approve</button>
+                            <button class="btn btn-success" id="approve-btn">Approve</button>
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal11" id="reject-btn">Reject</button>
                         </div>
                     </div>
@@ -890,7 +894,7 @@
 </div>
 <!--end Reject modal -->
 <!-- Approved Modal -->
-<div class="modal fade comment-modal" id="exampleModal10" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade comment-modal" id="approve-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
@@ -898,7 +902,7 @@
                 <h4>Are you sure ?</h4>
                 <p>Are you sure you want to approved this records</p>
                 <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
-                    <button class="btn success-btn" data-bs-dismiss="modal">Approved </button>
+                    <button class="btn success-btn" data-bs-dismiss="modal" id="modal-approve-btn">Approved </button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -906,6 +910,7 @@
     </div>
 </div>
 <!--end Reject modal -->
+
 @section Scripts {
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -913,29 +918,36 @@
     <script src="~/js/unobtrusiveHelper.js"></script>
     <script>
         $(document).ready(function() {
-            $('#checkbox-marketing').change(function() {
-                if ($(this).is(':checked')) {
-                $('#marketing').show();
-                } else {
-                $('#marketing').hide();
-                }
-            });
+            $('#save-btn').hide();
+            var approvalStatus = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ApprovalStatus))';
 
-            $('#checkbox-authentication').change(function() {
-                if ($(this).is(':checked')) {
-                $('#authentication').show();
-                } else {
-                $('#authentication').hide();
-                }
-            });
+            if (approvalStatus == "Approved"){
+                $("#approve-btn").attr("disabled", "disabled");
+            }
+            if(approvalStatus == "Approved" || approvalStatus == "Reject"){
+                $("#reject-btn").attr("disabled", "disabled");
+            }
 
-            $('#checkbox-utility').change(function() {
-                if ($(this).is(':checked')) {
-                $('#utility').show();
+            function updateSections() {
+                const isMarketing = $('#checkbox-marketing').is(':checked');
+                const isAuthentication = $('#checkbox-authentication').is(':checked');
+                const isUtility = $('#checkbox-utility').is(':checked');
+
+                // Show/hide individual sections based on their checkbox
+                $('#marketing').toggle(isMarketing);
+                $('#authentication').toggle(isAuthentication);
+                $('#utility').toggle(isUtility);
+
+                // Show save button if any checkbox is checked
+                if (isMarketing || isAuthentication || isUtility) {
+                    $('#save-btn').show();
                 } else {
-                $('#utility').hide();
+                    $('#save-btn').hide();
                 }
-            });
+            }
+
+            // Attach the function to all checkbox change events
+            $('#checkbox-marketing, #checkbox-authentication, #checkbox-utility').change(updateSections);
 
             $('#editBtn').click(function() {
                 // Show the Save button
@@ -971,6 +983,12 @@
             function getPermissionValue(id) {
                 var checkbox = document.getElementById(id);
                 return checkbox ? checkbox.checked : false;
+            }
+
+            if (!isMarketing && !isAuthentication && !isUtility){
+                e.preventDefault();
+                commonHelper.showError("Please select module type.");
+                return;
             }
 
             // Validate each selected module
@@ -1017,8 +1035,20 @@
                 e.preventDefault();
                 return;
             }
+            var modal = new bootstrap.Modal(document.getElementById('approve-modal'));
+            modal.show();
+        });
 
-            // Prepare data for AJAX
+        document.querySelector('#modal-approve-btn').addEventListener('click', function (e) {
+            var isMarketing = document.getElementById('checkbox-marketing').checked;
+            var isAuthentication = document.getElementById('checkbox-authentication').checked;
+            var isUtility = document.getElementById('checkbox-utility').checked;
+
+            function getPermissionValue(id) {
+                var checkbox = document.getElementById(id);
+                return checkbox ? checkbox.checked : false;
+            }
+
             const viewModel = {
                 Id: @Html.Raw(Model.Id),
                 IsMarketing: isMarketing,
@@ -1048,7 +1078,9 @@
                 contentType: 'application/json',
                 data: JSON.stringify(viewModel),
                 success: function (response) {
-                    commonHelper.showSuccess('Permissions saved successfully!');
+                    commonHelper.showSuccess(response.message);
+                    $("#approve-btn").attr("disabled", "disabled");
+                    $("#reject-btn").attr("disabled", "disabled");
                 },
                 error: function (xhr, status, error) {
                     commonHelper.showError('Error saving permissions: ' + error);
@@ -1080,6 +1112,7 @@
                     success: function (response) {
                         $('#exampleModal11').modal('hide');
                         commonHelper.showSuccess("Record rejected successfully.");
+                        $("#reject-btn").attr("disabled", "disabled");
                     },
                     error: function (xhr, status, error) {
                         commonHelper.showError("Error rejecting record.");
