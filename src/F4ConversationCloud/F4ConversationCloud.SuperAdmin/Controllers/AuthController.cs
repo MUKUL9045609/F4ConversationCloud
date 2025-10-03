@@ -77,7 +77,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 await HttpContext.SignInAsync(userPrincipal);
 
-                return RedirectToAction("List", "ClientManagement");
+                return RedirectToAction("Index", "Dashboard");
             }
             catch (Exception ex)
             {
