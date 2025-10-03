@@ -175,7 +175,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     await _clientManagement.SaveClientPermission(utilityPermissions);
                 }
 
-                return Ok(new { message = "Saved successfully" });
+                return Ok(new { message = "Approved successfully!" });
             }
             catch (Exception ex)
             {

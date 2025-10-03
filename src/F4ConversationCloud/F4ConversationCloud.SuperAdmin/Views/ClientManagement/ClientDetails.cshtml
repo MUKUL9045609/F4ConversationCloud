@@ -1,6 +1,7 @@
 ﻿@using BuldanaUrban.Domain.Helpers
 @using F4ConversationCloud.Domain.Enum
 @using System.ComponentModel.DataAnnotations
+@using System.Web
 @model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
 @{
     ViewData["Title"] = "Details";
@@ -917,7 +918,15 @@
     <script src="~/js/unobtrusiveHelper.js"></script>
     <script>
         $(document).ready(function() {
-            $('#save-btn').hide(); 
+            $('#save-btn').hide();
+            var approvalStatus = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ApprovalStatus))';
+
+            if (approvalStatus == "Approved"){
+                $("#approve-btn").attr("disabled", "disabled");
+            }
+            if(approvalStatus == "Approved" || approvalStatus == "Reject"){
+                $("#reject-btn").attr("disabled", "disabled");
+            }
 
             function updateSections() {
                 const isMarketing = $('#checkbox-marketing').is(':checked');
@@ -1069,7 +1078,9 @@
                 contentType: 'application/json',
                 data: JSON.stringify(viewModel),
                 success: function (response) {
-                    commonHelper.showSuccess('Permissions saved successfully!');
+                    commonHelper.showSuccess(response.message);
+                    $("#approve-btn").attr("disabled", "disabled");
+                    $("#reject-btn").attr("disabled", "disabled");
                 },
                 error: function (xhr, status, error) {
                     commonHelper.showError('Error saving permissions: ' + error);
@@ -1101,6 +1112,7 @@
                     success: function (response) {
                         $('#exampleModal11').modal('hide');
                         commonHelper.showSuccess("Record rejected successfully.");
+                        $("#reject-btn").attr("disabled", "disabled");
                     },
                     error: function (xhr, status, error) {
                         commonHelper.showError("Error rejecting record.");
