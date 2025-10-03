@@ -81,7 +81,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -94,7 +95,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -123,7 +125,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -193,7 +196,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -206,7 +210,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -218,7 +223,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
     }

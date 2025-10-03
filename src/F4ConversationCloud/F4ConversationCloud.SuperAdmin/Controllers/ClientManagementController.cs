@@ -21,163 +21,194 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
         {
-            var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+            try
             {
-                ClientNameSearch = model.ClientNameSearch ?? String.Empty,
-                StatusFilter = model.StatusFilter ?? String.Empty,
-                OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
-                ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
-                PageNumber = model.PageNumber,
-                PageSize = model.PageSize,
-            });
+                var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+                {
+                    ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                    ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                });
 
-            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
-            {
-                TempData["ErrorMessage"] = "Invalid Page";
-                return RedirectToAction("List");
+                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                {
+                    TempData["ErrorMessage"] = "Invalid Page";
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    ClientName = x.ClientName,
+                    Status = x.Status,
+                    ApprovalStatus = x.ApprovalStatus,
+                    IsActive = x.IsActive,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedOn = x.UpdatedOn,
+                    Category = x.Category,
+                    ClientId = x.ClientId
+                });
+
+                return View(model);
             }
-
-            model.TotalCount = response.Item2;
-            model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
-            {
-                Id = x.Id,
-                SrNo = x.SrNo,
-                ClientName = x.ClientName,
-                Status = x.Status,
-                ApprovalStatus = x.ApprovalStatus,
-                IsActive = x.IsActive,
-                CreatedAt = x.CreatedAt,
-                UpdatedOn = x.UpdatedOn,
-                Category = x.Category,
-                ClientId = x.ClientId
-            });
-
-            return View(model);
+            catch (Exception ex) {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         public async Task<IActionResult> ClientDetails(int Id)
         {
-            var response = await _clientManagement.GetClientDetailsById(Id);
-
-            var model = new ClientDetailsViewModel()
+            try
             {
-                Id = response.Id,
-                PhoneNumberId = response.PhoneNumberId,
-                WABAId = response.WABAId,
-                BusinessId = response.BusinessId,
-                ClientInfoId = response.ClientInfoId,
-                BusinessName = response.BusinessName,
-                Status = response.Status,
-                PhoneNumber = response.PhoneNumber,
-                AppVersion = response.AppVersion,
-                ApprovalStatus = response.ApprovalStatus,
-                Category = response.Category,
-                IsActive = response.IsActive,
-                CreatedAt = response.CreatedAt,
-                UpdatedOn = response.UpdatedOn,
-                RegisteredFirstName = response.RegisteredFirstName,
-                RegisteredLastName = response.RegisteredLastName,
-                RegisteredEmail = response.RegisteredEmail,
-                RegisteredPhoneNumber = response.RegisteredPhoneNumber,
-                RegisteredAddress = response.RegisteredAddress,
-                RegisteredCountry = response.RegisteredCountry,
-                RegisteredTimeZone = response.RegisteredTimeZone
-            };
+                var response = await _clientManagement.GetClientDetailsById(Id);
 
-            var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();
-            var mappedMasterPrices = masterPriceData.Select(x => new MasterPrice
+                var model = new ClientDetailsViewModel()
+                {
+                    Id = response.Id,
+                    PhoneNumberId = response.PhoneNumberId,
+                    WABAId = response.WABAId,
+                    BusinessId = response.BusinessId,
+                    ClientInfoId = response.ClientInfoId,
+                    BusinessName = response.BusinessName,
+                    Status = response.Status,
+                    PhoneNumber = response.PhoneNumber,
+                    AppVersion = response.AppVersion,
+                    ApprovalStatus = response.ApprovalStatus,
+                    Category = response.Category,
+                    IsActive = response.IsActive,
+                    CreatedAt = response.CreatedAt,
+                    UpdatedOn = response.UpdatedOn,
+                    RegisteredFirstName = response.RegisteredFirstName,
+                    RegisteredLastName = response.RegisteredLastName,
+                    RegisteredEmail = response.RegisteredEmail,
+                    RegisteredPhoneNumber = response.RegisteredPhoneNumber,
+                    RegisteredAddress = response.RegisteredAddress,
+                    RegisteredCountry = response.RegisteredCountry,
+                    RegisteredTimeZone = response.RegisteredTimeZone
+                };
+
+                var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();
+                var mappedMasterPrices = masterPriceData.Select(x => new MasterPrice
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    ConversationType = x.ConversationType,
+                    Price = x.Price,
+                    FromDate = x.FromDate,
+                    ToDate = x.ToDate,
+                    CreatedOn = x.CreatedOn,
+                    IsActive = x.IsActive,
+                    ConversationTypeName = ((TemplateModuleType)x.ConversationType).GetDisplayName()
+                }).ToList();
+
+                model.masterPrices = mappedMasterPrices;
+
+                return View(model);
+            }
+            catch (Exception ex)
             {
-                Id = x.Id,
-                SrNo = x.SrNo,
-                ConversationType = x.ConversationType,
-                Price = x.Price,
-                FromDate = x.FromDate,
-                ToDate = x.ToDate,
-                CreatedOn = x.CreatedOn,
-                IsActive = x.IsActive,
-                ConversationTypeName = ((TemplateModuleType)x.ConversationType).GetDisplayName()
-            }).ToList();
-
-            model.masterPrices = mappedMasterPrices;
-
-            return View(model);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }           
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveClientDetails([FromBody] ClientDetailsViewModel model)
         {
-            if (model.IsMarketing)
+            try
             {
-                var marketingPermissions = new ClientDetails
+                if (model.IsMarketing)
                 {
-                    Id = model.Id,
-                    TemplateType = (int)TemplateModuleType.Marketing,
-                    Create = model.MarketingCreate,
-                    Add = model.MarketingAdd,
-                    Edit = model.MarketingEdit,
-                    Delete = model.MarketingDelete,
-                    All = model.MarketingAll,
-                    AllowUserManagement = model.AllowUserManagement
-                };
+                    var marketingPermissions = new ClientDetails
+                    {
+                        Id = model.Id,
+                        TemplateType = (int)TemplateModuleType.Marketing,
+                        Create = model.MarketingCreate,
+                        Add = model.MarketingAdd,
+                        Edit = model.MarketingEdit,
+                        Delete = model.MarketingDelete,
+                        All = model.MarketingAll,
+                        AllowUserManagement = model.AllowUserManagement
+                    };
 
-                await _clientManagement.SaveClientPermission(marketingPermissions);
+                    await _clientManagement.SaveClientPermission(marketingPermissions);
+                }
+
+                if (model.IsAuthentication)
+                {
+                    var authPermissions = new ClientDetails
+                    {
+                        Id = model.Id,
+                        TemplateType = (int)TemplateModuleType.Authentication,
+                        Create = model.AuthenticationCreate,
+                        Add = model.AuthenticationAdd,
+                        Edit = model.AuthenticationEdit,
+                        Delete = model.AuthenticationDelete,
+                        All = model.AuthenticationAll,
+                        AllowUserManagement = model.AllowUserManagement
+                    };
+
+                    await _clientManagement.SaveClientPermission(authPermissions);
+                }
+
+                if (model.IsUtility)
+                {
+                    var utilityPermissions = new ClientDetails
+                    {
+                        Id = model.Id,
+                        TemplateType = (int)TemplateModuleType.Utility,
+                        Create = model.UtilityCreate,
+                        Add = model.UtilityAdd,
+                        Edit = model.UtilityEdit,
+                        Delete = model.UtilityDelete,
+                        All = model.UtilityAll,
+                        AllowUserManagement = model.AllowUserManagement
+                    };
+
+                    await _clientManagement.SaveClientPermission(utilityPermissions);
+                }
+
+                return Ok(new { message = "Saved successfully" });
             }
-
-            if (model.IsAuthentication)
+            catch (Exception ex)
             {
-                var authPermissions = new ClientDetails
-                {
-                    Id = model.Id,
-                    TemplateType = (int)TemplateModuleType.Authentication,
-                    Create = model.AuthenticationCreate,
-                    Add = model.AuthenticationAdd,
-                    Edit = model.AuthenticationEdit,
-                    Delete = model.AuthenticationDelete,
-                    All = model.AuthenticationAll,
-                    AllowUserManagement = model.AllowUserManagement
-                };
-
-                await _clientManagement.SaveClientPermission(authPermissions);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
-
-            if (model.IsUtility)
-            {
-                var utilityPermissions = new ClientDetails
-                {
-                    Id = model.Id,
-                    TemplateType = (int)TemplateModuleType.Utility,
-                    Create = model.UtilityCreate,
-                    Add = model.UtilityAdd,
-                    Edit = model.UtilityEdit,
-                    Delete = model.UtilityDelete,
-                    All = model.UtilityAll,
-                    AllowUserManagement = model.AllowUserManagement
-                };
-
-                await _clientManagement.SaveClientPermission(utilityPermissions);
-            }
-
-            return Ok(new { message = "Saved successfully" });
         }
 
         [HttpPost]
         public async Task<IActionResult> Reject(int id, string rejectComment)
         {
-            if (string.IsNullOrWhiteSpace(rejectComment))
+            try
             {
-                return BadRequest("Comment is required.");
-            }
+                if (string.IsNullOrWhiteSpace(rejectComment))
+                {
+                    return BadRequest("Comment is required.");
+                }
 
-            var status = "Rejected";
-            var response = await _clientManagement.Reject(id, status, rejectComment);
+                var status = "Rejected";
+                var response = await _clientManagement.Reject(id, status, rejectComment);
 
-            if (response)
-            {
-                return Ok(true);
+                if (response)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(false);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
     }

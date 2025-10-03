@@ -18,44 +18,52 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(ClientUserListViewModel model)
         {
-            model.RolesList = EnumExtensions.ToSelectList<ClientRole>();
-
-            var response = await _clientUserManagementService.GetFilteredUsers(new ClientUserManagementListFilter
+            try
             {
-                BusinessFilter = model.BusinessFilter ?? String.Empty,
-                NameFilter = model.NameFilter ?? String.Empty,
-                EmailFilter = model.EmailFilter ?? String.Empty,
-                RoleFilter = model.RoleFilter,
-                CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
-                UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
-                Status = model.Status ?? String.Empty,
-                PageNumber = model.PageNumber,
-                PageSize = model.PageSize,
-            });
+                model.RolesList = EnumExtensions.ToSelectList<ClientRole>();
 
-            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
-            {
-                TempData["ErrorMessage"] = "Invalid Page";
-                return RedirectToAction("List");
+                var response = await _clientUserManagementService.GetFilteredUsers(new ClientUserManagementListFilter
+                {
+                    BusinessFilter = model.BusinessFilter ?? String.Empty,
+                    NameFilter = model.NameFilter ?? String.Empty,
+                    EmailFilter = model.EmailFilter ?? String.Empty,
+                    RoleFilter = model.RoleFilter,
+                    CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
+                    UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
+                    Status = model.Status ?? String.Empty,
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                });
+
+                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                {
+                    TempData["ErrorMessage"] = "Invalid Page";
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new ClientUserListViewModel.ClientUserListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    Name = x.FirstName + " " + x.LastName,
+                    Email = x.Email,
+                    Role = ((ClientRole)(int)x.Role).GetDisplayName(),
+                    IsActive = x.IsActive,
+                    CreatedOn = x.CreatedOn,
+                    UpdatedOn = x.UpdatedOn,
+                    BusinessName = x.BusinessName,
+                    Category = x.Category,
+                    ClientId = x.ClientId
+                });
+
+                return View(model);
             }
-
-            model.TotalCount = response.Item2;
-            model.data = response.Item1.ToList().Select(x => new ClientUserListViewModel.ClientUserListViewItem()
+            catch (Exception ex)
             {
-                Id = x.Id,
-                SrNo = x.SrNo,
-                Name = x.FirstName + " " + x.LastName,
-                Email = x.Email,
-                Role = ((ClientRole)(int)x.Role).GetDisplayName(),
-                IsActive = x.IsActive,
-                CreatedOn = x.CreatedOn,
-                UpdatedOn = x.UpdatedOn,
-                BusinessName = x.BusinessName,
-                Category = x.Category,
-                ClientId = x.ClientId
-            });
-
-            return View(model);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         public async Task<IActionResult> Deactivate([FromRoute] int id)
@@ -77,7 +85,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -100,7 +109,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
     }

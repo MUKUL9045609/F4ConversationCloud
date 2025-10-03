@@ -24,33 +24,41 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(MasterPriceFilterModel model)
         {
-            var response = await _masterPriceService.GetFilteredMasterPrices(new MasterListFilter
+            try
             {
-                PageNumber = model.PageNumber,
-                PageSize = model.PageSize,
-            });
+                var response = await _masterPriceService.GetFilteredMasterPrices(new MasterListFilter
+                {
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                });
 
-            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
-            {
-                TempData["ErrorMessage"] = "Invalid Page";
-                return RedirectToAction("List");
+                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                {
+                    TempData["ErrorMessage"] = "Invalid Page";
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new MasterPriceFilterModel.MasterPriceListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    ConversationType = ((TemplateModuleType)(int)x.ConversationType).GetDisplayName(),
+                    Price = x.Price,
+                    FromDate = x.FromDate,
+                    ToDate = x.ToDate
+                });
+
+                var viewModel = new MasterPriceViewModel();
+                viewModel.MasterPriceFilterModel = model;
+                viewModel.ConversationTypeList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                return View(viewModel);
             }
-
-            model.TotalCount = response.Item2;
-            model.data = response.Item1.ToList().Select(x => new MasterPriceFilterModel.MasterPriceListViewItem()
+            catch (Exception ex)
             {
-                Id = x.Id,
-                SrNo = x.SrNo,
-                ConversationType = ((TemplateModuleType)(int)x.ConversationType).GetDisplayName(),
-                Price = x.Price,
-                FromDate = x.FromDate,
-                ToDate = x.ToDate
-            });
-
-            var viewModel = new MasterPriceViewModel();
-            viewModel.MasterPriceFilterModel = model;
-            viewModel.ConversationTypeList = EnumExtensions.ToSelectList<TemplateModuleType>();
-            return View(viewModel);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         [HttpPost]
