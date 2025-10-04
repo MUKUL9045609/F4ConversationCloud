@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+   <link rel="stylesheet" href="css/daterangepicker.css">
+</head>
+
+<body>
+    <div class="page">
+        
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <a href="#" class="main-sidebar-header">
+                <img src="images/logo.svg" />
+            </a>
+           
+            <div class="main-side-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                         <li>
+                            <a href="index.html" class="users icon">Clients</a>
+                        </li>
+                        <li>
+                            <a href="user-management.html" class="user icon">User Management</a>
+                        </li>
+                        <li>
+                            <a href="client-management.html" class="user icon">Client User Management</a>
+                        </li>
+                       
+                        
+                        <li>
+                            <a href="usages.html" class="usages icon">Usages</a>
+                        </li>
+                        <li>
+                            <a href="billing.html" class="billing icon">Billing</a>
+                        </li>
+                         <li class="active">
+                            <a href="activity-log.html" class="log icon">Activity Log</a>
+                        </li>
+                        <li>
+                            <a href="master-price.html" class="billing icon">Master Price</a>
+                        </li>
+                         <li>
+                            <a href="master-tax.html" class="tax icon">Master Tax</a>
+                        </li>
+                        <li>
+                            <a href="configuration.html" class="cofig icon">Configuration</a>
+                        </li>   
+                    </ul>
+                </nav>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    <div class="profile-dropdown ms-auto"> 
+                    <div class="profile">
+                        <div class="dropdown">
+                            <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                               <span class="profile-name">D</span> 
+                               <div>
+                                    <p>Dinesh Sharma</p>
+                                    <span class="profile-role">Super Admin</span>
+                               </div>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <h3 class="sub-heading">Activity Log</h3>
+                    <div class="card padding">
+                        
+                        <div class="filterWrapper form-wrapper">
+                            <div class="filterwrap">
+                                <ul class="filter-list">
+                                    <li>
+                                        <div>
+                                            <label>Search</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                <span class="searchIcon"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                   
+                                    <li>
+                                        <label> Select Date</label>
+                                        <div id="reportrange"  class="reportrange form-control date-form-control">
+                                                <i class="dateIcon"></i>&nbsp;
+                                                <span></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <button class="btn secondary-btn"><i class="reset"></i></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table user-table form-wrapper">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.No</th>
+                                        <th>Clients</th>
+                                        <th>User</th>
+                                        <th>IP Address</th>
+                                        <th>Created Date & Time</th>
+                                        <th>Actions</th>
+                                        <th>Descriptions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <span class="text-black fw-semibold d-block">Buldana Urban</span>
+                                            <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
+                                            <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                        </td>
+                                        <td>
+                                            <div class="user-wrap">
+                                                <span class="profile">
+                                                    <img src="https://static.vecteezy.com/system/resources/previews/004/511/281/non_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg"/>
+                                                </span>
+                                                <span>
+                                                    <span class="d-block">Rajesh Shirke</span>
+                                                    <span class="role">Admin</span>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>192.34.10.104</td>
+                                        <td>05-04-2025, 02:04:55</td>
+                                        <td><span class="badge success">Create Template</span></td>
+                                        <td>
+                                            <span class="message-block">User Created template</span>
+                                            <span class="log fw-semibold">template ID : 6935503</span>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <span class="text-black fw-semibold d-block">Buldana Urban</span>
+                                            <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
+                                            <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                        </td>
+                                        <td>
+                                            <div class="user-wrap">
+                                                <span class="profile">
+                                                    <img src="https://static.vecteezy.com/system/resources/previews/004/511/281/non_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg"/>
+                                                </span>
+                                                <span>
+                                                    <span class="d-block">Pramod Verma</span>
+                                                    <span class="role">Manager</span>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>192.34.10.140</td>
+                                        <td>02-04-2025, 01:04:55</td>
+                                        <td><span class="badge danger">Delete Flow</span></td>
+                                        <td>
+                                            <span class="message-block">User deleted flow</span>
+                                            <span class="log fw-semibold">template ID : 619099986545854</span>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <span class="text-black fw-semibold d-block">Buldana Urban</span>
+                                            <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
+                                            <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                        </td>
+                                        <td>
+                                            <div class="user-wrap">
+                                                <span class="profile">
+                                                    <img src="https://static.vecteezy.com/system/resources/previews/004/511/281/non_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg"/>
+                                                </span>
+                                                <span>
+                                                    <span class="d-block">Dinesh Sharma</span>
+                                                    <span class="role">Admin</span>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>192.34.10.140</td>
+                                        <td>02-03-2025, 09:04:55</td>
+                                        <td><span class="badge badgeinfo">Update Template</span></td>
+                                        <td>
+                                            <span class="message-block">User Updated template</span>
+                                            <span class="log fw-semibold">template ID : 6935503</span>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="navigation example">
+                            <ul class="pagination mt-5 d-flex justify-content-center">
+                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+        </div>
+
+        
+        
+    </div>
+
+    <div class="backdrop"></div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+    </script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <script>
+           
+            $(function() {
+
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+
+            function cb(start, end) {
+                $('.reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+
+            $('.reportrange').daterangepicker({
+                //timePicker: true,
+                //startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+
+                startDate: start,
+                endDate: end,
+                ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+
+            cb(start, end);
+
+            });
+            
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('#toggleButton').on('click', function() {
+            $('body').toggleClass('sidemenutoggle');
+        });
+    });
+</script>
+</body>
+
+</html>

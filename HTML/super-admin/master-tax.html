@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css">
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                             <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                             <li class="active">
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                    <p>Dinesh Sharma</p>
+                                    <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <h3 class="sub-heading mb-0">Master Tax</h3>
+                       
+                    </div>
+                    <div class="card padding">
+                        <div>
+                            <form class="form-wrapper">
+                                    <div class="row align-items-end">
+                                        <div class="col-md-3">
+                                            <div class="mb-2">
+                                                <label class="mb-0">SGST </label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Enter Price" Value="9%" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-2">
+                                                <label class="mb-0">CGST </label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Enter Price" Value="9%" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-2">
+                                                <label class="mb-0">IGST </label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Enter Price" Value="18%" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="col-md-3">
+                                            <div class="mb-2">
+                                                <button class="btn primary-btn me-2 mt-3">Save</button>
+                                                <button class="btn secondary-btn mt-3">Edit</button>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+
+
+        </div>
+    </div>
+
+    <div class="backdrop"></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+           
+        });
+    </script>
+    <script>
+           
+            $(function() {
+
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+
+            function cb(start, end) {
+                $('.reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+
+            $('.reportrange').daterangepicker({
+                //timePicker: true,
+                //startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                showDropdowns: true, 
+                minYear: 1900,
+                maxYear: parseInt(moment().format('YYYY'), 10) + 10 ,
+                startDate: start,
+                endDate: end,
+                ranges: {
+                // 'Today': [moment(), moment()],
+                // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment().endOf('year')]
+                }
+            }, cb);
+
+            cb(start, end);
+
+            });
+            
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

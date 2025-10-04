@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+
+</head>
+<body>
+    <div class="loginwrapper">
+        <div class="loginBox">
+            <div class="left-col">
+                <a href="#" class="logo">
+                    <img src="../images/logo.svg"/>
+                </a>
+                
+                    <p>Your Journey Begins Here Step into a seamless experience where you're guided, supported, and equipped with everything you need to thrive. From understanding our culture to connecting with your team, we make sure your first steps are confident and meaningful.</p>
+                
+                
+            </div>
+            <div class="right-col">
+                <div class="stepswrapper">
+                    <a href="complete-your-profile.html" class="back-btn"> Back</a>
+                    <div class="d-flex justify-content-end align-items-center flex-column">
+                        <span class="step-count">STEP <span>01/03</span></span>
+                        <span class="step-info">Residency Info.</span>
+                    </div>
+                    <a href="complete-your-profile.html" class="next-btn"> Next</a>
+                </div>
+                <div class="bx_wrap">
+                  <div>
+                      <h4>Meta Login Required!</h4>
+                      <p>To continue using this application, you must log in with your Meta account.
+                        This step is mandatory to ensure secure access and personalized experience.
+                        Please click below to proceed.
+                      </p>
+                    </div>
+                   
+                    <div class="btnWrap">
+                      <a href="#" class="d-flex align-items-center gap-2 sign-google" onclick="launchWhatsAppSignup()"><i class="facebook-icon"></i> Continue with Facebook </a>
+                    </div>
+                    <!-- <form class="login-form mt-4" id="bvnForm">
+                        <div class="mb-3">
+                            <label for="bvnInput" class="form-label">Bank verification number (BVN)</label>
+                            <div class="d-flex phone-wrap">
+                                <select class="form-select form-select-sm country-code" id="countryCode" aria-label="Country code">
+                                    <option value="+91" selected>+91</option>
+                                    <option value="+340">+340</option>
+                                    <option value="+670">+670</option>
+                                    <option value="+242">+242</option>
+                                </select>
+                                <input type="text" value="09091234556" class="form-control flex-grow-1" id="bvnInput" placeholder="Enter BVN" />
+                            </div>
+                            <div class="invalid-feedback" id="bvnError" style="display: none; color: red;">
+                                Please enter a valid 11-digit BVN number.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn login-btn">Save & Continue</button>
+                        <pre id="session-info-response"></pre>
+                    </form> -->
+                    <!-- <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
+                    <div class="or"><span>or</span></div> -->
+                    
+                     <!-- <button onclick="launchWhatsAppSignup()" style="background-color: #1877f2; border: 0; border-radius: 4px; color: #fff; cursor: pointer; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; height: 40px; padding: 0 24px;">Login with Facebook</button> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+    window.addEventListener('message', (event) => {
+      if (event.origin !== "https://www.facebook.com" && event.origin !== "https://web.facebook.com") {
+        return;
+      }
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'WA_EMBEDDED_SIGNUP') {
+          // if user finishes the Embedded Signup flow
+          if (data.event === 'FINISH') {
+            const {phone_number_id, waba_id} = data.data;
+            console.log("Phone number ID ", phone_number_id, " WhatsApp business account ID ", waba_id);
+            // if user cancels the Embedded Signup flow
+          } else if (data.event === 'CANCEL') {
+            const {current_step} = data.data;
+            console.warn("Cancel at ", current_step);
+            // if user reports an error during the Embedded Signup flow
+          } else if (data.event === 'ERROR') {
+            const {error_message} = data.data;
+            console.error("error ", error_message);
+          }
+        }
+        document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+      } catch {
+        console.log('Non JSON Responses', event.data);
+      }
+    });
+  </script>
+
+  <script>
+    const fbLoginCallback = (response) => {
+      if (response.authResponse) {
+        const code = response.authResponse.code;
+        // The returned code must be transmitted to your backend first and then
+        // perform a server-to-server call from there to our servers for an access token.
+      }
+      document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
+    }
+
+    const launchWhatsAppSignup = () => {
+      // Launch Facebook login
+      FB.login(fbLoginCallback, {
+        config_id: '9869767589818097', // configuration ID goes here
+        response_type: 'code', // must be set to 'code' for System User access token
+        override_default_response_type: true, // when true, any response types passed in the "response_type" will take precedence over the default types
+        extras: {"version":"v3"}
+      });
+    }
+  </script>
+
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '2983579265274951',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v23.0'
+      });
+    };
+  </script>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js">
+  </script>
+</body>
+</html>

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fortune4 Conversation Cloud</title>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div class="page">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <div class="searchBox">
+                        <div class="input-group flex-nowrap">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Search for anything here.."
+                                aria-label="Username"
+                                aria-describedby="addon-wrapping"
+                            />
+                            <span class="input-group-text" id="addon-wrapping"></span>
+                        </div>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="lang">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>
+                                    <span class="lang-icon"></span> English (US)
+                                </option>
+                                <option value="1">Hindi</option>
+                                <option value="2">Portugal</option>
+                            </select>
+                        </div>
+                        <div class="ask-ai">
+                            <a href="#">Ask AI Assistant <span class="question"></span></a>
+                        </div>
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a
+                                    class="profile-name"
+                                    type="button"
+                                    id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    D
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <span class="name">Dinesh Sharma</span>
+                                    <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <!-- side Bar -->
+            <aside class="app-sidebar">
+                <a href="#" class="main-sidebar-header">
+                    <img src="../images/logo.svg" />
+                </a>
+                <div class="company-logo">
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-secondary dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <div class="company-template">
+                                <span class="logo">
+                                    <img src="../images/nbbi-logo.svg" />
+                                </span>
+                                <div>
+                                    <span class="company-title">NBBL - NPCI Bharat...</span>
+                                    <span class="company-name">Fortune4 Internal</span>
+                                </div>
+                            </div>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="#" class="home icon">Home</a>
+                            </li>
+                            <li>
+                                <a href="#" class="speaker icon carret">Campaigns</a>
+                                <ul>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="../templates/templates.html" class="template icon"
+                                    >Templates</a
+                                >
+                            </li>
+                            <li class="active">
+                                <a href="javascript:void(0)" class="bot icon carret">Bot Studio</a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href="../bot-studio/journeys.html">Journeys</a>
+                                    </li>
+                                    <li>
+                                        <a href="../bot-studio/whatsapp-flows.html"
+                                            >WhatsApp Flows</a
+                                        >
+                                    </li>
+                                    <li class="sub-active">
+                                        <a href="../bot-studio/analytics.html">Analytics</a>
+                                    </li>
+                                    <li><a href="#">Goals</a></li>
+                                    <li><a href="#">Guide</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="agent icon carret">Agent Assist</a>
+                                <ul>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="analytics icon">Analytics</a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="channels icon carret">Channels</a>
+                                <ul>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="integrations icon carret">Integrations</a>
+                                <ul>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="event icon">Events</a>
+                            </li>
+                            <li>
+                                <a href="#" class="extensions icon carret">Extensions</a>
+                                <ul>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="bottom-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="#" class="org-analytics icon">Org Analytics</a>
+                            </li>
+                            <li>
+                                <a href="#" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="#" class="project icon">Manage Project</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+            <!--End side Bar -->
+
+            <div class="main-content">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between headerWrap">
+                        <h3 class="sub-heading">Journeys</h3>
+                    </div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link active"
+                                id="home-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#home"
+                                type="button"
+                                role="tab"
+                                aria-controls="home"
+                                aria-selected="true"
+                            >
+                                Profile
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="profile-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#webhook"
+                                type="button"
+                                role="tab"
+                                aria-controls="webhook"
+                                aria-selected="false"
+                            >
+                                Webhooks
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="profile-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#profile"
+                                type="button"
+                                role="tab"
+                                aria-controls="profile"
+                                aria-selected="false"
+                            >
+                                Account
+                            </button>
+                        </li>
+                        
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div
+                            class="tab-pane fade show active"
+                            id="home"
+                            role="tabpanel"
+                            aria-labelledby="home-tab"
+                        >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card padding">
+                                        
+                                        <div class="d-flex align-items-center gap-4 profilewrap">
+                                            <div class="profilebox">
+                                                <span><img src="../images/profile.png"/></span>
+                                            </div>
+                                            <div>
+                                                <h3>Fortune4 Technologies</h3>
+                                                <p>This will be the WhatsApp display picture of your business</p>
+                                                
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <h3 class="mb-3">Business Details</h3>
+                                        
+                                        <div class="form-wrapper">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label>Address</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Business description">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label>Email Id</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Enter Email Address"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label>Category</label>
+                                                            <div class="input-group">
+                                                                <select class="form-select">
+                                                                    <option selected>Select Category</option>
+                                                                    <option value="1">Finance</option>
+                                                                    
+                                                                </select> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label>About</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Hey There! I am using WhatsApp">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label>Business website-1</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Enter Business website-1">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label>Business website-2</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Enter Business website-2">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Preview</h6>
+                                    <div class="card padding">
+                                        
+                                        <div class="profilebox d-flex align-items-center justify-content-center flex-column">
+                                            <span><img src="../images/profile.png"/></span>
+                                            <h3 class="mt-3">Fortune4 Technologies</h3>
+                                            <span class="mt-2 d-block small">+91 93215 72847</span>
+                                            
+                                        </div>
+                                        <hr>
+                                        <ul class="preview-list">
+                                            <li class="finance icons">FINANCE</li>
+                                            <li class="address icons">IN</li>
+                                        </ul>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card padding">
+                                        
+                                        <h3 class="mb-3">Contact Details</h3>
+                                        <p>These are the communication details required by Gupshup to connect with you. You will need to verify the email ID if you edit it.</p>
+                                        <div class="form-wrapper">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="mb-2">
+                                                        <label>Email address</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter Email Address">   
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-2">
+                                                        <label>Contact Name</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter Contact Name">   
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-2">
+                                                        <label>Contact phone number</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter Contact Number">   
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-2">
+                                                        <label>About</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Hey There! I am using WhatsApp">   
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="tab-pane fade"
+                            id="webhook"
+                            role="tabpanel"
+                            aria-labelledby="webhook-tab"
+                        >
+                           
+                        </div>
+                        
+                        <div
+                            class="tab-pane fade"
+                            id="profile"
+                            role="tabpanel"
+                            aria-labelledby="profile-tab"
+                        >
+                            <div class="card padding">
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-0">Your WABA is onboarded on Optimized Marketing /MM Lite</p>
+                                    <span class="small active-onboarding">Onboarded</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card padding whatsapp-profile">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="small mb-0">WhatsApp Business Account Details</h6>
+                                            <span class="text-blue checked d-flex align-items-center">How to get a verified tick?</span>
+                                        </div>
+                                        <ul class="vertical-list">
+                                            <li>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Phone Number: <span class="fw-semibold">919321572847</span></span>
+                                                    <div class="action">
+                                                        <a href="#" class="copy"></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>WABA ID: <span class="fw-semibold">105664982625842</span></span>
+                                                    <div class="action">
+                                                        <a href="#" class="copy"></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul class="user-list mt-3">
+                                            <li>
+                                                <span class="formkey">WABA ID:</span>
+                                                <span class="formvalue">Fortune4 Technologies</span>
+                                            </li>
+                                            <li>
+                                                <span class="formkey">Business Entity Name</span>
+                                                <span class="formvalue">Dev Fortune4 Technologies</span>
+                                            </li>
+                                            <li>
+                                                <span class="formkey">Time Zone</span>
+                                                <span class="formvalue">(GMT+05:30) (Asia/Kolkata)</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card padding whatsapp-profile">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="small mb-0">WhatsApp Business Account Details</h6>
+                                            <span class="text-blue checked d-flex align-items-center">How to get a verified tick?</span>
+                                        </div>
+                                        <ul class="vertical-list">
+                                            <li>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Phone Number: <span class="fw-semibold">919321572847</span></span>
+                                                    <div class="action">
+                                                        <a href="#" class="copy"></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>WABA ID: <span class="fw-semibold">105664982625842</span></span>
+                                                    <div class="action">
+                                                        <a href="#" class="copy"></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul class="user-list mt-3">
+                                            <li>
+                                                <span class="formkey">account_status:</span>
+                                                <span class="formvalue active-onboarding">Active</span>
+                                            </li>
+                                            <li>
+                                                <span class="formkey">Docker Status:</span>
+                                                <span class="formvalue active-onboarding">Connected</span>
+                                            </li>
+                                            <li>
+                                                <span class="formkey">Phone Quality:</span>
+                                                <span class="formvalue active-onboarding">High</span>
+                                            </li>
+                                            <li>
+                                                <span class="formkey">Messaging Limit :</span>
+                                                <span class="formvalue active-onboarding">1K Customers/ 24 Hrs</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card padding">
+                                        <h6 class="mb-3">Account Update Stream</h6>
+                                        <div class="card">
+                                            <table class="table">
+                                                <thead>
+                                                    <th>Event Type</th>
+                                                    <th>Event Subtype</th>
+                                                    <th>Timestamp</th>
+                                                    <th>Action</th>
+                                                
+                                                
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Account Update</td>
+                                                        <td>Business Verification Status Update</td>
+                                                        <td>Dec 12, 2024 | 06:47 PM</td>
+                                                        <td>
+                                                            
+                                                            <div class="action">
+                                                                <a href="#" class="eye-blue"></a>
+                                                                
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <div class="d-flex align-items-center justify-content-center gap-3">
+                                            <span class="result">Result: 1 - 1 of 1</span>
+                                            <nav aria-label="navigation example">
+                                                <ul class="pagination mb-0">
+                                                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                       
+
+                        
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+        </div>
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+        <script>
+            $("nav ul ul").hide();
+            $("nav > ul > li > a").on("click", function (e) {
+                e.stopPropagation();
+                $("nav ul ul").slideUp();
+                $(this).next().is(":visible") || $(this).next().slideDown();
+            });
+
+            $("li").has("ul").find("a").not("ul ul a").addClass("caret");
+        </script>
+        <script>
+            window.onload = function () {
+                var options = {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    axisX: {
+                        title: "States",
+                        lineThickness: 1,
+                        tickThickness: 0,
+                        lineColor: "#ddd",
+                        labelFontColor: "dimGrey",
+                    },
+                    axisY: {
+                        title: "No. Of Message",
+                        titleFontColor: "#000",
+                        lineColor: "#ddd",
+                        labelFontColor: "#000",
+                        tickColor: "#4F81BC",
+                        lineThickness: 1,
+                        gridThickness: 0,
+                        tickLength: 0,
+                        labelFontColor: "dimGrey",
+                    },
+
+                    toolTip: {
+                        shared: true,
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: toggleDataSeries,
+                    },
+                    data: [
+                        {
+                            type: "spline",
+                            name: "Units Sold",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 120 },
+                                { x: new Date(2016, 1, 1), y: 135 },
+                                { x: new Date(2016, 2, 1), y: 144 },
+                                { x: new Date(2016, 3, 1), y: 103 },
+                                { x: new Date(2016, 4, 1), y: 93 },
+                                { x: new Date(2016, 5, 1), y: 129 },
+                                { x: new Date(2016, 6, 1), y: 143 },
+                                { x: new Date(2016, 7, 1), y: 156 },
+                                { x: new Date(2016, 8, 1), y: 122 },
+                                { x: new Date(2016, 9, 1), y: 106 },
+                                { x: new Date(2016, 10, 1), y: 137 },
+                                { x: new Date(2016, 11, 1), y: 142 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            name: "Units Sold",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 320 },
+                                { x: new Date(2016, 1, 1), y: 235 },
+                                { x: new Date(2016, 2, 1), y: 244 },
+                                { x: new Date(2016, 3, 1), y: 83 },
+                                { x: new Date(2016, 4, 1), y: 123 },
+                                { x: new Date(2016, 5, 1), y: 150 },
+                                { x: new Date(2016, 6, 1), y: 100 },
+                                { x: new Date(2016, 7, 1), y: 256 },
+                                { x: new Date(2016, 8, 1), y: 22 },
+                                { x: new Date(2016, 9, 1), y: 26 },
+                                { x: new Date(2016, 10, 1), y: 127 },
+                                { x: new Date(2016, 11, 1), y: 182 },
+                            ],
+                        },
+                    ],
+                };
+                var options1 = {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    axisX: {
+                        title: "",
+                        lineThickness: 1,
+                        tickThickness: 0,
+                        lineColor: "#ddd",
+                        labelFontColor: "dimGrey",
+                    },
+                    axisY: {
+                        title: "No. Of Conversation ",
+                        titleFontColor: "#000",
+                        lineColor: "#ddd",
+                        labelFontColor: "#000",
+                        tickColor: "#4F81BC",
+                        lineThickness: 1,
+                        gridThickness: 0,
+                        tickLength: 0,
+                        labelFontColor: "dimGrey",
+                    },
+
+                    toolTip: {
+                        shared: true,
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: toggleDataSeries,
+                    },
+                    data: [
+                        {
+                            type: "spline",
+                            name: "New Conversations",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 7, 3), y: 1 },
+                                { x: new Date(2016, 7, 1), y: 0.2 },
+                                { x: new Date(2016, 7, 1), y: 0.4 },
+                                { x: new Date(2016, 7, 1), y: 0.6 },
+                                { x: new Date(2016, 7, 1), y: 0.8 },
+                                { x: new Date(2016, 7, 1), y: 1 },
+                                { x: new Date(2016, 7, 1), y: 0 },
+                                { x: new Date(2016, 7, 1), y: 0.2 },
+                                { x: new Date(2016, 7, 1), y: 0.4 },
+                                { x: new Date(2016, 7, 1), y: 0.6 },
+                                { x: new Date(2016, 7, 1), y: 0.8 },
+                                { x: new Date(2016, 7, 1), y: 1 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            name: "Active Conversations",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 20 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 24 },
+                                { x: new Date(2016, 3, 1), y: 3 },
+                                { x: new Date(2016, 4, 1), y: 13 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 20 },
+                                { x: new Date(2016, 7, 1), y: 26 },
+                                { x: new Date(2016, 8, 1), y: 2 },
+                                { x: new Date(2016, 9, 1), y: 6 },
+                                { x: new Date(2016, 10, 1), y: 7 },
+                                { x: new Date(2016, 11, 1), y: 2 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            name: "Organic",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 0 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 24 },
+                                { x: new Date(2016, 3, 1), y: 3 },
+                                { x: new Date(2016, 4, 1), y: 23 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 10 },
+                                { x: new Date(2016, 7, 1), y: 6 },
+                                { x: new Date(2016, 8, 1), y: 2 },
+                                { x: new Date(2016, 9, 1), y: 6 },
+                                { x: new Date(2016, 10, 1), y: 27 },
+                                { x: new Date(2016, 11, 1), y: 12 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            name: "CTX",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 20 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 44 },
+                                { x: new Date(2016, 3, 1), y: 83 },
+                                { x: new Date(2016, 4, 1), y: 23 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 0 },
+                                { x: new Date(2016, 7, 1), y: 56 },
+                                { x: new Date(2016, 8, 1), y: 22 },
+                                { x: new Date(2016, 9, 1), y: 26 },
+                                { x: new Date(2016, 10, 1), y: 27 },
+                                { x: new Date(2016, 11, 1), y: 82 },
+                            ],
+                        },
+                    ],
+                };
+                var options2 = {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    axisX: {
+                        title: "",
+                        lineThickness: 1,
+                        tickThickness: 0,
+                        lineColor: "#ddd",
+                        labelFontColor: "dimGrey",
+                    },
+                    axisY: {
+                        title: "No. Of Users ",
+                        titleFontColor: "#000",
+                        lineColor: "#ddd",
+                        labelFontColor: "#000",
+                        tickColor: "#4F81BC",
+                        lineThickness: 1,
+                        gridThickness: 0,
+                        tickLength: 0,
+                        labelFontColor: "dimGrey",
+                    },
+
+                    toolTip: {
+                        shared: true,
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: toggleDataSeries,
+                    },
+                    data: [
+                        {
+                            type: "spline",
+                            name: "Active Users",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 7, 3), y: 1 },
+                                { x: new Date(2016, 7, 1), y: 0.2 },
+                                { x: new Date(2016, 7, 1), y: 0.4 },
+                                { x: new Date(2016, 7, 1), y: 0.6 },
+                                { x: new Date(2016, 7, 1), y: 0.8 },
+                                { x: new Date(2016, 7, 1), y: 1 },
+                                { x: new Date(2016, 7, 1), y: 0 },
+                                { x: new Date(2016, 7, 1), y: 0.2 },
+                                { x: new Date(2016, 7, 1), y: 0.4 },
+                                { x: new Date(2016, 7, 1), y: 0.6 },
+                                { x: new Date(2016, 7, 1), y: 0.8 },
+                                { x: new Date(2016, 7, 1), y: 1 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            name: "New Users",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 20 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 24 },
+                                { x: new Date(2016, 3, 1), y: 3 },
+                                { x: new Date(2016, 4, 1), y: 13 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 20 },
+                                { x: new Date(2016, 7, 1), y: 26 },
+                                { x: new Date(2016, 8, 1), y: 2 },
+                                { x: new Date(2016, 9, 1), y: 6 },
+                                { x: new Date(2016, 10, 1), y: 7 },
+                                { x: new Date(2016, 11, 1), y: 2 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            name: "Returing Users",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 0 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 24 },
+                                { x: new Date(2016, 3, 1), y: 3 },
+                                { x: new Date(2016, 4, 1), y: 23 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 10 },
+                                { x: new Date(2016, 7, 1), y: 6 },
+                                { x: new Date(2016, 8, 1), y: 2 },
+                                { x: new Date(2016, 9, 1), y: 6 },
+                                { x: new Date(2016, 10,1), y: 27 },
+                                { x: new Date(2016, 11,1), y: 12 },
+                            ],
+                        }
+                        
+                    ],
+                };
+                var options3 = {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    axisX: {
+                        title: "",
+                        lineThickness: 1,
+                        tickThickness: 0,
+                        lineColor: "#ddd",
+                        labelFontColor: "dimGrey",
+                    },
+                    axisY: {
+                        title: "No. Of Messages ",
+                        titleFontColor: "#000",
+                        lineColor: "#ddd",
+                        labelFontColor: "#000",
+                        tickColor: "#4F81BC",
+                        lineThickness: 1,
+                        gridThickness: 0,
+                        tickLength: 0,
+                        labelFontColor: "dimGrey",
+                    },
+
+                    toolTip: {
+                        shared: true,
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: toggleDataSeries,
+                    },
+                    data: [
+                        {
+                            type: "spline",
+                            
+                            name: "Total Messages",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 7, 3), y: 1 },
+                                { x: new Date(2016, 7, 1), y: 0.2 },
+                                { x: new Date(2016, 7, 1), y: 0.4 },
+                                { x: new Date(2016, 7, 1), y: 0.6 },
+                                { x: new Date(2016, 7, 1), y: 0.8 },
+                                { x: new Date(2016, 7, 1), y: 1 },
+                                { x: new Date(2016, 7, 1), y: 0 },
+                                { x: new Date(2016, 7, 1), y: 0.2 },
+                                { x: new Date(2016, 7, 1), y: 0.4 },
+                                { x: new Date(2016, 7, 1), y: 0.6 },
+                                { x: new Date(2016, 7, 1), y: 0.8 },
+                                { x: new Date(2016, 7, 1), y: 1 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            color: "#ff4040",
+                            name: "Bot Messages",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 20 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 24 },
+                                { x: new Date(2016, 3, 1), y: 3 },
+                                { x: new Date(2016, 4, 1), y: 13 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 20 },
+                                { x: new Date(2016, 7, 1), y: 26 },
+                                { x: new Date(2016, 8, 1), y: 2 },
+                                { x: new Date(2016, 9, 1), y: 6 },
+                                { x: new Date(2016, 10, 1), y: 7 },
+                                { x: new Date(2016, 11, 1), y: 2 },
+                            ],
+                        },
+                        {
+                            type: "spline",
+                            color: "#1976d2",
+                            name: "Customer Messages",
+                            showInLegend: true,
+                            xValueFormatString: "MMM YYYY",
+                            yValueFormatString: "#,##0 Units",
+                            dataPoints: [
+                                { x: new Date(2016, 0, 1), y: 0 },
+                                { x: new Date(2016, 1, 1), y: 35 },
+                                { x: new Date(2016, 2, 1), y: 24 },
+                                { x: new Date(2016, 3, 1), y: 3 },
+                                { x: new Date(2016, 4, 1), y: 23 },
+                                { x: new Date(2016, 5, 1), y: 50 },
+                                { x: new Date(2016, 6, 1), y: 10 },
+                                { x: new Date(2016, 7, 1), y: 6 },
+                                { x: new Date(2016, 8, 1), y: 2 },
+                                { x: new Date(2016, 9, 1), y: 6 },
+                                { x: new Date(2016, 10,1), y: 27 },
+                                { x: new Date(2016, 11,1), y: 12 },
+                            ],
+                        }
+                        
+                    ],
+                };
+                $("#chartContainer").CanvasJSChart(options);
+                $("#chartContainer1").CanvasJSChart(options1);
+                $("#chartContainer2").CanvasJSChart(options2);
+                $("#chartContainer3").CanvasJSChart(options3);
+
+                var chart = new CanvasJS.Chart("piechartContainer", {
+                    animationEnabled: true,
+                    title: {
+                        text: "",
+                    },
+                    data: [
+                        {
+                            type: "pie",
+                            indexLabelPlacement: "outside", 
+                            showInLegend: true,
+                            startAngle: 240,
+                            yValueFormatString: '##0.00"%"',
+                            indexLabel: "{label}",
+                            legendText: "{legendText}",
+                            dataPoints: [
+                                { y: 79.45,legendText: "Organic" },
+                               
+                                
+                            ],
+                        },
+                    ],
+                });
+                 chart.render(); 
+
+                function toggleDataSeries(e) {
+                    if (typeof e.dataSeries.visible === "undefined" || e.dataSeries.visible) {
+                        e.dataSeries.visible = false;
+                    } else {
+                        e.dataSeries.visible = true;
+                    }
+                    e.chart.render();
+                }
+            };
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,63 @@
+@import "variables";
+@import "mixin";
+
+.card-wrapper {
+    display: flex;
+    gap: 15px;
+
+    .left-col {
+        width: 66.66666667%;
+    }
+
+    .right-col {
+        width: 33.33333333%;
+    }
+}
+
+.card {
+    border: 1px solid #00000040;
+    border-radius: 8px !important;
+    margin-bottom: 15px !important;
+
+    &.padding {
+        padding: 12px;
+    }
+
+    .padding {
+        padding: 12px;
+    }
+
+    h3 {
+        font-size: 16px;
+        color: $textColor;
+        // font-weight: 600;
+        margin-bottom: 0;
+
+        &.heading-border {
+            padding: 10px 14px;
+            border-bottom: 1px solid #00000040
+        }
+    }
+
+    p {
+        font-size: 14px;
+        color: $textColor;
+        font-weight: 400;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .select-channel {
+        border: 1px solid #03A9F5;
+        font-size: 12px;
+        color: $textColor;
+        max-width: 150px;
+        border-radius: 8px;
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}

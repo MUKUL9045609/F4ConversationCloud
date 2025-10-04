@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css">
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                           
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li class="active">
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                             <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    <!-- <h3 class="sub-heading text-center">Invoice</h3> -->
+                     <div class="d-flex justify-content-between" style="max-width:950px;margin:10px auto;">
+                        <h3 class="sub-heading text-center mb-0">Invoice</h3>
+                        <div class="download-btn">
+                                <a href="#" class="btn primary-btn d-flex">Download</a>
+                        </div>
+                     </div>
+                    <div style="margin:0;padding:0;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;line-height:1.5;font-size:14px;">
+                        <div style="max-width:950px;margin:10px auto;border:1px solid #999">
+                            <table style="border-collapse:collapse;border-bottom:1px solid #999;" width="100%">
+                                <tr>
+                                    <td width="200" style="padding-left:10px;"><img src="images/black-logo.svg" alt="" style="height: 40px;"></td>
+                                    <td align="right" style="padding:14px 10px;">
+                                        <h3 style="margin-bottom:4px;margin-top:0;font-size: 15px;font-weight: 600;">Fortune4 Cloud Conversation</h3>
+                                        <p style="margin-top:0;margin-bottom:3px;width: 350px;">Unit No. 311, Building Number 2, Sector - 1, Millennium Business Park, Mahape, Navi Mumbai - 400710</p>
+                                        <p style="margin-top:0;margin-bottom:0;">Phone : 098035 53220 | Email : <a href="mailto:info@fortune4.in" style="color:#000;">info@fortune4.in</a></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="border-top:1px solid #999;font-size:16px;font-weight:600;letter-spacing:1px;padding:4px 0;" colspan="2"> Invoice</td>
+                                </tr>
+                            </table>
+                            <table style="border-collapse:collapse;" vlign="top" width="100%">
+                                <tr>
+                                    <td style="border-bottom:1px solid #999;text-align: center;border-right:1px solid #999;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                        Invoice No.: <br/>  F4-00001  
+                                    </td>
+                                    <td style="border-bottom:1px solid #999;text-align: center;border-right:1px solid #999;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                        Invoice Date: <br/> 29-11-2025
+                                    </td>
+                                    <td style="border-bottom:1px solid #999;text-align: center;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                        Purchase Date: <br/> 29-11-2024
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="border-collapse:collapse;" vlign="top" width="100%">
+                                
+                                <tr>
+                                    <td style="padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                        <p style="margin:0 0 14px 0;max-width:380px;">To,<br />
+                                        Buldana Urban Co-op Credit Soc. Ltd., Buldana </p>
+                                        <h4 style="margin-bottom: 4px;font-size: 15px;font-weight: 600;">Billing Address</h4>
+                                        <p style="margin-bottom:9px;margin-top: 0px;width:370px">"Sahakar Setu", Hutatma Gore Path, Buldana - 443 001, Maharashtra, India.</p>
+                                        <p style="margin:0;">Contact : +91 9867 757 757</p>
+                                        <p style="margin:0;">Email : info@buldanaurban.org</p>
+                                        
+                                    </td>
+                                    
+                                </tr>
+                                
+                                
+                            </table>
+
+                            <table style="border-collapse:collapse;"vlign="top" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Sr. No</th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">App Name</th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Conversation </th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Duration </th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Message</th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-left:none;">CGST (9%)</th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-right: none;">SGST (9%)</th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-right: none;">IGST (18%)</th>
+                                        <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-right: none;">Total Amount (Rs.)</th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding:4px 6px;text-align:center;border:1px solid #999;border-left:none;" rowspan="4">1</td>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;border-left:none;" rowspan="4">
+                                            <p style="margin-bottom: 3px;">CustomerSupportBot</p> 
+                                        </td>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;"> Authentication </td>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;">23-05-2025 to 31-12-9999	</td>
+                                        <td style="padding:4px 6px;text-align:center;border:1px solid #999;"> 64 </td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;">&#8377;13.77</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;">&#8377;13.77</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;">&#8377;0</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;153.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;"> Marketing</td>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;">22-03-2025 to 31-12-9999</td>
+                                        <td style="padding:4px 6px;text-align:center;border:1px solid #999;"> 56 </td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;17.29</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;17.29</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;">&#8377;0</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;192.12</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;"> Authentication </td>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;">22-03-2025 to 22-05-2025</td>
+                                        <td style="padding:4px 6px;text-align:center;border:1px solid #999;"> 64 </td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;13.77</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;13.77</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;">&#8377;0</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;153.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;"> Utility </td>
+                                        <td style="padding:4px 6px;text-align:left;border:1px solid #999;">22-03-2025 to 31-12-9999</td>
+                                        <td style="padding:4px 6px;text-align:center;border:1px solid #999;border-right: none;"> 68 </td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;13.91</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;13.91</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;">&#8377;0</td>
+                                        <td style="padding:4px 6px;text-align:right;border:1px solid #999;border-right: none;">&#8377;154.64</td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                                <tfoot>
+                                    
+                                    <tr>
+                                        <th colspan="5" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;border-left:none;padding-right:10px;border-right: none;">Sub Total</th>
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;58.74</th>  
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;58.74</th>  
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;00.00</th>  
+                                        
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;499.76</th>  
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th colspan="8" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;border-left:none;padding-right:10px;border-right: none;"> Total</th>
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;499.76</th>  
+                                    </tr>
+                                    <tr>
+                                        <th colspan="8" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;border-left:none;padding-right:10px;border-right: none;">CGST (9%)</th>
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;58.74</th>  
+                                    </tr>
+                                    <tr>
+                                        <th colspan="8" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;border-left:none;padding-right:10px;border-right: none;">SGST (9%)</th>
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;58.74</th>  
+                                    </tr>
+                                    <tr>
+                                        <th colspan="8" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;border-left:none;padding-right:10px;border-right: none;">IGST (18%)</th>
+                                        <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">&#8377;00.00</th>  
+                                    </tr>
+                                    <tr>
+                                        <th colspan="8" style="border:1px solid #999;border-bottom: 0px;padding:6px 0;font-weight:600;text-align:right;border-left:none;padding-right:10px;border-right: none;">Grand Total</th>
+                                        
+                                        <th style="border:1px solid #999;border-bottom: 0px;padding:4px 6px;text-align:right;border-right:none;border-right: none;">&#8377;627.24</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                    
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+            </footer>
+        </div>
+
+        
+
+
+        </div>
+    </div>
+<div class="backdrop"></div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+   
+   
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                            <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li class="active">
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    <h3 class="sub-heading">Configuration </h3>
+                    <ul class="user-list">
+                                <li>
+                                    <span class="formkey">API Key <span class="copy"></span></span>
+                                    <span class="formvalue">sk_live_4c5d6f7g8h9j0klmnop123456789abcd</span>
+                                </li>
+                                <li>
+                                    <span class="formkey">Token <span class="copy"></span></span>
+                                    <span class="formvalue">EAAJZCwZA1xMIBABABkZClZAOqZCZDZCpZCmYZA6kBZCkZCmxyz1234567890abcdefgZCZD</span>
+                                </li>
+                                
+                            </ul>
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+
+
+        </div>
+    </div>
+
+<div class="backdrop"></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li class="active">
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h3 class="sub-heading mb-0">Users </h3> 
+                        <div >
+                            <a href="add-user.html" class="btn primary-btn add d-flex">Add New User</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card padding">
+                                
+                                <!-- <div class="filterWrapper form-wrapper justify-content-end">
+                                    <div class="filterwrap">
+                                        <ul class="filter-list">
+                                            <li>
+                                                <div>
+                                                    <label>Search</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <label>Sort By</label>
+                                                    <select class="form-select">
+                                                        <option selected>Last Updated</option> 
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <button class="btn secondary-btn"><i class="reset"></i></button>
+                                    </div>
+                                    <div >
+                                        <a href="add-user.html" class="btn primary-btn add d-flex">Add New User</a>
+                                    </div>
+
+                                </div> -->
+                                <div class="table-responsive">
+                                    <table class="table user-table form-wrapper">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr.No</th>
+                                                
+                                                <th>
+                                                    User Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>Email Address
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>Role
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Created Date & Time
+                                                    <label class="datewrap" for="datepicker">
+                                                        <input
+                                                            type="text"
+                                                            id="datepicker"
+                                                            class="form-control datepicker search-form-control"
+                                                            placeholder="Select Date"
+                                                        />
+                                                        <span class="dateIcon"></span>
+                                                    </label>
+                                                </th>
+                                                <th>
+                                                    Last Updated
+                                                    <label class="datewrap" for="datepicker">
+                                                        <input
+                                                            type="text"
+                                                            id="datepicker3"
+                                                            class="form-control datepicker search-form-control"
+                                                            placeholder="Select Date"
+                                                        />
+                                                        <span class="dateIcon"></span>
+                                                    </label>
+                                                </th>
+                                                
+                                                <th>
+                                                    Status
+                                                    <select class="form-select">
+                                                        <option selected>Active</option> 
+                                                        <option>Inactive</option> 
+                                                    </select>
+                                                </th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td align="center">1</td>
+                                                
+                                                <td>Rajesh</td>
+                                                <td>rajesh@fortune4.in</td>
+                                                <td>Manager</td>
+                                                <td>22-03-2025, 02:04:55</td>
+                                                <td>02-07-2025, 10:04:55</td>
+                                                
+                                                <td><span class="badge success">Active</span></td>
+                                                <td>
+                                                    <div class="action">
+                                                        <a href="#" class="edit-icon"></a>
+                                                        <a href="#" class="delete-blue"></a>
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td align="center">2</td>
+                                                
+                                                <td>Deepak</td>
+                                                <td>deepak@fortune4.in</td>
+                                                <td>Admin</td>
+                                                <td>22-08-2025, 06:04:55</td>
+                                                <td>03-11-2025, 01:04:55</td>
+                                                
+                                                <td>
+                                                    <span class="badge danger">Inactive</span>
+                                                </td>
+                                                <td>
+                                                    <div class="action">
+                                                        <a href="#" class="edit-icon"></a>
+                                                        <a href="#" class="delete-blue"></a>
+                                                        <a href="#" class="restore"></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav aria-label="navigation example">
+                                    <ul class="pagination mt-5 d-flex justify-content-center">
+                                        <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                    </ul>
+                                </nav>
+
+                            </div> 
+
+                    
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+
+
+        </div>
+    </div>
+
+    <div class="backdrop"></div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>
