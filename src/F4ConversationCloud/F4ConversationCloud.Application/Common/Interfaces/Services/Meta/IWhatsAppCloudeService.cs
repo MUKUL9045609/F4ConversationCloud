@@ -10,5 +10,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
     public interface IWhatsAppCloudeService
     {
         Task<WhatsAppPhoneNumberInfoViewModel> GetWhatsAppPhoneNumberDetailsAsync(string phoneNumberId);
+        Task<ActivateClientAccountResponse> RegisterClientAccountAsync(ActivateClientAccountRequest request);
     }
 }

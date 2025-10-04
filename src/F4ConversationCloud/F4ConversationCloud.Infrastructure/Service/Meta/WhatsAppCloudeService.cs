@@ -1,6 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Twilio.Types;
 
 namespace F4ConversationCloud.Infrastructure.Service.MetaServices
 {
@@ -70,7 +72,49 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                           .ToList();
         }
 
+        public async Task<ActivateClientAccountResponse> RegisterClientAccountAsync(ActivateClientAccountRequest request)
+        {
+            try
+            {
+                var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
+                var accessToken = _configuration["WhatsAppAPISettings:AccessToken"];
 
+                string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(request.PhoneNumberId)}/register?access_token={Uri.EscapeDataString(accessToken)}";
+                               
+                    var questPayload = new
+                            {
+                                messaging_product = request.messaging_product,
+                                pin = request.Pin
+                            };
+
+                    var jsonContent = System.Text.Json.JsonSerializer.Serialize(questPayload);
+                         using  var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                         using var client = new HttpClient();
+
+                        var response = await client.PostAsync(requestUrl, content);
+                              response.EnsureSuccessStatusCode();
+
+
+                //var handler = new HttpClientHandler();
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                }
+        
+                var contents = await response.Content.ReadAsStringAsync();
+
+
+
+                ActivateClientAccountResponse activateClientAccountResponse = System.Text.Json.JsonSerializer.Deserialize<ActivateClientAccountResponse>(contents, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return activateClientAccountResponse ?? new ActivateClientAccountResponse();
+            }
+            catch (Exception)
+            {
+                return new ActivateClientAccountResponse();
+            }
+        }
 
 
     }
