@@ -26,7 +26,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             {
 
                 var wabaId = _whatsAppConfig.WhatsAppBusinessAccountId;
-             //  var metaApiResponce = await _metaCloudAPI.CreateTemplateMessageAsync(wabaId, request); 
+              var metaApiResponce = await _metaCloudAPI.CreateTemplateMessageAsync(wabaId, request); 
 
                 return null  ;
             }

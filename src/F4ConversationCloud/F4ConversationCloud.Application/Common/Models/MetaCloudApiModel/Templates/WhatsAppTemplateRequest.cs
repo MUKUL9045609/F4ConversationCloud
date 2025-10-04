@@ -40,7 +40,7 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
        
         [JsonPropertyName("example")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Example Example { get; set; }
+        public Example? Example { get; set; }
 
         [JsonPropertyName("format")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -76,11 +76,13 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonPropertyName("body_text")]
         public List<List<string>> BodyText { get; set; }
 
-        [JsonPropertyName("header_handle")]
-        public string[] HeaderHandle { get; set; }
 
-        [JsonPropertyName("body_text_named_params")]
-        public List<BodyTextNamedParam> BodyTextNamedParams { get; set; }
+
+        [JsonPropertyName("header_text")]
+        public List<string> HeaderText { get; set; } = new();
+
+        //[JsonPropertyName("body_text_named_params")]
+        //public List<BodyTextNamedParam> BodyTextNamedParams { get; set; }
 
 
     }

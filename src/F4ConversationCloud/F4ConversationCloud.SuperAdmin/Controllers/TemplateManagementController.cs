@@ -27,26 +27,43 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
         [HttpPost("create-template")]
-        public IActionResult CreateTemplate(CreateTemplateViewModel Request)
+        public IActionResult CreateTemplate(CreateTemplateViewModel Request)        
         {
            
+          
             var components = (Request.Components ?? new List<ComponentViewModel>())
-                        .Where(c => !string.IsNullOrWhiteSpace(c.Text) 
-                            ||(c.Buttons?.Any(b => !string.IsNullOrWhiteSpace(b.Text)) == true))
-                        .Select(c => new CreateTemplateComponent
-                        {
-                        Type = c.Type,
-                        Text = c.Text,
-                        Format = c.Format,
-                        Buttons = c.Buttons
-                                    .Where(b => !string.IsNullOrWhiteSpace(b.Text))
-                                    .Select(b => new TemplateButton
-                                    {
-                                        Text = b.Text,
-                                        Type = b.Type,
-                                        Url = b.Url
-                                    }).ToList()
-                        }).ToList();
+                       .Where(c => !string.IsNullOrWhiteSpace(c.Text)
+                           || (c.Buttons?.Any(b => !string.IsNullOrWhiteSpace(b.Text)) == true)
+                           
+                           )
+                       .Select(c => new CreateTemplateComponent
+                       {
+                           Type = c.Type,
+                           Text = c.Text,
+                           Format = c.Format,
+                           Buttons = c.Buttons?
+                                   .Where(b => !string.IsNullOrWhiteSpace(b.Text))
+                                   .Select(b => new TemplateButton
+                                   {
+                                       Text = b.Text,
+                                       Type = b.Type,
+                                       Url = b.Url
+                                   }).ToList(),
+                           Example = c.Example != null
+                                            ? new Example
+                                            {
+                                                HeaderText = (c.Example.HeaderText?.Any() == true)
+                                                    ? c.Example.HeaderText
+                                                    : new List<string>(),
+
+                                                BodyText = c.Example.BodyText?.ToList()
+                                                    ?? new List<List<string>>()
+                                            
+                                            }
+                                 : null
+                       }).ToList();
+
+
             var templateRequest = new WhatsAppTemplateRequest
             {
                 Name = Request.TemplateName,

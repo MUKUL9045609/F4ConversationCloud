@@ -194,6 +194,8 @@
                                         is supported in the header.</label
                                     >
                                 <input type="text" id="Headerinput" asp-for="Components[0].Text" class="form-control">
+                                <input type="hidden" asp-for="Components[0].Example.HeaderText" id="Header_Text_value" value="" />
+
                                    <div class="d-flex justify-content-end">
                                         <a class="add-variables" id="AddHeaderVariable">Add Variables</a>
                                    </div>
@@ -231,7 +233,7 @@
                                         
                                     </div> *@
                                 <textarea id="body-text"  asp-for="Components[1].Text" class="form-control" placeholder="Body Text"></textarea>
-                              
+                                <input type="hidden" asp-for="Components[1].Example.BodyText" id="Body_Text_value"  value="" />
                        
                                     <div class="toolbar">
                                     <a class="add-variables" id="addBodyvariables">Add Variables</a>
@@ -253,7 +255,7 @@
                             <div class="card padding" style="display: none;">
                                 <h6>Variable samples</h6>
                                 <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
-                                <ul class="add-veriables">
+                            <ul class="add-veriables" id="AddVariableli">
                                 
                                 </ul>
                             </div>
@@ -361,7 +363,7 @@
                         </div>
                     </div>
                 </div>
-                 </div>
+               </div>
          </div>
 
             
@@ -374,43 +376,82 @@
     <script>
         $(document).ready(function () {
             let BodyvariableCount = 0;
-             let HeadervariableCount = 0;
-
+            let HeadervariableCount = 0;
+            var hiddenValue = $('#Body_Text_value').val();
+               
 
             $('#addBodyvariables').click(function () {
-                variableCount++;
-
-                if (variableCount === 1) {
+                BodyvariableCount++;
+                var inputevariable = $("#body-text");
+                if (BodyvariableCount === 1) {
                     $('.card.padding').show();
                 }
 
-                const variable = `{{${variableCount}}}`;
+                const variable = `{{${BodyvariableCount}}}`;
 
-                const newRow = $(`
-                    <li style="margin-top: 10px;" data-variable="${variable}">
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input type="text" class="form-control" value="${variable}" readonly>
+                
+
+                 const newRow = $(`
+                        <li style="margin-top: 10px;" data-variable="${variable}">
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <input type="text" class="form-control" value="${variable}" readonly>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <input type="text" class="form-control variable-value" id="Body_Var_value_${BodyvariableCount}">
+                                </div>
+                                <button type="button" id="add-variable" class="btn btn-primary">add</button>
+                                <button type="button" id="remove-variable" class="btn btn-danger">Remove</button>
                             </div>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control variable-value">
-                            </div>
-                            <button type="button" id="remove-variable"  class="btn btn-danger">Remove</button>
-                        </div>
-                    </li>
-                `);
+                        </li>
+                    `);
 
-                $('.add-veriables').append(newRow);
 
-                updateTextarea(variable);
+                $('#AddVariableli').append(newRow);
+             
+                updateTextarea(variable,inputevariable)
 
-          
+                newRow.find(`#Body_Var_value_${BodyvariableCount}`).change(function () {
+                    //var inputVarValue = $(this).val();
+                    updateBodyTextValue();
+                });
+
                 newRow.find('#remove-variable').click(function () {
-                    removeFromTextarea(variable);
+                   removeFromTextarea(variable,inputevariable);
                     newRow.remove();
-                    checkIfEmpty();
+                    BodyvariableCount--;
+                    checkIfBodyEmpty();
                 });
             });
+
+           function updateBodyTextValue() {
+                    let values = [];
+
+                    $(".variable-value").each(function () {
+                        let val = $(this).val().trim();
+                        if (val) {
+                            values.push(val);
+                        }
+                    });
+
+                    $('#Body_Text_value').val(values.join(','));
+             }
+
+                     function updateBodyTextValue() {
+                        let values = [];
+
+                        $(".variable-value").each(function () {
+                            let val = $(this).val().trim();
+                            if (val) {
+                                values.push(val); 
+                            }
+                        });
+
+    
+            $('#Body_Text_value').val(JSON.stringify(values));
+        }
+
+
 
              $('#AddHeaderVariable').click(function () {
                  const addvarinInpute = $('#Headerinput');
@@ -430,7 +471,7 @@
                                 <input type="text" class="form-control" value="${variable}" readonly>
                             </div>
                             <div class="flex-grow-1">
-                                <input type="text" class="form-control variable-value">
+                                <input type="text" class="form-control variable-value"  id="Header_Var_value_${HeadervariableCount}">
                             </div>
                             <button type="button" id="remove-Header-var"  class="btn btn-danger">Remove</button>
                         </div>
@@ -443,17 +484,33 @@
 
                 
                 updateTextarea(variable,addvarinInpute)
-
+                    newRow.find(`#Header_Var_value_${HeadervariableCount}`).change(function () {
+                        var inputVarValue = $(this).val();
+                        updateHeaderTextvalue(inputVarValue);
+                    });
                 newRow.find('#remove-Header-var').click(function () {
                     
                     removeFromTextarea(variable,addvarinInpute);
                     newRow.remove();
-                    checkIfEmpty();
+                    HeadervariableCount--;
+                    checkIfHeaderEmpty();
                 });
             });
+
+
+            function updateHeaderTextvalue(inputVarValue) {
+
+                    let existingValue = $('#Header_Text_value').val();
+                    let valueArray = existingValue ? existingValue.split(',') : [];
+
+                    if (inputVarValue.trim() !== "") {
+                        valueArray.push(inputVarValue);
+                    }
+
+                    $('#Header_Text_value').val(valueArray.map(i => `${i}` ).join(', '));
+            }
+
         
-
-
              function updateTextarea(variable,addvarinInpute) {
                 let textarea =addvarinInpute;
                 
@@ -468,15 +525,22 @@
             }
 
             function removeFromTextarea(variable,addvarinInpute) {
-                debugger
+                
                const textarea = addvarinInpute;
                 let currentVal =  addvarinInpute.val();
                 const regex = new RegExp(variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
                 textarea.val(currentVal.replace(regex, '').replace(/\s+/g, ' ').trim());
+                
             }
-            function checkIfEmpty() {
+            function checkIfHeaderEmpty() {
                 if ($('#addHeader-veriables li').length === 0) {
-                    debugger
+                    $('.card.padding').hide();
+                    variableCount = 0;
+                }
+            }
+             function checkIfBodyEmpty() {
+                if ($('#AddVariableli li').length === 0) {
+
                     $('.card.padding').hide();
                     variableCount = 0;
                 }
