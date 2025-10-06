@@ -83,5 +83,25 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
           
             
         }
+
+
+        //[HttpGet("List")]
+        //public async Task<IActionResult> List() 
+        //{
+        //    try
+        //    {
+                
+        //        return PartialView("_TemplateList");
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        
+        //}
+        
+    
+    
     }
 }
