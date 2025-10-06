@@ -424,32 +424,38 @@
                 });
             });
 
-           function updateBodyTextValue() {
-                    let values = [];
+                             function updateBodyTextValue() {
+                                    let innerValues = []; 
 
-                    $(".variable-value").each(function () {
-                        let val = $(this).val().trim();
-                        if (val) {
-                            values.push(val);
-                        }
-                    });
+                                    $(".variable-value").each(function () {
+                                        let val = $(this).val().trim();
+                                        if (val) {
+                                            innerValues.push(val); 
+                                        }
+                                    });
 
-                    $('#Body_Text_value').val(values.join(','));
-             }
+                                    //let bodyTextArray = [innerValues];
 
-                     function updateBodyTextValue() {
-                        let values = [];
+                                    let jsonValue = JSON.stringify(innerValues);
 
-                        $(".variable-value").each(function () {
-                            let val = $(this).val().trim();
-                            if (val) {
-                                values.push(val); 
-                            }
-                        });
+                                    debugger;  
+
+                                    $('#Body_Text_value').val(jsonValue);
+                                }
+
+                    //  function updateBodyTextValue() {
+                    //     let values = [];
+
+                    //         $(".variable-value").each(function () {
+                    //             let val = $(this).val().trim();
+                    //             if (val) {
+                    //                 values.push(val); 
+                    //             }
+                    //         });
 
     
-            $('#Body_Text_value').val(JSON.stringify(values));
-        }
+                    //     $('#Body_Text_value').val(JSON.stringify(values));
+                    // }
 
 
 
