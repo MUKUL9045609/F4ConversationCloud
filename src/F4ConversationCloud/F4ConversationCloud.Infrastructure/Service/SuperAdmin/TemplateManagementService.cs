@@ -33,7 +33,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             catch (Exception)
             {
 
-                throw;
+               return null;
             }
 
 

@@ -50,20 +50,19 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                                                        Url = b.Url
                                                    }).ToList(),
                                            Example = c.Example != null
-                                                            ? new Example
-                                                            {
-                                                                HeaderText = (c.Example.HeaderText?.Any() == true)
-                                                                    ? c.Example.HeaderText
-                                                                    : new List<string>(),
+                                                    ? new Example
+                                                    {
+                                                        HeaderText = (c.Example.HeaderText?.Any() == true)
+                                                            ? c.Example.HeaderText
+                                                            : new List<string>(),
 
-                                                                BodyText = c.Example.BodyText?.ToList()
-                                                                    ?? new List<List<string>>()
+                                                        BodyText = c.Example.BodyText?.ToList()
+                                                            ?? new List<List<string>>()
 
-                                                            }
+                                                    }
                                                  : null
                                        }).ToList();
-
-
+               
                 var templateRequest = new WhatsAppTemplateRequest
                 {
                     Name = Request.TemplateName,

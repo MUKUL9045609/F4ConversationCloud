@@ -20,9 +20,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
     }
 
     public class ExampleViewModel
-    {
-        //public List<string> Header_Text { get; set; }
-        
+    {        
         public List<string> HeaderText { get; set; } 
         public List<List<string>> BodyText { get; set; }
     }
