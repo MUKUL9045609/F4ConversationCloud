@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<body>
+    <div class="loginwrapper">
+        <div class="loginBox">
+            <div class="left-col">
+                <a href="#" class="logo">
+                    <img src="../images/logo.svg"/>
+                </a>
+                
+                    <p>Your Journey Begins Here Step into a seamless experience where you're guided, supported, and equipped with everything you need to thrive. From understanding our culture to connecting with your team, we make sure your first steps are confident and meaningful.</p>
+                
+                
+            </div>
+            <div class="right-col">
+                <div class="stepswrapper">
+                    <a href="register-individual-account.html" class="back-btn"> Back</a>
+                    <div class="d-flex justify-content-end flex-column">
+                        <span class="step-count">STEP <span>01/03</span></span>
+                        <span class="step-info">Residency Info.</span>
+                    </div>
+                </div>
+                <div class="bx_wrap">
+                    <h4>Complete Your Profile!</h4>
+                    <p>For the purpose of industry regulation, your details are required.</p>
+                    <form class="login-form mt-4" id="userForm">
+                        <div class="mb-3">
+                            <label for="phoneInput" class="form-label">Phone number <sup>*</sup></label>
+                            <div class="d-flex phone-wrap">
+                                <select class="form-select form-select-sm country-code" id="countryCode">
+                                    <option value="+91" selected>+91</option>
+                                    <option value="+340">+340</option>
+                                    <option value="+670">+670</option>
+                                    <option value="+242">+242</option>
+                                </select>
+                                <input type="text" class="form-control flex-grow-1" placeholder="Enter phone number" id="phoneInput">
+                            </div>
+                            <div class="error-message text-danger small" id="phoneError" style="color: red; display: none;">
+                                Please enter a valid phone number (min 10 digits).
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="addressInput" class="form-label">Your address <sup>*</sup></label>
+                            <textarea class="form-control" placeholder="Enter Address Here" id="addressInput"></textarea>
+                            <div class="error-message text-danger small" id="addressError" style="color: red; display: none;">
+                                Address is required.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="countryInput" class="form-label">Country of residence <sup>*</sup></label>
+                            <select class="form-select form-select-sm" id="countryInput">
+                                <option value="">Please select</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <div class="error-message text-danger small" id="countryError" style="color: red; display: none;">
+                                Please select your country of residence.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn login-btn">Save & Continue</button>
+                    </form>
+                    <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.getElementById('userForm').addEventListener('submit', function (e) {
+        e.preventDefault(); 
+
+    
+        const phone = document.getElementById('phoneInput').value.trim();
+        const address = document.getElementById('addressInput').value.trim();
+        const country = document.getElementById('countryInput').value;
+
+
+        const phoneError = document.getElementById('phoneError');
+        const addressError = document.getElementById('addressError');
+        const countryError = document.getElementById('countryError');
+
+   
+        phoneError.style.display = 'none';
+        addressError.style.display = 'none';
+        countryError.style.display = 'none';
+
+        let isValid = true;
+
+    
+        if (!/^\d{10,}$/.test(phone)) {
+            phoneError.style.display = 'block';
+            isValid = false;
+        }
+
+        
+        if (address === '') {
+            addressError.style.display = 'block';
+            isValid = false;
+        }
+
+    
+        if (country === '') {
+            countryError.style.display = 'block';
+            isValid = false;
+        }
+
+        
+        if (isValid) {
+            
+            window.location.href = 'bank-verification.html';
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="page">
+        <!-- Header Bar -->
+        <header class="app-header">
+            <div class="appheader-wrap">
+                <div class="searchBox">
+                    <div class="input-group flex-nowrap">
+                        <input type="text" class="form-control" placeholder="Search for anything here.."
+                            aria-label="Username" aria-describedby="addon-wrapping">
+                        <span class="input-group-text" id="addon-wrapping"></span>
+                    </div>
+                </div>
+                <div class="profile-dropdown">
+                    <div class="lang">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected><span class="lang-icon"></span> English (US)</option>
+                            <option value="1">Hindi</option>
+                            <option value="2">Portugal</option>
+
+                        </select>
+                    </div>
+                    <div class="ask-ai">
+                        <a href="#">Ask AI Assistant <span class="question"></span></a>
+                    </div>
+                    <div class="profile">
+                        <div class="dropdown">
+                            <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                D
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <span class="name">Dinesh Sharma</span>
+                                <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- End Header Bar -->
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <a href="#" class="main-sidebar-header">
+                <img src="../images/logo.svg" />
+            </a>
+            <div class="company-logo">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="company-template">
+                            <span class="logo">
+                                <img src="../images/nbbi-logo.svg" />
+                            </span>
+                            <div>
+                                <span class="company-title">NBBL - NPCI Bharat...</span>
+                                <span class="company-name">Fortune4 Internal</span>
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main-side-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="../index.html" class="home icon">Home</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                            <ul class="submenu">
+                                <li><a href="../campaigns/broadcast.html">Broadcast</a></li>
+                                <li><a href="../campaigns/guide.html">Guide</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="template icon">Templates</a>
+                        </li>
+                        <li>
+                            <a href="#" class="bot icon carret">Bot Studio</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="agent icon carret">Agent Assist</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="analytics icon">Analytics</a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="channels icon carret">Channels</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="integrations icon carret">Integrations</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="event icon">Events</a>
+                        </li>
+                        <li>
+                            <a href="#" class="extensions icon carret">Extensions</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="bottom-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" class="org-analytics icon">Org Analytics</a>
+                        </li>
+                        <li>
+                            <a href="#" class="billing icon">Billing</a>
+                        </li>
+                        <li>
+                            <a href="#" class="project icon">Manage Project</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="sub-heading">Settings</h3>
+                <h3 class="sub-heading"><a href="#" class="back"></a>Add Users <span class="key">Active : 0</span></h3>
+                <form class="form-wrapper">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label>Email Address</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter email address">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label>Role</label>
+                                <select class="form-select">
+                                    <option selected>Role</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>  
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label>Designation</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter Designation">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label>Add teams</label>
+                                <select class="form-select">
+                                    <option selected>Add teams</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>   
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label>Chat Scope</label>
+                                
+                                <select class="form-select">
+                                    <option selected>All Chats</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <button class="btn danger-btn">Cancel</button>
+                        <button class="btn primary-btn">Send Invite</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+        <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+    </div>
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+</body>
+
+</html>

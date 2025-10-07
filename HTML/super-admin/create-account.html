@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Password Reset | Buldana Urban Coop Credit Society</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/login.css" />
+</head>
+
+<body>
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+    <div class="loginWrapper">
+        <div class="loginBox">
+            
+            <div id="passwordResetSection">
+                <h3 class="template_login_title text-center">Create New Account</h3>
+                <p>Complete your profile by filling in this account creation form</p>
+
+                <form id="resetForm">
+                    <div class="from-group mb-3">
+                        <label class="form-label" for="email">Email *</label>
+                        <input id="email" placeholder="name@example.com" type="email" class="form-control" />
+                    </div>
+                    <div class="from-group mb-3">
+                        <label class="form-label" for="email">Username *</label>
+                        <input id="email" placeholder="name@example.com" type="email" class="form-control" />
+                    </div>
+                    <div class="from-group mb-3">
+                        <label class="form-label" for="email">Password *</label>
+                        <div class="d-flex password-wrap">
+                            <input id="password" placeholder="name@example.com" type="email" class="form-control" value="admin@1234"/>
+                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                        </div>
+
+                    </div>
+                    <a href="create-password.html" class="btn btn-sign">Send</a>
+                </form>
+            </div>
+
+          
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Password Changed successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop"></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            const $passwordResetSection = $('#passwordResetSection');
+            const $createPasswordSection = $('#createPasswordSection');
+            const toastElement = document.getElementById('liveToast');
+            const toast = new bootstrap.Toast(toastElement);
+
+            $('#resetForm').on('submit', function (e) {
+                e.preventDefault();
+                $passwordResetSection.addClass('hidden');
+                $createPasswordSection.removeClass('hidden');
+            });
+
+            $('#newPasswordForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $(toastElement).removeClass('slide-in-right');
+                void toastElement.offsetWidth;  // Trigger reflow
+                $(toastElement).addClass('slide-in-right');
+
+                toast.show();
+                $(this)[0].reset();
+            });
+        });
+
+        $(window).on('load', function () {
+            $('.loader-wrapper').fadeOut('slow');
+        });
+    </script>
+    <script>
+        $(".toggle-password").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        input = $(this).parent().find("input");
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+    </script>
+</body>
+
+</html>

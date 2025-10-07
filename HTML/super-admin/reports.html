@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="index.html" class="home icon">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li class="active">
+                                <a href="reports.html" class="reports icon">Reports</a>
+                            </li>
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    <h3 class="sub-heading">Reports </h3>
+                    <div class="card padding">
+                        <div class="filterWrapper form-wrapper">
+                            <div class="filterwrap">
+                                <ul class="filter-list">
+                                    <li>
+                                        <div>
+                                            <label>Search</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                <span class="searchIcon"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <label> Clients</label>
+                                            <select class="form-select">
+                                                <option selected>Select Client</option> 
+                                                <option>Buldana Urban</option> 
+                                                
+                                            </select>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                                <button class="btn secondary-btn"><i class="reset"></i></button>
+                            </div>
+                            <div class="download-btn">
+                                <a href="#" class="btn primary-btn d-flex">Download Reports</a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                                <table class="table user-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr.No</th>
+                                                <th>App Name</th>
+                                                <th>Free Conversation</th>
+                                                <th>Paid Coversation</th>
+                                                <th>Templates</th>
+                                                <th>Outgoing Session</th>
+                                                <th>Incoming Session</th>
+                                                <th>Total Cost</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>whatsapp_template_177</td>
+                                                <td>372</td>
+                                                <td>1,160</td>
+                                                <td>564</td>
+                                                <td>516</td>
+                                                <td>249</td>
+                                                <td>214</td>
+                                                <td>
+                                                    <div class="action">
+                                                        <a href="#" class="pdf"></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>test_whatsapp_template_118</td>
+                                                <td>327</td>
+                                                <td>1,460</td>
+                                                <td>664</td>
+                                                <td>416</td>
+                                                <td>199</td>
+                                                <td>354</td>
+                                                <td>
+                                                    <div class="action">
+                                                        <a href="#" class="pdf"></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        <nav aria-label="navigation example">
+                            <ul class="pagination mt-5 d-flex justify-content-center">
+                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+
+
+        </div>
+    </div>
+
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

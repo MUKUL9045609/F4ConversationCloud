@@ -1,0 +1,147 @@
+@import "variables";
+button{
+    &:disabled{
+        opacity: 0.65;
+        pointer-events: none;
+       
+    }
+}
+.btn{
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    border-radius: 8px !important;
+    padding: 8px 20px!important;
+
+}
+.primary-btn {
+    border: 1px solid $tabs !important;
+    background-color: $tabs !important;
+    color: $white !important;
+
+    &:hover {
+        color: $tabs !important;
+        background-color: $white !important;
+        border: 1px solid $tabs !important;
+    }
+
+    &:focus {
+        box-shadow: none !important;
+    }
+
+    &.disabled {
+        background-color: #D9D9D9 !important;
+        border-color: #D9D9D9 !important;
+    }
+}
+
+.secondary-btn {
+    border: 1px solid $tabs !important;
+    background-color: $white !important;
+    color: $tabs !important;
+
+    &:hover {
+        color: $white !important;
+        background-color: $tabs !important;
+        
+    }
+
+    &:focus {
+        box-shadow: none !important;
+    }
+
+    &.disabled {
+        background-color: #D9D9D9 !important;
+        border-color: #D9D9D9 !important;
+    }
+}
+.danger-btn {
+    border: 1px solid $red !important;
+    background-color: $red !important;
+    color: $white !important;
+
+    &:hover {
+        color: $red !important;
+        background-color: $white !important;
+    }
+
+    &:focus {
+        box-shadow: none !important;
+    }
+
+    &.disabled {
+        background-color: #D9D9D9 !important;
+        border-color: #D9D9D9 !important;
+    }
+}
+.success-btn{
+    background-color: $green!important;
+    border: 1px solid $green!important;
+    color: $white!important;
+}
+.btn-secondary{
+    background-color: #9a9c9f!important;
+    color: $white!important;
+    border: 1px solid #9a9c9f!important;
+    &:hover{
+        background-color: transparent!important;
+        border: 1px solid #9a9c9f!important;
+        color: #9a9c9f!important;
+    }
+}
+.add-btn{
+    border: 1px solid $tabs;
+    background-color: transparent;
+    color: $tabs;
+        font-size: 13px;
+    padding: 6px 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: all .3s ease-in-out;
+    gap: 6px;
+    &::before{
+        content:"";
+        background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z' fill='%2303A9F5'/%3E%3C/svg%3E");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 13px;width: 13px;display: block;
+    }
+    &:hover{
+        background-color: $tabs;
+        color: $white;
+        &::before{
+            background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z' fill='%23fff'/%3E%3C/svg%3E");
+        }
+    }
+}
+
+.bottom-btn{
+    .btn{
+        font-size: 14px!important;
+        padding: 8px 40px !important;
+    }
+    
+}
+.download-btn{
+    .primary-btn{
+        gap: 10px;
+        &::before{
+            content:"";
+            background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 13V21L8 17' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 21L16 17' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4.39303 15.2691C3.57629 14.5546 2.93685 13.66 2.5252 12.656C2.11354 11.6519 1.94095 10.566 2.02105 9.48378C2.10115 8.4016 2.43175 7.35286 2.98674 6.42038C3.54173 5.4879 4.30591 4.69721 5.21894 4.11077C6.13197 3.52433 7.16883 3.15818 8.24766 3.04125C9.32648 2.92432 10.4177 3.0598 11.4352 3.437C12.4527 3.8142 13.3685 4.42279 14.1104 5.2147C14.8523 6.00662 15.3999 6.96017 15.71 8.00006H17.5C18.4721 7.99994 19.4181 8.31458 20.1964 8.89691C20.9747 9.47925 21.5436 10.298 21.8178 11.2305C22.092 12.1631 22.0569 13.1594 21.7177 14.0704C21.3785 14.9813 20.7534 15.758 19.936 16.2841' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+            background-size: 98%;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 20px;width:20px;display: inline-block;
+        }
+        &:hover{
+            &::before{
+                background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 13V21L8 17' stroke='%2303A9F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 21L16 17' stroke='%2303A9F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4.39303 15.2691C3.57629 14.5546 2.93685 13.66 2.5252 12.656C2.11354 11.6519 1.94095 10.566 2.02105 9.48378C2.10115 8.4016 2.43175 7.35286 2.98674 6.42038C3.54173 5.4879 4.30591 4.69721 5.21894 4.11077C6.13197 3.52433 7.16883 3.15818 8.24766 3.04125C9.32648 2.92432 10.4177 3.0598 11.4352 3.437C12.4527 3.8142 13.3685 4.42279 14.1104 5.2147C14.8523 6.00662 15.3999 6.96017 15.71 8.00006H17.5C18.4721 7.99994 19.4181 8.31458 20.1964 8.89691C20.9747 9.47925 21.5436 10.298 21.8178 11.2305C22.092 12.1631 22.0569 13.1594 21.7177 14.0704C21.3785 14.9813 20.7534 15.758 19.936 16.2841' stroke='%2303A9F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+            }
+        }
+    }
+}
+
+
+
+
