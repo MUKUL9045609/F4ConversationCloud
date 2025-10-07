@@ -1,5 +1,8 @@
 ﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
@@ -13,10 +16,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     {
         private readonly IClientManagementService _clientManagement;
         private readonly IMasterPriceService _masterPriceService;
-        public ClientManagementController(IClientManagementService clientManagement, IMasterPriceService masterPriceService)
+        private readonly ITemplateManagementService _templateManagementService;
+        public ClientManagementController(IClientManagementService clientManagement, IMasterPriceService masterPriceService, ITemplateManagementService templateManagementService)
         {
             _clientManagement = clientManagement;
             _masterPriceService = masterPriceService;
+            _templateManagementService = templateManagementService;
         }
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
@@ -68,7 +73,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 var response = await _clientManagement.GetClientDetailsById(Id);
-
+                var filter = new TemplatesListFilter
+                {
+                    //PageNumber = model.TemplatesList.PageNumber,
+                    //PageSize = model.TemplatesList.PageSize
+                };
+                var templates = await _templateManagementService.TemplateListAsync(filter);
                 var model = new ClientDetailsViewModel()
                 {
                     Id = response.Id,
@@ -91,7 +101,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegisteredPhoneNumber = response.RegisteredPhoneNumber,
                     RegisteredAddress = response.RegisteredAddress,
                     RegisteredCountry = response.RegisteredCountry,
-                    RegisteredTimeZone = response.RegisteredTimeZone
+                    RegisteredTimeZone = response.RegisteredTimeZone,
+                    TemplatesList = templates.Data
                 };
 
                 var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();

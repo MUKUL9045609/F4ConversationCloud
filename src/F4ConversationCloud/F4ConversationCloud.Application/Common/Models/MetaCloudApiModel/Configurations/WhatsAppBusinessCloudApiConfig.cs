@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Meta.Configurations
+namespace F4ConversationCloud.Application.Common.Models.MetaModel.Configurations
 {
     public class WhatsAppBusinessCloudApiConfig
     {

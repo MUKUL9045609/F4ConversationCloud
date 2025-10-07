@@ -1,5 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using F4ConversationCloud.Application.Common.Models.MetaModel.BussinessProfile;
 using Microsoft.Extensions.Configuration;
 
 using System;
@@ -12,13 +14,14 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Twilio.Types;
 
+
 namespace F4ConversationCloud.Infrastructure.Service.MetaServices
 {
-    public class WhatsAppCloudeService : IWhatsAppCloudeService
+    public class F4AppCloudeService : IF4AppCloudeService
     {
         private readonly HttpClient _httpClient;
         private IConfiguration _configuration { get; }
-        public WhatsAppCloudeService(HttpClient httpClient, IConfiguration configuration)
+        public F4AppCloudeService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _configuration = configuration;
@@ -115,7 +118,5 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                 return new ActivateClientAccountResponse();
             }
         }
-
-
     }
 }

@@ -1,0 +1,159 @@
+﻿@model TemplatesListViewModel
+@{
+    ViewData["Title"] = "Template List";
+}
+<h2 class="accordion-header" id="headingThird">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
+        Template Details
+    </button>
+</h2>
+<div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird"
+     data-bs-parent="#accordionWrap">
+    <div class="accordion-body">
+        <div class="filterWrapper form-wrapper justify-content-end">
+            <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn add d-flex">Create Template</a>
+        </div>
+        <div class="table-responsive">
+
+            <table class="table user-table form-wrapper">
+                <tr>
+                    <th>
+                        Template ID
+                        <div class="input-group">
+                            <input type="text" class="form-control srcIcon" placeholder="Search">
+                            <span class="searchIcon"></span>
+                        </div>
+                    </th>
+                    <th>
+                        Template Name
+                        <div class="input-group">
+                            <input type="text" class="form-control srcIcon" placeholder="Search">
+                            <span class="searchIcon"></span>
+                        </div>
+                    </th>
+                    <th>
+                        Category
+                        <select class="form-select">
+                            <option selected>Select Type</option>
+                            <option>Marketing</option>
+                            <option>Authentication</option>
+                            <option>Utility</option>
+                        </select>
+                    </th>
+                    <th>
+                        Language
+                        <select class="form-select">
+                            <option selected>Select Language</option>
+                            <option>English</option>
+                            <option>Hindi</option>
+
+                        </select>
+                    </th>
+                    <th>Message</th>
+                    <th>
+                        Last Updated
+                        <label class="datewrap" for="datepicker">
+                            <input type="text"
+                                   id="datepicker"
+                                   class="form-control datepicker search-form-control"
+                                   placeholder="Select Date" />
+                            <span class="dateIcon"></span>
+                        </label>
+
+                    </th>
+                    <th>
+                        Rejection Reason
+                        <div class="input-group">
+                            <input type="text" class="form-control srcIcon" placeholder="Search">
+                            <span class="searchIcon"></span>
+                        </div>
+                    </th>
+                    <th>
+                        Status
+                        <select class="form-select">
+                            <option selected>Select Status</option>
+                            <option>Approved</option>
+                            <option>Rejected</option>
+
+                        </select>
+                    </th>
+                </tr>
+                @foreach (var templates in Model.data)
+                {
+                    var modalId = $"templateModal_{templates.Id}";
+                    <tr>
+                        <td>@templates.Id</td>
+                        <td>@templates.Name</td>
+                        <td>@templates.Category</td>
+                        <td>@templates.Language</td>
+                        <td>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#@modalId">View</a>
+
+                            <!-- Message Modal -->
+                            <div class="modal fade template-modal" id="@modalId" tabindex="-1" aria-labelledby="modalLabel_@templates.Id" aria-hidden="true">
+                                <div class="modal-dialog modal-md modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel_@templates.Id">Message</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="template-preview">
+                                                <h4>Preview</h4>
+                                                <div class="template-white-card">
+                                                @foreach (var components in templates.Components)
+                                                {
+                                                  
+                                                        @if (components.Type == "HEADER")
+                                                        {
+                                                            <h5> @components.Text</h5>
+
+                                                            @if (components.Format == "IMAGE" &&
+                                                                                                            components.Example?.HeaderHandle != null &&
+                                                                                                            components.Example.HeaderHandle.Length > 0)
+                                                            {
+                                                                <div class="col-6 col-md-4">
+                                                                    <img src="@components.Example.HeaderHandle[0]" class="img-fluid rounded-start" alt="Header Image">
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else if (components.Type == "BODY")
+                                                        {
+                                                            <div class="description">
+                                                                <p> @components.Text</p>
+                                                            </div>
+                                                        }
+                                                        else if (components.Type == "FOOTER")
+                                                        {
+                                                            <p>@components.Text</p>
+                                                            <div class="time">1:59 PM</div>
+                                                        }
+                                                   
+                                                }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End message modal -->
+                        </td>
+
+                        <td>--</td>
+                        <td>-</td>
+                        <td><span class="badge success">@templates.Status</span></td>
+                    </tr>
+                }
+
+
+            </table>
+        </div>
+        <nav aria-label="navigation example">
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+        </nav>
+    </div>
+</div>
+
+
+
