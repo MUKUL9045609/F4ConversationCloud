@@ -109,13 +109,11 @@
                                                         {
                                                             <h5> @components.Text</h5>
 
-                                                            @if (components.Format == "IMAGE" &&
-                                                                                                            components.Example?.HeaderHandle != null &&
-                                                                                                            components.Example.HeaderHandle.Length > 0)
+                                                            @if (components.Format == "IMAGE" && components.Example?.HeaderHandle != null &&components.Example.HeaderHandle.Length > 0)
                                                             {
-                                                                <div class="col-6 col-md-4">
-                                                                    <img src="@components.Example.HeaderHandle[0]" class="img-fluid rounded-start" alt="Header Image">
-                                                                </div>
+                                                                <span>
+                                                                    <img src="@components.Example.HeaderHandle[0]"  alt="Header Image">
+                                                                </span>
                                                             }
                                                         }
                                                         else if (components.Type == "BODY")
@@ -127,7 +125,7 @@
                                                         else if (components.Type == "FOOTER")
                                                         {
                                                             <p>@components.Text</p>
-                                                            <div class="time">1:59 PM</div>
+                                                            @* <div class="time">1:59 PM</div> *@
                                                         }
                                                    
                                                 }

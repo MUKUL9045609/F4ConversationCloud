@@ -39,6 +39,9 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 
         public string Id { get; set; }
+
+        [JsonPropertyName("cards")]
+        public List<Cards> cards { get; set; }
     }
     public class TemplatePaging
     {
