@@ -1,10 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Reflection;
 using System.Text.Json;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -28,7 +31,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
         [HttpPost("create-template")]
-        public IActionResult CreateTemplate(CreateTemplateViewModel Request)        
+        public IActionResult CreateTemplate(CreateTemplateViewModel Request)
         {
             try
             {
@@ -63,7 +66,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                                                     }
                                                  : null
                                        }).ToList();
-               
+
                 var templateRequest = new WhatsAppTemplateRequest
                 {
                     Name = Request.TemplateName,
@@ -79,10 +82,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception)
             {
 
-               return View(Request);
+                return View(Request);
             }
-          
-            
+
+
         }
 
 
@@ -98,17 +101,55 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 };
 
                 var templates = await _templateManagementService.TemplateListAsync(filter);
-                return PartialView("_TemplateList",templates);
+                return PartialView("_TemplateList", templates);
             }
             catch (Exception)
             {
 
-               return PartialView("_TemplateList", new List<TemplatesListViewModel>());
+                return PartialView("_TemplateList", new List<TemplatesListViewModel>());
             }
 
         }
 
+        public async Task<IActionResult> Create()
+        {
+            try
+            {
+                var viewModel = new TemplateViewModel();
+                viewModel.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                viewModel.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
+                viewModel.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(TemplateViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    model.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                    model.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                    model.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
+                    model.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                    return View(model);
+                }
 
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
+        }
     }
 }
