@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using Microsoft.VisualBasic;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
@@ -44,7 +45,9 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public bool UtilityDelete { get; set; }
         public bool UtilityAll { get; set; }
 
-        public TemplatesListViewModel TemplatesList { get; set; } = new TemplatesListViewModel();
+        public List<TemplateData> TemplatesList { get; set; } = new List<TemplateData>();
+
+      //  public TemplatesListViewModel TemplatesList { get; set; } = new TemplatesListViewModel();
 
 
     }

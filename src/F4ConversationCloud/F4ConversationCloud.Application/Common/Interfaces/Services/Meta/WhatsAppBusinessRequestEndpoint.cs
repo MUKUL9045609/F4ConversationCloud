@@ -16,5 +16,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
 
 
         public static string CreateTemplateMessage { get; private set; } = "{{WABA-ID}}/message_templates";
+        public static string GetAllTemplateMessage { get; private set; } = "{{WABA-ID}}/message_templates";
     }
 }

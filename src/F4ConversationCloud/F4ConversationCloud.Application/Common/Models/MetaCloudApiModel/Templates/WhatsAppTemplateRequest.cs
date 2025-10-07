@@ -81,6 +81,8 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonPropertyName("header_text")]
         public List<string> HeaderText { get; set; } = new();
 
+        [JsonPropertyName("header_handle")]
+        public string[] HeaderHandle { get; set; }
         //[JsonPropertyName("body_text_named_params")]
         //public List<BodyTextNamedParam> BodyTextNamedParams { get; set; }
 

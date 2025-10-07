@@ -1,5 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +10,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     public class ClientManagementController : BaseController
     {
         private readonly IClientManagementService _clientManagement;
-        public ClientManagementController(IClientManagementService clientManagement)
+        private readonly ITemplateManagementService _templateManagementService;
+        public ClientManagementController(IClientManagementService clientManagement, ITemplateManagementService templateManagementService)
         {
             _clientManagement = clientManagement;
+            _templateManagementService = templateManagementService;
         }
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
@@ -52,6 +56,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         public async Task<IActionResult> ClientDetails(int Id)
         {
             var response = await _clientManagement.GetClientDetailsById(Id);
+            var filter = new TemplatesListFilter
+            {
+                //PageNumber = model.TemplatesList.PageNumber,
+                //PageSize = model.TemplatesList.PageSize
+            };
+            var templates = await _templateManagementService.TemplateListAsync(filter);
 
             var model = new ClientDetailsViewModel()
             {
@@ -75,8 +85,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 RegisteredPhoneNumber = response.RegisteredPhoneNumber,
                 RegisteredAddress = response.RegisteredAddress,
                 RegisteredCountry = response.RegisteredCountry,
-                RegisteredTimeZone = response.RegisteredTimeZone
+                RegisteredTimeZone = response.RegisteredTimeZone,
+                TemplatesList= templates.Data,
             };
+
+            
+
+
 
             return View(model);
         }

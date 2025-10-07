@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -85,23 +86,29 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
 
-        //[HttpGet("List")]
-        //public async Task<IActionResult> List() 
-        //{
-        //    try
-        //    {
-                
-        //        return PartialView("_TemplateList");
-        //    }
-        //    catch (Exception)
-        //    {
+        [HttpGet("List")]
+        public async Task<IActionResult> List(TemplatesListViewModel model)
+        {
+            try
+            {
+                var filter = new TemplatesListFilter
+                {
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize
+                };
 
-        //        throw;
-        //    }
-        
-        //}
-        
-    
-    
+                var templates = await _templateManagementService.TemplateListAsync(filter);
+                return PartialView("_TemplateList",templates);
+            }
+            catch (Exception)
+            {
+
+               return PartialView("_TemplateList", new List<TemplatesListViewModel>());
+            }
+
+        }
+
+
+
     }
 }

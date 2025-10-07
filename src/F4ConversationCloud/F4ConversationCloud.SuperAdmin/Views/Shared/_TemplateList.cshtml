@@ -79,34 +79,73 @@
                         </select>
                     </th>
                 </tr>
-                <tr>
-                    <td>6935503</td>
-                    <td>whatsapp_template_177</td>
-                    <td>Utility</td>
-                    <td>English</td>
-                    <td>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">View</a>
-                    </td>
-                    <td>2025-04-22, 06:04:55</td>
-                    <td>
-                        -
-                    </td>
-                    <td><span class="badge success">Approved</span></td>
-                </tr>
-                <tr>
-                    <td>9435503</td>
-                    <td>integration_body_header</td>
-                    <td>Marketing</td>
-                    <td>Hindi</td>
-                    <td>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">View</a>
-                    </td>
-                    <td>2025-06-02, 04:04:55</td>
-                    <td>
-                        Reject Comment, Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    </td>
-                    <td><span class="badge danger">Rejected</span></td>
-                </tr>
+                @foreach (var templates in Model.data)
+                {
+                    var modalId = $"templateModal_{templates.Id}";
+                    <tr>
+                        <td>@templates.Id</td>
+                        <td>@templates.Name</td>
+                        <td>@templates.Category</td>
+                        <td>@templates.Language</td>
+                        <td>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#@modalId">View</a>
+
+                            <!-- Message Modal -->
+                            <div class="modal fade template-modal" id="@modalId" tabindex="-1" aria-labelledby="modalLabel_@templates.Id" aria-hidden="true">
+                                <div class="modal-dialog modal-md modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel_@templates.Id">Message</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="template-preview">
+                                                <h4>Preview</h4>
+                                                <div class="template-white-card">
+                                                @foreach (var components in templates.Components)
+                                                {
+                                                  
+                                                        @if (components.Type == "HEADER")
+                                                        {
+                                                            <h5> @components.Text</h5>
+
+                                                            @if (components.Format == "IMAGE" &&
+                                                                                                            components.Example?.HeaderHandle != null &&
+                                                                                                            components.Example.HeaderHandle.Length > 0)
+                                                            {
+                                                                <div class="col-6 col-md-4">
+                                                                    <img src="@components.Example.HeaderHandle[0]" class="img-fluid rounded-start" alt="Header Image">
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else if (components.Type == "BODY")
+                                                        {
+                                                            <div class="description">
+                                                                <p> @components.Text</p>
+                                                            </div>
+                                                        }
+                                                        else if (components.Type == "FOOTER")
+                                                        {
+                                                            <p>@components.Text</p>
+                                                            <div class="time">1:59 PM</div>
+                                                        }
+                                                   
+                                                }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End message modal -->
+                        </td>
+
+                        <td>--</td>
+                        <td>-</td>
+                        <td><span class="badge success">@templates.Status</span></td>
+                    </tr>
+                }
+
 
             </table>
         </div>
@@ -115,3 +154,6 @@
         </nav>
     </div>
 </div>
+
+
+

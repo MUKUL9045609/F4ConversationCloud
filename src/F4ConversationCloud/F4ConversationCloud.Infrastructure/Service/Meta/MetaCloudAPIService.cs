@@ -1,14 +1,16 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Exceptions;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
-using System.Net;
 using Polly.Extensions.Http;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
-using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
-using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Exceptions;
-
+using ResponseTemplateMessageCreationResponse = F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response.TemplateMessageCreationResponse;
 namespace F4ConversationCloud.Infrastructure.Service.Meta
 {
     public class MetaCloudAPIService: IMetaCloudAPIService
@@ -64,7 +66,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
         {
             _whatsAppConfig = cloudApiConfig;
         }
-        public async Task<TemplateMessageCreationResponse> CreateTemplateMessageAsync(string whatsAppBusinessAccountId, object template, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, CancellationToken cancellationToken = default)
+        public async Task<ResponseTemplateMessageCreationResponse> CreateTemplateMessageAsync(string whatsAppBusinessAccountId, object template, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, CancellationToken cancellationToken = default)
         {
             if (cloudApiConfig is not null)
             {
@@ -72,7 +74,34 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
             }
 
             var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.CreateTemplateMessage.Replace("{{WABA-ID}}", whatsAppBusinessAccountId);
-            return await WhatsAppBusinessPostAsync<TemplateMessageCreationResponse>(template, formattedWhatsAppEndpoint, cancellationToken);
+            return await WhatsAppBusinessPostAsync<ResponseTemplateMessageCreationResponse>(template, formattedWhatsAppEndpoint, cancellationToken);
+        }
+
+
+
+        public async Task<TemplateResponse> GetAllTemplatesAsync(string whatsAppBusinessAccountId, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, string pagingUrl = null, CancellationToken cancellationToken = default)
+        {
+            if (cloudApiConfig is not null)
+            {
+                _whatsAppConfig = cloudApiConfig;
+            }
+
+            var builder = new StringBuilder();
+
+            builder.Append(WhatsAppBusinessRequestEndpoint.GetAllTemplateMessage);
+            builder.Replace("{{WABA-ID}}", whatsAppBusinessAccountId);
+
+            var formattedWhatsAppEndpoint = builder.ToString();
+
+            if (string.IsNullOrWhiteSpace(pagingUrl))
+            {
+                var result = await WhatsAppBusinessGetAsync<TemplateResponse>(formattedWhatsAppEndpoint, cancellationToken);
+                return result;
+            }
+            else
+            {
+                return await WhatsAppBusinessGetAsync<TemplateResponse>(pagingUrl, cancellationToken);
+            }
         }
 
 
@@ -111,7 +140,30 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
 
         }
 
+        private async Task<T> WhatsAppBusinessGetAsync<T>(string whatsAppBusinessEndpoint, CancellationToken cancellationToken = default) where T : new()
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppConfig.AccessToken);
 
+            var response = await _httpClient.GetAsync(whatsAppBusinessEndpoint, cancellationToken).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                {
+                    return await JsonSerializer.DeserializeAsync<T>(stream, cancellationToken: cancellationToken);
+                }
+            }
+            else
+            {
+                WhatsAppErrorResponse whatsAppErrorResponse = new WhatsAppErrorResponse();
+
+                using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+                {
+                    whatsAppErrorResponse = await JsonSerializer.DeserializeAsync<WhatsAppErrorResponse>(stream, cancellationToken: cancellationToken);
+                }
+                throw new WhatsappBusinessCloudAPIException(new HttpRequestException(whatsAppErrorResponse.Error.Message), response.StatusCode, whatsAppErrorResponse);
+            }
+        }
 
 
 
