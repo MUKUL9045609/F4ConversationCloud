@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+</head>
+
+<body>
+    <div class="page">
+       
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li class="active">
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                           
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                             <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <!-- <h3 class="sub-heading">Settings</h3> -->
+                    <h3 class="sub-heading"><a href="user-management.html"> <span class="back"></span> Add Users </a></h3>
+                    <form class="form-wrapper">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter user name">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter Last name">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Email Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter email address">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="from-group">
+                                    <label class="form-label">Password  </label>
+                                    <div class="d-flex password-wrap">
+                                        <input type="password" id="password" class="form-control" value="admin@1234">
+                                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="from-group">
+                                    <label class="form-label">Confirm Password  </label>
+                                    <div class="d-flex password-wrap">
+                                        <input type="password" id="password" class="form-control" value="admin@1234">
+                                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Phone Number</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter Phone Number">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Role</label>
+                                    <select class="form-select">
+                                        <option selected>Role</option>
+                                        <option value="1">Manager</option>
+                                        <option value="2">Admin</option>
+                                        
+                                    </select>  
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Designation</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter Designation">
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                           
+                            
+                        </div>
+                        <div class="d-flex justify-content-start gap-2 mt-3">
+                            <a href="user-management.html" class="btn primary-btn">Save</a>
+                            <button class="btn danger-btn">Cancel</button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+        </div>
+
+    </div>
+
+    <div class="backdrop"></div>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+    <script>
+        $(".toggle-password").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        input = $(this).parent().find("input");
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+    </script>
+</body>
+
+</html>

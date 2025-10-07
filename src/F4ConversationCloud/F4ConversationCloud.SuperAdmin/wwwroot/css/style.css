@@ -4093,6 +4093,17 @@ body {
     rotate: -48deg;
     transform: translate(2px, -1px);
 }
+@media (max-width: 480px) {
+  .sidemenutoggle .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5607843137);
+  }
+}
 
 @media (max-width: 480px) {
     .sidemenutoggle .backdrop {
@@ -4192,6 +4203,12 @@ body {
     list-style-type: none;
     display: flex;
     gap: 40px;
+}
+@media (max-width: 480px) {
+  .module-list {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
 
 @media (max-width: 480px) {

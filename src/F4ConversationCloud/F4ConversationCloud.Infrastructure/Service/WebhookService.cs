@@ -9,9 +9,11 @@ namespace F4ConversationCloud.Infrastructure.Service
     public class WebhookService : IWebhookService
     {
         private readonly IClientManagementService _clientManagement;
-        public WebhookService(IClientManagementService clientManagement)
+        private readonly IAPILogService _logService;
+        public WebhookService(IClientManagementService clientManagement, IAPILogService logService)
         {
             _clientManagement = clientManagement;
+            _logService = logService;
         }
 
 
@@ -28,17 +30,14 @@ namespace F4ConversationCloud.Infrastructure.Service
                 var response =  _clientManagement.GetClientDetailsByPhoneNumberId(phonenumberId).Result;
 
                 string requestJson = JsonConvert.SerializeObject(requestBody);
-
-                var result = await APICallingHelper.BindMainAPIRequestModel<dynamic, dynamic>(
-                    response.FirstOrDefault().WebHookUrl,
-                    methodType,
-                    requestBody.Entry[0],
-                    headers,
-                    "",
-                    null,
-                    false,
-                    true
-                );
+                
+                var result = await _logService.CallExternalAPI<dynamic>(response.FirstOrDefault().WebHookUrl,
+                                                                    methodType,
+                                                                    requestBody,
+                                                                    headers,
+                                                                    "Webhook Callback",
+                                                                    null,
+                                                                    true);
 
                 return new
                 {

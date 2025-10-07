@@ -36,7 +36,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("PhoneNumber", command.FullPhoneNumber);
                 parameters.Add("Address", command.Address);
                 parameters.Add("Country", command.Country);
-                parameters.Add("role", command.Role);   
+                parameters.Add("role", command.Role);
+                parameters.Add("@ClientId", command.ClientId);
                 var NewUserId =  await _repository.InsertUpdateAsync("[sp_RegisterNewUser]", parameters);
 
                 return NewUserId;
@@ -213,6 +214,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 
         }
 
-       
+        public async Task<int> sp_GetRegisteredClientCountAsync()
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                var response = await _repository.GetByValuesAsync<int>("[sp_GetRegisteredClientCount]", parameters);
+                return response;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
     }
 }

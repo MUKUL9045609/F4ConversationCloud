@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
     public class ClientManagementViewModel
     {
-        public string SearchString { get; set; } = string.Empty;
-        public bool Status { get; set; } = true;
+        public string ClientNameSearch { get; set; } = string.Empty;
+        public string OnboardingOnFilter { get; set; } = string.Empty;
+        public string StatusFilter { get; set; } = string.Empty;
+        public string ApprovalStatusFilter { get; set; } = string.Empty;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public int TotalCount { get; set; } = 0;
@@ -34,6 +37,9 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public DateTime CreatedAt { get; set; }
 
             public DateTime? UpdatedOn { get; set; }
+            [Display(Name = "Client Id")]
+            public string? ClientId { get; set; }
+            public string? RejectComment { get; set; }
         }
     }
 }

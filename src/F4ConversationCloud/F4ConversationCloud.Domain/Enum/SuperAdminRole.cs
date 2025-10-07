@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace F4ConversationCloud.Domain.Enum
 {
-    public enum Role
+    public enum SuperAdminRole
     {
         [Description("Admin")]
         [Display(Name = "Admin")]

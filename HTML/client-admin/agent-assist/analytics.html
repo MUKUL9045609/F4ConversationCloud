@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="page">
+        <!-- Header Bar -->
+        <header class="app-header">
+            <div class="appheader-wrap">
+                <div class="searchBox">
+                    <div class="input-group flex-nowrap">
+                        <input type="text" class="form-control" placeholder="Search for anything here.."
+                            aria-label="Username" aria-describedby="addon-wrapping">
+                        <span class="input-group-text" id="addon-wrapping"></span>
+                    </div>
+                </div>
+                <div class="profile-dropdown">
+                    <div class="lang">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected><span class="lang-icon"></span> English (US)</option>
+                            <option value="1">Hindi</option>
+                            <option value="2">Portugal</option>
+
+                        </select>
+                    </div>
+                    <div class="ask-ai">
+                        <a href="#">Ask AI Assistant <span class="question"></span></a>
+                    </div>
+                    <div class="profile">
+                        <div class="dropdown">
+                            <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                D
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <span class="name">Dinesh Sharma</span>
+                                <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- End Header Bar -->
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <a href="#" class="main-sidebar-header">
+                <img src="../images/logo.svg" />
+            </a>
+            <div class="company-logo">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="company-template">
+                            <span class="logo">
+                                <img src="../images/nbbi-logo.svg" />
+                            </span>
+                            <div>
+                                <span class="company-title">NBBL - NPCI Bharat...</span>
+                                <span class="company-name">Fortune4 Internal</span>
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main-side-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="../index.html" class="home icon">Home</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                            <ul class="submenu">
+                                <li><a href="../campaigns/broadcast.html">Broadcast</a></li>
+                                <li><a href="../campaigns/guide.html">Guide</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="template icon">Templates</a>
+                        </li>
+                        <li>
+                            <a href="#" class="bot icon carret">Bot Studio</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="agent icon carret">Agent Assist</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="analytics icon">Analytics</a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="channels icon carret">Channels</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="integrations icon carret">Integrations</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="event icon">Events</a>
+                        </li>
+                        <li>
+                            <a href="#" class="extensions icon carret">Extensions</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="bottom-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" class="org-analytics icon">Org Analytics</a>
+                        </li>
+                        <li>
+                            <a href="#" class="billing icon">Billing</a>
+                        </li>
+                        <li>
+                            <a href="#" class="project icon">Manage Project</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="sub-heading">Analytics</h3>
+
+                <div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab"
+                                data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
+                                aria-selected="true">Dashboard</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="insights-tab" data-bs-toggle="tab" data-bs-target="#insights"
+                                type="button" role="tab" aria-controls="insights"
+                                aria-selected="false">Insights</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="exportData-tab" data-bs-toggle="tab"
+                                data-bs-target="#exportData" type="button" role="tab" aria-controls="exportData"
+                                aria-selected="false">Export Data</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="dashboard" role="tabpanel"
+                            aria-labelledby="dashboard-tab">
+                            <div class="dashboard">
+                                <div class="card padding">
+                                    <h3>Live Monitoring</h3>
+                                    <div class="d-flex mb-3">
+                                        <div class="ongoing-chats">
+                                            <div class="chat-count">
+                                                <div class="image">
+                                                    <img src="/images/ongoing-chats-icon.svg" width="28" height="22"
+                                                        alt="">
+                                                </div>
+                                                <div>
+                                                    <h4>79</h4>
+                                                    <p>Bot Chats <i class="info-blue" data-toggle="tooltip"
+                                                            data-placement="top" title=""
+                                                            data-bs-original-title="Bot Chats"
+                                                            aria-label="Bot Chats"></i></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-cards">
+                                            <ul>
+                                                <li
+                                                    class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                    <div class="count">
+                                                        <span class="count-active">0</span>
+                                                        <span class="total-message">Bot Chats <i class="info-blue"
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                data-bs-original-title="No Rule Matched"
+                                                                aria-label="No Rule Matched"></i></span>
+                                                    </div>
+                                                    <div class="message-icon"></div>
+                                                </li>
+                                                <li
+                                                    class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                    <div class="count">
+                                                        <span class="count-active">0</span>
+                                                        <span class="total-message">No Rule Matched <i class="info-blue"
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                data-bs-original-title="No Rule Matched"
+                                                                aria-label="No Rule Matched"></i></span>
+                                                    </div>
+                                                    <div class="message-icon"></div>
+                                                </li>
+                                                <li
+                                                    class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                    <div class="count">
+                                                        <span class="count-active">0</span>
+                                                        <span class="total-message">Waiting for Assignment <i
+                                                                class="info-blue" data-toggle="tooltip"
+                                                                data-placement="top" title=""
+                                                                data-bs-original-title="Waiting for Assignment"
+                                                                aria-label="Waiting for Assignment"></i></span>
+                                                    </div>
+                                                    <div class="waiting-icon"></div>
+                                                </li>
+                                                <li
+                                                    class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                    <div class="count">
+                                                        <span class="count-active">0</span>
+                                                        <span class="total-message">Open Chats (Assigned) <i
+                                                                class="info-blue" data-toggle="tooltip"
+                                                                data-placement="top" title=""
+                                                                data-bs-original-title="Open Chats (Assigned)"
+                                                                aria-label="Open Chats (Assigned)"></i></span>
+                                                    </div>
+                                                    <div class="openchat-icon"></div>
+                                                </li>
+                                                <li
+                                                    class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                    <div class="count">
+                                                        <span class="count-active">0</span>
+                                                        <span class="total-message">Pending <i class="info-blue"
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                data-bs-original-title="Pending"
+                                                                aria-label="Pending"></i></span>
+                                                    </div>
+                                                    <div class="pending-icon"></div>
+                                                </li>
+                                                <li
+                                                    class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                    <div class="count">
+                                                        <span><span class="count-active">0</span>
+                                                            <span class="total-message">Awaiting Response <i
+                                                                    class="info-blue" data-toggle="tooltip"
+                                                                    data-placement="top" title=""
+                                                                    data-bs-original-title="Awaiting Response"
+                                                                    aria-label="Awaiting Response"></i></span>
+                                                    </div>
+                                                    <div class="response-icon"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="chart-box">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="card padding">
+                                                    <div class="count">
+                                                        <span class="total-message">Agents <i class="info-blue"
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                data-bs-original-title="Agents"
+                                                                aria-label="Agents"></i></span>
+                                                    </div>
+                                                    <div class="agents">
+                                                        <ul>
+                                                            <li
+                                                                class="d-flex align-items-center justify-content-between flex-row">
+                                                                <div class="count">
+                                                                    <span class="count-active">0</span>
+                                                                    <span class="status"><i class="healthy"></i>
+                                                                        Active</span>
+                                                                </div>
+                                                                <div class="active-icon"></div>
+                                                            </li>
+                                                            <li
+                                                                class="d-flex align-items-center justify-content-between flex-row">
+                                                                <div class="count">
+                                                                    <span class="count-active">0</span>
+                                                                    <span class="status"><i class="unhealthy"></i>
+                                                                        Busy</span>
+                                                                </div>
+                                                                <div class="busy-icon"></div>
+                                                            </li>
+                                                            <li
+                                                                class="d-flex align-items-center justify-content-between flex-row">
+                                                                <div class="count">
+                                                                    <span class="count-active">0</span>
+                                                                    <span class="status"><i class="unhealthy"></i>
+                                                                        Offline</span>
+                                                                </div>
+                                                                <div class="offline-icon"></div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="wait-time">
+                                                    <div class="card padding">
+                                                        <div class="count">
+                                                            <span class="total-message">Wait Time <i class="info-blue"
+                                                                    data-toggle="tooltip" data-placement="top" title=""
+                                                                    data-bs-original-title="Wait Time"
+                                                                    aria-label="Wait Time"></i></span>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <i class="waitTime-icon"></i>
+                                                                <span class="count-active">0</span>
+                                                                <span class="status">Avg. Wait Time</span>
+                                                            </li>
+                                                            <li>
+                                                                <i class="maxWaitTime-icon"></i>
+                                                                <span class="count-active">0</span>
+                                                                <span class="status">Max Wait Time</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card padding">
+                                                    <div class="count">
+                                                        <span class="total-message">Time taken to assign the chats for
+                                                            current day <i class="info-blue" data-toggle="tooltip"
+                                                                data-placement="top" title=""
+                                                                data-bs-original-title="Time taken to assign the chats for current day"
+                                                                aria-label="Time taken to assign the chats for current day"></i></span>
+                                                    </div>
+                                                    <div id="chartContainer" style="height: 245px; width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chart-box mt-3">
+                                        <div class="card padding">
+                                            <div class="count">
+                                                <span class="total-message">Chats created for current day </span>
+                                            </div>
+                                            <div id="createdChats" style="height: 350px; width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="performance-metric">
+                                    <div class="card padding">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h3>Key Performance Metric</h3>
+                                            <div class="button-wrap">
+                                                <div class="form-wrapper">
+                                                    <input type="date" class="form-control" placeholder="Select Date">
+                                                </div>
+                                                <div class="btn-group btn-toggle">
+                                                    <button class="btn active">Average</button>
+                                                    <button class="btn">Maximum</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                            <li
+                                                class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                <div class="count">
+                                                    <span class="count-active">-</span>
+                                                    <span class="total-message">First Response Time</span>
+                                                </div>
+                                                <div class="response-icon"></div>
+                                            </li>
+                                            <li
+                                                class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                <div class="count">
+                                                    <span class="count-active">-</span>
+                                                    <span class="total-message">Response Time</span>
+                                                </div>
+                                                <div class="responseTime-icon"></div>
+                                            </li>
+                                            <li
+                                                class="card padding d-flex align-items-center justify-content-between flex-row">
+                                                <div class="count">
+                                                    <span class="count-active">-</span>
+                                                    <span class="total-message">Resolution Time</span>
+                                                </div>
+                                                <div class="resolutionTime-icon"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="agent-tabs">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="agentSummary-tab" data-bs-toggle="tab"
+                                                data-bs-target="#agentSummary" type="button" role="tab"
+                                                aria-controls="agentSummary" aria-selected="true">Agent Summary</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="teamSummary-tab" data-bs-toggle="tab"
+                                                data-bs-target="#teamSummary" type="button" role="tab"
+                                                aria-controls="teamSummary" aria-selected="false">Team Summary</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="agentTabContent">
+                                        <div class="tab-pane fade show active" id="agentSummary" role="tabpanel"
+                                            aria-labelledby="agentSummary-tab">
+                                            <div class="card padding">
+                                                <div class="agent-form form-wrapper">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <select class="form-select">
+                                                                <option selected="">All</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <button type="button" class="btn secondary-btn">Search
+                                                                Agent</button>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-select">
+                                                                <option selected="">All Teams</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="agentList-table">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Agent <br />Name <i class="filter-icon"></i></th>
+                                                                <th>Agent <br />Status <i class="filter-icon"></i></th>
+                                                                <th>Current <br />Status <br />Duration <i
+                                                                        class="filter-icon"></i></th>
+                                                                <th>Chat <br />Assigned <br />(Open) <i
+                                                                        class="filter-icon"></i></th>
+                                                                <th>Chat <br />Pending <i class="filter-icon"></i></th>
+                                                                <th>Chat <br />Awaiting <i class="filter-icon"></i></th>
+                                                                <th>Chat <br />Resolved <i class="filter-icon"></i></th>
+                                                                <th>Chat <br />Closed <i class="filter-icon"></i></th>
+                                                                <th>Total <br />Chats <i class="filter-icon"></i></th>
+                                                                <th>FRT (Avg.) <i class="filter-icon"></i></th>
+                                                                <th>Response <br />Time <br />(Avg.) <i
+                                                                        class="filter-icon"></i></th>
+                                                                <th>Resolution <br />Time <br />(Avg.) <i
+                                                                        class="filter-icon"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <div class="image">
+                                                                        <img src="/images/no-data.svg" width="142"
+                                                                            height="121" alt="No data">
+                                                                        <p>No Agent Data for this team</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="teamSummary" role="tabpanel"
+                                            aria-labelledby="teamSummary-tab">
+                                            <div class="card padding">
+                                                <div class="agent-form form-wrapper">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <select class="form-select">
+                                                                <option selected="">All</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <button type="button" class="btn secondary-btn">Search
+                                                                Agent</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="agentList-table">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Team Name</th>
+                                                                <th>Agents Added</th>
+                                                                <th>Available Agents</th>
+                                                                <th>Assigned Chats</th>
+                                                                <th>Chats waiting for Assignment</th>
+                                                                <th>Wait Time(Avg.)</th>
+                                                                <th>Chat Handling time(Avg.)</th>
+                                                                <th>Last Chat Assigned At</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <div class="image">
+                                                                        <img src="/images/no-data.svg" width="142"
+                                                                            height="121" alt="No data">
+                                                                        <p>No Agent Data for this team</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="customer-feedback">
+                                    <div class="card padding">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h3>Customer Feedback</h3>
+                                            <div class="button-wrap">
+                                                <div class="form-wrapper">
+                                                    <input type="date" class="form-control" placeholder="Select Date">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="feedback-box">
+                                            <p>You have not enabled the feedback form. <br />To enable, please <a
+                                                    href="#">Click here</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="insights" role="tabpanel" aria-labelledby="insights-tab">
+                            <div class="insights-wrap">
+                                <div class="card padding">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Chat Level Metrics</h3>
+                                                        <p>This report provides summary of the chats which have been
+                                                            worked on the day based on the created date.</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Agent Timesheet</h3>
+                                                        <p>The easiest way to track agent login & logout time and agent
+                                                            active and inactive duration</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Team Summary</h3>
+                                                        <p>This summary lets you track the performance of the teams for
+                                                            the chats they have worked/acted upon for the date of
+                                                            creation</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Agent Summary</h3>
+                                                        <p>This summary lets you track the performance of the agents for
+                                                            the chats they have worked/acted upon for the date of
+                                                            creation</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Customer Feedback Dashboard</h3>
+                                                        <p>This report provides the Ratings and Feedback received by Bot
+                                                            and Agents on Messaging Cloud</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Agent Summary Enhancement</h3>
+                                                        <p>This report provides detailed insights on agent productivity,
+                                                            helping you understand the volume of chats</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" class="veiwInsigts">
+                                                <div class="insights-item">
+                                                    <div class="left-col">
+                                                        <h3>Template Summary</h3>
+                                                        <p>This report analyzes WhatsApp approved templates sent by
+                                                            agents and customer reply rates, offering visibility into
+                                                            template effectiveness and customer engagement.</p>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <img src="/images/insights-icon.svg" width="55" height="59"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="view-insights" style="display: none;">
+                                <div class="inner-tabs">
+                                    <ul class="nav nav-tabs" id="insightsTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="overallSummary-tab" data-bs-toggle="tab"
+                                                data-bs-target="#overallSummary" type="button" role="tab"
+                                                aria-controls="overallSummary" aria-selected="true">Overall
+                                                Summary</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="chatsTrend-tab" data-bs-toggle="tab"
+                                                data-bs-target="#chatsTrend" type="button" role="tab"
+                                                aria-controls="chatsTrend" aria-selected="false">Chats Trend</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="statusPriority-tab" data-bs-toggle="tab"
+                                                data-bs-target="#statusPriority" type="button" role="tab"
+                                                aria-controls="statusPriority" aria-selected="false">Status & Priority
+                                                Split</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="frtSummary-tab" data-bs-toggle="tab"
+                                                data-bs-target="#frtSummary" type="button" role="tab"
+                                                aria-controls="frtSummary" aria-selected="false">FRT Summary</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="responseTime-tab" data-bs-toggle="tab"
+                                                data-bs-target="#responseTime" type="button" role="tab"
+                                                aria-controls="responseTime" aria-selected="false">Response Time
+                                                Summary</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="waitTimeSummary-tab" data-bs-toggle="tab"
+                                                data-bs-target="#waitTimeSummary" type="button" role="tab"
+                                                aria-controls="waitTimeSummary" aria-selected="false">Wait Time
+                                                Summary</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="insightsTabContent">
+                                        <div class="tab-pane fade show active" id="overallSummary" role="tabpanel"
+                                            aria-labelledby="overallSummary-tab">
+                                            <div class="card padding">
+                                                <div class="overall-summary">
+                                                    <h3>Chat Level Metrics / Overall Summary <span class="info"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-bs-original-title="Chat Level Metrics / Overall Summary"
+                                                            aria-label="Chat Level Metrics / Overall Summary"></span>
+                                                    </h3>
+
+                                                    <div class="form-wrapper">
+                                                        <form>
+                                                            <ul>
+                                                                <li>
+                                                                    <input type="date" class="form-control"
+                                                                        placeholder="">
+                                                                </li>
+                                                                <li>
+                                                                    <select class="form-select">
+                                                                        <option selected="">Team</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                </li>
+                                                                <li>
+                                                                    <select class="form-select">
+                                                                        <option selected="">Status</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                </li>
+                                                                <li>
+                                                                    <select class="form-select">
+                                                                        <option selected="">Priority</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                </li>
+                                                                <li>
+                                                                    <select class="form-select">
+                                                                        <option selected="">Channel</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                </li>
+                                                                <li>
+                                                                    <select class="form-select">
+                                                                        <option selected="">Category</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                </li>
+                                                            </ul>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <div class="overall-metrics">
+                                                    <h3>Overall Metrics</h3>
+                                                    <p class="mb-3">Total chats:-(chats handled by bot)+(chats handled
+                                                        by Agent)
+                                                        <br />Unassigned
+                                                        Chats:-(chats resolved by Bot)+(chats currently not assigned to
+                                                        any of the
+                                                        agents)
+                                                    </p>
+
+                                                    <div class="chats-metrics">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+                                                                    <div class="col-md-4 mb-4">
+                                                                        <div class="box">
+                                                                            <p>Avg. FRT(min)</p>
+                                                                            <h4>-</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-4">
+                                                                        <div class="box">
+                                                                            <p>Avg. Resp. Time(min)</p>
+                                                                            <h4>-</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-4">
+                                                                        <div class="box">
+                                                                            <p>Resolution time</p>
+                                                                            <h4>-</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-4">
+                                                                        <div class="box">
+                                                                            <p>Total Chats</p>
+                                                                            <h4>0</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-4">
+                                                                        <div class="box">
+                                                                            <p>Assigned Chats</p>
+                                                                            <h4>0.00</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-4">
+                                                                        <div class="box">
+                                                                            <p>Unassigned Chats</p>
+                                                                            <h4>0.00</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="box">
+                                                                            <p>Dropped Chats</p>
+                                                                            <h4>-</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="box single">
+                                                                    <p>Dropped Chats</p>
+                                                                    <h4 class="no-data">No Data</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <h3>Chats created within Business Hrs</h3>
+                                                    <div class="chats-metrics">
+                                                        <div class="row">
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Total Chats</p>
+                                                                    <h4>0</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Assigned Chats</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Unassigned Chats</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Total Chats Worked Upon</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Total Chats - Open</p>
+                                                                    <h4>0</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Total Chats - Closed or Resolved</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Total Customers Not Responded to</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Total Customers Responded to</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Average FRT in BH (mins)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Minimum FRT in BH (mins)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Average Chat duration in BH(mins)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 mb-4">
+                                                                <div class="box">
+                                                                    <p>Minimum Chat duration in BH(mins)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="box">
+                                                                    <p>Average Waiting Time BH (min)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="box">
+                                                                    <p>Maximum Waiting Time BH (min.)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="box">
+                                                                    <p>Minimum Waiting Time BH (min.)</p>
+                                                                    <h4>0.00</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="chatsTrend" role="tabpanel"
+                                            aria-labelledby="chatsTrend-tab">
+                                            <div class="card padding">
+                                                <h3>Chats Trend</h3>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="statusPriority" role="tabpanel"
+                                            aria-labelledby="statusPriority-tab">
+                                            <div class="card padding">
+                                                <h3>Status & Priority Split</h3>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="frtSummary" role="tabpanel"
+                                            aria-labelledby="frtSummary-tab">
+                                            <div class="card padding">
+                                                <h3>FRT Summary</h3>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="responseTime" role="tabpanel"
+                                            aria-labelledby="responseTime-tab">
+                                            <div class="card padding">
+                                                <h3>Response Time Summary</h3>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="waitTimeSummary" role="tabpanel"
+                                            aria-labelledby="waitTimeSummary-tab">
+                                            <div class="card padding">
+                                                <h3>Wait Time Summary</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="exportData" role="tabpanel" aria-labelledby="exportData-tab">
+                            <p>Note : To download the data, Go to Chats &gt; Search by Keywords &gt; Press “Enter” &gt;
+                                Download the data based on the filters</p>
+                            <div class="card padding">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>File Name</th>
+                                            <th>Type</th>
+                                            <th>Agent's Name</th>
+                                            <th>Request Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Date Range</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		</footer>
+    </div>
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        $(document).ready(function () {
+            $('.veiwInsigts').click(function () {
+                $('.view-insights').show();
+
+                $('.insights-wrap').hide();
+            });
+
+            $('.btn-toggle').click(function () {
+                $(this).find('.btn').toggleClass('active');
+
+                if ($(this).find('.btn-primary').length > 0) {
+                    $(this).find('.btn').toggleClass('btn-primary');
+                }
+
+            });
+        });
+
+    </script>
+    <script>
+        window.onload = function () {
+
+            // Function to toggle the visibility of the data series
+            function toggleDataSeries(e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                e.chart.render();
+            }
+
+            // Chart options for the first chart
+            var options1 = {
+                exportEnabled: false,
+                animationEnabled: true,
+                axisX: {
+                    title: "Chat Assignment Time",
+                    lineThickness: 1,
+                    tickThickness: 0,
+                    lineColor: "#EBEBEB",
+                    labelFontColor: "#1D242E",
+                    titleFontFamily: "Poppins",
+                    titleFontSize: 10,
+                    valueFormatString: "X-Axis: Time Range",
+                    labelFormatter: function (e) {
+                        const labels = ["<10min", "10-30min", "30-60min", ">60min"];
+                        return labels[e.value];
+                    }
+                },
+                axisY: {
+                    title: "No. Of Chats",
+                    titleFontColor: "#1D242E",
+                    lineColor: "#EBEBEB",
+                    labelFontColor: "#1D242E",
+                    tickColor: "#4F81BC",
+                    lineThickness: 1,
+                    gridThickness: 0,
+                    tickLength: 0,
+                    labelFontColor: "#1D242E",
+                    titleFontFamily: "Poppins",
+                    titleFontSize: 10,
+                },
+                toolTip: {
+                    shared: true
+                },
+                legend: {
+                    cursor: "pointer",
+                    itemclick: toggleDataSeries
+                },
+                data: [{
+                    type: "spline",
+                    name: "",
+                    lineColor: "#5956D6",  // Line color
+                    markerColor: "#5956D6", // Marker color
+                    showInLegend: false,
+                    xValueFormatString: "X-Axis: Time Range",
+                    yValueFormatString: "#,##0.0 Chats",
+                    dataPoints: [
+                        { x: 0, y: 0.0 },
+                        { x: 1, y: 0.1 },
+                        { x: 2, y: 0.2 },
+                        { x: 3, y: 0.3 }
+                    ]
+                }]
+            };
+
+            // Chart options for the second chart
+            var options2 = {
+                exportEnabled: false,
+                animationEnabled: true,
+                axisX: {
+                    title: "Chat Assignment Time",
+                    lineThickness: 1,
+                    tickThickness: 0,
+                    lineColor: "#EBEBEB",
+                    labelFontColor: "#1D242E",
+                    titleFontFamily: "Poppins",
+                    titleFontSize: 10,
+                    valueFormatString: "hh:mm TT",  // 12-hour format with AM/PM
+                    interval: 1,                    // Hourly interval
+                    intervalType: "hour",           // Interval type as hour
+                    minimum: new Date(2025, 0, 1, 0),   // Start from 12:00 AM
+                    maximum: new Date(2025, 0, 1, 13),
+                },
+                axisY: {
+                    title: "Total No. Of Chats",
+                    interval: 0.1,
+                    titleFontColor: "#1D242E",
+                    lineColor: "#EBEBEB",
+                    labelFontColor: "#1D242E",
+                    tickColor: "#4F81BC",
+                    lineThickness: 1,
+                    gridThickness: 0,
+                    tickLength: 0,
+                    labelFontColor: "#1D242E",
+                    titleFontFamily: "Poppins",
+                    titleFontSize: 10,
+                    minimum: 0,
+                },
+                toolTip: {
+                    shared: "true"
+                },
+                legend: {
+                    cursor: "pointer",
+                    itemclick: toggleDataSeries
+                },
+                data: [{
+                    type: "line",
+                    name: "",
+                    lineColor: "#5956D6",
+                    markerColor: "#5956D6",
+                    showInLegend: false,
+                    dataPoints: [
+                        { x: new Date(2025, 0, 1, 0), y: 0.0 },
+                        { x: new Date(2025, 0, 1, 1), y: 0.1 },
+                        { x: new Date(2025, 0, 1, 2), y: 0.2 },
+                        { x: new Date(2025, 0, 1, 3), y: 0.3 },
+                        { x: new Date(2025, 0, 1, 4), y: 0.2 },
+                        { x: new Date(2025, 0, 1, 5), y: 0.5 },
+                        { x: new Date(2025, 0, 1, 6), y: 0.1 },
+                        { x: new Date(2025, 0, 1, 7), y: 0.7 },
+                        { x: new Date(2025, 0, 1, 8), y: 0.8 },
+                        { x: new Date(2025, 0, 1, 9), y: 0.9 },
+                    ]
+                }]
+            };
+
+            // Initialize the charts
+            $("#chartContainer").CanvasJSChart(options1);
+            $("#createdChats").CanvasJSChart(options2);
+        }
+
+    </script>
+</body>
+
+</html>

@@ -20,9 +20,19 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             _clientUserManagementRepository = clientUserManagementRepository;
         }
 
-        public async Task<Tuple<IEnumerable<ClientUserListItemModel>, int>> GetFilteredUsers(MasterListFilter filter)
+        public async Task<Tuple<IEnumerable<ClientUserListItemModel>, int>> GetFilteredUsers(ClientUserManagementListFilter filter)
         {
             return Tuple.Create(await _clientUserManagementRepository.GetFilteredAsync(filter), await _clientUserManagementRepository.GetCountAsync(filter));
+        }
+
+        public async Task<bool> Activate(int id)
+        {
+            return await _clientUserManagementRepository.Activate(id);
+        }
+
+        public async Task<bool> Deactivate(int id)
+        {
+            return await _clientUserManagementRepository.Deactivate(id);
         }
     }
 }

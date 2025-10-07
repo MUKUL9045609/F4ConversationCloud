@@ -9,6 +9,9 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="~/css/daterangepicker.css">
 </head>
 <body>
     <div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
@@ -17,12 +20,12 @@
         <!-- side Bar -->
         <aside class="app-sidebar">
             <div class="sidenav-content">
-                <a asp-controller="" asp-action="" class="main-sidebar-header"><img src="~/images/logo.svg" /></a>
+                <a asp-controller="Dashboard" asp-action="Index" class="main-sidebar-header"><img src="~/images/logo.svg" /></a>
                 <div class="main-side-navigation">
                     <nav>
                         <ul>
-                            <li>
-                                <a href="index.html" class="home icon">Home</a>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                <a asp-controller="Dashboard" asp-action="Index" class="home icon">Dashboard</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="ClientManagement" asp-action="List" class="users icon">Clients</a>
@@ -33,17 +36,23 @@
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientUserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="ClientUserManagement" asp-action="List" class="user icon">Client User Management</a>
                             </li>
-                            <li>
-                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="Usages" asp-action="List" class="usages icon">Usages</a>
                             </li>
-                            <li>
-                                <a href="reports.html" class="reports icon">Reports</a>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Billing" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="Billing" asp-action="List" class="billing icon">Billing</a>
                             </li>
-                            <li>
-                                <a href="usages.html" class="usages icon">Usages</a>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ActivityLog" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a>
                             </li>
-                            <li>
-                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterPrice" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                                <a asp-controller="MasterPrice" asp-action="List" class="billing icon">Master Price</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterTax" && ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")">
+                                <a asp-controller="MasterTax" asp-action="Create" class="tax icon">Master Tax</a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                <a asp-controller="Configuration" asp-action="Index" class="cofig icon">Configuration</a>
                             </li>
                         </ul>
                     </nav>
@@ -99,11 +108,13 @@
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/popper.min.js" crossorigin="anonymous"></script>
     <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/js/daterangepicker.min.js"></script>
     <script src="~/js/commonHelper.js" asp-append-version="true"></script>
-
+    <script src="~/js/ajaxhelper.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {
-            commonHelper.showHideLoader(false);
+            commonHelper.showHideLoader(true);
 
             $('#toggleButton').on('click', function() {
                 $('body').toggleClass('sidemenutoggle');
@@ -117,6 +128,7 @@
                 else if (toastMsg.type === "Error")
                     commonHelper.showError(toastMsg.message);
             }
+            commonHelper.showHideLoader(false);
         });
 
     </script>

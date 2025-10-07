@@ -1,11 +1,11 @@
 ﻿using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
+using F4ConversationCloud.SuperAdmin.Models;
 
 namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 {
@@ -14,9 +14,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
         private readonly IGenericRepository<User> _repository;
         private readonly DbContext _context;
 
-        public UserManagementRepository(IGenericRepository<User> repository)
+        public UserManagementRepository(IGenericRepository<User> repository, DbContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         public async Task<int> CreateUpdateAsync(User user)
@@ -37,22 +38,30 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             return await _repository.InsertUpdateAsync("sp_CreateUpdateUser", parameters);
         }
 
-        public async Task<int> GetCountAsync(MasterListFilter filter)
+        public async Task<int> GetCountAsync(UserManagementListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("searchString", filter.SearchString);
-            parameters.Add("status", filter.Status);
+            parameters.Add("nameFilter", filter.NameFilter);
+            parameters.Add("emailFilter", filter.EmailFilter);
+            parameters.Add("roleFilter", filter.RoleFilter);
+            parameters.Add("createdOnFilter", filter.CreatedOnFilter);
+            parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
+            parameters.Add("statusFilter", filter.StatusFilter);
 
             return await _repository.GetCountAsync("sp_GetUserCount", parameters);
         }
 
-        public async Task<IEnumerable<UserListItemModel>> GetFilteredAsync(MasterListFilter filter)
+        public async Task<IEnumerable<UserListItemModel>> GetFilteredAsync(UserManagementListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("searchString", filter.SearchString);
-            parameters.Add("status", filter.Status);
+            parameters.Add("nameFilter", filter.NameFilter);
+            parameters.Add("emailFilter", filter.EmailFilter);
+            parameters.Add("roleFilter", filter.RoleFilter);
+            parameters.Add("createdOnFilter", filter.CreatedOnFilter);
+            parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
+            parameters.Add("statusFilter", filter.StatusFilter);
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
 

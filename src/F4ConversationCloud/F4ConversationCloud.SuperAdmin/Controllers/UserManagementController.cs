@@ -1,6 +1,7 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,141 +22,187 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         public async Task<IActionResult> List(UserListViewModel model)
         {
-            var response = await _userManagementService.GetFilteredUsers(new MasterListFilter
+            try
             {
-                SearchString = model.SearchString ?? String.Empty,
-                Status = model.Status,
-                PageNumber = model.PageNumber,
-                PageSize = model.PageSize,
-            });
+                model.RolesList = EnumExtensions.ToSelectList<SuperAdminRole>();
 
-            if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
-            {
-                if (model.PageNumber > 1)
+                var response = await _userManagementService.GetFilteredUsers(new UserManagementListFilter
                 {
-                    TempData["ErrorMessage"] = "Invalid Page";
+                    NameFilter = model.NameFilter ?? String.Empty,
+                    EmailFilter = model.EmailFilter ?? String.Empty,
+                    RoleFilter = model.RoleFilter,
+                    CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
+                    UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
+                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                });
+
+                if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
+                {
+                    if (model.PageNumber > 1)
+                    {
+                        TempData["ErrorMessage"] = "Invalid Page";
+                    }
+                    return RedirectToAction("List");
                 }
-                return RedirectToAction("List");
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new UserListViewModel.UserListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    Name = x.FirstName + " " + x.LastName,
+                    Email = x.Email,
+                    MobileNo = x.MobileNo,
+                    Role = x.Role,
+                    Designation = x.Designation,
+                    IPAddress = x.IPAddress,
+                    IsActive = x.IsActive,
+                    CreatedOn = x.CreatedOn,
+                    UpdatedOn = x.UpdatedOn,
+                    RoleName = x.RoleName
+                });
+
+                return View(model);
             }
-
-            model.TotalCount = response.Item2;
-            model.data = response.Item1.ToList().Select(x => new UserListViewModel.UserListViewItem()
+            catch (Exception ex)
             {
-                Id = x.Id,
-                SrNo = x.SrNo,
-                Name = x.FirstName + " " + x.LastName,
-                Email = x.Email,
-                MobileNo = x.MobileNo,
-                Role = x.Role,
-                Designation = x.Designation,
-                IPAddress = x.IPAddress,
-                IsActive = x.IsActive,
-                CreatedOn = x.CreatedOn,
-                UpdatedOn = x.UpdatedOn,
-                RoleName = x.RoleName
-            });
-
-            return View(model);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.Roles = new SelectList(await _userManagementService.GetRolesAsync(), "Id", "Name");
-            var viewModel = new CreateUpdateUserViewModel();
-            return View(viewModel);
+            try
+            {
+                ViewBag.Roles = new SelectList(await _userManagementService.GetRolesAsync(), "Id", "Name");
+                var viewModel = new CreateUpdateUserViewModel();
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUpdateUserViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            Auth user = await _superAdminAuthService.CheckUserExists(model.Email);
-
-            if (user is not null)
+            try
             {
-                ModelState.AddModelError("Email", "This Email is Already Registered.");
-                ViewBag.Roles = new SelectList(await _userManagementService.GetRolesAsync(), "Id", "Name");
-                return View(model);
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                Auth user = await _superAdminAuthService.CheckUserExists(model.Email);
+
+                if (user is not null)
+                {
+                    ModelState.AddModelError("Email", "This Email is Already Registered.");
+                    ViewBag.Roles = new SelectList(await _userManagementService.GetRolesAsync(), "Id", "Name");
+                    return View(model);
+                }
+
+                int id = await _userManagementService.CreateUpdateAsync(new User()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    MobileNo = model.MobileNo,
+                    Password = model.Password.Encrypt(),
+                    IPAddress = model.IPAddress,
+                    Role = model.Role,
+                    Designation = model.Designation
+                });
+
+                TempData["SuccessMessage"] = "User created successfully";
+
+                return RedirectToAction("List");
             }
-
-            int id = await _userManagementService.CreateUpdateAsync(new User()
+            catch (Exception ex)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                MobileNo = model.MobileNo,
-                Password = model.Password.Encrypt(),
-                IPAddress = model.IPAddress,
-                Role = model.Role,
-                Designation = model.Designation
-            });
-
-            TempData["SuccessMessage"] = "User created successfully";
-
-            return RedirectToAction("List");
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
-            User user = await _userManagementService.GetUserById(id);
-
-            if (user is null)
+            try
             {
-                TempData["ErrorMessage"] = "User not found";
+                User user = await _userManagementService.GetUserById(id);
 
-                return RedirectToAction("List");
+                if (user is null)
+                {
+                    TempData["ErrorMessage"] = "User not found";
+
+                    return RedirectToAction("List");
+                }
+
+                ViewBag.Roles = new SelectList(await _userManagementService.GetRolesAsync(), "Id", "Name");
+
+                CreateUpdateUserViewModel model = new CreateUpdateUserViewModel()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    MobileNo = user.MobileNo,
+                    Password = user.Password.Decrypt(),
+                    IPAddress = user.IPAddress,
+                    Designation = user.Designation,
+                    Role = user.Role
+                };
+
+                return View(model);
             }
-
-            ViewBag.Roles = new SelectList(await _userManagementService.GetRolesAsync(), "Id", "Name");
-
-            CreateUpdateUserViewModel model = new CreateUpdateUserViewModel()
+            catch (Exception ex)
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                MobileNo = user.MobileNo,
-                Password = user.Password.Decrypt(),
-                IPAddress = user.IPAddress,
-                Designation = user.Designation,
-                Role = user.Role
-            };
-
-            return View(model);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(CreateUpdateUserViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            Auth user = await _superAdminAuthService.CheckUserExists(model.Email);
-
-            if (user is not null && user.Email != model.Email)
+            try
             {
-                ModelState.AddModelError("Email", "This Email is Already Registered.");
-                return View(model);
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                Auth user = await _superAdminAuthService.CheckUserExists(model.Email);
+
+                if (user is not null && user.Email != model.Email)
+                {
+                    ModelState.AddModelError("Email", "This Email is Already Registered.");
+                    return View(model);
+                }
+
+                int id = await _userManagementService.CreateUpdateAsync(new User()
+                {
+                    Id = model.Id,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    MobileNo = model.MobileNo,
+                    Password = (user != null && user.Password.Decrypt() != model.Password) ? model.Password.Encrypt() : model.Password,
+                    IPAddress = model.IPAddress,
+                    Role = model.Role,
+                    Designation = model.Designation
+                });
+
+                TempData["SuccessMessage"] = "User updated successfully";
+
+                return RedirectToAction("List");
             }
-
-            int id = await _userManagementService.CreateUpdateAsync(new User()
+            catch (Exception ex)
             {
-                Id = model.Id,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                MobileNo = model.MobileNo,
-                Password = (user != null && user.Password.Decrypt() != model.Password) ? model.Password.Encrypt() : model.Password,
-                IPAddress = model.IPAddress,
-                Role = model.Role,
-                Designation = model.Designation
-            });
-
-            TempData["SuccessMessage"] = "User updated successfully";
-
-            return RedirectToAction("List");
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -178,7 +225,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
 
@@ -202,7 +250,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
             }
         }
     }

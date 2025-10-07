@@ -1,13 +1,20 @@
-﻿@model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
+﻿@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Enum
+@using System.ComponentModel.DataAnnotations
+@using System.Web
+@model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
 @{
     ViewData["Title"] = "Details";
+    var marketing = Model.masterPrices.FirstOrDefault(x => x.ConversationType == (int)TemplateModuleType.Marketing);
+    var authentication = Model.masterPrices.FirstOrDefault(x => x.ConversationType == (int)TemplateModuleType.Authentication);
+    var utility = Model.masterPrices.FirstOrDefault(x => x.ConversationType == (int)TemplateModuleType.Utility);
 }
 
 <div class="content">
     <div class="container-fluid">
         <div class="header-content">
             <h3 class="sub-heading">
-                <a href="index.html" class="back"></a>
+                <a asp-controller="ClientManagement" asp-action="List" class="back"></a>
                 Buldana Urban Co-op. Credit Society Ltd.
             </h3>
 
@@ -15,15 +22,13 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Client Details</button>
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><span class="step-count">1</span>Client Details</button>
             </li>
 
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="client-tab" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab" aria-controls="client" aria-selected="false">Client Configuration</button>
+                <button class="nav-link" id="client-tab" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab" aria-controls="client" aria-selected="false" disabled><span class="step-count">2</span> Client Configuration</button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Price Details</button>
-            </li>
+
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -346,7 +351,7 @@
                                         </li>
                                         <li>
                                             <label class="choose-picture">
-                                                <img src="images/logo.png" />
+                                                @* <img src="images/logo.png" /> *@
                                                 <span class="existing">Existing</span>
                                             </label>
                                         </li>
@@ -355,7 +360,9 @@
 
                             </div>
                         </div>
-
+                        <div class="bottom-btn mt-4">
+                            <button id="next-btn" class="btn primary-btn">Next</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -364,6 +371,14 @@
             <div class="tab-pane fade" id="client" role="tabpanel" aria-labelledby="client-tab">
                 <div class="tab-copy">
                     <div class="">
+                        <h6>Permissions</h6>
+                        <ul class="allow-user mb-4">
+                            <li>
+                                <div class="d-flex">
+                                    Allow Users Management<div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> </div>
+                                </div>
+                            </li>
+                        </ul>
                         <h6 class="mb-3">Select Module Type</h6>
                         <ul class="module-list">
                             <li>
@@ -385,270 +400,354 @@
                                 </div>
                             </li>
                         </ul>
-                        <h6>Permissions</h6>
-                        <ul class="allow-user mb-4">
-                            <li>
-                                <div class="d-flex">
-                                    Allow Users Management<div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> </div>
-                                </div>
-
-                            </li>
-                        </ul>
 
                         <div class="marketing mb-5" id="marketing" style="display:none;">
-                            <h6>Role & Permissions For Marketing</h6>
-                            <table class="table">
-                                <tr>
-                                <thead>
-                                <th></th>
-                                <th class="text-center">Create</th>
-                                <th class="text-center">Add</th>
-                                <th class="text-center">Edit</th>
-                                <th class="text-center">Delete</th>
-                                <th class="text-center">All Permissions</th>
-                                </thead>
-                                </tr>
+                            <div class="card padding bglight">
+                                <h6 class="module-title">Role & Permissions For Marketing</h6>
+                                <table class="table">
+                                    <tr>
+                                    <thead>
+                                    <th></th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Add</th>
+                                    <th class="text-center">Edit</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">All Permissions</th>
+                                    </thead>
+                                    </tr>
 
-                                <tr>
-                                    <td>Templete Creation</td>
-                                    <td align="center">
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="marketing-create">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="marketing-add">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="marketing-edit">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="marketing-delete">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="marketing-all">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <td>Templete Creation</td>
+                                        <td align="center">
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="marketing-create">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="marketing-add">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="marketing-edit">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="marketing-delete">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="marketing-all">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="mt-4">
+                                    <h6 class="module-title">Set For Marketing Price</h6>
+                                    <div class="table-responsive">
+                                        <table class="table user-table form-wrapper">
+                                            <thead>
+                                                <tr>
+                                                    <th>Conversation Type </th>
+                                                    <th>Duration</th>
+                                                    <th>Message</th>
+                                                    <th>Price</th>
+                                                    <th>Markup Price (&#8377;)</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@marketing.ConversationTypeName</td>
+                                                    <td>@marketing.FromDate?.ToString("dd-MM-yyyy") to @marketing.ToDate.ToString("dd-MM-yyyy")</td>
+                                                    <td>0</td>
+                                                    <td>
+                                                        &#8377;@marketing.Price
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" id="name" value="0.05" readonly />
+                                                    </td>
+                                                    <td>
+                                                        <div class="action">
+                                                            <a href="#" class="edit-icon" id="editBtn"></a>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="authentication mb-5" id="authentication" style="display:none;">
-                            <h6>Role & Permissions For Authentication</h6>
-                            <table class="table">
-                                <tr>
-                                <thead>
-                                <th></th>
-                                <th class="text-center">Create</th>
-                                <th class="text-center">Add</th>
-                                <th class="text-center">Edit</th>
-                                <th class="text-center">Delete</th>
-                                <th class="text-center">All Permissions</th>
-                                </thead>
-                                </tr>
+                            <div class="card padding bglight">
+                                <h6 class="module-title">Role & Permissions For Authentication</h6>
+                                <table class="table">
+                                    <tr>
+                                    <thead>
+                                    <th></th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Add</th>
+                                    <th class="text-center">Edit</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">All Permissions</th>
+                                    </thead>
+                                    </tr>
 
-                                <tr>
-                                    <td>Templete Creation</td>
-                                    <td align="center">
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="authentication-create">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="authentication-add">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="authentication-edit">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="authentication-delete">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="authentication-all">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <td>Templete Creation</td>
+                                        <td align="center">
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="authentication-create">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="authentication-add">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="authentication-edit">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="authentication-delete">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="authentication-all">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="mt-4">
+                                    <h6 class="module-title">Set Price For Authentication</h6>
+                                    <div class="table-responsive">
+                                        <table class="table user-table form-wrapper">
+                                            <thead>
+                                                <tr>
+                                                    <th>Conversation Type </th>
+                                                    <th>Duration</th>
+                                                    <th>Message</th>
+                                                    <th>Price</th>
+                                                    <th>Markup Price (&#8377;)</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@authentication.ConversationTypeName</td>
+                                                    <td>@authentication.FromDate?.ToString("dd-MM-yyyy") to @authentication.ToDate.ToString("dd-MM-yyyy")</td>
+                                                    <td>0</td>
+                                                    <td>&#8377;@authentication.Price</td>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            <input class="form-control" id="name" value="0.15" readonly />
+                                                            <button class="btn primary-btn" id="saveBtn" style="display: none;">Save</button>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="action">
+                                                            <a href="#" class="edit-icon" id="editBtn"></a>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="utility-permission mb-5" id="utility" style="display:none;">
-                            <h6>Role & Permissions For Utility</h6>
-                            <table class="table">
-                                <tr>
-                                <thead>
-                                <th></th>
-                                <th class="text-center">Create</th>
-                                <th class="text-center">Add</th>
-                                <th class="text-center">Edit</th>
-                                <th class="text-center">Delete</th>
-                                <th class="text-center">All Permissions</th>
-                                </thead>
-                                </tr>
+                            <div class="card padding bglight">
+                                <h6>Role & Permissions For Utility</h6>
+                                <table class="table">
+                                    <tr>
+                                    <thead>
+                                    <th></th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Add</th>
+                                    <th class="text-center">Edit</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">All Permissions</th>
+                                    </thead>
+                                    </tr>
 
-                                <tr>
-                                    <td>Templete Creation</td>
-                                    <td align="center">
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="utility-create">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="utility-add">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="utility-edit">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="utility-delete">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-checkbox d-flex justify-content-center">
-                                            <input class="form-check-input" type="checkbox" value="" id="utility-all">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <td>Templete Creation</td>
+                                        <td align="center">
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="utility-create">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="utility-add">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="utility-edit">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="utility-delete">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-checkbox d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" value="" id="utility-all">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="mt-4">
+                                    <h6 class="module-title">Set Price For Utility</h6>
+                                    <div class="table-responsive">
+                                        <table class="table user-table form-wrapper">
+                                            <thead>
+                                                <tr>
+                                                    <th>Conversation Type </th>
+                                                    <th>Duration</th>
+                                                    <th>Message</th>
+                                                    <th>Price</th>
+                                                    <th>Markup Price (&#8377;)</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@utility.ConversationTypeName</td>
+                                                    <td>@utility.FromDate?.ToString("dd-MM-yyyy") to @utility.ToDate.ToString("dd-MM-yyyy")</td>
+                                                    <td>0</td>
+                                                    <td>&#8377;@utility.Price</td>
+                                                    <td>
+                                                        <input class="form-control" id="name" value="0.10" readonly />
+                                                    </td>
+                                                    <td>
+                                                        <div class="action">
+                                                            <a href="#" class="edit-icon" id="editBtn"></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-end">
+                            <button class="btn primary-btn" id="save-btn">Save</button>
                         </div>
                         <hr />
                         <ul class="user-list">
-
-                           
                         </ul>
-
+                        <button class="btn primary-btn">Regenerate Key</button>
+                        <hr />
                         <div class="action mt-4">
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal10" id="approve-btn">Approve</button>
+                            <button class="btn btn-success" id="approve-btn">Approve</button>
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal11" id="reject-btn">Reject</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!--end client details -->
-            <!-- Price details -->
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="tab-copy">
-
-                    <div class="table-responsive">
-                        <table class="table user-table form-wrapper">
-                            <thead>
-                                <tr>
-                                    <th>Sr.No</th>
-                                    <th>Conversation Type </th>
-                                    <th>Message</th>
-                                    <th>Price</th>
-                                    <th>Markup Price</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-
-                                    <td>Marketing</td>
-                                    <td>54</td>
-                                    <td>&#8377;0.78</td>
-                                    <td>
-                                        <input class="form-control" value="&#8377;150" readonly />
-                                    </td>
-
-                                    <td>
-                                        <div class="action">
-                                            <a href="#" class="edit-icon"></a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-
-                                    <td>Authentication</td>
-                                    <td>64</td>
-                                    <td>&#8377;0.75</td>
-                                    <td>
-                                        <input class="form-control" value="&#8377;105" readonly />
-                                    </td>
-
-                                    <td>
-                                        <div class="action">
-                                            <a href="#" class="edit-icon"></a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-
-                                    <td>Utility</td>
-                                    <td>68</td>
-                                    <td>&#8377;0.73</td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <input class="form-control" id="name" value="&#8377;105" readonly />
-                                            <button class="btn primary-btn" id="saveBtn" style="display: none;">Save</button>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="action">
-                                            <a href="#" class="edit-icon" id="editBtn"></a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!--end Price details -->
-
         </div>
     </div>
 </div>
+<!-- Reject Modal -->
+<div class="modal fade comment-modal" id="exampleModal11" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="action-icon reject"></span>
+                <h4>Are you sure ?</h4>
+                <p>Are you sure you want to reject this records? This process can not be undone</p>
+                <form class="form-wrapper" id="reject-comment">
+                    <div class="mb-2">
+                        <div class="form-group">
+                            <label class="form-label">Comment</label>
+                            <textarea type="text" class="form-control" placeholder="Type Here" id="txtrejectComments" asp-for="RejectComment" required></textarea>
+                            <span id="rejectError" class="text-danger" style="display:none;">Reject Comment is required.</span>
+                        </div>
+                    </div>
+                    <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                        <button type="submit" class="btn danger-btn" id="reject-submit" onclick="rejectRecord()">Reject </button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end Reject modal -->
+<!-- Approved Modal -->
+<div class="modal fade comment-modal" id="approve-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="action-icon approved"></span>
+                <h4>Are you sure ?</h4>
+                <p>Are you sure you want to approved this records</p>
+                <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn success-btn" data-bs-dismiss="modal" id="modal-approve-btn">Approved </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end Reject modal -->
 
 @section Scripts {
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/unobtrusiveHelper.js"></script>
     <script>
         $(document).ready(function() {
-            $('#checkbox-marketing').change(function() {
-                if ($(this).is(':checked')) {
-                $('#marketing').show();
-                } else {
-                $('#marketing').hide();
-                }
-            });
+            $('#save-btn').hide();
+            var approvalStatus = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ApprovalStatus))';
 
-            $('#checkbox-authentication').change(function() {
-                if ($(this).is(':checked')) {
-                $('#authentication').show();
-                } else {
-                $('#authentication').hide();
-                }
-            });
+            if (approvalStatus == "Approved"){
+                $("#approve-btn").attr("disabled", "disabled");
+            }
+            if(approvalStatus == "Approved" || approvalStatus == "Reject"){
+                $("#reject-btn").attr("disabled", "disabled");
+            }
 
-            $('#checkbox-utility').change(function() {
-                if ($(this).is(':checked')) {
-                $('#utility').show();
+            function updateSections() {
+                const isMarketing = $('#checkbox-marketing').is(':checked');
+                const isAuthentication = $('#checkbox-authentication').is(':checked');
+                const isUtility = $('#checkbox-utility').is(':checked');
+
+                // Show/hide individual sections based on their checkbox
+                $('#marketing').toggle(isMarketing);
+                $('#authentication').toggle(isAuthentication);
+                $('#utility').toggle(isUtility);
+
+                // Show save button if any checkbox is checked
+                if (isMarketing || isAuthentication || isUtility) {
+                    $('#save-btn').show();
                 } else {
-                $('#utility').hide();
+                    $('#save-btn').hide();
                 }
-            });
+            }
+
+            // Attach the function to all checkbox change events
+            $('#checkbox-marketing, #checkbox-authentication, #checkbox-utility').change(updateSections);
 
             $('#editBtn').click(function() {
                 // Show the Save button
@@ -657,18 +756,39 @@
                 // Remove the readonly attribute from the input
                 $('#name').removeAttr('readonly');
             });
+
+            $('#home-tab').click(function() {
+                $('#home').show();
+                $('#client').removeClass("show active");
+                $("#client-tab").attr("disabled", "disabled");
+            });
+
+            $('#next-btn').click(function() {
+                $('#client-tab').removeAttr('disabled');
+                $('#home-tab').removeClass('active');
+                $('#home').hide();
+                $('#client').addClass("show active");
+                $('#client-tab').addClass("active");
+
+            });
         });
 
         document.querySelector('#approve-btn').addEventListener('click', function (e) {
-            const isMarketing = document.getElementById('checkbox-marketing').checked;
-            const isAuthentication = document.getElementById('checkbox-authentication').checked;
-            const isUtility = document.getElementById('checkbox-utility').checked;
+            var isMarketing = document.getElementById('checkbox-marketing').checked;
+            var isAuthentication = document.getElementById('checkbox-authentication').checked;
+            var isUtility = document.getElementById('checkbox-utility').checked;
 
             let isValid = true;
 
             function getPermissionValue(id) {
-                const checkbox = document.getElementById(id);
+                var checkbox = document.getElementById(id);
                 return checkbox ? checkbox.checked : false;
+            }
+
+            if (!isMarketing && !isAuthentication && !isUtility){
+                e.preventDefault();
+                commonHelper.showError("Please select module type.");
+                return;
             }
 
             // Validate each selected module
@@ -715,9 +835,22 @@
                 e.preventDefault();
                 return;
             }
+            var modal = new bootstrap.Modal(document.getElementById('approve-modal'));
+            modal.show();
+        });
 
-            // Prepare data for AJAX
+        document.querySelector('#modal-approve-btn').addEventListener('click', function (e) {
+            var isMarketing = document.getElementById('checkbox-marketing').checked;
+            var isAuthentication = document.getElementById('checkbox-authentication').checked;
+            var isUtility = document.getElementById('checkbox-utility').checked;
+
+            function getPermissionValue(id) {
+                var checkbox = document.getElementById(id);
+                return checkbox ? checkbox.checked : false;
+            }
+
             const viewModel = {
+                Id: @Html.Raw(Model.Id),
                 IsMarketing: isMarketing,
                 IsAuthentication: isAuthentication,
                 IsUtility: isUtility,
@@ -735,21 +868,68 @@
                 UtilityAdd: getPermissionValue('utility-add'),
                 UtilityEdit: getPermissionValue('utility-edit'),
                 UtilityDelete: getPermissionValue('utility-delete'),
-                UtilityAll: getPermissionValue('utility-all')
+                UtilityAll: getPermissionValue('utility-all'),
+                AllowUserManagement: document.getElementById('flexSwitchCheckChecked').checked
             };
 
             $.ajax({
-                url: '/ClientManagement/SaveClientDetails', 
+                url: '/ClientManagement/SaveClientDetails',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(viewModel),
                 success: function (response) {
-                    commonHelper.showSuccess('Permissions saved successfully!');
+                    commonHelper.showSuccess(response.message);
+                    $("#approve-btn").attr("disabled", "disabled");
+                    $("#reject-btn").attr("disabled", "disabled");
                 },
                 error: function (xhr, status, error) {
                     commonHelper.showError('Error saving permissions: ' + error);
                 }
             });
         });
+
+        function rejectRecord() {
+            event.preventDefault();
+
+            const commentBox = document.getElementById("txtrejectComments");
+            const errorSpan = document.getElementById("rejectError");
+            const comment = commentBox.value.trim();
+
+            if (comment === "") {
+                errorSpan.style.display = "block";
+                commentBox.classList.remove("is-valid");
+                commentBox.classList.add("is-invalid");
+                return false;
+            } else {
+                errorSpan.style.display = "none";
+                commentBox.classList.remove("is-invalid");
+                commentBox.classList.add("is-valid");
+
+                $.ajax({
+                    url: '/ClientManagement/Reject',
+                    type: 'POST',
+                    data: { id: @Html.Raw(Model.Id), rejectComment: comment },
+                    success: function (response) {
+                        $('#exampleModal11').modal('hide');
+                        commonHelper.showSuccess("Record rejected successfully.");
+                        $("#reject-btn").attr("disabled", "disabled");
+                    },
+                    error: function (xhr, status, error) {
+                        commonHelper.showError("Error rejecting record.");
+                    }
+                });
+            }
+        }
+
+        $('#reject-btn').click(function () {
+            var commentBox = document.getElementById("txtrejectComments");
+            var errorSpan = document.getElementById("rejectError");
+
+            errorSpan.style.display = "none";
+            commentBox.value = '';
+            commentBox.classList.remove("is-valid");
+            commentBox.classList.remove("is-invalid");
+        });
+
     </script>
 }

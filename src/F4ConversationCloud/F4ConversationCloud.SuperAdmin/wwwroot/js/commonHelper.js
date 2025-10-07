@@ -2,7 +2,7 @@
     var that = {};
     that.ToasterSeconds = 3;
 
-    var loaderHtml = '<div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    var loaderHtml = '<div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060; background-color: rgba(33, 37, 41, 0.6)!important;backdrop-filter: blur(0px);"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
     //usage commonHelper.showSuccess('Success Message');
     that.showHideLoader = function (toBeShown) {

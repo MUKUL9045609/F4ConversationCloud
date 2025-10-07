@@ -20,6 +20,10 @@ using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Infrastructure.Service.MetaServices;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Infrastructure.Repositories;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net;
@@ -42,15 +46,14 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<ICampaignService, CampaignService>();
-
+            services.AddSingleton<HttpClient>();
 
             //Super Admin Services and Repositories
             services.AddScoped<ISuperAdminAuthService, SuperAdminAuthService>();
             services.AddScoped<ISuperAdminAuthRepository, SuperAdminAuthRepository>();
-            //services.AddScoped<IOnboardingService, OnboardingService>();
+            services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<HttpClient>();
-            //services.AddScoped<IWhatsAppCloudeService, WhatsAppCloudeService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IUserManagementRepository, UserManagementRepository>();
             services.AddScoped<IClientUserManagementService, ClientUserManagementService>();
@@ -58,6 +61,12 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IClientManagementService, ClientManagementService>();
             services.AddScoped<IClientManagementRepository, ClientManagementRepository>();
             services.AddScoped<IWebhookService, WebhookService>();
+            services.AddScoped<IAPILogRepository, APILogRepository>();
+            services.AddScoped<IMasterPriceRepository, MasterPriceRepository>();
+            services.AddScoped<IMasterPriceService, MasterPriceService>();
+            services.AddScoped<IMasterTaxRepository, MasterTaxRepository>();
+            services.AddScoped<IMasterTaxService, MasterTaxService>();
+
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
            // services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
             services.AddScoped<IF4AppCloudeService, F4AppCloudeService>();

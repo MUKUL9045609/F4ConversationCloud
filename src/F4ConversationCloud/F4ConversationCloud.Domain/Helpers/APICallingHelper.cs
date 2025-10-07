@@ -5,6 +5,7 @@ using System.Web;
 using System.Xml.Serialization;
 using System.Xml;
 using Newtonsoft.Json;
+using F4ConversationCloud.Domain.Extension;
 namespace F4ConversationCloud.Domain.Helpers
 {
     public class APIRequestModel<T>
@@ -136,7 +137,7 @@ namespace F4ConversationCloud.Domain.Helpers
                             }
                             else if (RequestAPI.BodyType == "xml")
                             {
-                                string xmlPayload = SerializeToXml<U>(RequestAPI.RequestBody);
+                                string xmlPayload = GenericExtensions.SerializeToXml<U>(RequestAPI.RequestBody);
                                 var httpContent = new StringContent(xmlPayload, Encoding.Unicode, "application/xml");
 
                                 APIResponseMessage = client.PostAsync(RequestAPI.EndPoint, httpContent).Result;
@@ -184,21 +185,6 @@ namespace F4ConversationCloud.Domain.Helpers
 
             }
             return ReturnResponse;
-        }
-
-        public static string SerializeToXml<T>(T obj)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(obj.GetType());
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Encoding = Encoding.Unicode; // Specify UTF-16 encoding
-            using (StringWriter textWriter = new StringWriter())
-            {
-                using (XmlWriter xmlWriter = XmlWriter.Create(textWriter, settings))
-                {
-                    xmlSerializer.Serialize(xmlWriter, obj);
-                    return textWriter.ToString();
-                }
-            }
         }
     }
 }

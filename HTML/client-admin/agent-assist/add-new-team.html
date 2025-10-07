@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="page">
+        <!-- Header Bar -->
+        <header class="app-header">
+            <div class="appheader-wrap">
+                <div class="searchBox">
+                    <div class="input-group flex-nowrap">
+                        <input type="text" class="form-control" placeholder="Search for anything here.."
+                            aria-label="Username" aria-describedby="addon-wrapping">
+                        <span class="input-group-text" id="addon-wrapping"></span>
+                    </div>
+                </div>
+                <div class="profile-dropdown">
+                    <div class="lang">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected><span class="lang-icon"></span> English (US)</option>
+                            <option value="1">Hindi</option>
+                            <option value="2">Portugal</option>
+
+                        </select>
+                    </div>
+                    <div class="ask-ai">
+                        <a href="#">Ask AI Assistant <span class="question"></span></a>
+                    </div>
+                    <div class="profile">
+                        <div class="dropdown">
+                            <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                D
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <span class="name">Dinesh Sharma</span>
+                                <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- End Header Bar -->
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <a href="#" class="main-sidebar-header">
+                <img src="../images/logo.svg" />
+            </a>
+            <div class="company-logo">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="company-template">
+                            <span class="logo">
+                                <img src="../images/nbbi-logo.svg" />
+                            </span>
+                            <div>
+                                <span class="company-title">NBBL - NPCI Bharat...</span>
+                                <span class="company-name">Fortune4 Internal</span>
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main-side-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="../index.html" class="home icon">Home</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                            <ul class="submenu">
+                                <li><a href="../campaigns/broadcast.html">Broadcast</a></li>
+                                <li><a href="../campaigns/guide.html">Guide</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="template icon">Templates</a>
+                        </li>
+                        <li>
+                            <a href="#" class="bot icon carret">Bot Studio</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="agent icon carret">Agent Assist</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="analytics icon">Analytics</a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="channels icon carret">Channels</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="integrations icon carret">Integrations</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="event icon">Events</a>
+                        </li>
+                        <li>
+                            <a href="#" class="extensions icon carret">Extensions</a>
+                            <ul class="submenu">
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                                <li><a href="#">Link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="bottom-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" class="org-analytics icon">Org Analytics</a>
+                        </li>
+                        <li>
+                            <a href="#" class="billing icon">Billing</a>
+                        </li>
+                        <li>
+                            <a href="#" class="project icon">Manage Project</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="sub-heading">Settings</h3>
+                <div class="settings-tabs teams-tab">
+                    <div class="left-col card padding">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
+                            <div class="nav-link active" id="overview-tab" data-bs-toggle="pill"
+                                data-bs-target="#overview" rol aria-controls="overview" aria-selected="true">
+                                <p>Basic Team Information</p>
+                                <p>Add team name, agents and supervisors</p>
+                            </div>
+                            
+                            <div class="nav-link" id="workflowsAutomation-tab" data-bs-toggle="pill"
+                                data-bs-target="#workflowsAutomation" role="tab" aria-controls="workflowsAutomation"
+                                aria-selected="false">
+                                <p>Workflows & Automation</p>
+                                <p>Manage routing, automation, workflows and templates</p>
+                            </div>
+                            <div class="nav-link" id="productivityTools-tab" data-bs-toggle="pill"
+                                data-bs-target="#productivityTools" role="tab" aria-controls="productivityTools"
+                                aria-selected="false">
+                                <p>Productivity Tools</p>
+                                <p>Configure views, custom fields, tags, canned response and SLAs</p>
+                            </div>
+                            <div class="nav-link" id="aiManagement-tab" data-bs-toggle="pill"
+                                data-bs-target="#aiManagement" role="tab" aria-controls="aiManagement"
+                                aria-selected="false">
+                                <p>AI Management</p>
+                                <p>Configure text generation features supported by Ace LLM</p>
+                            </div>
+                            <div class="nav-link" id="accountManagement-tab" data-bs-toggle="pill"
+                                data-bs-target="#accountManagement" role="tab" aria-controls="accountManagement"
+                                aria-selected="false">
+                                <p>Account Management</p>
+                                <p>Manage accounts, authentication, webhooks and APIs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-col">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="overview" role="tabpanel"
+                                aria-labelledby="overview-tab">
+                                <div class="card padding">
+                                    <form class="form-wrapper">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Team Name</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter Team Name">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Description</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter Description">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Select Supervisor</label>
+                                                    <select class="form-select">
+                                                        <option selected>Select Supervisor</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Select Agents</label>
+                                                    <select class="form-select">
+                                                        <option selected>Select Agents</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label>Select Business Hours</label>
+                                                    <select class="form-select">
+                                                        <option selected>Select Business Hours</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault1"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault1"
+                                                    >
+                                                        Round Robin
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-3">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault2"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault2"
+                                                    >
+                                                        Load Balanced
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-select mb-3">
+                                                    <option selected>For All Agents</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>  
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-3">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault3"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault3"
+                                                    >
+                                                        Assign to Agent
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-3">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault4"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault4"
+                                                    >
+                                                        Assign to Bot
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-3">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault5"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault5"
+                                                    >
+                                                        Close
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="d-flex gap-3">
+                                                    <select class="form-select">
+                                                        <option selected>24</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                    <select class="form-select">
+                                                        <option selected>Hours</option>
+                                                        <option value="1">Miniutes</option>
+                                                        <option value="2">Seconds</option>
+                                                        
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                    <button class="btn danger-btn">Cancel</button>
+                                    <button class="btn primary-btn">Save</button>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="workflowsAutomation" role="tabpanel"
+                                aria-labelledby="workflowsAutomation-tab">
+                                <div class="card padding">
+                                    <form class="form-wrapper">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Team Name</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter Team Name">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Description</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter Description">
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Select Supervisor</label>
+                                                    <select class="form-select">
+                                                        <option selected>Select Supervisor</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label>Select Agents</label>
+                                                    <select class="form-select">
+                                                        <option selected>Select Agents</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label>Select Business Hours</label>
+                                                    <select class="form-select">
+                                                        <option selected>Select Business Hours</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                            </div>
+                                            
+                    
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                                <div class="card padding ">
+                                    <form class="form-wrapper">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                    <div class="form-check radio-btn">
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="radio"
+                                                            name="flexRadioDefault"
+                                                            id="flexRadioDefault19"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="flexRadioDefault19"
+                                                        >
+                                                            Round Robin
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-check radio-btn">
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="radio"
+                                                            name="flexRadioDefault"
+                                                            id="flexRadioDefault20"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="flexRadioDefault20"
+                                                        >
+                                                            Load Balanced
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-select">
+                                                        <option selected>For All Agents</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>  
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Assigned Chats Limit <sup>*</sup></label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter Assigned Chats Limit">
+                                                        
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="template-question mb-3">
+                                                        <label for="exampleInputEmail1" class="form-label"
+                                                            >Select chat status type in the assigned chats limit</label
+                                                        >
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                    <div class="form-check form-checkbox mb-2">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                                        <label class="form-check-label ps-2" for="flexCheckDefault">
+                                                                            <span class="d-block">Open</span>
+                                                                            <small> Chat dependent on Agent</small>
+                                                                        </label>
+                                                                    </div>
+                                                                
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-check form-checkbox mb-2">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                                    <label class="form-check-label ps-2" for="flexCheckDefault1">
+                                                                        <span class="d-block">Awaiting Response</span>
+                                                                        <small> Chat dependent on Customer</small>
+                                                                    </label>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-check form-checkbox mb-2">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                                                                    <label class="form-check-label ps-2" for="flexCheckDefault2">
+                                                                        <span class="d-block">Pending</span>
+                                                                        <small> Chat dependent on Internal Team </small>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="template-question mb-3">
+                                                            <label for="exampleInputEmail1" class="form-label"
+                                                                >Select how the reopen chat should be assigned</label
+                                                            >
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-check radio-btn mb-3">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="flexRadioDefault"
+                                                                            id="flexRadioDefault23"
+                                                                        />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="flexRadioDefault23"
+                                                                        >
+                                                                            <span>Assigned to any available agent</span>
+                                                                            <p>Will assign the chat to any agent in the team based on any availability</p>                                                                            </p>
+                                                                        </label>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-check radio-btn mb-3">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="flexRadioDefault"
+                                                                            id="flexRadioDefault24"
+                                                                        />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="flexRadioDefault24"
+                                                                        >
+                                                                            <span>Force assigned the chat to the same agent</span>
+                                                                            <p> Will assign the chat to the same agent if the chat limit is breached</p>
+                                                                        </label>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="form-check radio-btn mb-3">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="flexRadioDefault"
+                                                                            id="flexRadioDefault25"
+                                                                        />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="flexRadioDefault25"
+                                                                        >
+                                                                            <span>Stickiness Wait Timeout</span>
+                                                                            <p>Stick assign to same agent with in this period and reassign to available agent after the timeout.</p>
+                                                                        </label>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                
+                                        </div>
+                                    </form>       
+                                </div>
+                                <div class="card padding">
+                                    <div class="form-wrapper">
+                                        <div class="row">
+                                        <div class="col-md-4">
+                                                <div class="form-check radio-btn mb-3">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault31"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault31"
+                                                    >
+                                                        Assign to Agent
+                                                    </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check radio-btn mb-3">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="radio"
+                                                    name="flexRadioDefault"
+                                                    id="flexRadioDefault32"
+                                                />
+                                                <label
+                                                    class="form-check-label"
+                                                    for="flexRadioDefault32"
+                                                >
+                                                    Assign to Bot
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check radio-btn mb-3">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="radio"
+                                                    name="flexRadioDefault"
+                                                    id="flexRadioDefault33"
+                                                />
+                                                <label
+                                                    class="form-check-label"
+                                                    for="flexRadioDefault33"
+                                                >
+                                                    Close
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-flex gap-3">
+                                                <select class="form-select">
+                                                    <option selected>24</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>  
+                                                <select class="form-select">
+                                                    <option selected>Hours</option>
+                                                    <option value="1">Miniutes</option>
+                                                    <option value="2">Seconds</option>
+                                                    
+                                                </select>  
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                    <button class="btn danger-btn">Cancel</button>
+                                    <button class="btn primary-btn">Save</button>
+                                </div>
+                            
+
+                            </div>
+                            <div class="tab-pane fade" id="productivityTools" role="tabpanel"
+                                aria-labelledby="productivityTools-tab">Productivity Tools</div>
+                            <div class="tab-pane fade" id="aiManagement" role="tabpanel"
+                                aria-labelledby="aiManagement-tab">AI Management</div>
+                            <div class="tab-pane fade" id="accountManagement" role="tabpanel"
+                                aria-labelledby="accountManagement-tab">Account Management</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+    </div>
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.MasterPriceViewModel
+
+@{
+    ViewData["Title"] = "Master Price";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between mb-3">
+            <h3 class="sub-heading mb-0">Master Price</h3>
+        </div>
+        <div class="card padding">
+            <div>
+                <div class="mb-4">
+                    <form asp-action="List" method="post" enctype="multipart/form-data" class="form-wrapper">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row align-items-end">
+                            <div class="col-md-3">
+                                <div>
+                                    <label class="mb-0">Conversation Type <span class="text-danger">*</span></label>
+                                    <select asp-for="ConversationType" asp-items="Model.ConversationTypeList" class="form-control">
+                                        <option value="" selected>Select Conversation Type</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="ConversationType" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <div>
+                                    <label class="mb-0">Price <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input asp-for="Price" type="number" class="form-control" placeholder="Enter Price" value="">
+                                    </div>
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <label class="mb-0">Duration <span class="text-danger">*</span></label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="datewrap mb-0" for="datepicker">
+                                                <input asp-for="FromDate" type="date"
+                                                       id="fromDate"
+                                                       class="form-control datepicker search-form-control"
+                                                       placeholder="From Date" />
+                                                @* <span class="dateIcon"></span> *@
+                                            </label>
+                                            <span asp-validation-for="FromDate" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="datewrap mb-0">
+                                                <input asp-for="ToDate" type="text"
+                                                       id="toDate"
+                                                       class="form-control  search-form-control"
+                                                       placeholder="To Date"
+                                                       value="31-12-9999"
+                                                       readonly />
+                                                <span class="dateIcon"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn primary-btn mt-3" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table user-table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.MasterPriceFilterModel.Columns.SrNo)</th>
+                                <th>@Html.DisplayNameFor(model => model.MasterPriceFilterModel.Columns.ConversationType)</th>
+                                <th>@Html.DisplayNameFor(model => model.MasterPriceFilterModel.Columns.FromDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.MasterPriceFilterModel.Columns.Price)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.MasterPriceFilterModel.data.Any())
+                            {
+                                foreach (var mp in Model.MasterPriceFilterModel.data)
+                                {
+                                    <tr>
+                                        <td align="center">@mp.SrNo</td>
+                                        <td>@mp.ConversationType</td>
+                                        <td>@mp.FromDate?.ToString("dd-MM-yyyy")  to  @mp.ToDate.ToString("dd-MM-yyyy")</td>
+                                        <td>&#8377;@mp.Price</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center">No data available.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>    
+                <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.MasterPriceFilterModel.PageNumber, PageSize = Model.MasterPriceFilterModel.PageSize, TotalCount = Model.MasterPriceFilterModel.TotalCount }" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+             commonHelper.setMinAndMaxDate('fromDate', 'toDate');
+        });
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+
+                location.href = '@Url.Action("List", "MasterPrice")' +
+                    '?PageNumber=' + pageNumber;
+            }
+        });
+    </script>
+}

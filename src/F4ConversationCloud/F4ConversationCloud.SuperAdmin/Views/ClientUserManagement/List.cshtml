@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h3 class="sub-heading">Client Users </h3>
         <div class="card padding">
-            <div class="filterWrapper form-wrapper">
+           @*  <div class="filterWrapper form-wrapper">
                 <div class="filterwrap">
                     <ul class="filter-list">
                         <li>
@@ -30,31 +30,62 @@
                     </ul>
                     <button class="btn secondary-btn" id="reset-filters"><i class="reset"></i></button>
                 </div>
-            </div>
+            </div> *@
             <div class="table-responsive">
-                <table class="table user-table">
+                <table class="table user-table form-wrapper">
                     <thead>
                         <tr>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.SrNo)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Columns.BusinessName)
+                                <div class="input-group">
+                                    <input asp-for="BusinessFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Columns.Name)
+                                <div class="input-group">
+                                    <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="nameSearchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Email)
+                                <div class="input-group">
+                                    <input asp-for="EmailFilter" type="text" class="form-control srcIcon" placeholder="Search" id="emailSearchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.Role)
+                                <select asp-for="RoleFilter" asp-items="Model.RolesList" class="form-select" onchange="loadData()">
+                                    <option value="0">Select Role</option>
+                                </select>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.CreatedOn)
+                                <input asp-for="CreatedOnFilter" type="date"
+                                       id="datepicker"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" onchange="loadData()" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.UpdatedOn)
+                                <input asp-for="UpdatedOnFilter" type="date"
+                                       id="datepicker"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" onchange="loadData()" />
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.IsActive)
+                                <select asp-for="Status" class="form-select" onchange="loadData()">
+                                    <option value="" selected>Select Status</option>
+                                    <option value="Disabled">Disabled</option>
+                                    <option value="Enabled">Enabled</option>
+                                </select>
                             </th>
                         </tr>
                     </thead>
@@ -74,7 +105,17 @@
                                         @Html.DisplayFor(modelItem => item.SrNo)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <span class="text-black fw-semibold d-block">@Html.DisplayFor(modelItem => item.BusinessName)</span>
+                                        <span class="buisness-category"><span class="fw-medium">Category : </span>@Html.DisplayFor(modelItem => item.Category)</span>
+                                        <span class="buisness-category"><span class="fw-medium">Client Id : </span>@Html.DisplayFor(modelItem => item.ClientId)</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-black fw-medium d-block">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </span>
+                                        <a href="clients-subuser-listing.html" class="text-decoration-none fw-light">
+                                            <span class="">Users :</span> 0
+                                        </a>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Email)
@@ -88,14 +129,21 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.UpdatedOn)
                                     </td>
-                                    @if (item.IsActive)
+                                    <td>
+                                        <div class="action">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input activity-switch" type="checkbox" data-id="@item.Id" @(item.IsActive ? "checked" : "")>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @* @if (item.IsActive)
                                     {
                                         <td><span class="badge success">Active</span></td>
                                     }
                                     else
                                     {
                                         <td><span class="badge danger">Inactive</span></td>
-                                    }
+                                    } *@
                                 </tr>
                             }
                         }
@@ -107,20 +155,60 @@
     </div>
 </div>
 
+<!-- Activity Modal -->
+<div class="modal fade comment-modal" id="activity-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="action-icon approved"></span>
+                <h4>Are you sure ?</h4>
+                <p id="activity-message"></p>
+                <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn success-btn" data-bs-dismiss="modal" id="confirm-activity">Yes </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end Activity modal -->
+
 @section Scripts {
     <script>
         function loadData() {
-            let searchString = $("[name=SearchString]").val();
+            let businessFilter = $("[name=BusinessFilter]").val();
+            let nameFilter = $("[name=NameFilter]").val();
+            let emailFilter = $("[name=EmailFilter]").val();
+            let roleFilter = $("[name=RoleFilter]").val();
+            let createdOnFilter = $("[name=CreatedOnFilter]").val();
+            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
             let status = $("[name=Status]").val();
             let pageNumber = 1;
             location.href = '@Url.Action("List", "ClientUserManagement")' +
-                '?SearchString=' + searchString +
+                '?BusinessFilter=' + businessFilter +
+                '&NameFilter=' + encodeURIComponent(nameFilter) +
+                '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
                 '&Status=' + encodeURIComponent(status) +
                 '&PageNumber=' + pageNumber;
         }
 
         $("#searchInput").on("keypress", function (e) {
-            if (e.which === 13) {
+            if (e.which == 13) {
+                loadData();
+            }
+        });
+
+        $("#nameSearchInput").on("keypress", function (e) {
+            if (e.which == 13) {
+                loadData();
+            }
+        });
+
+        $("#emailSearchInput").on("keypress", function (e) {
+            if (e.which == 13) {
                 loadData();
             }
         });
@@ -128,21 +216,89 @@
         $(".page-link").click(function () {
             var pageNumber = $(this).data("page-number");
             if (pageNumber !== undefined && pageNumber !== null) {
-                let searchString = $("[name=SearchString]").val();
+                let businessFilter = $("[name=BusinessFilter]").val();
+                let nameFilter = $("[name=NameFilter]").val();
+                let emailFilter = $("[name=EmailFilter]").val();
+                let roleFilter = $("[name=RoleFilter]").val();
+                let createdOnFilter = $("[name=CreatedOnFilter]").val();
+                let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
                 let status = $("[name=Status]").val();
 
                 location.href = '@Url.Action("List", "ClientUserManagement")' +
-                    '?SearchString=' + searchString +
+                    '?BusinessFilter=' + businessFilter +
+                    '&NameFilter=' + encodeURIComponent(nameFilter) +
+                    '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                    '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                    '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                    '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
                     '&Status=' + encodeURIComponent(status) +
                     '&PageNumber=' + pageNumber;
             }
         });
 
-        $("#reset-filters").click(function(){
-            $("[name=SearchString]").val('');
-            //$("[name=Status]").val(true);
-            loadData();
+        var switchStateBeforeClick = false;
+        var selectedClientId = null;
+
+        $(".activity-switch").click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            switchStateBeforeClick = $this.is(":checked");
+            selectedClientId = $this.data("id");
+
+            var message = switchStateBeforeClick
+                ? "Are you sure you want to enable this account"
+                : "Are you sure you want to disable this account";
+
+            $("#activity-message").text(message);
+
+            var modal = new bootstrap.Modal(document.getElementById('activity-modal'));
+            modal.show();
         });
+
+        $("#confirm-activity").click(function () {
+            var url = '';
+            if (!switchStateBeforeClick){
+                url = '@Url.Action("Deactivate", "ClientUserManagement")/' + selectedClientId;
+            }
+            else{
+                url = '@Url.Action("activate", "ClientUserManagement")/' + selectedClientId;
+            }
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (data) {
+                    successCallback(data); 
+                },
+                error: function (xhr, errorType, error) {
+                    errorCallback(xhr, errorType, error); 
+                }
+            });
+
+            var modalEl = bootstrap.Modal.getInstance(document.getElementById('activity-modal'));
+            modalEl.hide();
+        });
+
+        function successCallback(data) {
+            if (data) {
+                location.href = '@Url.Action("List", "ClientUserManagement")';
+            } else {
+                location.href = '@Url.Action("List", "ClientUserManagement")';
+            }
+            commonHelper.showHideLoader(false);
+        }
+
+        function errorCallback(xhr, errorType, error) {
+            commonHelper.showSuccess('An error occurred while updating account status.');
+            commonHelper.showHideLoader(false);
+        }
+
+        // $("#reset-filters").click(function(){
+        //     $("[name=SearchString]").val('');
+        //     //$("[name=Status]").val(true);
+        //     loadData();
+        // });
 
     </script>
 }

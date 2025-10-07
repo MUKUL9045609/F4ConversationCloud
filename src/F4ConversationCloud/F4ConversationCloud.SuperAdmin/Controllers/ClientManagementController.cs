@@ -1,106 +1,227 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class ClientManagementController : BaseController
     {
         private readonly IClientManagementService _clientManagement;
+        private readonly IMasterPriceService _masterPriceService;
         private readonly ITemplateManagementService _templateManagementService;
-        public ClientManagementController(IClientManagementService clientManagement, ITemplateManagementService templateManagementService)
+        public ClientManagementController(IClientManagementService clientManagement, IMasterPriceService masterPriceService, ITemplateManagementService templateManagementService)
         {
             _clientManagement = clientManagement;
+            _masterPriceService = masterPriceService;
             _templateManagementService = templateManagementService;
         }
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
         {
-            var response = await _clientManagement.GetFilteredUsers(new MasterListFilter
+            try
             {
-                SearchString = model.SearchString ?? String.Empty,
-                Status = model.Status,
-                PageNumber = model.PageNumber,
-                PageSize = model.PageSize,
-            });
+                var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+                {
+                    ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                    ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                });
 
-            if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
-            {
-                if (model.PageNumber > 1)
+                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
                 {
                     TempData["ErrorMessage"] = "Invalid Page";
+                    return RedirectToAction("List");
                 }
-                return RedirectToAction("List");
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    ClientName = x.ClientName,
+                    Status = x.Status,
+                    ApprovalStatus = x.ApprovalStatus,
+                    IsActive = x.IsActive,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedOn = x.UpdatedOn,
+                    Category = x.Category,
+                    ClientId = x.ClientId,
+                    RejectComment = x.RejectComment
+                });
+
+                return View(model);
             }
-
-            model.TotalCount = response.Item2;
-            model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
-            {
-                Id = x.Id,
-                SrNo = x.SrNo,
-                ClientName = x.ClientName,
-                Status = x.Status,
-                ApprovalStatus = x.ApprovalStatus,
-                IsActive = x.IsActive,
-                CreatedAt = x.CreatedAt,
-                UpdatedOn = x.UpdatedOn,
-                Category = x.Category
-            });
-
-            return View(model);
+            catch (Exception ex) {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
 
         public async Task<IActionResult> ClientDetails(int Id)
         {
-            var response = await _clientManagement.GetClientDetailsById(Id);
-            var filter = new TemplatesListFilter
+            try
             {
-                //PageNumber = model.TemplatesList.PageNumber,
-                //PageSize = model.TemplatesList.PageSize
-            };
-            var templates = await _templateManagementService.TemplateListAsync(filter);
+                var response = await _clientManagement.GetClientDetailsById(Id);
+                var filter = new TemplatesListFilter
+                {
+                    //PageNumber = model.TemplatesList.PageNumber,
+                    //PageSize = model.TemplatesList.PageSize
+                };
+                var templates = await _templateManagementService.TemplateListAsync(filter);
+                var model = new ClientDetailsViewModel()
+                {
+                    Id = response.Id,
+                    PhoneNumberId = response.PhoneNumberId,
+                    WABAId = response.WABAId,
+                    BusinessId = response.BusinessId,
+                    ClientInfoId = response.ClientInfoId,
+                    BusinessName = response.BusinessName,
+                    Status = response.Status,
+                    PhoneNumber = response.PhoneNumber,
+                    AppVersion = response.AppVersion,
+                    ApprovalStatus = response.ApprovalStatus,
+                    Category = response.Category,
+                    IsActive = response.IsActive,
+                    CreatedAt = response.CreatedAt,
+                    UpdatedOn = response.UpdatedOn,
+                    RegisteredFirstName = response.RegisteredFirstName,
+                    RegisteredLastName = response.RegisteredLastName,
+                    RegisteredEmail = response.RegisteredEmail,
+                    RegisteredPhoneNumber = response.RegisteredPhoneNumber,
+                    RegisteredAddress = response.RegisteredAddress,
+                    RegisteredCountry = response.RegisteredCountry,
+                    RegisteredTimeZone = response.RegisteredTimeZone,
+                    TemplatesList = templates.Data
+                };
 
-            var model = new ClientDetailsViewModel()
+                var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();
+                var mappedMasterPrices = masterPriceData.Select(x => new MasterPrice
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    ConversationType = x.ConversationType,
+                    Price = x.Price,
+                    FromDate = x.FromDate,
+                    ToDate = x.ToDate,
+                    CreatedOn = x.CreatedOn,
+                    IsActive = x.IsActive,
+                    ConversationTypeName = ((TemplateModuleType)x.ConversationType).GetDisplayName()
+                }).ToList();
+
+                model.masterPrices = mappedMasterPrices;
+
+                return View(model);
+            }
+            catch (Exception ex)
             {
-                Id = response.Id,
-                PhoneNumberId = response.PhoneNumberId,
-                WABAId = response.WABAId,
-                BusinessId = response.BusinessId,
-                ClientInfoId = response.ClientInfoId,
-                BusinessName = response.BusinessName,
-                Status = response.Status,
-                PhoneNumber = response.PhoneNumber,
-                AppVersion = response.AppVersion,
-                ApprovalStatus = response.ApprovalStatus,
-                Category = response.Category,
-                IsActive = response.IsActive,
-                CreatedAt = response.CreatedAt,
-                UpdatedOn = response.UpdatedOn,
-                RegisteredFirstName = response.RegisteredFirstName,
-                RegisteredLastName = response.RegisteredLastName,
-                RegisteredEmail = response.RegisteredEmail,
-                RegisteredPhoneNumber = response.RegisteredPhoneNumber,
-                RegisteredAddress = response.RegisteredAddress,
-                RegisteredCountry = response.RegisteredCountry,
-                RegisteredTimeZone = response.RegisteredTimeZone,
-                TemplatesList= templates.Data,
-            };
-
-            
-
-
-
-            return View(model);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }           
         }
 
         [HttpPost]
-        public IActionResult SaveClientDetails([FromBody] ClientDetailsViewModel model)
+        public async Task<IActionResult> SaveClientDetails([FromBody] ClientDetailsViewModel model)
         {
+            try
+            {
+                if (model.IsMarketing)
+                {
+                    var marketingPermissions = new ClientDetails
+                    {
+                        Id = model.Id,
+                        TemplateType = (int)TemplateModuleType.Marketing,
+                        Create = model.MarketingCreate,
+                        Add = model.MarketingAdd,
+                        Edit = model.MarketingEdit,
+                        Delete = model.MarketingDelete,
+                        All = model.MarketingAll,
+                        AllowUserManagement = model.AllowUserManagement
+                    };
 
-            return Ok(new { message = "Saved successfully" });
+                    await _clientManagement.SaveClientPermission(marketingPermissions);
+                }
+
+                if (model.IsAuthentication)
+                {
+                    var authPermissions = new ClientDetails
+                    {
+                        Id = model.Id,
+                        TemplateType = (int)TemplateModuleType.Authentication,
+                        Create = model.AuthenticationCreate,
+                        Add = model.AuthenticationAdd,
+                        Edit = model.AuthenticationEdit,
+                        Delete = model.AuthenticationDelete,
+                        All = model.AuthenticationAll,
+                        AllowUserManagement = model.AllowUserManagement
+                    };
+
+                    await _clientManagement.SaveClientPermission(authPermissions);
+                }
+
+                if (model.IsUtility)
+                {
+                    var utilityPermissions = new ClientDetails
+                    {
+                        Id = model.Id,
+                        TemplateType = (int)TemplateModuleType.Utility,
+                        Create = model.UtilityCreate,
+                        Add = model.UtilityAdd,
+                        Edit = model.UtilityEdit,
+                        Delete = model.UtilityDelete,
+                        All = model.UtilityAll,
+                        AllowUserManagement = model.AllowUserManagement
+                    };
+
+                    await _clientManagement.SaveClientPermission(utilityPermissions);
+                }
+
+                return Ok(new { message = "Approved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id, string rejectComment)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(rejectComment))
+                {
+                    return BadRequest("Comment is required.");
+                }
+
+                var status = "Reject";
+                var response = await _clientManagement.Reject(id, status, rejectComment);
+
+                if (response)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
         }
     }
 }
