@@ -61,6 +61,9 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonPropertyName("buttons")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<TemplateButton> Buttons { get; set; }
+
+        [JsonPropertyName("cards")]
+        public List<Cards> cards { get; set; }
     }
     public class TemplateButton
     {
