@@ -215,130 +215,8 @@
                         </div>
 
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThird">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
-                                    Template Details
-                                </button>
-                            </h2>
-                            <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird"
-                                 data-bs-parent="#accordionWrap">
-                                <div class="accordion-body">
-                                    <div class="filterWrapper form-wrapper justify-content-end">
-                                        <a href="create-templates.html" class="btn primary-btn add d-flex">Create Template</a>
-                                    </div>
-                                    <div class="table-responsive">
-
-                                        <table class="table user-table form-wrapper">
-                                            <tr>
-                                                <th>
-                                                    Template ID
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                                        <span class="searchIcon"></span>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    Template Name
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                                        <span class="searchIcon"></span>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    Category
-                                                    <select class="form-select">
-                                                        <option selected>Select Type</option>
-                                                        <option>Marketing</option>
-                                                        <option>Authentication</option>
-                                                        <option>Utility</option>
-                                                    </select>
-                                                </th>
-                                                <th>
-                                                    Language
-                                                    <select class="form-select">
-                                                        <option selected>Select Language</option>
-                                                        <option>English</option>
-                                                        <option>Hindi</option>
-
-                                                    </select>
-                                                </th>
-                                                <th>Message</th>
-                                                <th>
-                                                    Last Updated
-                                                    <label class="datewrap" for="datepicker">
-                                                        <input type="text"
-                                                               id="datepicker"
-                                                               class="form-control datepicker search-form-control"
-                                                               placeholder="Select Date" />
-                                                        <span class="dateIcon"></span>
-                                                    </label>
-
-                                                </th>
-                                                <th>
-                                                    Rejection Reason
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                                        <span class="searchIcon"></span>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    Status
-                                                    <select class="form-select">
-                                                        <option selected>Select Status</option>
-                                                        <option>Approved</option>
-                                                        <option>Rejected</option>
-
-                                                    </select>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <td>6935503</td>
-                                                <td>whatsapp_template_177</td>
-                                                <td>Utility</td>
-                                                <td>English</td>
-                                                <td>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">View</a>
-                                                </td>
-                                                <td>2025-04-22, 06:04:55</td>
-                                                <td>
-                                                    -
-                                                </td>
-                                                <td><span class="badge success">Approved</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>9435503</td>
-                                                <td>integration_body_header</td>
-                                                <td>Marketing</td>
-                                                <td>Hindi</td>
-                                                <td>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">View</a>
-                                                </td>
-                                                <td>2025-06-02, 04:04:55</td>
-                                                <td>
-                                                    Reject Comment, Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                </td>
-                                                <td><span class="badge danger">Rejected</span></td>
-                                            </tr>
-
-                                        </table>
-                                    </div>
-                                    <nav aria-label="navigation example">
-                                        <ul class="pagination mt-5 d-flex justify-content-center">
-                                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">20</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
+                            
+                            <partial name="_TemplateList" model="new TemplatesListViewModel{data = Model.TemplatesList} " />
                         </div>
 
                         <div class="accordion-item">
@@ -577,7 +455,7 @@
                                                     <th>Duration</th>
                                                     <th>Message</th>
                                                     <th>Price</th>
-                                                    <th>Markup Price</th>
+                                                    <th>Markup Price (&#8377;)</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -590,7 +468,7 @@
                                                         &#8377;@marketing.Price
                                                     </td>
                                                     <td>
-                                                        <input class="form-control" id="name" value="&#8377;105" readonly />
+                                                        <input class="form-control" id="name" value="0.05" readonly />
                                                     </td>
                                                     <td>
                                                         <div class="action">
@@ -660,7 +538,7 @@
                                                     <th>Duration</th>
                                                     <th>Message</th>
                                                     <th>Price</th>
-                                                    <th>Markup Price</th>
+                                                    <th>Markup Price (&#8377;)</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -672,7 +550,7 @@
                                                     <td>&#8377;@authentication.Price</td>
                                                     <td>
                                                         <div class="d-flex gap-2">
-                                                            <input class="form-control" id="name" value="&#8377;105" readonly />
+                                                            <input class="form-control" id="name" value="0.15" readonly />
                                                             <button class="btn primary-btn" id="saveBtn" style="display: none;">Save</button>
                                                         </div>
                                                     </td>
@@ -736,7 +614,7 @@
                                     </tr>
                                 </table>
                                 <div class="mt-4">
-                                    <h6 class="module-title">Set Price For Authentication</h6>
+                                    <h6 class="module-title">Set Price For Utility</h6>
                                     <div class="table-responsive">
                                         <table class="table user-table form-wrapper">
                                             <thead>
@@ -745,7 +623,7 @@
                                                     <th>Duration</th>
                                                     <th>Message</th>
                                                     <th>Price</th>
-                                                    <th>Markup Price</th>
+                                                    <th>Markup Price (&#8377;)</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -756,7 +634,7 @@
                                                     <td>0</td>
                                                     <td>&#8377;@utility.Price</td>
                                                     <td>
-                                                        <input class="form-control" id="name" value="&#8377;105" readonly />
+                                                        <input class="form-control" id="name" value="0.10" readonly />
                                                     </td>
                                                     <td>
                                                         <div class="action">
@@ -786,84 +664,6 @@
                 </div>
             </div>
             <!--end client details -->
-            <!-- Price details -->
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="tab-copy">
-
-                    <div class="table-responsive">
-                        <table class="table user-table form-wrapper">
-                            <thead>
-                                <tr>
-                                    <th>Sr.No</th>
-                                    <th>Conversation Type </th>
-                                    <th>Message</th>
-                                    <th>Price</th>
-                                    <th>Markup Price</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-
-                                    <td>Marketing</td>
-                                    <td>54</td>
-                                    <td>&#8377;0.78</td>
-                                    <td>
-                                        <input class="form-control" value="&#8377;150" readonly />
-                                    </td>
-
-                                    <td>
-                                        <div class="action">
-                                            <a href="#" class="edit-icon"></a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-
-                                    <td>Authentication</td>
-                                    <td>64</td>
-                                    <td>&#8377;0.75</td>
-                                    <td>
-                                        <input class="form-control" value="&#8377;105" readonly />
-                                    </td>
-
-                                    <td>
-                                        <div class="action">
-                                            <a href="#" class="edit-icon"></a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-
-                                    <td>Utility</td>
-                                    <td>68</td>
-                                    <td>&#8377;0.73</td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <input class="form-control" id="name" value="&#8377;105" readonly />
-                                            <button class="btn primary-btn" id="saveBtn" style="display: none;">Save</button>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="action">
-                                            <a href="#" class="edit-icon" id="editBtn"></a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!--end Price details -->
-
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Meta.BussinessProfile
+namespace F4ConversationCloud.Application.Common.Models.MetaModel.BussinessProfile
 {
     public class WhatsAppPhoneNumberInfoViewModel
     {

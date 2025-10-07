@@ -1,4 +1,4 @@
-﻿using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
+﻿using F4ConversationCloud.Application.Common.Models.MetaModel.BussinessProfile;
 using System;
 using System.Collections.Generic;
 using System.Linq;

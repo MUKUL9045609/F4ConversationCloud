@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Domain.Entities.SuperAdmin;
+﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using Microsoft.VisualBasic;
 
 namespace F4ConversationCloud.SuperAdmin.Models
@@ -47,5 +48,11 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public bool AllowUserManagement { get; set; }
         public string RejectComment { get; set; }
         public List<MasterPrice> masterPrices { get; set; }
+
+        public List<TemplateData> TemplatesList { get; set; } = new List<TemplateData>();
+
+      //  public TemplatesListViewModel TemplatesList { get; set; } = new TemplatesListViewModel();
+
+
     }
 }

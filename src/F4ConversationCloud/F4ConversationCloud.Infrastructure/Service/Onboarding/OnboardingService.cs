@@ -2,7 +2,6 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
@@ -20,9 +19,9 @@ namespace F4ConversationCloud.Application.Common.Services
         private readonly IAuthRepository _authRepository;
         private readonly IMessageService _messageService;
         private readonly IUrlHelper _urlHelper;
-        private readonly IWhatsAppCloudeService _whatsAppCloude;
+        private readonly IF4AppCloudeService _whatsAppCloude;
 
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IWhatsAppCloudeService whatsAppCloudeService)
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IF4AppCloudeService whatsAppCloudeService)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
