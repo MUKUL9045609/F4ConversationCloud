@@ -18,7 +18,7 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
 
         //[JsonPropertyName("paging")]
         //public TemplatePaging Paging { get; set; }
-
+        public int MyProperty { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -32,6 +32,8 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
 
         [JsonPropertyName("category")]
         public string Category { get; set; }
+
+        public int ClientInfoId { get; set; }
     }
 
 

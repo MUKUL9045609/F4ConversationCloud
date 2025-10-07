@@ -20,8 +20,6 @@ using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
-using F4ConversationCloud.Infrastructure.Service.MetaServices;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Infrastructure.Repositories;
 using Polly;
@@ -70,9 +68,10 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
            // services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
             services.AddScoped<IF4AppCloudeService, F4AppCloudeService>();
+            //services.AddScoped<MetaConfigurationService >();
+            
             return services;
         }
-
 
         public static void AddWhatsAppBusinessCloudApiService(this IServiceCollection services, WhatsAppBusinessCloudApiConfig whatsAppConfig, string graphAPIVersion = null)
         {
@@ -86,22 +85,14 @@ namespace F4ConversationCloud.Infrastructure
 
             var noOpPolicy = Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>();
 
-           //services.AddTransient<IWhatsAppBusinessClientFactory, WhatsAppBusinessClientFactory>();
 
             services.AddSingleton(new WhatsAppBusinessCloudApiConfig
             {
-                WhatsAppBusinessPhoneNumberId = whatsAppConfig.WhatsAppBusinessPhoneNumberId,
-                WhatsAppBusinessAccountId = whatsAppConfig.WhatsAppBusinessAccountId,
-                WhatsAppBusinessId = whatsAppConfig.WhatsAppBusinessId,
                 AccessToken = whatsAppConfig.AccessToken,
-                AppName = whatsAppConfig.AppName,
-                Version = whatsAppConfig.Version
             });
-            // services.AddScoped<IWhatsAppTemplateManagementInterface, WhatsAppTemplateManagementInterface>();
             services.AddHttpClient<IMetaCloudAPIService, MetaCloudAPIService>(options =>
             {
                 options.BaseAddress = (string.IsNullOrWhiteSpace(graphAPIVersion)) ? WhatsAppBusinessRequestEndpoint.BaseAddress : new Uri(WhatsAppBusinessRequestEndpoint.GraphApiVersionBaseAddress.ToString().Replace("{{api-version}}", graphAPIVersion));
-                options.Timeout = TimeSpan.FromMinutes(10);
             }).ConfigurePrimaryHttpMessageHandler(messageHandler =>
             {
                 var handler = new HttpClientHandler();

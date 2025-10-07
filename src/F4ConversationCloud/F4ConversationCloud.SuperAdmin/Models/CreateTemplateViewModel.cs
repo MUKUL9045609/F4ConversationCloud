@@ -9,6 +9,8 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string Language { get; set; }
         public string Category { get; set; }
         public List<ComponentViewModel> Components { get; set; } = new();
+
+       
     }
     public class ComponentViewModel
     {

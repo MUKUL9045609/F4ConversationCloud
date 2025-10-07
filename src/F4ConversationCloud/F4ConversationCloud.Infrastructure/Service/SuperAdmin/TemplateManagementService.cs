@@ -14,20 +14,30 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         private WhatsAppBusinessCloudApiConfig _whatsAppConfig;
         private IConfiguration _configuration { get; }
         private IMetaCloudAPIService _metaCloudAPI;
-        public TemplateManagementService(HttpClient httpClient, IConfiguration configuration, IMetaCloudAPIService metaCloudAPI, WhatsAppBusinessCloudApiConfig whatsAppBusinessCloud)
+        private IClientManagementService _clientManagement;
+        public TemplateManagementService(HttpClient httpClient, IConfiguration configuration, IMetaCloudAPIService metaCloudAPI, WhatsAppBusinessCloudApiConfig whatsAppBusinessCloud, IClientManagementService clientManagement)
         {
             _httpClient = httpClient;
             _configuration = configuration;
             _metaCloudAPI = metaCloudAPI;
             _whatsAppConfig = whatsAppBusinessCloud;
+            _clientManagement = clientManagement;
         }
         public async Task<TemplateMessageCreationResponse> CreateTemplate(WhatsAppTemplateRequest request)
         {
             try
             {
 
-                var wabaId = _whatsAppConfig.WhatsAppBusinessAccountId;
-                var metaApiResponce = await _metaCloudAPI.CreateTemplateMessageAsync(wabaId, request);
+                //var wabaId = _whatsAppConfig.WhatsAppBusinessAccountId;
+                var clientDetails = await _clientManagement.GetClientDetailsById(request.ClientInfoId); 
+                
+                if (clientDetails != null )
+                {
+                  
+                    var metaApiResponce = await _metaCloudAPI.CreateTemplateMessageAsync(clientDetails.WABAId, request);
+                }
+
+                
 
                 return null;
             }
@@ -43,20 +53,37 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         }
         public async Task<TemplateListViewItem> TemplateListAsync(TemplatesListFilter filter)
         {
-            var wabaId = _whatsAppConfig.WhatsAppBusinessAccountId; 
-
-            var GetTemplateListesponse = await _metaCloudAPI.GetAllTemplatesAsync(wabaId);
-
-                var Templatelist = new TemplateResponse
-                {
-                    Data = GetTemplateListesponse.Data
-                };
-
-            return new TemplateListViewItem
+            try
             {
-                Data = Templatelist.Data,
+                var clientDetails = await _clientManagement.GetClientDetailsById(filter.ClientInfoId);
+            
+                if (clientDetails != null)
+                {
+                    var GetTemplateListesponse = await _metaCloudAPI.GetAllTemplatesAsync(clientDetails.WABAId);
+
+                    var Templatelist = new TemplateResponse
+                    {
+                        Data = GetTemplateListesponse.Data
+                    };
+
+                    return new TemplateListViewItem
+                    {
+                        Data = Templatelist.Data,
+
+                    };
+
+                }
+                {
+                    return new  TemplateListViewItem();
+                }
+            }
+            catch (Exception)
+            {
+
+                return new TemplateListViewItem();
+            }
+            
                 
-            };
         }
     }
 }
