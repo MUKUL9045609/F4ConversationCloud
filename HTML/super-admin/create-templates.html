@@ -112,42 +112,43 @@
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="card padding">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h3>Template name<sup>*</sup></h3>
-                                    <span class="question"></span>
-                                </div>
-                                <div class="template-question mb-3">
-                                    <label for="exampleInputEmail1" class="form-label"
-                                        >Give your message template a name.</label
-                                    >
-                                    <input
-                                        type="email"
-                                        class="form-control"
-                                        id="exampleInputEmail1"
-                                        placeholder="Template name"
-                                        aria-describedby="emailHelp"
-                                    />
-                                    <div id="emailHelp" class="form-text">
-                                        Template names can only contain small letters, numbers and
-                                        underscores.
+                            <div id="template-name">
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Template name<sup>*</sup></h3>
+                                        <span class="question"></span>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label"
+                                            >Give your message template a name.</label
+                                        >
+                                        <input
+                                            type="email"
+                                            class="form-control"
+                                            id="exampleInputEmail1"
+                                            placeholder="Template name"
+                                            aria-describedby="emailHelp"
+                                        />
+                                        <div id="emailHelp" class="form-text">
+                                            Template names can only contain small letters, numbers and
+                                            underscores.
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card padding">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h3>Category<sup>*</sup></h3>
-                                </div>
-                                <div class="template-question mb-3">
-                                    <label for="exampleInputEmail1" class="form-label"
-                                        >Choose what type of message template you want to
-                                        create.</label
-                                    >
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <div class="form-check radio-btn mb-2">
+                                <div class="card padding">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h3>Category<sup>*</sup></h3>
+                                    </div>
+                                    <div class="template-question mb-3">
+                                        <label for="exampleInputEmail1" class="form-label"
+                                            >Choose what type of message template you want to
+                                            create.</label
+                                        >
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                            
+                                                <div class="form-check radio-btn">
                                                     <input
                                                         class="form-check-input"
                                                         type="radio"
@@ -162,10 +163,77 @@
                                                         Marketing
                                                     </label>
                                                 </div>
+                                                
+                                            
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check radio-btn">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="flexRadioDefault3"
+                                                        value="utility"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="flexRadioDefault3"
+                                                    >
+                                                        Utility
+                                                    </label>
+                                                </div>
+                                            
+                                            </div>
+                                            <div class="col-md-4">
+                                            
+                                                    <div class="form-check radio-btn">
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="radio"
+                                                            name="flexRadioDefault"
+                                                            id="flexRadioDefault2"
+                                                            value="authentication"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="flexRadioDefault2"
+                                                        >
+                                                            Authentication
+                                                        </label>
+                                                    </div>
+                                                
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card padding template-setup show-hide" id="marketing">
+                                <h3 class="mb-3">Set Up Your Template</h3>
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="marketflexRadioDefault"
+                                                        id="Default1"
+                                                        value="marketing"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="Default1"
+                                                    >
+                                                        Default
+                                                    </label>
+                                                </div>
                                                 <p>
-                                                    Send promo offers, product offers and more to
-                                                    increase awareness and engagement.
+                                                    Send messages with media and customised buttons to engage your customers.
                                                 </p>
+                                               
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -174,20 +242,19 @@
                                                     <input
                                                         class="form-check-input"
                                                         type="radio"
-                                                        name="flexRadioDefault"
-                                                        id="flexRadioDefault2"
+                                                        name="marketflexRadioDefault"
+                                                        id="marketflexRadioDefault2"
                                                     />
                                                     <label
                                                         class="form-check-label"
-                                                        for="flexRadioDefault2"
+                                                        for="marketflexRadioDefault2"
                                                     >
-                                                        Authentication
+                                                        Catalogue
                                                     </label>
                                                 </div>
-                                                <p>
-                                                    Send promo offers, product offers and more to
-                                                    increase awareness and engagement.
+                                                <p>Send messages that drive sales by connecting your product catalogue.
                                                 </p>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -195,27 +262,102 @@
                                                 <input
                                                     class="form-check-input"
                                                     type="radio"
-                                                    name="flexRadioDefault"
-                                                    id="flexRadioDefault3"
+                                                    name="marketflexRadioDefault"
+                                                    id="flexRadioDefault6"
                                                     
                                                 />
                                                 <label
                                                     class="form-check-label"
-                                                    for="flexRadioDefault3"
+                                                    for="flexRadioDefault6"
                                                 >
-                                                    Utility
+                                                    Calling permissions request
                                                 </label>
                                             </div>
-                                            <p>
-                                                Send promo offers, product offers and more to
-                                                increase awareness and engagement.
-                                            </p>
+                                            <p>Ask customers if you can call them on WhatsApp</p>
                                         </div>
                                     </div>
-                                </div>
                             </div>
 
-                            <div id="marketing" class="show-hide">
+                            <div class="card padding template-setup show-hide" id="utility">
+                                <h3 class="mb-3">Set Up Your Template</h3>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="flexRadioDefault"
+                                                        id="utilityDefault"
+                                                        value="Utility"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="utilityDefault"
+                                                    >
+                                                        Default
+                                                    </label>
+                                                </div>
+                                                <p>
+                                                    Send messages with media and customised buttons to engage your customers.
+                                                </p>
+                                               
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-check radio-btn mb-2">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="radio"
+                                                    name="flexRadioDefault"
+                                                    id="utilitycallingRadioDefault3"
+                                                    value="Utility"
+                                                />
+                                                <label
+                                                    class="form-check-label"
+                                                    for="utilitycallingRadioDefault3"
+                                                >
+                                                    Calling permissions request
+                                                </label>
+                                            </div>
+                                            <p>Ask customers if you can call them on WhatsApp</p>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="card padding template-setup show-hide" id="authentication">
+                                <h3 class="mb-3">Set Up Your Template</h3>
+                                <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <div class="form-check radio-btn mb-2">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="onetimeRadioDefault"
+                                                        id="onetimeRadioDefault"
+                                                        value="authentication"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="onetimeRadioDefault"
+                                                    >
+                                                        One Time Passcode
+                                                    </label>
+                                                </div>
+                                                <p>
+                                                    Send messages with media and customised buttons to engage your customers.
+                                                </p>
+                                               
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                            </div>
+
+                            <div id="marketing-setup-fields" style="display: none;">
                                 <div class="card padding">
                                     <div class="d-flex justify-content-between mb-3">
                                         <h3>Language<sup>*</sup></h3>
@@ -435,7 +577,7 @@
                                 </div>
                             </div>
 
-                            <div id="authentication" class="show-hide">
+                            <div id="authentication-setup-fields" style="display: none;">
                                  <div class="card padding">
                                     <div class="d-flex justify-content-between mb-3">
                                         <h3>Language<sup>*</sup></h3>
@@ -460,6 +602,7 @@
                             <div class="d-flex gap-2 mb-3">
                                 <button class="btn danger-btn">Clear All</button>
                                 <button class="btn primary-btn">Submit</button>
+                                <button class="btn primary-btn" id="back">Previous</button>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -472,6 +615,13 @@
                                         <p>We are excited to present you with an exclusive offer ! {{}}</p>
                                     </div>
                                     <div class="time">1:59 PM</div>
+                                    <div class="buy-link">
+                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                        <a href="#"><i class="forward"></i> My Account Balance</a>
+                                        <a href="#"><i class="backward"></i> Yes </a>
+                                        <a href="#"><i class="call"></i> Call Us </a>
+                                        
+                                    </div>
 
                                 </div>
                             </div>
@@ -544,13 +694,19 @@
         });
     </script>
     <script>
-        $('#marketing').hide();
-        $(document).ready(function(){ 
-            $("input[name=flexRadioDefault]").change(function() {
-                var test = $(this).val();
-                $(".show-hide").hide();
-                $("#"+test).show();
-            }); 
+        $(document).ready(function() {
+            $(".show-hide").hide();
+            $("input[name='flexRadioDefault']").change(function() {
+                var selectedVal = $(this).val();
+                $(".show-hide").hide();         
+                $("#" + selectedVal).show();   
+                $("#template-name").hide();  
+            });
+            $("#back").click(function() {
+                $("#template-name").show();  
+                $(".show-hide").hide();    
+                $("input[name='flexRadioDefault']").prop("checked", false);
+            });
         });
     </script>
 </body>
