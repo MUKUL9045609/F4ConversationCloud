@@ -1,23 +1,26 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
-using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Domain.Entities;
-using F4ConversationCloud.Domain.Helpers;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using F4ConversationCloud.Application.Common.Models.Templates;
+using Twilio.Jwt.AccessToken;
 
 namespace F4ConversationCloud.Infrastructure.Service
 {
-    public class WebhookService : IWebhookService
+    public class TemplateService : ITemplateService
     {
-        private readonly IClientManagementService _clientManagement;
         private readonly IAPILogService _logService;
-        public WebhookService(IClientManagementService clientManagement, IAPILogService logService)
+        public TemplateService(IClientManagementService clientManagement, IAPILogService logService)
         {
-            _clientManagement = clientManagement;
-            _logService = logService;
+           _logService = logService;
         }
 
-
-        public async Task<dynamic> CallWebhookAsync(WhatsAppWebhookPayload requestBody)
+        public async Task<dynamic> CreateTemplate(MessageTemplate requestBody)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -25,17 +28,17 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             try
             {
-                
-                var phonenumberId = requestBody.Entry[0].Changes[0].Value.Metadata.PhoneNumberId;
-                var response =  _clientManagement.GetClientDetailsByPhoneNumberId(phonenumberId).Result;
-
                 string requestJson = JsonConvert.SerializeObject(requestBody);
+
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+                headers = new Dictionary<string, string> { { "Bearer", $"{token}" } };
                 
-                var result = await _logService.CallExternalAPI<dynamic>(response.FirstOrDefault().WebHookUrl,
+
+                var result = await _logService.CallExternalAPI<dynamic>("https://graph.facebook.com/v23.0/528970240291210/message_templates",
                                                                     methodType,
-                                                                    requestJson,
+                                                                    requestBody,
                                                                     headers,
-                                                                    "Webhook Callback",
+                                                                    "Create Template",
                                                                     null,
                                                                     true);
 
@@ -57,8 +60,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
-
     }
 
-}
 
+}
