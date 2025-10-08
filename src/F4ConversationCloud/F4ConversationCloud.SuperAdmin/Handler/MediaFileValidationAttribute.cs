@@ -10,12 +10,12 @@ namespace F4ConversationCloud.SuperAdmin.Handler
         {
             var model = (TemplateViewModel)validationContext.ObjectInstance;
 
-            if (model.MediaType == (int)MediaType.Location)
+            if (model.MediaType <= 0 || model.MediaType == (int)MediaType.Location)
             {
                 return ValidationResult.Success;
             }
 
-            if (model.File == null)
+            if (model.File == null && model.MediaType < 0 && model.MediaType == (int)MediaType.Location)
             {
                 return new ValidationResult("File is required for selected media type.");
             }

@@ -6,6 +6,7 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text.Json;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -189,9 +190,56 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> GetTemplateFormPartialView(TemplateViewModel model)
         {
-            
+            var viewName = "";
 
-            return PartialView("_MarketingDefaultTemplate", model);
+            if (model != null)
+            {
+                var templateCategoryName = model.TemplateCategoryName;
+                var templateTypeName = model.TemplateTypeName;
+
+                if (templateCategoryName == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                {
+                    if (templateTypeName == MarketingTemplateType.Default.Get<DisplayAttribute>().Name)
+                    {
+                        viewName = "_MarketingDefaultTemplate";
+                    }
+                    else if (templateTypeName == MarketingTemplateType.Catalogue.Get<DisplayAttribute>().Name)
+                    {
+
+                    }
+                    else if (templateTypeName == MarketingTemplateType.CallingPermissionsRequest.Get<DisplayAttribute>().Name)
+                    {
+
+                    }
+                }
+                else if (templateCategoryName == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                {
+                    if (templateTypeName == UtilityTemplateType.Default.Get<DisplayAttribute>().Name)
+                    {
+                        viewName = "_UtilityDefaultTemplate";
+                    }
+                    else if (templateTypeName == UtilityTemplateType.CallingPermissionsRequest.Get<DisplayAttribute>().Name)
+                    {
+
+                    }
+                }
+                else if (templateCategoryName == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
+                && templateTypeName == AuthenticationTemplateType.OneTimePasscode.Get<DisplayAttribute>().Name)
+                {
+                    viewName = "_AuthenticationOneTimeCodeTemplate";
+                }
+
+                model.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                model.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                model.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
+                model.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                ModelState.Clear();
+            }
+
+            return PartialView(viewName, model);
         }
     }
 }

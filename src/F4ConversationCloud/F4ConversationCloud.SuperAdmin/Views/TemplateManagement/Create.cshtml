@@ -25,463 +25,97 @@
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <div id="template-category">
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Category<sup>*</sup></h3>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose what type of message template you want to
-                                    create.
-                                </label>
-                                <div class="row">
-                                    @if (Model.TemplateCategoryList is not null)
-                                    {
-                                        @foreach (var t in Model.TemplateCategoryList)
-                                        {
-                                            <div class="col-md-4">
-                                                <div class="form-check radio-btn">
-                                                    <input asp-for="TemplateCategory" class="form-check-input"
-                                                           type="radio"
-                                                           id="@t.Value"
-                                                           value="@t.Value" />
-                                                    <label class="form-check-label"
-                                                           for="flexRadioDefault1">
-                                                        @t.Text
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        }
-                                    }
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" id="mainForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div id="template-category">
+                            <div class="card padding">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h3>Category</h3>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="partialForTemplateType">
-                        @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
-                        {
-                            <partial name="_MarketingTemplateTypeOptions" model="@Model" />
-                        }
-                        else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
-                        {
-                            <partial name="_UtilityTemplateTypeOptions" model="@Model" />
-                        }
-                        else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)
-                        {
-                            <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
-                        }
-                    </div>
-
-                    <!-- marketing default set up -->
-                    <div id="marketing-setup-fields" class="setup">
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Template name<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Give your message template a name.</label>
-                                <input type="email"
-                                       class="form-control"
-                                       id="exampleInputEmail1"
-                                       placeholder="Template name"
-                                       aria-describedby="emailHelp" />
-                                <div id="emailHelp" class="form-text">
-                                    Template names can only contain small letters, numbers and
-                                    underscores.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Language<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose which languages your message template will be sent
-                                    in.
-                                </label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>select languages</option>
-                                    <option value="1">English (UK)</option>
-                                    <option value="2">English (US)</option>
-                                    <option value="3">Hindi</option>
-                                    <option value="4">Marathi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Types Of Variables<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Name</option>
-                                    <option value="1">Number</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Media Samples<sup>*</sup> <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-
-                                <select class="form-select" id="mySelect" aria-label="Default select example">
-                                    <option selected>Select Media</option>
-                                    <option value="1">None</option>
-                                    <option value="attatchment">Image</option>
-                                    <option value="attatchment">Video</option>
-                                    <option value="attatchment">Document</option>
-                                    <option value="5">Location</option>
-
-                                </select>
-                                <div class="drag-file-wrapper" id="attatchment" style="display: none;">
-                                    <label class="drag-file">
-                                        <input type="file" />
-                                        <span class="drag-title">Drag and drop to upload or <a href="#">choose files on your device</a></span>
-
+                                <div class="template-question mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">
+                                        Choose what type of message template you want to
+                                        create.
                                     </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Header <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Add a 60 character title to your message. Only one variable
-                                    is supported in the header.
-                                </label>
-                                <input type="text" class="form-control">
-                                <div class="d-flex justify-content-end">
-                                    <button class="add-variables">Add Variables</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Body <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Enter the text for your message in the language you have
-                                    selected.
-                                </label>
-                                <div class="note d-flex align-items-center">
-                                    <span class="exclamatory"></span>
-                                    <p>
-                                        The text limit in the body should be less than 550
-                                        characters and emojis should be less than 10 to avoid
-                                        any template rejection
-                                    </p>
-                                </div>
-
-                                <div id="content" contenteditable="true" spellcheck="false">
-                                    Lorem, ipsum.
-                                </div>
-                                <div class="toolbar">
-                                    <button class="add-variables">Add Variables</button>
-                                    <div class="btn-toolbar">
-
-                                        <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
-                                        <button onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
-                                        <button onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
-                                        <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button>
-                                        <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
-                                        <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <h6>Variable samples</h6>
-                            <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
-
-                            <ul class="add-veriables">
-                                <li>
-                                    <small class="fw-medium">Header</small>
-                                    <div class="d-flex gap-3">
-                                        <div>
-                                            <input type="text" class="form-control" value="{{1}}" readonly>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-
-                            <ul class="add-veriables">
-                                <li>
-                                    <small class="fw-medium">Body</small>
-                                    <div class="d-flex gap-3">
-                                        <div>
-                                            <input type="text" class="form-control" value="{{1}}" readonly>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Footer <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Add a 60 character footer to your message. Variables are not supported in the footer.</label>
-                                <input class="form-control" />
-                                <div class="d-flex justify-content-end">
-                                    <button class="add-variables">Add Variables</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Button <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Please choose buttons to be added to the template. You can choose upto 10 buttons</label>
-                                <div class="dropdown add-btn-template">
-                                    <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Add button
-                                    </button>
-                                    <ul class="dropdown-menu" id="template-btn" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#" id="custom"><span class=""></span> Custom</a></li>
-                                        <li><a class="dropdown-item" href="#" id="visit-website">Visit Website</a></li>
-                                    </ul>
-
-                                </div>
-                                <ul class="add-template-button-list">
-                                    <li>
-                                        <div class="d-flex align-items-center form-wrapper gap-3">
-
-                                            <div>
-                                                <label>Type</label>
-                                                <input class="form-control" value="Custom" />
-                                            </div>
-                                            <div>
-                                                <label>Button Text</label>
-                                                <input class="form-control" value="Quick Reply" />
-                                            </div>
-                                        </div>
-                                        <div class="drag-close">
-
-                                            <button class="close"></button>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="d-flex align-items-center form-wrapper gap-3">
-
-                                            <div>
-                                                <label>Type</label>
-                                                <input class="form-control" value="Visit Website" />
-                                            </div>
-                                            <div>
-                                                <label>Button Text</label>
-                                                <input class="form-control" value="Visit Website" />
-                                            </div>
-                                        </div>
-                                        <div class="drag-close">
-
-                                            <button class="close"></button>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
-                        <div class="card padding">
-                            <h3 class="mb-2">Message validity period</h3>
-                            <p>You can set a custom validity period that your marketing message must be delivered by before it expires. If a message is not delivered within this timeframe, you will not be charged and your customer will not see the message.</p>
-
-                            <div class="d-flex">
-                                <div>
-                                    <h3 class="mb-2">Set custom validity period for your message</h3>
-                                    <p>If you don't set a custom validity period, the standard 10 minutes WhatsApp message validity period will be applied.</p>
-                                </div>
-                                <div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> </div>
-                            </div>
-                            <div class="validity-periods template-question mt-3" id="toggleDiv">
-                                <h3 class="mb-2">Validity period</h3>
-                                <select class="form-select" aria-label="Default select example">
-
-                                    <option value="1" selected>12 hours</option>
-                                    <option value="2">24 hours</option>
-                                    <option value="3">48 hours</option>
-                                    <option value="4">72 hours</option>
-                                    <option value="4">96 hours</option>
-                                    <option value="4">168 hours</option>
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End marketing default set up -->
-
-                    <div id="authentication-setup-fields" class="setup">
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Template name<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Give your message template a name.</label>
-                                <input type="email"
-                                       class="form-control"
-                                       id="exampleInputEmail1"
-                                       placeholder="Template name"
-                                       aria-describedby="emailHelp" />
-                                <div id="emailHelp" class="form-text">
-                                    Template names can only contain small letters, numbers and
-                                    underscores.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Language<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose which languages your message template will be sent
-                                    in.
-                                </label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>select languages</option>
-                                    <option value="1">English (UK)</option>
-                                    <option value="2">English (US)</option>
-                                    <option value="3">Hindi</option>
-                                    <option value="4">Marathi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <h6>Code delivery setup</h6>
-                            <p>Choose how customers send the code from WhatsApp to your app. Edits to this section won't require review or count towards edit limits. Learn how to send authentication message templates.</p>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <div class="form-check radio-btn mb-3">
-                                            <input class="form-check-input"
-                                                   type="radio"
-                                                   name="zerotabRadioDefault"
-                                                   id="zerotabRadioDefault"
-                                                   value="authentication-setup-fields" />
-                                            <label class="form-check-label"
-                                                   for="zerotabRadioDefault">
-                                                Zero-tap autofill
-                                                <p class="mt-1">This is recommended as the easiest option for your customers. Zero-tap will automatically send code without requiring your customer to tap a button. An autofill or copy code message will be sent if zero-tap and autofill aren’t possible.</p>
-                                            </label>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="form-check radio-btn mb-3">
-                                            <input class="form-check-input"
-                                                   type="radio"
-                                                   name="zerotabRadioDefault"
-                                                   id="onetabRadioDefault"
-                                                   value="authentication-setup-fields" />
-                                            <label class="form-check-label"
-                                                   for="onetabRadioDefault">
-                                                One-tap autofill
-                                                <p class="mt-1">The code sends to your app when customers tap the button. A copy code message will be sent if autofill isn’t possible.</p>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="form-check radio-btn mb-3">
-                                            <input class="form-check-input"
-                                                   type="radio"
-                                                   name="zerotabRadioDefault"
-                                                   id="copytabRadioDefault"
-                                                   value="authentication-setup-fields" />
-                                            <label class="form-check-label"
-                                                   for="copytabRadioDefault">
-                                                Copy code
-                                                <p class="mt-1">Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
-                                            </label>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <h6>Content</h6>
-                            <p>Content for authentication message templates can't be edited. You can add additional content from the options below.</p>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-check form-checkbox mb-2" id="check-Marketing">
-                                        <input class="form-check-input" type="checkbox" id="checkbox-marketing">
-                                        <label class="form-check-label ps-2" for="checkbox-marketing"> Add security recommendation</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-check form-checkbox mb-2" id="check-authentication">
-                                        <input class="form-check-input" type="checkbox" id="checkbox-authentication">
-                                        <label class="form-check-label ps-2" for="checkbox-authentication"> Add expiration time for the code</label>
+                                    <div class="row">
+                                        @if (Model.TemplateCategoryList is not null)
+                                        {
+                                            @foreach (var t in Model.TemplateCategoryList)
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-check radio-btn">
+                                                        <input asp-for="TemplateCategory" class="form-check-input"
+                                                               type="radio"
+                                                               id="@t.Value"
+                                                               value="@t.Value" />
+                                                        <label class="form-check-label"
+                                                               for="flexRadioDefault1">
+                                                            @t.Text
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card padding">
-                            <h3 class="mb-2">Message validity period</h3>
-                            <p>You can set a custom validity period that your marketing message must be delivered by before it expires. If a message is not delivered within this timeframe, you will not be charged and your customer will not see the message.</p>
 
-                            <div class="d-flex">
-                                <div>
-                                    <h3 class="mb-2">Set custom validity period for your message</h3>
-                                    <p>If you don't set a custom validity period, the standard 10 minutes WhatsApp message validity period will be applied.</p>
-                                </div>
-                                <div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="validitySwitchCheckChecked"> </div>
-                            </div>
-                            <div class="validity-periods template-question mt-3" id="toggleDiv1">
-                                <h3 class="mb-2">Validity period</h3>
-                                <select class="form-select" aria-label="Default select example">
-
-                                    <option value="1" selected>30 seconds</option>
-                                    <option value="2">1 Minutes</option>
-                                    <option value="3">2 Minutes</option>
-                                    <option value="4">5 Minutes</option>
-                                    <option value="4">10 Minutes</option>
-                                    <option value="4">15 Minutes</option>
-
-                                </select>
-                            </div>
+                        <div id="partialForTemplateType">
+                            @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                            {
+                                <partial name="_MarketingTemplateTypeOptions" model="@Model" />
+                            }
+                            else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                            {
+                                <partial name="_UtilityTemplateTypeOptions" model="@Model" />
+                            }
+                            else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)
+                            {
+                                <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
+                            }
                         </div>
-                    </div>
-
-                    <div class="d-flex gap-2 mb-3">
-                        <button class="btn danger-btn">Clear All</button>
-                        <button class="btn primary-btn">Submit</button>
-                        <button class="btn primary-btn" id="previous-btn">Previous</button>
-                    </div>
+                        <div id="partialForTemplateForm">
+                            @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                            {
+                                if (Model.TemplateType == (int)MarketingTemplateType.Default)
+                                {
+                                    <partial name="_MarketingDefaultTemplate" model="@Model" />
+                                }
+                                else if (Model.TemplateType == (int)MarketingTemplateType.Catalogue)
+                                {
+                                    <partial name="_MarketingCatalogueTemplate" model="@Model" />
+                                }
+                                else if (Model.TemplateType == (int)MarketingTemplateType.CallingPermissionsRequest)
+                                {
+                                    <partial name="_MarketingCallingPermissionsRequestTemplate" model="@Model" />
+                                }
+                            }
+                            else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                            {
+                                if (Model.TemplateType == (int)UtilityTemplateType.Default)
+                                {
+                                    <partial name="_UtilityDefaultTemplate" model="@Model" />
+                                }
+                                else if (Model.TemplateType == (int)UtilityTemplateType.CallingPermissionsRequest)
+                                {
+                                    <partial name="_UtilityCallingPermissionsRequestTemplate" model="@Model" />
+                                }
+                            }
+                            else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
+                            && Model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
+                            {
+                                <partial name="_AuthenticationOneTimePasscodeTemplate" model="@Model" />
+                            }
+                        </div>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn danger-btn" type="button" id="clear-all-btn" style="display:none;">Clear All</button>
+                            <button class="btn primary-btn" type="submit" id="submit-btn" style="display:none;">Submit</button>
+                            <button class="btn primary-btn" type="button" id="previous-btn" style="display:none;">Previous</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" id="preview-modal" style="display:none;">
                     <div class="template-preview">
                         <h4>Preview</h4>
                         <div class="template-white-card">
@@ -526,81 +160,78 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function() {
-            $('#partialForTemplateType').hide();
+            var req = @Html.Raw(Json.Serialize(Model));
 
-            $('.drag-file-wrapper').hide();
-            $('#mySelect').change(function() {
-                var selectedValue = $(this).val();
-                $('.drag-file-wrapper').hide();
-                if (selectedValue) {
-                    $('#' + selectedValue).show();
-                }
-            });
-
-            $("#custom-wrap").hide();
-            $("#custom").change(function() {
-                $("#custom-wrap").show();
-            });
-
-            $(".show-hide").hide();
-            $("input[name='flexRadioDefault']").change(function() {
-                var selectedVal = $(this).val();
-                $(".show-hide").hide();
-                $("#" + selectedVal).show();
-                $("#template-name").hide();
-            });
-
-            $(".setup").hide();
-            $("input[name='marketflexRadioDefault']").change(function() {
-                var selectedVal = $(this).val();
-                $(".setup").hide();
-                $("#marketing").hide();
-                $("#" + selectedVal).show();
-                $("#template-name").hide();
-            });
-
-            $("input[name='onetimeRadioDefault']").change(function() {
-                var selectedVal = $(this).val();
-                $(".setup").hide();
-                $("#authentication").hide();
-                $("#" + selectedVal).show();
-                $("#template-name").hide();
-            });
+            if(req.templateCategory > 0 && req.templateType > 0){
+                $('#clear-all-btn').show();
+                $('#previous-btn').show();
+                $('#preview-modal').show();
+                $('#submit-btn').show();
+                $('#template-category').hide();
+                $('#partialForTemplateType').hide();
+            }
 
             $("#previous-btn").click(function() {
                 $('#template-category').show();
                 $('#partialForTemplateType').hide();
+                $('#partialForTemplateForm').hide();
+                $('#clear-all-btn').hide();
+                $('#submit-btn').hide();
+                $('#previous-btn').hide();
+                $('#preview-modal').hide();
             });
 
-            $('#flexSwitchCheckChecked').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('#toggleDiv').show();
-                } else {
-                    $('#toggleDiv').hide();
+            $('#mediaType').change(function () {
+                
+                var selectedValue = parseInt($(this).val());
+                var selectedText = $('[name="MediaType"] option:selected').text();
+                var $fileInput = $('#UploadedFile');
+                var $attachment = $('#attachment');
+                var $existingFileLink = $('#existingFileLink');
+                var $fileValidationMessage = $('[data-valmsg-for="File"]');
+                
+                $fileInput.val('');
+                $existingFileLink.html('');
+                $fileInput.removeAttr('accept');
+
+                var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+
+                if (selectedValue > 0 && selectedText != 'Location') {
+                    $attachment.show();
+
+                    switch (selectedText) {
+                        case 'Image':
+                            $fileInput.attr('accept', '.jpg,.jpeg,.png');
+                            break;
+                        case 'Video':
+                            $fileInput.attr('accept', '.mp4,.avi,.mov,.wmv');
+                            break;
+                        case 'Document':
+                            $fileInput.attr('accept', '.pdf,.doc,.docx,.xls,.xlsx');
+                            break;
+                    }
+                }else if (!hasValidationError) {
+                    $attachment.hide();
+                }
+
+                if (selectedValue > 0){
+                    $("#header-add-btn").attr("disabled", true);
+                    $('#Header').attr('readonly', true);
+                }
+                else{
+                    $("#header-add-btn").removeAttr("disabled");
+                    $('#Header').removeAttr('readonly');
                 }
             });
 
-            if (!$('#flexSwitchCheckChecked').is(':checked')) {
-                $('#toggleDiv').hide();
-            }
-
-            $('#validitySwitchCheckChecked').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('#toggleDiv1').show();
-                } else {
-                    $('#toggleDiv1').hide();
-                }
-            });
-
-            if (!$('#validitySwitchCheckChecked').is(':checked')) {
-                $('#toggleDiv1').hide();
-            }
+            $('#mediaType').trigger('change');
         });
 
         $(document).on('change', '[name="TemplateCategory"]', function () {
+            commonHelper.showHideLoader(true);
             var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
             var templateCategory = $('[name="TemplateCategory"]').val();
-            
+
             $('#partialForTemplateType').show();
             var req = {
                 TemplateCategory: parseInt(templateCategory),
@@ -612,15 +243,19 @@
             ajaxHelper.ajaxPost(url, null, req, function (response) {
                 $('#partialForTemplateType').html(response);
                 $('#template-category').hide();
+                $('#previous-btn').show();
+                commonHelper.showHideLoader(false);
             }, null);
         });
 
         $(document).on('change', '[name="TemplateType"]', function () {
+            commonHelper.showHideLoader(true);
             var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
             var templateCategory = $('[name="TemplateCategory"]').val();
             var templateTypeText = $('input[name="TemplateType"]:checked').next('label').text().trim();
             var templateType = $('[name="TemplateType"]').val();
-            
+
+            $('#partialForTemplateForm').show();
             var req = {
                 TemplateCategory: parseInt(templateCategory),
                 TemplateCategoryName: templateCategoryText,
@@ -633,7 +268,11 @@
             ajaxHelper.ajaxPost(url, null, req, function (response) {
                 $('#partialForTemplateForm').html(response);
                 $('#template-category').hide();
-                $('#partialForTemplateForm').hide();
+                $('#partialForTemplateType').hide();
+                $('#clear-all-btn').show();
+                $('#submit-btn').show();
+                $('#preview-modal').show();
+                commonHelper.showHideLoader(false);
             }, null);
         });
     </script>
