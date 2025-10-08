@@ -32,5 +32,13 @@ namespace BuldanaUrban.Domain.Helpers
                        })
                        .ToList();
         }
+
+        public static TAttribute Get<TAttribute>(this Enum enumValue) where TAttribute : Attribute
+        {
+            return enumValue.GetType()
+                            .GetMember(enumValue.ToString())
+                            .First()
+                            .GetCustomAttribute<TAttribute>();
+        }
     }
 }

@@ -2,12 +2,10 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -120,6 +118,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
                 viewModel.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
                 viewModel.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -140,6 +142,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     model.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
                     model.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
                     model.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                    model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                    model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                    model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+
                     return View(model);
                 }
 
@@ -150,6 +156,42 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetTemplateTypePartialView(TemplateViewModel model)
+        {
+            var viewName = "";
+
+            if (model != null)
+            {
+                var templateCategoryName = model.TemplateCategoryName;
+                if (templateCategoryName == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                {
+                    viewName = "_MarketingTemplateTypeOptions";
+                    model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                }
+                else if (templateCategoryName == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                {
+                    viewName = "_UtilityTemplateTypeOptions";
+                    model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                }
+                else if (templateCategoryName == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)
+                {
+                    viewName = "_AuthenticationTemplateTypeOptions";
+                    model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                }
+            }
+
+            return PartialView(viewName, model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetTemplateFormPartialView(TemplateViewModel model)
+        {
+            
+
+            return PartialView("_MarketingTemplateTypeOptions", model);
         }
     }
 }
