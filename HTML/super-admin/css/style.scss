@@ -761,9 +761,11 @@ body {
 
         .template-white-card {
             background-color: $white;
-            padding: 12px;
+            // padding: 12px;
             border-radius: 8px;
-
+            .template-slide-card{
+                padding: 12px;
+            }
             img {
                 width: 100%;
                 border-radius: 8px;
@@ -857,11 +859,11 @@ body {
 .swiper-button-prev,
 .swiper-button-next{
     height: 40px!important;width: 40px!important;
-    background-color: #ffffffcc;
+    background-color: rgb(10 171 245);
     border-radius: 50%;
 }
 .swiper-button-prev::after,
 .swiper-button-next::after{
-    font-size: 20px!important;
-    color: #000;
+    font-size: 16px!important;
+    color: #fff;
 }
