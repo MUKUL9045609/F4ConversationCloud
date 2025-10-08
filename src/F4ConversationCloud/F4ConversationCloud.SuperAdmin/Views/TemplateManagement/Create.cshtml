@@ -1,0 +1,279 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Enum
+@using System.ComponentModel.DataAnnotations
+
+@{
+    ViewData["Title"] = "Create Template";
+    var m = Model;
+    var categoryType = string.Empty;
+    categoryType = Model.TemplateCategoryList
+            .Where(x => x.Value == Model.TemplateCategory.ToString())
+            .Select(x => x.Text)
+            .FirstOrDefault();
+}
+
+<div class="content">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between headerWrap mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="sub-heading mb-0">
+                        <a href="client-details.html"><span class="back"></span> Create Template</a>
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" id="mainForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div id="template-category">
+                            <div class="card padding">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h3>Category</h3>
+                                </div>
+                                <div class="template-question mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">
+                                        Choose what type of message template you want to
+                                        create.
+                                    </label>
+                                    <div class="row">
+                                        @if (Model.TemplateCategoryList is not null)
+                                        {
+                                            @foreach (var t in Model.TemplateCategoryList)
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-check radio-btn">
+                                                        <input asp-for="TemplateCategory" class="form-check-input"
+                                                               type="radio"
+                                                               id="@t.Value"
+                                                               value="@t.Value" />
+                                                        <label class="form-check-label"
+                                                               for="flexRadioDefault1">
+                                                            @t.Text
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="partialForTemplateType">
+                            @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                            {
+                                <partial name="_MarketingTemplateTypeOptions" model="@Model" />
+                            }
+                            else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                            {
+                                <partial name="_UtilityTemplateTypeOptions" model="@Model" />
+                            }
+                            else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)
+                            {
+                                <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
+                            }
+                        </div>
+                        <div id="partialForTemplateForm">
+                            @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                            {
+                                if (Model.TemplateType == (int)MarketingTemplateType.Default)
+                                {
+                                    <partial name="_MarketingDefaultTemplate" model="@Model" />
+                                }
+                                else if (Model.TemplateType == (int)MarketingTemplateType.Catalogue)
+                                {
+                                    <partial name="_MarketingCatalogueTemplate" model="@Model" />
+                                }
+                                else if (Model.TemplateType == (int)MarketingTemplateType.CallingPermissionsRequest)
+                                {
+                                    <partial name="_MarketingCallingPermissionsRequestTemplate" model="@Model" />
+                                }
+                            }
+                            else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                            {
+                                if (Model.TemplateType == (int)UtilityTemplateType.Default)
+                                {
+                                    <partial name="_UtilityDefaultTemplate" model="@Model" />
+                                }
+                                else if (Model.TemplateType == (int)UtilityTemplateType.CallingPermissionsRequest)
+                                {
+                                    <partial name="_UtilityCallingPermissionsRequestTemplate" model="@Model" />
+                                }
+                            }
+                            else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
+                            && Model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
+                            {
+                                <partial name="_AuthenticationOneTimePasscodeTemplate" model="@Model" />
+                            }
+                        </div>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn danger-btn" type="button" id="clear-all-btn" style="display:none;">Clear All</button>
+                            <button class="btn primary-btn" type="submit" id="submit-btn" style="display:none;">Submit</button>
+                            <button class="btn primary-btn" type="button" id="previous-btn" style="display:none;">Previous</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4" id="preview-modal" style="display:none;">
+                    <div class="template-preview">
+                        <h4>Preview</h4>
+                        <div class="template-white-card">
+                            <!-- <span><img src="images/card-img-03.webp"></span> -->
+                            <div class="swiper useCasesSwiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        @* <span><img src="images/card-img-03.webp"></span> *@
+                                    </div>
+                                    <div class="swiper-slide">
+                                        @* <span><img src="images/card-img-03.webp"></span> *@
+                                    </div>
+                                </div>
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                            <div class="description">
+                                <p>Dear {{1}}</p>
+                                <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                            </div>
+                            <div class="time">1:59 PM</div>
+                            <div class="buy-link">
+                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                <a href="#"><i class="backward"></i> Yes </a>
+                                <a href="#"><i class="call"></i> Call Us </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            var req = @Html.Raw(Json.Serialize(Model));
+
+            if(req.templateCategory > 0 && req.templateType > 0){
+                $('#clear-all-btn').show();
+                $('#previous-btn').show();
+                $('#preview-modal').show();
+                $('#submit-btn').show();
+                $('#template-category').hide();
+                $('#partialForTemplateType').hide();
+            }
+
+            $("#previous-btn").click(function() {
+                $('#template-category').show();
+                $('#partialForTemplateType').hide();
+                $('#partialForTemplateForm').hide();
+                $('#clear-all-btn').hide();
+                $('#submit-btn').hide();
+                $('#previous-btn').hide();
+                $('#preview-modal').hide();
+            });
+
+            $('#mediaType').change(function () {
+                
+                var selectedValue = parseInt($(this).val());
+                var selectedText = $('[name="MediaType"] option:selected').text();
+                var $fileInput = $('#UploadedFile');
+                var $attachment = $('#attachment');
+                var $existingFileLink = $('#existingFileLink');
+                var $fileValidationMessage = $('[data-valmsg-for="File"]');
+                
+                $fileInput.val('');
+                $existingFileLink.html('');
+                $fileInput.removeAttr('accept');
+
+                var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+
+                if (selectedValue > 0 && selectedText != 'Location') {
+                    $attachment.show();
+
+                    switch (selectedText) {
+                        case 'Image':
+                            $fileInput.attr('accept', '.jpg,.jpeg,.png');
+                            break;
+                        case 'Video':
+                            $fileInput.attr('accept', '.mp4,.avi,.mov,.wmv');
+                            break;
+                        case 'Document':
+                            $fileInput.attr('accept', '.pdf,.doc,.docx,.xls,.xlsx');
+                            break;
+                    }
+                }else if (!hasValidationError) {
+                    $attachment.hide();
+                }
+
+                if (selectedValue > 0){
+                    $("#header-add-btn").attr("disabled", true);
+                    $('#Header').attr('readonly', true);
+                }
+                else{
+                    $("#header-add-btn").removeAttr("disabled");
+                    $('#Header').removeAttr('readonly');
+                }
+            });
+
+            $('#mediaType').trigger('change');
+        });
+
+        $(document).on('change', '[name="TemplateCategory"]', function () {
+            commonHelper.showHideLoader(true);
+            var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
+            var templateCategory = $('[name="TemplateCategory"]').val();
+
+            $('#partialForTemplateType').show();
+            var req = {
+                TemplateCategory: parseInt(templateCategory),
+                TemplateCategoryName: templateCategoryText
+            };
+
+            var url = "/TemplateManagement/GetTemplateTypePartialView";
+
+            ajaxHelper.ajaxPost(url, null, req, function (response) {
+                $('#partialForTemplateType').html(response);
+                $('#template-category').hide();
+                $('#previous-btn').show();
+                commonHelper.showHideLoader(false);
+            }, null);
+        });
+
+        $(document).on('change', '[name="TemplateType"]', function () {
+            commonHelper.showHideLoader(true);
+            var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
+            var templateCategory = $('[name="TemplateCategory"]').val();
+            var templateTypeText = $('input[name="TemplateType"]:checked').next('label').text().trim();
+            var templateType = $('[name="TemplateType"]').val();
+
+            $('#partialForTemplateForm').show();
+            var req = {
+                TemplateCategory: parseInt(templateCategory),
+                TemplateCategoryName: templateCategoryText,
+                TemplateType: parseInt(templateType),
+                TemplateTypeName: templateTypeText
+            };
+
+            var url = "/TemplateManagement/GetTemplateFormPartialView";
+
+            ajaxHelper.ajaxPost(url, null, req, function (response) {
+                $('#partialForTemplateForm').html(response);
+                $('#template-category').hide();
+                $('#partialForTemplateType').hide();
+                $('#clear-all-btn').show();
+                $('#submit-btn').show();
+                $('#preview-modal').show();
+                commonHelper.showHideLoader(false);
+            }, null);
+        });
+    </script>
+}
