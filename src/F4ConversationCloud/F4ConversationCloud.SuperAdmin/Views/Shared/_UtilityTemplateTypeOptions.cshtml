@@ -1,0 +1,36 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+
+<div class="card padding template-setup show-hide">
+    <h3 class="mb-3">Set Up Your Template</h3>
+    <div class="row">
+        @if (Model.UtilityTemplateTypeList is not null)
+        {
+            @foreach (var t in Model.UtilityTemplateTypeList)
+            {
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <div class="form-check radio-btn mb-2">
+                            <input asp-for="TemplateType" class="form-check-input"
+                                   type="radio"
+                                   id="@t.Value"
+                                   value="@t.Value" />
+                            <label class="form-check-label"
+                                   for="Default1">
+                                @t.Text
+                            </label>
+                        </div>
+
+                        @if (t.Text == "Default")
+                        {
+                            <p>Send messages with media and customised buttons to engage your customers.</p>
+                        }
+                        else if (t.Text == "Calling permissions request")
+                        {
+                            <p>Ask customers if you can call them on WhatsApp</p>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
