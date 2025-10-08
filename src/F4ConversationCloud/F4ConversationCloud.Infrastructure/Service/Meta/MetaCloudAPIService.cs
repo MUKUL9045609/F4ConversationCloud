@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Exceptions
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
@@ -77,7 +78,11 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
             return await WhatsAppBusinessPostAsync<ResponseTemplateMessageCreationResponse>(template, formattedWhatsAppEndpoint, cancellationToken);
         }
 
-
+        public async Task<TemplateByIdResponse> GetTemplateByIdAsync(string templateId, CancellationToken cancellationToken = default)
+        {
+            var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.GetTemplateById.Replace("{{TEMPLATE_ID}}", templateId);
+            return await WhatsAppBusinessGetAsync<TemplateByIdResponse>(formattedWhatsAppEndpoint, cancellationToken);
+        }
 
         public async Task<TemplateResponse> GetAllTemplatesAsync(string whatsAppBusinessAccountId, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, string pagingUrl = null, CancellationToken cancellationToken = default)
         {

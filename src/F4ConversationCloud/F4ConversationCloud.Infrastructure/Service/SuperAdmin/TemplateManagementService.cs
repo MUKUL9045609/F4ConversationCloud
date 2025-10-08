@@ -51,6 +51,20 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
 
         }
+        
+        public async Task<TemplateByIdResponse> GetTemplateByIdAsync(string Template_id)
+        {
+            try
+            {
+                var updateTemplate = await _metaCloudAPI.GetTemplateByIdAsync(Template_id);
+                return updateTemplate;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<TemplateListViewItem> TemplateListAsync(TemplatesListFilter filter)
         {
             try

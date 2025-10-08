@@ -12,6 +12,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
     {
         Task<TemplateMessageCreationResponse> CreateTemplate(WhatsAppTemplateRequest request);
 
+        Task<TemplateByIdResponse> GetTemplateByIdAsync(string Template_id);
         Task<TemplateListViewItem> TemplateListAsync(TemplatesListFilter filter);
     }
 }

@@ -85,6 +85,20 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             
         }
 
+        [HttpGet("update-template/{id}")]
+        public IActionResult UpdateTemplate(string Template_id)
+        {
+            try
+            {
+                var UpdateTemplate = _templateManagementService.GetTemplateByIdAsync(Template_id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return View();
+        }
 
         [HttpGet("List")]
         public async Task<IActionResult> List(TemplatesListViewModel model)
