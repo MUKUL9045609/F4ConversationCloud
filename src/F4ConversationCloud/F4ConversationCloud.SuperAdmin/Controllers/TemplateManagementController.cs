@@ -191,7 +191,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             
 
-            return PartialView("_MarketingTemplateTypeOptions", model);
+            return PartialView("_MarketingDefaultTemplate", model);
         }
     }
 }
