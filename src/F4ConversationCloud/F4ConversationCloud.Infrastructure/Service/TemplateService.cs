@@ -31,8 +31,8 @@ namespace F4ConversationCloud.Infrastructure.Service
                 string requestJson = JsonConvert.SerializeObject(requestBody);
 
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                headers = new Dictionary<string, string> { { "Bearer", $"{token}" } };
-                
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
 
                 var result = await _logService.CallExternalAPI<dynamic>("https://graph.facebook.com/v23.0/528970240291210/message_templates",
                                                                     methodType,
