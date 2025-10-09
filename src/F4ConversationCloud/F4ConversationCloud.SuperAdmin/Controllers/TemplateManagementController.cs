@@ -1,10 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel;
 using System.Text.Json;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -12,9 +15,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     public class TemplateManagementController : Controller
     {
         private readonly ITemplateManagementService _templateManagementService;
-        public TemplateManagementController(ITemplateManagementService templateManagementService)
+        private readonly ITemplateService _templateService;
+        public TemplateManagementController(ITemplateManagementService templateManagementService , ITemplateService templateService)
         {
             _templateManagementService = templateManagementService;
+            _templateService = templateService;
         }
         public IActionResult Index()
         {
@@ -63,16 +68,23 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                                                     }
                                                  : null
                                        }).ToList();
-               
-                var templateRequest = new WhatsAppTemplateRequest
+
+
+              
+
+                var templateRequest = new MessageTemplate
                 {
-                    Name = Request.TemplateName,
-                    Language = Request.Language,
-                    Category = Request.Category,
-                    Components = components
+                    name = Request.TemplateName,
+                    language = Request.Language,
+                    category = Request.Category
                 };
+
+                templateRequest.components = new List<dynamic>();
+                templateRequest.components.AddRange(components);
+
                 var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
-                var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
+
+                var createTemplate = _templateService.CreateTemplate(templateRequest);
 
                 return View(Request);
             }
