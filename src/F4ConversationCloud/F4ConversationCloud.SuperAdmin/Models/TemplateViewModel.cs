@@ -39,6 +39,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string FileUrl { get; set; }
 
         [StringLength(60, ErrorMessage = "Header should be less than 60 characters.")]
+        [HeaderVariableFormat("VariableType", ErrorMessage = "Invalid variable format.")]
         public string Header { get; set; }
 
         [Required(ErrorMessage = "Please enter a message.")]

@@ -154,9 +154,9 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    @* <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script> *@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function() {
@@ -272,8 +272,70 @@
                 $('#clear-all-btn').show();
                 $('#submit-btn').show();
                 $('#preview-modal').show();
+                $.validator.unobtrusive.parse($("#partialForTemplateForm"));
                 commonHelper.showHideLoader(false);
             }, null);
+        });
+
+        $(document).on('click', '#header-add-btn', function (e) {
+            e.preventDefault();
+
+            const headerInput = document.querySelector("input[name='Header']");
+            const variableTypeSelect = $('[name="VariableType"] option:selected').text();
+
+            let variableToInsert = "";
+
+            if (variableTypeSelect === "Number") {
+                variableToInsert = "{{1}}";
+            } else if (variableTypeSelect === "Name") {
+                variableToInsert = "{{VariableName}}";
+            }
+
+            // Check if variable already exists
+            if (!headerInput.value.includes("{{")) {
+                headerInput.value += variableToInsert;
+                $('#header-add-btn').attr('disabled', true);
+            } else {
+                commonHelper.showError("Only one variable is supported in the header.");
+            }
+        });
+
+        // $(document).on('input', '[name="Header"]', function () {
+        //     const headerInput = document.querySelector("input[name='Header']");
+        //     const value = headerInput.value.trim();
+        //     const variableTypeSelect = $('[name="VariableType"] option:selected').text();
+        //     const validationSpan = $("span[data-valmsg-for='Header']");
+        //     let errorMessage = "";
+
+        //     if (value.includes("{{") || value.includes("{{}") || value.includes("}}") || value.includes("{}}")) {
+        //         if (variableTypeSelect === "Number") {
+        //             if (value.trim() != "{{1}}") {
+        //                 errorMessage = "This template contains variable parameters with incorrect formatting. Variable parameters must be whole numbers with two sets of curly brackets (for example, {{1}}, {{2}}).";
+        //             }
+        //         } else if (variableTypeSelect === "Name") {
+        //             const nameRegex = /^\s*\{\{[a-z]+[a-z0-9_]*\}\}\s*$/;
+        //             if (!nameRegex.test(value)) {
+        //                 errorMessage = "This template contains variable parameters with incorrect formatting. Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (for example, {{customer_name}}, {{order_id}}).";
+        //             }
+        //         }
+        //     }
+
+        //     if (errorMessage == "") {
+        //         validationSpan.text(errorMessage);
+        //         validationSpan.addClass("field-validation-error").removeClass("field-validation-valid");
+        //     } else {
+        //         validationSpan.text("");
+        //         validationSpan.addClass("field-validation-valid").removeClass("field-validation-error");
+        //     }
+        // });
+
+        $(document).on('input', '[name="Header"]', function () {
+            alert();
+            $(this).validate();
+        });
+
+        $('[name="VariableType"]').on('change', function () {
+            $('[name="Header"]').valid(); 
         });
     </script>
 }
