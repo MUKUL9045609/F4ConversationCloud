@@ -439,9 +439,7 @@ body {
     background-color: #ceeace !important;
 }
 
-.toast div {
-    padding: 10px;
-}
+
 
 .toast .toast-body {
     padding: 0px;
@@ -866,4 +864,156 @@ body {
 .swiper-button-next::after{
     font-size: 16px!important;
     color: #fff;
+}
+.toastify {
+    background: #fff!important;
+}
+.toast {
+    text-align:left;
+      padding: 12px 0!important;
+      background-color:#fff!important;
+      border-radius:4px!important;    
+      box-shadow: 1px 7px 14px -5px rgba(0,0,0,0.2)!important;
+      position: relative;
+  }
+  .toast:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    border-top-left-radius:4px;
+    border-bottom-left-radius: 4px;
+  
+  }
+  
+  .toast__icon{
+    position:absolute;
+    top:50%;
+    left:22px;
+    transform:translateY(-50%);
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    border-radius:50%;
+    display:inline-block;
+    display: flex;
+    align-items: center;
+  }
+  
+  .toast__type {
+    font-size: 15px!important;
+    color: #3e3e3e;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
+  
+.toast__message {
+    font-size: 13px!important;
+    margin-top: 6px;
+    margin-bottom: 0;
+    color: #878787;
+}
+
+.toast__content{
+padding-left:70px!important;
+padding-right:60px!important;
+}
+
+.toast__close {
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    width: 14px;
+    cursor:pointer;
+    height: 14px;
+fill:#878787;
+    transform: translateY(-50%);
+}
+  
+.toast--green .toast__icon{
+    background-color:#2BDE3F;
+}
+
+.toast--green:before{
+    background-color:#2BDE3F;
+}
+.toast--blue:before {
+    background-color: #1D72F3;
+}
+.toast--yellow:before {
+    background-color: #FFC007;
+}
+.toast--danger:before {
+    background-color: #bb2124;
+}
+
+.toastify{
+    max-width: 380px!important;
+    background-color: transparent !important;
+    box-shadow: none!important;
+    padding: 0px!important;
+}
+.toast--blue .toast__icon {
+    background-color: #1D72F3;
+}
+.toast--yellow .toast__icon {
+    background-color: #FFC007;
+}
+.toast--danger .toast__icon {
+    background-color: #bb2124;
+}
+.toast__svg {
+    fill: #fff;
+}
+.toast-close{
+    color: #000!important;
+    position: absolute;
+    right: 20px;
+    top:36%;
+}
+.toastify.on .toast:not(.showing):not(.show) {
+    opacity: 1;
+}
+.btn-close{
+    position: absolute;
+    right: -12px;
+    top: -11px;
+    background-color: #fff !important;
+    border-radius: 100% !important;
+    height: 20px !important;
+    width: 20px !important;
+    background-size: 46% !important;
+    opacity: 1 !important;
+    border: 1px solid #ddd !important;
+}
+
+.confirmation-modal{
+    .modal-body{
+        padding: 40px;
+    }
+    .modal-content{
+        border-radius: 1.3rem;
+    }
+    h3{
+        font-size: 20px;
+    }
+    p{
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: 0px;
+        max-width: 400px;
+        margin: 7px auto 0px;
+        color: #7e7d7d;
+    }
+    .delete-icon{
+        background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 32 32' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'%3E%3Ctitle%3Ecross-circle%3C/title%3E%3Cdesc%3ECreated with Sketch Beta.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' sketch:type='MSPage'%3E%3Cg id='Icon-Set' sketch:type='MSLayerGroup' transform='translate(-568.000000, -1087.000000)' fill='%23dc3545'%3E%3Cpath d='M584,1117 C576.268,1117 570,1110.73 570,1103 C570,1095.27 576.268,1089 584,1089 C591.732,1089 598,1095.27 598,1103 C598,1110.73 591.732,1117 584,1117 L584,1117 Z M584,1087 C575.163,1087 568,1094.16 568,1103 C568,1111.84 575.163,1119 584,1119 C592.837,1119 600,1111.84 600,1103 C600,1094.16 592.837,1087 584,1087 L584,1087 Z M589.717,1097.28 C589.323,1096.89 588.686,1096.89 588.292,1097.28 L583.994,1101.58 L579.758,1097.34 C579.367,1096.95 578.733,1096.95 578.344,1097.34 C577.953,1097.73 577.953,1098.37 578.344,1098.76 L582.58,1102.99 L578.314,1107.26 C577.921,1107.65 577.921,1108.29 578.314,1108.69 C578.708,1109.08 579.346,1109.08 579.74,1108.69 L584.006,1104.42 L588.242,1108.66 C588.633,1109.05 589.267,1109.05 589.657,1108.66 C590.048,1108.27 590.048,1107.63 589.657,1107.24 L585.42,1103.01 L589.717,1098.71 C590.11,1098.31 590.11,1097.68 589.717,1097.28 L589.717,1097.28 Z' id='cross-circle' sketch:type='MSShapeGroup'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 50px;width: 50px;display: block;
+        margin: 0 auto 19px;
+    }
 }
