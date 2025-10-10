@@ -22,6 +22,7 @@
             </div>
             <div class="row">
                 <form asp-action="CreateTemplate" asp-controller="TemplateManagement" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="col-md-8">
                         <div class="card padding">
                             <div class="d-flex justify-content-between mb-3">
@@ -348,6 +349,10 @@
 @section Scripts {
     @{
         //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <partial name="_ValidationScriptsPartial" />
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
         <partial name="_ValidationScriptsPartial" />
     }
 

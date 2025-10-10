@@ -95,7 +95,7 @@
                         <td><span class="badge success">@templates.Status</span></td>
                         <td>
                             <div class="action">
-                                <a href="#" class="edit-icon"></a>
+                                <a href="@Url.Action("UpdateTemplate", "TemplateManagement", new { Template_id = templates.Id })" class="edit-icon"></a>
                                 <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#@modalId"></a>
                             </div>
                         </td>

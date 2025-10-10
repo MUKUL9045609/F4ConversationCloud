@@ -1,8 +1,21 @@
-﻿@model CreateTemplateViewModel
+﻿@using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates
+@using F4ConversationCloud.Application.Common.Models.SuperAdmin
+
+@model TemplateByIdResponse
 @{
     ViewData["Title"] = "Update Template";
 }
-
+@{
+   
+    while (Model.Components == null || Model.Components.Count < 4)
+    {
+        if (Model.Components == null)
+        {
+            Model.Components = new List<CreateTemplateComponent>();
+        }
+        Model.Components.Add(new CreateTemplateComponent());
+    }
+}
 <div class="content">
     <div class="main-content">
         <div class="container-fluid">
@@ -13,6 +26,7 @@
                     </h3>
 
                 </div>
+                <button class="btn danger-btn" id="delete-template" type="submit"> Delete Template</button>
                 <!-- <div>
                     <button type="button" class="btn primary-btn" data-bs-toggle="modal"
                             data-bs-target="#createTemplate">
@@ -30,7 +44,7 @@
                             </div>
                             <div class="template-question mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Give your message template a name.</label>
-                                <input asp-for="TemplateName"
+                                <input asp-for="Name"
                                        type="text"
                                        class="form-control"
                                        id="exampleInputEmail1"
@@ -43,70 +57,6 @@
                             </div>
                         </div>
 
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Category<sup>*</sup></h3>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose what type of message template you want to
-                                    create.
-                                </label>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault1"
-                                                   value="UTILITY" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault1">
-                                                Utility
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault2"
-                                                   value="AUTHENTICATION" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault2">
-                                                Authentication
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault3"
-                                                   value="MARKETING" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault3">
-                                                Marketing
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="card padding">
                             <div class="d-flex justify-content-between mb-3">
@@ -346,192 +296,46 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="templateId" value="1080631917242429" />
+<input type="hidden" id="clientInfoId" value="1011" />
+<input type="hidden" id="templateName" value="fortune_diwali_2" />
 @section Scripts {
     @{
-        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        <partial name="_ValidationScriptsPartial" />
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+        <partial name="_ValidationScriptsPartial" />    
     }
 
     <script>
         $(document).ready(function () {
-            let BodyvariableCount = 0;
-            let HeadervariableCount = 0;
-            var hiddenValue = $('#Body_Text_value').val();
+            $('#delete-template').click(function () {
+                var TemplateId = $('#templateId').val();
+                var clientInfoId = $('#clientInfoId').val();
+                var templateName = $('#templateName').val();
 
+                if (!confirm("Are you sure want to delete this Template?")) return;
+                    
+                var req = {
+                        Template_id: TemplateId,
+                        ClientInfoId: clientInfoId,
+                        TemplateName: templateName
+                    };
 
-            $('#addBodyvariables').click(function () {
-                BodyvariableCount++;
-                var inputevariable = $("#body-text");
-                if (BodyvariableCount === 1) {
-                    $('.card.padding').show();
-                }
+                var  url = "@Url.ActionLink("DeleteTemplate", "TemplateManagement")";
 
-                const variable = `{{${BodyvariableCount}}}`;
-
-
-
-                 const newRow = $(`
-                        <li style="margin-top: 10px;" data-variable="${variable}">
-                            <div class="d-flex gap-3">
-                                <div>
-                                    <input type="text" class="form-control" value="${variable}" readonly>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <input type="text" class="form-control variable-value" id="Body_Var_value_${BodyvariableCount}">
-                                </div>
-                                <button type="button" id="add-variable" class="btn btn-primary">add</button>
-                                <button type="button" id="remove-variable" class="btn btn-danger">Remove</button>
-                            </div>
-                        </li>
-                    `);
-
-
-                $('#AddVariableli').append(newRow);
-
-                updateTextarea(variable,inputevariable)
-
-                newRow.find(`#Body_Var_value_${BodyvariableCount}`).change(function () {
-                    //var inputVarValue = $(this).val();
-                    updateBodyTextValue();
-                });
-
-                newRow.find('#remove-variable').click(function () {
-                   removeFromTextarea(variable,inputevariable);
-                    newRow.remove();
-                    BodyvariableCount--;
-                    checkIfBodyEmpty();
-                });
-            });
-
-                             function updateBodyTextValue() {
-                                    let innerValues = [];
-
-                                    $(".variable-value").each(function () {
-                                        let val = $(this).val().trim();
-                                        if (val) {
-                                            innerValues.push(val);
-                                        }
-                                    });
-
-                                    //let bodyTextArray = [innerValues];
-
-                                    let jsonValue = JSON.stringify(innerValues);
-
-                                    debugger;
-
-                                    $('#Body_Text_value').val(jsonValue);
-                                }
-
-                    //  function updateBodyTextValue() {
-                    //     let values = [];
-
-                    //         $(".variable-value").each(function () {
-                    //             let val = $(this).val().trim();
-                    //             if (val) {
-                    //                 values.push(val);
-                    //             }
-                    //         });
-
-
-                    //     $('#Body_Text_value').val(JSON.stringify(values));
-                    // }
-
-
-
-             $('#AddHeaderVariable').click(function () {
-                 const addvarinInpute = $('#Headerinput');
-
-                 HeadervariableCount++;
-
-                if (HeadervariableCount === 1) {
-                    $('.card.padding').show();
-                }
-
-                const variable = `{{${HeadervariableCount}}}`;
-
-                const newRow = $(`
-                    <li style="margin-top: 10px;" data-variable="${variable}">
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input type="text" class="form-control" value="${variable}" readonly>
-                            </div>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control variable-value"  id="Header_Var_value_${HeadervariableCount}">
-                            </div>
-                            <button type="button" id="remove-Header-var"  class="btn btn-danger">Remove</button>
-                        </div>
-                    </li>
-                `);
-
-                $('#addHeader-veriables').append(newRow);
-
-               // updateTextarea(variable);
-
-
-                updateTextarea(variable,addvarinInpute)
-                    newRow.find(`#Header_Var_value_${HeadervariableCount}`).change(function () {
-                        var inputVarValue = $(this).val();
-                        updateHeaderTextvalue(inputVarValue);
-                    });
-                newRow.find('#remove-Header-var').click(function () {
-
-                    removeFromTextarea(variable,addvarinInpute);
-                    newRow.remove();
-                    HeadervariableCount--;
-                    checkIfHeaderEmpty();
-                });
-            });
-
-
-            function updateHeaderTextvalue(inputVarValue) {
-
-                    let existingValue = $('#Header_Text_value').val();
-                    let valueArray = existingValue ? existingValue.split(',') : [];
-
-                    if (inputVarValue.trim() !== "") {
-                        valueArray.push(inputVarValue);
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                    if (response && response.success) {
+                                commonHelper.showSuccess(response.message);
+                                setTimeout(function () { location.reload(); }, 1500);
+                    } else {
+                        commonHelper.showError(response && response.message ? response.message : "Technical error.");
                     }
-
-                    $('#Header_Text_value').val(valueArray.map(i => `${i}` ).join(', '));
-            }
-
-
-             function updateTextarea(variable,addvarinInpute) {
-                let textarea =addvarinInpute;
-
-                let currentVal = textarea.val();
-
-                if (!currentVal.includes(variable)) {
-                    if (currentVal.length > 0) currentVal += ' ';
-
-                    textarea.val(currentVal+variable);
-                    //textarea.val(currentVal + variable);
-                }
-            }
-
-            function removeFromTextarea(variable,addvarinInpute) {
-
-               const textarea = addvarinInpute;
-                let currentVal =  addvarinInpute.val();
-                const regex = new RegExp(variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                textarea.val(currentVal.replace(regex, '').replace(/\s+/g, ' ').trim());
-
-            }
-            function checkIfHeaderEmpty() {
-                if ($('#addHeader-veriables li').length === 0) {
-                    $('.card.padding').hide();
-                    variableCount = 0;
-                }
-            }
-             function checkIfBodyEmpty() {
-                if ($('#AddVariableli li').length === 0) {
-
-                    $('.card.padding').hide();
-                    variableCount = 0;
-                }
-            }
+               
+                }, null);
+            });
         });
     </script>
+ 
 
 }

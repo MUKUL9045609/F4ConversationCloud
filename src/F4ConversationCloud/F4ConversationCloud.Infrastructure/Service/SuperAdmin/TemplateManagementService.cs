@@ -1,8 +1,11 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Exceptions;
+//using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 
@@ -57,11 +60,41 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             try
             {
                 var updateTemplate = await _metaCloudAPI.GetTemplateByIdAsync(Template_id);
+
                 return updateTemplate;
             }
             catch (Exception)
             {
-                return null;
+                return new TemplateByIdResponse();
+            }
+        }
+
+        public  async Task<DeleteTemplateResponse> DeleteTemplateById(string Template_id, int ClientInfoId, string TemplateName)
+        {
+            try
+            {
+                var clientDetails = await _clientManagement.GetClientDetailsById(ClientInfoId);
+
+                if (clientDetails != null)
+                {
+
+                    var deleteTemplate = await _metaCloudAPI.DeleteTemplateByIdAsync(clientDetails.WABAId, Template_id, TemplateName);
+                    if (deleteTemplate.Success)
+                    {
+                        return new DeleteTemplateResponse { success = true, message = "Template Deleted Successfully" };
+                    };
+                }
+                return new DeleteTemplateResponse { success = false, message = "Template Deletion Failed" };
+            }
+            catch (WhatsappBusinessCloudAPIException ex )
+            {
+                return new DeleteTemplateResponse
+                {
+                    message = ex.whatsAppErrorResponse.Error.ErrorUserMsg,
+                    //ex.whatsAppErrorResponse.Error.ErrorUserTitle
+                 
+                };
+                
             }
         }
 

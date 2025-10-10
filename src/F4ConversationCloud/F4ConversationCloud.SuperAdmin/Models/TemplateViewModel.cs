@@ -46,5 +46,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string MessageBody { get; set; }
         [StringLength(60, ErrorMessage = "Footer should be less than 60 characters.")]
         public string Footer { get; set; }
+
+        public CreateTemplateViewModel CreateTemplateViewModel { get; set; } = new();
     }
 }

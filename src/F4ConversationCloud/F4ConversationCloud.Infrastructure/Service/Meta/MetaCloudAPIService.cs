@@ -110,6 +110,25 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
         }
 
 
+        public async Task<BaseSuccessResponse> DeleteTemplateByIdAsync(string whatsAppBusinessAccountId, string templateId, string templateName, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, CancellationToken cancellationToken = default)
+        {
+            if (cloudApiConfig is not null)
+            {
+                _whatsAppConfig = cloudApiConfig;
+            }
+
+            var builder = new StringBuilder();
+
+            builder.Append(WhatsAppBusinessRequestEndpoint.DeleteTemplateMessage);
+            builder.Replace("{{WABA-ID}}", whatsAppBusinessAccountId);
+            builder.Replace("{{HSM_ID}}", templateId);
+            builder.Replace("{{NAME}}", templateName);
+
+            var formattedWhatsAppEndpoint = builder.ToString();
+            return await WhatsAppBusinessDeleteAsync<BaseSuccessResponse>(formattedWhatsAppEndpoint, cancellationToken);
+        }
+
+
         private async Task<T> WhatsAppBusinessPostAsync<T>(object whatsAppDto, string whatsAppBusinessEndPoint, CancellationToken cancellationToken = default) where T : new() { 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppConfig.AccessToken);
 
@@ -170,6 +189,36 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
             }
         }
 
+
+        private async Task<T> WhatsAppBusinessDeleteAsync<T>(string whatsAppBusinessEndpoint, CancellationToken cancellationToken = default, bool isHeaderAccessTokenProvided = true) where T : new()
+        {
+            if (isHeaderAccessTokenProvided)
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppConfig.AccessToken);
+            }
+            T result = new();
+            cancellationToken.ThrowIfCancellationRequested();
+            var response = await _httpClient.DeleteAsync(whatsAppBusinessEndpoint, cancellationToken).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+                {
+                    result = await JsonSerializer.DeserializeAsync<T>(stream, cancellationToken: cancellationToken);
+                }
+            }
+            else
+            {
+                WhatsAppErrorResponse whatsAppErrorResponse = new WhatsAppErrorResponse();
+                using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+                {
+                    whatsAppErrorResponse = await JsonSerializer.DeserializeAsync<WhatsAppErrorResponse>(stream, cancellationToken: cancellationToken);
+                }
+                throw new WhatsappBusinessCloudAPIException(new HttpRequestException(whatsAppErrorResponse.Error.Message), response.StatusCode, whatsAppErrorResponse);
+
+            }
+            return result;
+        }
 
 
 
