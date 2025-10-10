@@ -6,6 +6,8 @@ namespace F4ConversationCloud.SuperAdmin.Models
 {
     public class CreateTemplateViewModel : IValidatableObject
     {
+        [Required(ErrorMessage = "Please enter template name")]
+        [RegularExpression("^[a-z0-9_]+$", ErrorMessage = "Template names can only contain small letters, numbers and underscores.")]
         public string TemplateName { get; set; }
         public string Language { get; set; }
         public string Category { get; set; }
@@ -74,26 +76,47 @@ namespace F4ConversationCloud.SuperAdmin.Models
                 }
                 if (comp.Type == "HEADER")
                 {
-                    //if (string.IsNullOrWhiteSpace(comp.Format))
-                    //{
-                    //    return new ValidationResult("Header format is required.");
-                    //}
-                    //if (comp.Format == "TEXT" && string.IsNullOrWhiteSpace(comp.Text))
-                    //{
-                    //    return new ValidationResult("Header text is required for TEXT format.");
-                    //}
-                    //if (comp.Format == "IMAGE" && string.IsNullOrWhiteSpace(comp.Text))
-                    //{
-                    //    return new ValidationResult("Header text is required for IMAGE format.");
-                    //}
-                    //if (comp.Format == "DOCUMENT" && string.IsNullOrWhiteSpace(comp.Text))
-                    //{
-                    //    return new ValidationResult("Header text is required for DOCUMENT format.");
-                    //}
-                    //if (comp.Format == "VIDEO" && string.IsNullOrWhiteSpace(comp.Text))
-                    //{
-                    //    return new ValidationResult("Header text is required for VIDEO format.");
-                    //}
+                    if (string.IsNullOrWhiteSpace(comp.Format))
+                    {
+                        return new ValidationResult("Header format is required.");
+                    }
+                    if (comp.Format == "TEXT" && string.IsNullOrWhiteSpace(comp.Text))
+                    {
+                        
+                        if (comp.Format == "TEXT") {
+
+                            //for (var i = 0; i < comp.Text.Length; i++)
+                            //{
+                            //    if (comp.Text[i] == '{' || comp.Text[i] == '}')
+                            //    {
+                            //        return new ValidationResult("Header text should not contain curly braces.");
+                            //    }
+                                
+                            //}
+                            for (var i = 0; i < comp.Example.HeaderText.Count; i++)
+                            {
+                                if (i>1)
+                                {
+                                    return new ValidationResult("Header  should not contain one Variable");
+                                }
+
+                            }
+                        }
+                        return new ValidationResult("Header text is required for TEXT format.");
+
+                    }
+                    if (comp.Format == "IMAGE" && string.IsNullOrWhiteSpace(comp.Text))
+                    {
+                        return new ValidationResult("Header text is required for IMAGE format.");
+                    }
+                    if (comp.Format == "DOCUMENT" && string.IsNullOrWhiteSpace(comp.Text))
+                    {
+                        return new ValidationResult("Header text is required for DOCUMENT format.");
+                    }
+                    if (comp.Format == "VIDEO" && string.IsNullOrWhiteSpace(comp.Text))
+                    {
+                        return new ValidationResult("Header text is required for VIDEO format.");
+                    }
                 }
                 else if (comp.Type == "BODY")
                 {
