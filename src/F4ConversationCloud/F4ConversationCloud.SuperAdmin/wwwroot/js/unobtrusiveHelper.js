@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    console.log($.validator);
+   
     $.validator.setDefaults({
         highlight: function (element) {
             $(element).addClass('is-invalid');  // Add Bootstrap 'is-invalid' class
@@ -12,8 +12,8 @@
     });
 
     $.validator.addMethod("headervariableformat", function (value, element, param) {
+        console.log('headervariableformat');
         const variableType = $(`[name="${param}"]`).find("option:selected").text().trim();
-        console.log('Hello');
 
         //if (!value.includes("{{")) return true;
 
@@ -27,22 +27,10 @@
     });
 
     $.validator.unobtrusive.adapters.add("headervariableformat", ["VariableType"], function (options) {
-       
         options.rules["headervariableformat"] = options.params.VariableType;
         options.messages["headervariableformat"] = options.message;
-        console.log(options)
+        console.log('Options - ',options)
     });
 
-    $("form").validate({
-        rules: {
-            Header: {
-                headervariableformat: true // Apply your custom method
-            }
-        },
-        messages: {
-            Header: {
-                headervariableformat: "check."
-            }
-        }
-    });
+    $("form").validate();
 });
