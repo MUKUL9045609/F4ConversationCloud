@@ -854,3 +854,14 @@ body {
     list-style-type: none;
     padding: 0px;
 }
+.swiper-button-prev,
+.swiper-button-next{
+    height: 40px!important;width: 40px!important;
+    background-color: #ffffffcc;
+    border-radius: 50%;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after{
+    font-size: 20px!important;
+    color: #000;
+}
