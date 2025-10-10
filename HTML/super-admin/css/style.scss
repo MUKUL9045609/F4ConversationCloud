@@ -439,9 +439,7 @@ body {
     background-color: #ceeace !important;
 }
 
-.toast div {
-    padding: 10px;
-}
+
 
 .toast .toast-body {
     padding: 0px;
@@ -866,4 +864,129 @@ body {
 .swiper-button-next::after{
     font-size: 16px!important;
     color: #fff;
+}
+.toastify {
+    background: #fff!important;
+}
+.toast {
+    text-align:left;
+      padding: 12px 0!important;
+      background-color:#fff!important;
+      border-radius:4px!important;    
+      box-shadow: 1px 7px 14px -5px rgba(0,0,0,0.2)!important;
+      position: relative;
+  }
+  .toast:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    border-top-left-radius:4px;
+    border-bottom-left-radius: 4px;
+  
+  }
+  
+  .toast__icon{
+    position:absolute;
+    top:50%;
+    left:22px;
+    transform:translateY(-50%);
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    border-radius:50%;
+    display:inline-block;
+    display: flex;
+    align-items: center;
+  }
+  
+  .toast__type {
+    font-size: 15px!important;
+    color: #3e3e3e;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
+  
+.toast__message {
+    font-size: 13px!important;
+    margin-top: 6px;
+    margin-bottom: 0;
+    color: #878787;
+}
+
+.toast__content{
+padding-left:70px!important;
+padding-right:60px!important;
+}
+
+.toast__close {
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    width: 14px;
+    cursor:pointer;
+    height: 14px;
+fill:#878787;
+    transform: translateY(-50%);
+}
+  
+.toast--green .toast__icon{
+    background-color:#2BDE3F;
+}
+
+.toast--green:before{
+    background-color:#2BDE3F;
+}
+.toast--blue:before {
+    background-color: #1D72F3;
+}
+.toast--yellow:before {
+    background-color: #FFC007;
+}
+.toast--danger:before {
+    background-color: #bb2124;
+}
+
+.toastify{
+    max-width: 380px!important;
+    background-color: transparent !important;
+    box-shadow: none!important;
+    padding: 0px!important;
+}
+.toast--blue .toast__icon {
+    background-color: #1D72F3;
+}
+.toast--yellow .toast__icon {
+    background-color: #FFC007;
+}
+.toast--danger .toast__icon {
+    background-color: #bb2124;
+}
+.toast__svg {
+    fill: #fff;
+}
+.toast-close{
+    color: #000!important;
+    position: absolute;
+    right: 20px;
+    top:36%;
+}
+.toastify.on .toast:not(.showing):not(.show) {
+    opacity: 1;
+}
+.btn-close{
+    position: absolute;
+    right: -38px;
+    top: -15px;
+    background-color: #fff!important;
+    border-radius: 100%!important;
+    height: 20px!important;
+    width: 20px!important;
+    background-size: 46%!important;
+}
+.confirmation-modal{
+    
 }
