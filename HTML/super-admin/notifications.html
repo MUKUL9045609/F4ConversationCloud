@@ -337,10 +337,12 @@
             <div class="modal-content">
                 
                 <div class="modal-body">
+                    <span class="delete-icon"></span>
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         <h3>Are You sure ?</h3>
                     </div>
+                    <p>Do you really want to delete these records ? This Process cannot be undone.</p>
                 </div>
                
             </div>
@@ -415,7 +417,7 @@
                 Toastify({
                   node: toasterOne,
                   close:true,
-                  duration: 9000000,
+                  duration: 3000,
                   gravity: "top",
                   position: "right",
                 }).showToast();
