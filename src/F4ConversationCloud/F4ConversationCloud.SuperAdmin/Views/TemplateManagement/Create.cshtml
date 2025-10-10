@@ -182,14 +182,14 @@
             });
 
             $('#mediaType').change(function () {
-                
+
                 var selectedValue = parseInt($(this).val());
                 var selectedText = $('[name="MediaType"] option:selected').text();
                 var $fileInput = $('#UploadedFile');
                 var $attachment = $('#attachment');
                 var $existingFileLink = $('#existingFileLink');
                 var $fileValidationMessage = $('[data-valmsg-for="File"]');
-                
+
                 $fileInput.val('');
                 $existingFileLink.html('');
                 $fileInput.removeAttr('accept');
@@ -335,7 +335,7 @@
         });
 
         $('[name="VariableType"]').on('change', function () {
-            $('[name="Header"]').valid(); 
+            $('[name="Header"]').valid();
         });
     </script>
 }

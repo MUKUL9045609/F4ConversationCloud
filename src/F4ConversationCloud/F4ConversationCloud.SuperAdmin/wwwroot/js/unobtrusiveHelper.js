@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    // Set default highlighting/unhighlighting behavior for Bootstrap
+    console.log($.validator);
     $.validator.setDefaults({
         highlight: function (element) {
             $(element).addClass('is-invalid');  // Add Bootstrap 'is-invalid' class
@@ -13,8 +13,9 @@
 
     $.validator.addMethod("headervariableformat", function (value, element, param) {
         const variableType = $(`[name="${param}"]`).find("option:selected").text().trim();
+        console.log('Hello');
 
-        if (!value.includes("{{")) return true;
+        //if (!value.includes("{{")) return true;
 
         if (variableType === "Number") {
             return /^\{\{\d+\}\}$/.test(value.trim());
@@ -25,8 +26,23 @@
         return false;
     });
 
-    $.validator.unobtrusive.adapters.add("headervariableformat", ["variabletype"], function (options) {
-        options.rules["headervariableformat"] = options.params.variabletype;
+    $.validator.unobtrusive.adapters.add("headervariableformat", ["VariableType"], function (options) {
+       
+        options.rules["headervariableformat"] = options.params.VariableType;
         options.messages["headervariableformat"] = options.message;
+        console.log(options)
+    });
+
+    $("form").validate({
+        rules: {
+            Header: {
+                headervariableformat: true // Apply your custom method
+            }
+        },
+        messages: {
+            Header: {
+                headervariableformat: "check."
+            }
+        }
     });
 });

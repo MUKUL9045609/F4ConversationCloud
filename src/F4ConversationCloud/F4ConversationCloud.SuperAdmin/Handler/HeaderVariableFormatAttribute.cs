@@ -57,7 +57,7 @@ namespace F4ConversationCloud.SuperAdmin.Handler
         {
             context.Attributes.Add("data-val", "true");
             context.Attributes.Add("data-val-headervariableformat", ErrorMessage ?? "Invalid variable format.");
-            context.Attributes.Add("data-val-headervariableformat-variabletype", _variableTypeProperty.ToLower());
+            context.Attributes.Add("data-val-headervariableformat-variabletype", _variableTypeProperty);
         }
     }
 }
