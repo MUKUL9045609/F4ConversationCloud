@@ -36,17 +36,14 @@
     </div>
     <div class="card padding">
         <div class="d-flex justify-content-between mb-3">
-            <h3>Types Of Variables<sup>*</sup></h3>
+            <h3>Types Of Variables<sup> *</sup></h3>
             <span class="question"></span>
         </div>
         <div class="template-question mb-3">
-
-            <select class="form-select" aria-label="Default select example">
-                <option selected>Name</option>
-                <option value="1">Number</option>
-
+            <select asp-for="VariableType" asp-items="Model.VariableTypeList" class="form-select" aria-label="Default select example">
             </select>
         </div>
+        <span asp-validation-for="VariableType" class="text-danger"></span>
     </div>
     <div class="card padding">
         <div class="d-flex justify-content-between mb-3">
@@ -86,8 +83,9 @@
                 is supported in the header.
             </label>
             <input asp-for="Header" type="text" class="form-control" maxlength="60">
+            <span asp-validation-for="Header" class="text-danger"></span>
             <div class="d-flex justify-content-end">
-                <button class="add-variables" id="header-add-btn">Add Variables</button>
+                <button class="add-variables" id="header-add-btn" type="button">Add Variables</button>
             </div>
         </div>
     </div>
