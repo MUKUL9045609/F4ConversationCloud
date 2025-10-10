@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.WebUI.Handler;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,15 +20,15 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string? language { get; set; }
 
         [Required(ErrorMessage = "Category is required.")]
-        //[ValidCategory(ErrorMessage = "The category must be 'transactional', 'marketing', or 'utility'.")]
-        public string? category { get; set; }
+        [ValidMetaTemplateCategory(ErrorMessage = "The category must be 'Authentication', 'Marketing', or 'Utility'.")]
+        public string category { get; set; }
 
         [Required(ErrorMessage = "At least one component is required.")]
         public List<dynamic> components { get; set; } = new List<dynamic>();
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (category == "marketing")
+            if (category == "Marketing")
             {
                 foreach (var component in components)
                 {
@@ -39,15 +41,45 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
                     }
                 }
             }
+            else if (Enum.GetNames(typeof(TemplateModuleType)).Contains(category))
+            {
+                foreach (var component in components)
+                {
+                    if (component.type != "promotional_offer")
+                    {
+                        yield return new ValidationResult(
+                            "Marketing templates must contain only 'promotional_offer' components.",
+                            new[] { nameof(components) });
+                        yield break;
+                    }
+                }
+            }
 
             for (int i = 0; i < components.Count; i++)
             {
                 var component = components[i];
-                if (component.someRequiredProperty == null)
+                string componentPath = $"{nameof(components)}[{i}]";
+
+                if (string.IsNullOrWhiteSpace(component.someRequiredProperty))
                 {
                     yield return new ValidationResult(
                         $"Component at index {i} is missing a required property.",
-                        new[] { nameof(components) });
+                        new[] { componentPath });
+                }
+
+                var validTypes = new[] { "header", "body", "footer" };
+                if (!string.IsNullOrWhiteSpace(component.type) && Array.IndexOf(validTypes, component.type) == -1)
+                {
+                    yield return new ValidationResult(
+                        $"Component at index {i} has an invalid type: '{component.type}'.",
+                        new[] { componentPath });
+                }
+
+                if (component.type == "header" && component.content?.Length > 100)
+                {
+                    yield return new ValidationResult(
+                        $"Header content for component at index {i} is too long (max 100 characters).",
+                        new[] { componentPath });
                 }
             }
         }
