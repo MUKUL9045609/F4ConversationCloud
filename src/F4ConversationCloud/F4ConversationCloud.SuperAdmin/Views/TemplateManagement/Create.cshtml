@@ -180,9 +180,9 @@
                 $('#previous-btn').hide();
                 $('#preview-modal').hide();
             });
+        });
 
-            $('#mediaType').change(function () {
-
+        $(document).on('change', '#mediaType', function () {
                 var selectedValue = parseInt($(this).val());
                 var selectedText = $('[name="MediaType"] option:selected').text();
                 var $fileInput = $('#UploadedFile');
@@ -222,10 +222,9 @@
                     $("#header-add-btn").removeAttr("disabled");
                     $('#Header').removeAttr('readonly');
                 }
-            });
-
-            $('#mediaType').trigger('change');
         });
+
+        $('#mediaType').trigger('change');
 
         $(document).on('change', '[name="TemplateCategory"]', function () {
             commonHelper.showHideLoader(true);
@@ -272,7 +271,15 @@
                 $('#clear-all-btn').show();
                 $('#submit-btn').show();
                 $('#preview-modal').show();
-                $.validator.unobtrusive.parse($("#partialForTemplateForm"));
+
+                //$.validator.unobtrusive.parse($("#partialForTemplateForm"));
+                var $form = $("#mainForm");
+
+                // Remove old validator instances
+                $form.removeData("validator").removeData("unobtrusiveValidation"); // Unobtrusive Validation
+
+                // Re-parse unobtrusive validation attributes
+                $.validator.unobtrusive.parse($form);
                 commonHelper.showHideLoader(false);
             }, null);
         });
@@ -288,8 +295,11 @@
             if (variableTypeSelect === "Number") {
                 variableToInsert = "{{1}}";
             } else if (variableTypeSelect === "Name") {
-                variableToInsert = "{{VariableName}}";
+                variableToInsert = "{{variable_name}}";
             }
+            $('#variable-card').show();
+            $('#variable-card-header').show();
+            $('[name="HeaderVariableName"]').val(variableToInsert);
 
             // Check if variable already exists
             if (!headerInput.value.includes("{{")) {
@@ -300,41 +310,56 @@
             }
         });
 
-        // $(document).on('input', '[name="Header"]', function () {
-        //     const headerInput = document.querySelector("input[name='Header']");
-        //     const value = headerInput.value.trim();
-        //     const variableTypeSelect = $('[name="VariableType"] option:selected').text();
-        //     const validationSpan = $("span[data-valmsg-for='Header']");
-        //     let errorMessage = "";
-
-        //     if (value.includes("{{") || value.includes("{{}") || value.includes("}}") || value.includes("{}}")) {
-        //         if (variableTypeSelect === "Number") {
-        //             if (value.trim() != "{{1}}") {
-        //                 errorMessage = "This template contains variable parameters with incorrect formatting. Variable parameters must be whole numbers with two sets of curly brackets (for example, {{1}}, {{2}}).";
-        //             }
-        //         } else if (variableTypeSelect === "Name") {
-        //             const nameRegex = /^\s*\{\{[a-z]+[a-z0-9_]*\}\}\s*$/;
-        //             if (!nameRegex.test(value)) {
-        //                 errorMessage = "This template contains variable parameters with incorrect formatting. Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (for example, {{customer_name}}, {{order_id}}).";
-        //             }
-        //         }
-        //     }
-
-        //     if (errorMessage == "") {
-        //         validationSpan.text(errorMessage);
-        //         validationSpan.addClass("field-validation-error").removeClass("field-validation-valid");
-        //     } else {
-        //         validationSpan.text("");
-        //         validationSpan.addClass("field-validation-valid").removeClass("field-validation-error");
-        //     }
-        // });
-
         $(document).on('input', '[name="Header"]', function () {
-            $(this).validate();
+            const headerVal = $(this).val().trim();
+
+            // Enable the button only if the input is empty
+            $('#header-add-btn').attr('disabled', headerVal !== '');
+
+            // Trigger validation and store result
+            const isValid = $(this).valid();
+
+            // Show/hide variable card based on validity
+            if (isValid && headerVal != '') {
+                $('#variable-card').show();
+                $('#variable-card-header').show();
+                // Update the readonly input with asp-for="HeaderVariableName"
+                $('[name="HeaderVariableName"]').val(headerVal);
+            } else {
+                $('#variable-card').hide();
+                $('#variable-card-header').hide();
+                $('[name="HeaderVariableName"]').val('');
+            }
         });
 
-        $('[name="VariableType"]').on('change', function () {
-            $('[name="Header"]').valid();
+        $(document).on('change', '[name="VariableType"]', function () {
+            $('#header-add-btn').attr('disabled', false);
+            let newMessage = "";
+            const variableTypeSelect = $('[name="VariableType"] option:selected').text();
+            
+            if (variableTypeSelect === "Number") {
+                newMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).";
+            } else if (variableTypeSelect === "Name") {
+                newMessage = "Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (e.g., {{customer_name}}, {{order_id}}).";
+            }
+
+            const $headerInput = $('[name="Header"]');
+
+            // Update the data attribute (optional, for consistency)
+            $headerInput.attr('data-val-headervariableformat', newMessage);
+
+            // Update the validator's internal message directly
+            const validator = $headerInput.closest("form").validate();
+            validator.settings.messages.Header = validator.settings.messages.Header || {};
+            validator.settings.messages.Header.headervariableformat = newMessage;
+
+            $('#Header').valid();
+        });
+
+        $(document).on('input', '#content', function () {
+            const contentText = $(this).text().trim();
+            $('[name="MessageBody"]').val(contentText).valid();
+            console.log($('[name="MessageBody"]').val())
         });
     </script>
 }
