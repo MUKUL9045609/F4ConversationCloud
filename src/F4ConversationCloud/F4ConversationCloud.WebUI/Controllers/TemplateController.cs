@@ -23,16 +23,17 @@ namespace F4ConversationCloud.WebUI.Controllers
 
 
         [HttpPost("CreateTemplate")]
-        public async Task<IActionResult> CreateTemplate(MessageTemplate request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplate request)
         {
             try
             {
                 List<dynamic> components = new List<dynamic>();
 
                 MessageTemplate messageTemplate = new MessageTemplate();
-                messageTemplate.category = request.category;
-                messageTemplate.name = request.name;
-                messageTemplate.language = request.language;
+                messageTemplate.Templatecategory = request.Templatecategory;
+                messageTemplate.Templatename = request.Templatename;
+                messageTemplate.Templatelanguage = request.Templatelanguage;
 
                 foreach (var component in request.components)
                 {
@@ -85,9 +86,9 @@ namespace F4ConversationCloud.WebUI.Controllers
                 List<dynamic> components = new List<dynamic>();
 
                 MessageTemplate messageTemplate = new MessageTemplate();
-                messageTemplate.category = request.category;
-                messageTemplate.name = request.name;
-                messageTemplate.language = request.language;
+                messageTemplate.Templatecategory = request.Templatecategory;
+                messageTemplate.Templatename = request.Templatename;
+                messageTemplate.Templatelanguage = request.Templatelanguage;
 
                 foreach (var component in request.components)
                 {

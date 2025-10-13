@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace F4ConversationCloud.Application.Common.Models.Templates
 {
@@ -16,125 +18,181 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         [Required(ErrorMessage = "Template name is required.")]
         [RegularExpression(@"^[a-zA-Z0-9_-]{3,50}$", ErrorMessage = "Template name must be between 3 and 50 characters and can only contain letters, numbers, hyphens, and underscores.")]
         [Display(Name = "Template Name")]
-        public string? name { get; set; }
-        public string? language { get; set; }
+        public string? Templatename { get; set; }
+        public string? Templatelanguage { get; set; }
 
         [Required(ErrorMessage = "Category is required.")]
         [ValidMetaTemplateCategory(ErrorMessage = "The category must be 'Authentication', 'Marketing', or 'Utility'.")]
-        public string category { get; set; }
-
-        [Required(ErrorMessage = "At least one component is required.")]
+        public string Templatecategory { get; set; }
         public List<dynamic> components { get; set; } = new List<dynamic>();
-
+        public HeaderComponent TemplateHeader { get; set; }
+        public BodyComponent TemplateBody { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (category == "Marketing")
-            {
-                foreach (var component in components)
-                {
-                    if (component.type != "promotional_offer")
-                    {
-                        yield return new ValidationResult(
-                            "Marketing templates must contain only 'promotional_offer' components.",
-                            new[] { nameof(components) });
-                        yield break; 
-                    }
-                }
-            }
-            else if (Enum.GetNames(typeof(TemplateModuleType)).Contains(category))
-            {
-                foreach (var component in components)
-                {
-                    if (component.type != "promotional_offer")
-                    {
-                        yield return new ValidationResult(
-                            "Marketing templates must contain only 'promotional_offer' components.",
-                            new[] { nameof(components) });
-                        yield break;
-                    }
-                }
-            }
-
-
-
-            if (Enum.GetNames(typeof(TemplateLanguages)).Contains(language))
+            if (!Enum.GetNames(typeof(TemplateLanguages)).Contains(Templatelanguage))
             {
                 yield return new ValidationResult("Templates language is incorrect.");
             }
+        }
+    }
+}
 
-            for (int i = 0; i < components.Count; i++)
+public class HeaderComponent : IValidatableObject
+{
+    [Required(ErrorMessage = "This is required.")]
+    public string? format { get; set; }
+    public string? text { get; set; }
+    public HeaderNameVariable? NameVariable { get; set; }
+    public HeaderNumberVariable? NumberVariable { get; set; }
+    public IFormFile? Files { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var validformat = new[] { "TEXT", "IMAGE", "LOCATION", "DOCUMENT" };
+        if (Array.IndexOf(validformat, format) == -1)
+        {
+            yield return new ValidationResult("Templates format is incorrect.");
+        }
+        else
+        {
+            if (format == "TEXT")
             {
-                var component = components[i];
-                string componentPath = $"{nameof(components)}[{i}]";
-
-                if (string.IsNullOrWhiteSpace(component.someRequiredProperty))
+                if (string.IsNullOrEmpty(text))
                 {
-                    yield return new ValidationResult(
-                        $"Component at index {i} is missing a required property.",
-                        new[] { componentPath });
+                    yield return new ValidationResult("Header text cannot be empty.");
+
                 }
-
-                var validTypes = new[] { "header", "body", "footer" };
-                if (!string.IsNullOrWhiteSpace(component.type) && Array.IndexOf(validTypes, component.type) == -1)
+                else
                 {
-                    yield return new ValidationResult(
-                        $"Component at index {i} has an invalid type: '{component.type}'.",
-                        new[] { componentPath });
+                    if (text.Contains("{{"))
+                    {
+                        if (NameVariable == null)
+                        {
+                            yield return new ValidationResult("Enter valid text parameter value.");
+                        }
+                        else if (NameVariable.header_text == null)
+                        {
+                            yield return new ValidationResult("Enter valid text parameter value.");
+                        }
+
+                    }
                 }
-
-                if (component.type == "header" && component.content?.Length > 100)
+            }
+            else if (format == "IMAGE")
+            {
+                if (Files == null)
                 {
-                    yield return new ValidationResult(
-                        $"Header content for component at index {i} is too long (max 100 characters).",
-                        new[] { componentPath });
+                    yield return new ValidationResult("File required for image template");
+
+                }
+            }
+            else if (format == "DOCUMENT")
+            {
+                if (Files == null)
+                {
+                    yield return new ValidationResult("File required for documenttemplate");
+
+                }
+            }
+            else if (format == "VIDEO")
+            {
+                if (Files == null)
+                {
+                    yield return new ValidationResult("File required for documenttemplate");
+
                 }
             }
         }
 
-    }
 
-    public class HeaderComponent
-    {
-        public string? type { get; set; } = null;
-        public string? format { get; set; } = null;
-        public string? text { get; set; } = null;
-        public HeaderExample? example { get; set; } = null;
     }
+}
 
-    public class BodyComponent
-    {
-        public string? type { get; set; } = null;
-        public string? text { get; set; } = null;
-        public BodyExample? example { get; set; } = null;
-    }
+public class BodyComponent : IValidatableObject
+{
+    public string? text { get; set; }
+    public BodyExample? example { get; set; }
 
-    public class FooterComponent
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        public string? type { get; set; } = null;
-        public string? text { get; set; } = null;        
-    }
+        if (string.IsNullOrEmpty(text))
+        {
+            yield return new ValidationResult("Header text cannot be empty.");
 
-    public class ButtonComponent
-    {
-        public string? type { get; set; } = null;
-        public List<Button>? buttons { get; set; } = null;
-    }
+        }
+        else
+        {
+            if (text.Contains("{{"))
+            {
+                //if (BodyNameVariable == null)
+                //{
+                //    yield return new ValidationResult("Enter valid text parameter value.");
+                //}
+                //else if (NameVariable.header_text == null)
+                //{
+                //    yield return new ValidationResult("Enter valid text parameter value.");
+                //}
 
-    public class HeaderExample
-    {
-        public List<string>? header_text { get; set; } = null;
+            }
+        }
     }
+}
 
-    public class BodyExample
-    {
-        public List<List<string>>? body_text { get; set; } = null;
-    }
+public class FooterComponent
+{
+    public string? type { get; set; }
+    public string? text { get; set; }
+}
 
-    public class Button
-    {
-        public string? type { get; set; } = null;
-        public string? text { get; set; } = null;
-    }
+public class ButtonComponent
+{
+    public string? type { get; set; }
+    public List<Button>? buttons { get; set; }
+}
+
+public class HeaderNameVariable
+{
+    [RegularExpression(@"^\{\{[a-z][a-z0-9_]{1,50}\}\}$", ErrorMessage = "Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).")]
+    public List<string>? header_text { get; set; }
+    public List<string>? header_handle { get; set; }
+}
+
+public class HeaderNumberVariable
+{
+    [RegularExpression(@"^\{\{1\}\}$", ErrorMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).")]
+    public List<string>? header_text { get; set; }
+    public List<string>? header_handle { get; set; }
+}
+
+public class BodyExample
+{
+    public List<List<string>>? body_text { get; set; }
+
+    public BodyNameVariable BodyNameVariable { get; set; }
+
+    public BodyNumberVariable BodyNumberVariable { get; set; }
 
 }
+
+
+public class BodyNameVariable
+{
+
+    [RegularExpression(@"^\{\{[a-z][a-z0-9_]{1,50}\}\}$", ErrorMessage = "Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).")]
+    public List<string>? body_text { get; set; }
+}
+
+public class BodyNumberVariable
+{
+    [RegularExpression(@"^\{\{1\}\}$", ErrorMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).")]
+    public List<string>? body_text { get; set; }
+}
+
+public class Button
+{
+    public string? type { get; set; }
+    public string? text { get; set; }
+}
+
+
 
