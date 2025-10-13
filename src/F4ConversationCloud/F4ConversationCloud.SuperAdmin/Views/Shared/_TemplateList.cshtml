@@ -16,7 +16,7 @@
         </div>
         <div class="table-responsive">
 
-            <table class="table user-table form-wrapper">
+            <table class="table user-table form-wrapper" id="templatesTable">
                 <tr>
                     <th>
                         Template ID
@@ -237,12 +237,19 @@
         </nav>
     </div>
 </div>
+@* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css" />
+<script src="~/lib/datatables/jquery.dataTables.min.js"></script> *@
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+@* <script type="text/javascript" src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script> *@
+
 
     <script>
         $(document).ready(function () {
+            
             var swiper = new Swiper(".useCasesSwiper", {
                 
                 spaceBetween: 30,
@@ -260,7 +267,11 @@
                 },
                 loop: true
             });
+
+       // $('#templatesTable').DataTable();
         });
+
+          
     </script>
 
 
