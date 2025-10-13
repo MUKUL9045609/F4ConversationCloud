@@ -55,6 +55,13 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
                 }
             }
 
+
+
+            if (Enum.GetNames(typeof(TemplateLanguages)).Contains(language))
+            {
+                yield return new ValidationResult("Templates language is incorrect.");
+            }
+
             for (int i = 0; i < components.Count; i++)
             {
                 var component = components[i];

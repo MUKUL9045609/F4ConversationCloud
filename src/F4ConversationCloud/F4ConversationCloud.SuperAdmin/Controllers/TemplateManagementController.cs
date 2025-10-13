@@ -14,11 +14,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     public class TemplateManagementController : Controller
     {
         private readonly ITemplateManagementService _templateManagementService;
-        private readonly ITemplateService _templateService;
-        public TemplateManagementController(ITemplateManagementService templateManagementService , ITemplateService templateService)
+        
+        public TemplateManagementController(ITemplateManagementService templateManagementService)
         {
             _templateManagementService = templateManagementService;
-            _templateService = templateService;
+        
         }
         public IActionResult Index()
         {
@@ -70,17 +70,15 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var templateRequest = new WhatsAppTemplateRequest
                 {
-                    name = Request.TemplateName,
-                    language = Request.Language,
-                    category = Request.Category
+                    Name = Request.TemplateName,
+                    Language = Request.Language,
+                    Category = Request.Category
                 };
 
-                templateRequest.components = new List<dynamic>();
-                templateRequest.components.AddRange(components);
 
                 var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
 
-                var createTemplate = _templateService.CreateTemplate(templateRequest);
+                var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
 
                 return View(Request);
             }
