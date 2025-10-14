@@ -95,6 +95,27 @@
             <span class="question"></span>
         </div>
         <div class="template-question mb-3">
+            <label for="MessageBody" class="form-label">
+                Enter the text for your message in the language you have selected.
+            </label>
+
+            <div class="note d-flex align-items-center">
+                <span class="exclamatory"></span>
+                <p>
+                    The text limit in the body should be less than 550 characters and emojis should be less than 10 to avoid any template rejection.
+                </p>
+            </div>
+
+            <textarea id="MessageBody" name="MessageBody" asp-for="MessageBody" class="form-control"></textarea>
+            <span asp-validation-for="MessageBody" class="text-danger"></span>
+        </div>
+    </div>
+    @* <div class="card padding">
+        <div class="d-flex justify-content-between mb-3">
+            <h3>Body<sup> *</sup></h3>
+            <span class="question"></span>
+        </div>
+        <div class="template-question mb-3">
             <label for="exampleInputEmail1" class="form-label">
                 Enter the text for your message in the language you have
                 selected.
@@ -109,9 +130,6 @@
             </div>
             <div id="content" contenteditable="true" spellcheck="false" class="form-control"></div>
             <input asp-for="MessageBody" type="hidden" />
-            @* <div id="content" contenteditable="true" spellcheck="false">
-                                        Lorem, ipsum.
-                                    </div> *@
             <div class="toolbar">
                 <button class="add-variables">Add Variables</button>
                 <div class="btn-toolbar">
@@ -125,7 +143,7 @@
             </div>
             <span asp-validation-for="MessageBody" class="text-danger"></span>
         </div>
-    </div>
+    </div> *@
     <div class="card padding" id="variable-card" style="display:none;">
         <h6>Variable samples</h6>
         <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>

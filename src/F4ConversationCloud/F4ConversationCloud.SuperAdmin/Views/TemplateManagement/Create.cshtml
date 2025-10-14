@@ -154,10 +154,8 @@
 </div>
 
 @section Scripts {
-    @* <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script> *@
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <script>
         $(document).ready(function() {
             var req = @Html.Raw(Json.Serialize(Model));
@@ -280,6 +278,20 @@
 
                 // Re-parse unobtrusive validation attributes
                 $.validator.unobtrusive.parse($form);
+
+                ClassicEditor
+                    .create(document.querySelector('#MessageBody'), {
+                        toolbar: [
+                            'bold', 'italic', 'underline', 'strikethrough',
+                            'numberedList', 'bulletedList',
+                            'link', 'undo', 'redo'
+                        ],
+                        height: '200px'
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
                 commonHelper.showHideLoader(false);
             }, null);
         });
@@ -356,10 +368,10 @@
             $('#Header').valid();
         });
 
-        $(document).on('input', '#content', function () {
-            const contentText = $(this).text().trim();
-            $('[name="MessageBody"]').val(contentText).valid();
-            console.log($('[name="MessageBody"]').val())
-        });
+        // $(document).on('input', '#content', function () {
+        //     const contentText = $(this).text().trim();
+        //     $('[name="MessageBody"]').val(contentText).valid();
+        //     console.log($('[name="MessageBody"]').val())
+        // });
     </script>
 }
