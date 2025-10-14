@@ -1,4 +1,6 @@
-﻿using F4ConversationCloud.Domain.Enum;
+﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.WebUI.Handler;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -18,15 +20,16 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         [Required(ErrorMessage = "Template name is required.")]
         [RegularExpression(@"^[a-zA-Z0-9_-]{3,50}$", ErrorMessage = "Template name must be between 3 and 50 characters and can only contain letters, numbers, hyphens, and underscores.")]
         [Display(Name = "Template Name")]
-        public string? Templatename { get; set; }
-        public string? Templatelanguage { get; set; }
+        public string Templatename { get; set; }
+        public string Templatelanguage { get; set; }
 
         [Required(ErrorMessage = "Category is required.")]
         [ValidMetaTemplateCategory(ErrorMessage = "The category must be 'Authentication', 'Marketing', or 'Utility'.")]
         public string Templatecategory { get; set; }
         public HeaderComponent TemplateHeader { get; set; }
-        public BodyComponent TemplateBody { get; set; }
-        public ButtonComponent TemplateButton { get; set; }
+        public BodyComponent? TemplateBody { get; set; }
+        public ButtonsComponent? TemplateButton { get; set; }
+        public FooterComponent TemplateFooter { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -109,44 +112,14 @@ public class HeaderComponent : IValidatableObject
     }
 }
 
-public class BodyComponent : IValidatableObject
+public class BodyComponent 
 {
-    public string? text { get; set; }
+    public BodyNameVariable? BodyNameVariable { get; set; }
+    public BodyNumberVariable? BodyNumberVariable { get; set; }
 
-    [Required(ErrorMessage = "This is required field.")]
-    public BodyExample? example { get; set; }
-
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        if (string.IsNullOrEmpty(text))
-        {
-            yield return new ValidationResult("Header text cannot be empty.");
-
-        }
-        else
-        {
-            if (text.Contains("{{"))
-            {
-                if (example.BodyNameVariable == null && example.BodyNumberVariable == null)
-                {
-                    yield return new ValidationResult("Enter valid parameter value.");
-                }
-            }
-        }
-    }
 }
 
-public class FooterComponent
-{
-    public string? type { get; set; }
-    public string? text { get; set; }
-}
 
-//public class ButtonComponent
-//{
-//    public string? type { get; set; }
-//    public List<Button>? buttons { get; set; }
-//}
 
 public class HeaderNameVariable
 {
@@ -164,12 +137,8 @@ public class HeaderNumberVariable
 
 public class BodyExample
 {
-    public List<List<string>>? body_text { get; set; }
-
     public BodyNameVariable BodyNameVariable { get; set; }
-
     public BodyNumberVariable BodyNumberVariable { get; set; }
-
 }
 
 
@@ -177,37 +146,107 @@ public class BodyNameVariable
 {
 
     [RegularExpression(@"^\{\{[a-z][a-z0-9_]{1,50}\}\}$", ErrorMessage = "Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).")]
-    public List<string>? body_text { get; set; }
+    public List<string>? text { get; set; }
+    public BodyNameVariableExample? BodyNameVariableExample { get; set; }
+}
+
+public class BodyNameVariableExample
+{
+    [RegularExpression(@"^\{\{\d+\}\}$", ErrorMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}, {{2}}).")]
+    public List<List<string>> body_text { get; set; }
 }
 
 public class BodyNumberVariable
 {
-    [RegularExpression(@"^\{\{\d+\}\}$", ErrorMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}, {{2}}).")]
     public List<string>? body_text { get; set; }
+
+    public BodyNameVariableExample? BodyNumberVariableExample { get; set; }
 }
 
-public class Button
+public class ButtonsComponent
+{
+    public List<Button>? Buttons { get; set; }
+
+}
+
+
+public class Button 
 {
     public string? Type { get; set; }
-    public string? Text { get; set; }
-    public string? PhoneNumber { get; set; }
-    public string? URL { get; set; }
 
+    public ButtonPhone TemplatePhoneButton { get; set; }
+
+    public ButtonQuickReply TemplateQuickReplyButton { get; set; }
+
+    public ButtonURL TemplateURLButton { get; set; }
 }
 
-public class ButtonComponent
-{
-    public string? Type { get; set; }
-    public string? Text { get; set; }
-    public string? PhoneNumber { get; set; }
-    public string? URL { get; set; }
-
-}
-
-public class Footer
+public class ButtonPhone () : IValidatableObject
 {
     public string Text { get; set; }
+    public string Type { get; set; }
+
+    [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Please enter a 10-digit phone number.")]
+    public string? PhoneNumber { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var validformat = new[] { "PHONE_NUMBER"};
+        if (Array.IndexOf(validformat, Type) == -1)
+        {
+            yield return new ValidationResult("Button type is incorrect.");
+        } 
+    }
 }
+
+
+public class ButtonURL() : IValidatableObject
+{
+
+    public string Text { get; set; }
+    public string Type { get; set; }
+
+    [RegularExpression(@"^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+[^\s]*$", ErrorMessage = "Please enter a valid URL.")]
+    public string? URL { get; set; }
+
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var validformat = new[] { "URL" };
+        if (Array.IndexOf(validformat, Type) == -1)
+        {
+            yield return new ValidationResult("Button type is incorrect.");
+        }
+
+    }
+
+}
+
+
+public class ButtonQuickReply() : IValidatableObject
+{
+
+    public string Text { get; set; }
+    public string Type { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var validformat = new[] { "QUICK_REPLY" };
+        if (Array.IndexOf(validformat, Type) == -1)
+        {
+            yield return new ValidationResult("Button type is incorrect.");
+        }
+
+    }
+
+}
+
+public class FooterComponent
+{
+    public string? type { get; set; }
+    public string? text { get; set; }
+}
+
 
 
 

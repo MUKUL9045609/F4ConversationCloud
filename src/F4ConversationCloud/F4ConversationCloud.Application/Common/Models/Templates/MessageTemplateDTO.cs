@@ -26,47 +26,47 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
     }
 
-    public class HeaderComponent
-    {
-        public string? type { get; set; } = null;
-        public string? format { get; set; } = null;
-        public string? text { get; set; } = null;
-        public HeaderExample? example { get; set; } = null;
-    }
+    //public class HeaderComponent
+    //{
+    //    public string? type { get; set; } = null;
+    //    public string? format { get; set; } = null;
+    //    public string? text { get; set; } = null;
+    //    public HeaderExample? example { get; set; } = null;
+    //}
 
-    public class BodyComponent
-    {
-        public string? type { get; set; } = null;
-        public string? text { get; set; } = null;
-        public BodyExample? example { get; set; } = null;
-    }
+    //public class BodyComponent
+    //{
+    //    public string? type { get; set; } = null;
+    //    public string? text { get; set; } = null;
+    //    public BodyExample? example { get; set; } = null;
+    //}
 
-    public class FooterComponent
-    {
-        public string? type { get; set; } = null;
-        public string? text { get; set; } = null;
-    }
+    //public class FooterComponent
+    //{
+    //    public string? type { get; set; } = null;
+    //    public string? text { get; set; } = null;
+    //}
 
-    public class ButtonComponent
-    {
-        public string? type { get; set; } = null;
-        public List<Button>? buttons { get; set; } = null;
-    }
+    //public class ButtonComponent
+    //{
+    //    public string? type { get; set; } = null;
+    //    public List<Button>? buttons { get; set; } = null;
+    //}
 
-    public class HeaderExample
-    {
-        public List<string>? header_text { get; set; } = null;
-    }
+    //public class HeaderExample
+    //{
+    //    public List<string>? header_text { get; set; } = null;
+    //}
 
-    public class BodyExample
-    {
-        public List<List<string>>? body_text { get; set; } = null;
-    }
+    //public class BodyExample
+    //{
+    //    public List<List<string>>? body_text { get; set; } = null;
+    //}
 
-    public class Button
-    {
-        public string? type { get; set; } = null;
-        public string? text { get; set; } = null;
-    }
+    //public class Button
+    //{
+    //    public string? type { get; set; } = null;
+    //    public string? text { get; set; } = null;
+    //}
 
 }

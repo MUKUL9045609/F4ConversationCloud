@@ -24,45 +24,45 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("CreateTemplate")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplateDTO request)
+        public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplate request)
         {
             try
             {
                 List<dynamic> components = new List<dynamic>();
 
                 MessageTemplateDTO messageTemplate = new MessageTemplateDTO();
-                messageTemplate.category = request.category;
-                messageTemplate.name = request.name;
-                messageTemplate.language = request.language;
+                messageTemplate.category = request.Templatecategory;
+                messageTemplate.name = request.Templatename;
+                messageTemplate.language = request.Templatelanguage;
 
-                foreach (var component in request.components)
-                {
+                //foreach (var component in request.components)
+                //{
 
-                    if (component.TryGetProperty("type", out JsonElement typeElement))
-                    {
-                        string typeValue = typeElement.GetString().ToLower();
-                        if (typeValue == "header")
-                        {
-                            HeaderComponent headerComponent = JsonSerializer.Deserialize<HeaderComponent>(request.components[0].GetRawText());
-                            components.Add(headerComponent);
-                        }
-                        else if (typeValue == "body")
-                        {
-                            BodyComponent bodyComponent = JsonSerializer.Deserialize<BodyComponent>(request.components[1].GetRawText());
-                            components.Add(bodyComponent);
-                        }
-                        else if (typeValue == "footer")
-                        {
-                            FooterComponent footerComponent = JsonSerializer.Deserialize<FooterComponent>(request.components[2].GetRawText());
-                            components.Add(footerComponent);
-                        }
-                        else if (typeValue == "buttons")
-                        {
-                            ButtonComponent buttonComponent = JsonSerializer.Deserialize<ButtonComponent>(request.components[3].GetRawText());
-                            components.Add(buttonComponent);
-                        }
-                    }
-                }
+                //    if (component.TryGetProperty("type", out JsonElement typeElement))
+                //    {
+                //        string typeValue = typeElement.GetString().ToLower();
+                //        if (typeValue == "header")
+                //        {
+                //            HeaderComponent headerComponent = JsonSerializer.Deserialize<HeaderComponent>(request.components[0].GetRawText());
+                //            components.Add(headerComponent);
+                //        }
+                //        else if (typeValue == "body")
+                //        {
+                //            BodyComponent bodyComponent = JsonSerializer.Deserialize<BodyComponent>(request.components[1].GetRawText());
+                //            components.Add(bodyComponent);
+                //        }
+                //        else if (typeValue == "footer")
+                //        {
+                //            FooterComponent footerComponent = JsonSerializer.Deserialize<FooterComponent>(request.components[2].GetRawText());
+                //            components.Add(footerComponent);
+                //        }
+                //        else if (typeValue == "buttons")
+                //        {
+                //            ButtonComponent buttonComponent = JsonSerializer.Deserialize<ButtonComponent>(request.components[3].GetRawText());
+                //            components.Add(buttonComponent);
+                //        }
+                //    }
+                //}
 
                 messageTemplate.components = new List<dynamic>();
                 messageTemplate.components.AddRange(components);
@@ -113,7 +113,7 @@ namespace F4ConversationCloud.WebUI.Controllers
                         }
                         else if (typeValue == "buttons")
                         {
-                            ButtonComponent buttonComponent = JsonSerializer.Deserialize<ButtonComponent>(request.components[3].GetRawText());
+                            ButtonsComponent buttonComponent = JsonSerializer.Deserialize<ButtonsComponent>(request.components[3].GetRawText());
                             components.Add(buttonComponent);
                         }
                     }
