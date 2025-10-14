@@ -68,19 +68,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 var template = await _templateManagementService.GetTemplateByIdAsync(Template_id);
-                    
-
                 return View(template);
             }
             catch (Exception)
             {
-
                 return View();
-            }
-            
+            }   
         }
-
-
         [HttpPost]
         public async  Task<IActionResult> DeleteTemplate(string Template_id ,int ClientInfoId, string TemplateName)
         {
@@ -88,10 +82,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 dynamic isDeletedResponce =await  _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
-
                 if (isDeletedResponce != null)
                 {
-
                     TempData["SuccessMessage"] = isDeletedResponce.message;
                     return Json(isDeletedResponce);
                 }
