@@ -13,6 +13,8 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         public List<TemplateData> Data { get; set; }
         [JsonPropertyName("components")]
         public List<CreateTemplateComponent> Components { get; set; }
+        [JsonPropertyName("cards")]
+        public List<Cards> cards { get; set; }
 
         [JsonPropertyName("paging")]
         public TemplatePaging Paging { get; set; }
@@ -39,6 +41,8 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 
         public string Id { get; set; }
+
+  
     }
     public class TemplatePaging
     {
