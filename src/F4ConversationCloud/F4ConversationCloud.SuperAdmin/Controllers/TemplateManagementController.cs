@@ -3,8 +3,10 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.SuperAdmin.Handler;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient.DataClassification;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json;
@@ -34,44 +36,17 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
-                var components = (Request.Components ?? new List<ComponentViewModel>())
-                                       .Where(c => !string.IsNullOrWhiteSpace(c.Text)
-                                           || (c.Buttons?.Any(b => !string.IsNullOrWhiteSpace(b.Text)) == true)
-
-                                           )
-                                       .Select(c => new CreateTemplateComponent
-                                       {
-                                           Type = c.Type,
-                                           Text = c.Text,
-                                           Format = c.Format,
-                                           Buttons = c.Buttons?
-                                                   .Where(b => !string.IsNullOrWhiteSpace(b.Text))
-                                                   .Select(b => new TemplateButton
-                                                   {
-                                                       Text = b.Text,
-                                                       Type = b.Type,
-                                                       Url = b.Url
-                                                   }).ToList(),
-                                           Example = c.Example != null
-                                                    ? new Example
-                                                    {
-                                                        HeaderText = (c.Example.HeaderText?.Any() == true)
-                                                            ? c.Example.HeaderText
-                                                            : new List<string>(),
-
-                                                        BodyText = c.Example.BodyText?.ToList()
-                                                            ?? new List<List<string>>()
-
-                                                    }
-                                                 : null
-                                       }).ToList();
+                if(!ModelState.IsValid)
+                {
+                    return View(Request);
+                }
 
                 var templateRequest = new WhatsAppTemplateRequest
                 {
                     Name = Request.TemplateName,
                     Language = Request.Language,
                     Category = Request.Category,
-                    Components = components
+                    Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
                 };
                 var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
                 var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
@@ -87,6 +62,43 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         }
 
+        [HttpGet("update-template/{Template_id}")]
+        public async Task<IActionResult> UpdateTemplate(string Template_id)
+        {
+            try
+            {
+                var template = await _templateManagementService.GetTemplateByIdAsync(Template_id);
+                return View(template);
+            }
+            catch (Exception)
+            {
+                return View();
+            }   
+        }
+        [HttpPost]
+        public async  Task<IActionResult> DeleteTemplate(string Template_id ,int ClientInfoId, string TemplateName)
+        {
+
+            try
+            {
+                dynamic isDeletedResponce =await  _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
+                if (isDeletedResponce != null)
+                {
+                    TempData["SuccessMessage"] = isDeletedResponce.message;
+                    return Json(isDeletedResponce);
+                }
+                else {
+                    TempData["SuccessMessage"] = "Unknown error occurred.";
+                    return Json(new DeleteTemplateResponse { success = false, message = "Unknown error occurred." });
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+            }
+        }
 
         [HttpGet("List")]
         public async Task<IActionResult> List(TemplatesListViewModel model)

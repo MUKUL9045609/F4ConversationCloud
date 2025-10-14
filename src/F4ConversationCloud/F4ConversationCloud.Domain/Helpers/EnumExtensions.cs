@@ -40,5 +40,7 @@ namespace BuldanaUrban.Domain.Helpers
                             .First()
                             .GetCustomAttribute<TAttribute>();
         }
+
+
     }
 }

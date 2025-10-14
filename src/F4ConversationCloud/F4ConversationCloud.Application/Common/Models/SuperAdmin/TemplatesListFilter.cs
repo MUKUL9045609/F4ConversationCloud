@@ -8,6 +8,7 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
 {
     public class TemplatesListFilter
     {
+        public int ClientInfoId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public int TotalCount { get; set; } = 10;
