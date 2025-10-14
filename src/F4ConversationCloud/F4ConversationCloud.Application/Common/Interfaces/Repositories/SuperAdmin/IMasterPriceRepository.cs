@@ -1,5 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin
 {

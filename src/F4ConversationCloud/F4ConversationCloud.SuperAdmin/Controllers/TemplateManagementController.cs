@@ -16,9 +16,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     public class TemplateManagementController : Controller
     {
         private readonly ITemplateManagementService _templateManagementService;
+        
         public TemplateManagementController(ITemplateManagementService templateManagementService)
         {
             _templateManagementService = templateManagementService;
+        
         }
         public IActionResult Index()
         {
@@ -48,7 +50,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Category = Request.Category,
                     Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
                 };
+
+
                 var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
+
                 var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
 
                 return View(Request);
