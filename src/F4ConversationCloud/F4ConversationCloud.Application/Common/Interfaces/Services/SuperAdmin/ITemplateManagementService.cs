@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
