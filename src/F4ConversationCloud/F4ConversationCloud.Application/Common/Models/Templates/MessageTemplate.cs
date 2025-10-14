@@ -24,9 +24,10 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         [Required(ErrorMessage = "Category is required.")]
         [ValidMetaTemplateCategory(ErrorMessage = "The category must be 'Authentication', 'Marketing', or 'Utility'.")]
         public string Templatecategory { get; set; }
-        public List<dynamic> components { get; set; } = new List<dynamic>();
         public HeaderComponent TemplateHeader { get; set; }
         public BodyComponent TemplateBody { get; set; }
+        public ButtonComponent TemplateButton { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!Enum.GetNames(typeof(TemplateLanguages)).Contains(Templatelanguage))
@@ -39,9 +40,9 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
 public class HeaderComponent : IValidatableObject
 {
-    [Required(ErrorMessage = "This is required.")]
-    public string? format { get; set; }
-    public string? text { get; set; }
+    [Required(ErrorMessage = "This is required field.")]
+    public string? Format { get; set; }
+    public string? Text { get; set; }
     public HeaderNameVariable? NameVariable { get; set; }
     public HeaderNumberVariable? NumberVariable { get; set; }
     public IFormFile? Files { get; set; }
@@ -49,22 +50,22 @@ public class HeaderComponent : IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var validformat = new[] { "TEXT", "IMAGE", "LOCATION", "DOCUMENT" };
-        if (Array.IndexOf(validformat, format) == -1)
+        if (Array.IndexOf(validformat, Format) == -1)
         {
             yield return new ValidationResult("Templates format is incorrect.");
         }
         else
         {
-            if (format == "TEXT")
+            if (Format == "TEXT")
             {
-                if (string.IsNullOrEmpty(text))
+                if (string.IsNullOrEmpty(Text))
                 {
                     yield return new ValidationResult("Header text cannot be empty.");
 
                 }
                 else
                 {
-                    if (text.Contains("{{"))
+                    if (Text.Contains("{{"))
                     {
                         if (NameVariable == null)
                         {
@@ -78,7 +79,7 @@ public class HeaderComponent : IValidatableObject
                     }
                 }
             }
-            else if (format == "IMAGE")
+            else if (Format == "IMAGE")
             {
                 if (Files == null)
                 {
@@ -86,7 +87,7 @@ public class HeaderComponent : IValidatableObject
 
                 }
             }
-            else if (format == "DOCUMENT")
+            else if (Format == "DOCUMENT")
             {
                 if (Files == null)
                 {
@@ -94,7 +95,7 @@ public class HeaderComponent : IValidatableObject
 
                 }
             }
-            else if (format == "VIDEO")
+            else if (Format == "VIDEO")
             {
                 if (Files == null)
                 {
@@ -111,6 +112,8 @@ public class HeaderComponent : IValidatableObject
 public class BodyComponent : IValidatableObject
 {
     public string? text { get; set; }
+
+    [Required(ErrorMessage = "This is required field.")]
     public BodyExample? example { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -124,15 +127,10 @@ public class BodyComponent : IValidatableObject
         {
             if (text.Contains("{{"))
             {
-                //if (BodyNameVariable == null)
-                //{
-                //    yield return new ValidationResult("Enter valid text parameter value.");
-                //}
-                //else if (NameVariable.header_text == null)
-                //{
-                //    yield return new ValidationResult("Enter valid text parameter value.");
-                //}
-
+                if (example.BodyNameVariable == null && example.BodyNumberVariable == null)
+                {
+                    yield return new ValidationResult("Enter valid parameter value.");
+                }
             }
         }
     }
@@ -144,11 +142,11 @@ public class FooterComponent
     public string? text { get; set; }
 }
 
-public class ButtonComponent
-{
-    public string? type { get; set; }
-    public List<Button>? buttons { get; set; }
-}
+//public class ButtonComponent
+//{
+//    public string? type { get; set; }
+//    public List<Button>? buttons { get; set; }
+//}
 
 public class HeaderNameVariable
 {
@@ -184,14 +182,31 @@ public class BodyNameVariable
 
 public class BodyNumberVariable
 {
-    [RegularExpression(@"^\{\{1\}\}$", ErrorMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).")]
+    [RegularExpression(@"^\{\{\d+\}\}$", ErrorMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}, {{2}}).")]
     public List<string>? body_text { get; set; }
 }
 
 public class Button
 {
-    public string? type { get; set; }
-    public string? text { get; set; }
+    public string? Type { get; set; }
+    public string? Text { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? URL { get; set; }
+
+}
+
+public class ButtonComponent
+{
+    public string? Type { get; set; }
+    public string? Text { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? URL { get; set; }
+
+}
+
+public class Footer
+{
+    public string Text { get; set; }
 }
 
 
