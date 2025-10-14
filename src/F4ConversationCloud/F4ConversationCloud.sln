@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F4ConversationCloud.SuperAd
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB", "DB\DB.sqlproj", "{656CD60E-D7E6-4DB1-A07A-8ABFE06876EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F4ConversationCloud.ClientAdmin", "ClientAdmin\F4ConversationCloud.ClientAdmin.csproj", "{6D7E0F3B-8A93-4020-9920-31A5FC6DF39B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{656CD60E-D7E6-4DB1-A07A-8ABFE06876EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{656CD60E-D7E6-4DB1-A07A-8ABFE06876EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{656CD60E-D7E6-4DB1-A07A-8ABFE06876EB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6D7E0F3B-8A93-4020-9920-31A5FC6DF39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7E0F3B-8A93-4020-9920-31A5FC6DF39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7E0F3B-8A93-4020-9920-31A5FC6DF39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7E0F3B-8A93-4020-9920-31A5FC6DF39B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
