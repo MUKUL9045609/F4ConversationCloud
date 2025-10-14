@@ -24,7 +24,7 @@ namespace F4ConversationCloud.Infrastructure.Service
            _logService = logService;
         }
 
-        public async Task<dynamic> CreateTemplate(MessageTemplate requestBody)
+        public async Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -69,7 +69,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
-        public async Task<dynamic> EditTemplate(MessageTemplate requestBody , int TemplateID)
+        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody , int TemplateID)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";

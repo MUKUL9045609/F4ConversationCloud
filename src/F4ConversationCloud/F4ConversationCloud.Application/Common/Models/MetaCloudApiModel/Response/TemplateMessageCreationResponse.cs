@@ -18,4 +18,6 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Respon
         [JsonPropertyName("category")]
         public string Category { get; set; }
     }
+
+    
 }

@@ -24,16 +24,16 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("CreateTemplate")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplate request)
+        public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplateDTO request)
         {
             try
             {
                 List<dynamic> components = new List<dynamic>();
 
-                MessageTemplate messageTemplate = new MessageTemplate();
-                messageTemplate.Templatecategory = request.Templatecategory;
-                messageTemplate.Templatename = request.Templatename;
-                messageTemplate.Templatelanguage = request.Templatelanguage;
+                MessageTemplateDTO messageTemplate = new MessageTemplateDTO();
+                messageTemplate.category = request.category;
+                messageTemplate.name = request.name;
+                messageTemplate.language = request.language;
 
                 foreach (var component in request.components)
                 {
@@ -79,16 +79,16 @@ namespace F4ConversationCloud.WebUI.Controllers
         }
 
         [HttpPost("EditTemplate")]
-        public async Task<IActionResult> EditTemplate(MessageTemplate request)
+        public async Task<IActionResult> EditTemplate(MessageTemplateDTO request)
         {
             try
             {
                 List<dynamic> components = new List<dynamic>();
 
-                MessageTemplate messageTemplate = new MessageTemplate();
-                messageTemplate.Templatecategory = request.Templatecategory;
-                messageTemplate.Templatename = request.Templatename;
-                messageTemplate.Templatelanguage = request.Templatelanguage;
+                MessageTemplateDTO messageTemplate = new MessageTemplateDTO();
+                messageTemplate.category = request.category;
+                messageTemplate.name = request.name;
+                messageTemplate.language = request.language;
 
                 foreach (var component in request.components)
                 {

@@ -30,23 +30,42 @@ namespace F4ConversationCloud.SuperAdmin.Handler
 
             int variableType = (int)variableTypeValue;
 
-            if (header.Contains("{{") || header.Contains("}}") || header.Contains("{}}") || header.Contains("{{}"))
+            if (string.IsNullOrWhiteSpace(header) || header.Trim() == "{}" || header.Trim() == "{" || header.Trim() == "}")
+            {
+                return ValidationResult.Success;
+            }
+
+            // Reject malformed patterns
+            if (header.Contains("{{}}") || header.Contains("{{}") || header.Contains("{}}"))
             {
                 if (variableType == (int)VariableTypes.Number)
                 {
-                    var regex = new Regex(@"^\s*\{\{\d+\}\}\s*$");
-                    if (!regex.IsMatch(header.Trim()))
-                    {
-                        return new ValidationResult("Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}, {{2}}).");
-                    }
+                    return new ValidationResult("Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).");
                 }
                 else if (variableType == (int)VariableTypes.Name)
                 {
-                    var regex = new Regex(@"^\s*\{\{[a-z0-9_]+\}\}\s*$");
-                    if (!regex.IsMatch(header.Trim()))
-                    {
-                        return new ValidationResult("Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (e.g., {{customer_name}}, {{order_id}}).");
-                    }
+                    return new ValidationResult("Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).");
+                }
+            }
+            
+            if (variableType == (int)VariableTypes.Number)
+            {
+                var matches = Regex.Matches(header, @"\{\{\d+\}\}");
+
+                // Must contain exactly one valid match and it must be {{1}}
+                if (matches.Count != 1 || matches[0].Value != "{{1}}")
+                {
+                    return new ValidationResult("Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).");
+                }
+            }
+            else if (variableType == (int)VariableTypes.Name)
+            {
+                var matches = Regex.Matches(header, @"\{\{[a-z][a-z0-9_]*\}\}");
+
+                // Must contain exactly one valid match and match the full trimmed header
+                if (matches.Count != 1 || header.Trim() != matches[0].Value)
+                {
+                    return new ValidationResult("Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).");
                 }
             }
 
@@ -56,7 +75,7 @@ namespace F4ConversationCloud.SuperAdmin.Handler
         public void AddValidation(ClientModelValidationContext context)
         {
             context.Attributes.Add("data-val", "true");
-            context.Attributes.Add("data-val-headervariableformat", ErrorMessage ?? "Invalid variable format.");
+            context.Attributes.Add("data-val-headervariableformat", ErrorMessage ?? "Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (e.g., {{customer_name}}, {{order_id}}).");
             context.Attributes.Add("data-val-headervariableformat-variabletype", _variableTypeProperty);
         }
     }

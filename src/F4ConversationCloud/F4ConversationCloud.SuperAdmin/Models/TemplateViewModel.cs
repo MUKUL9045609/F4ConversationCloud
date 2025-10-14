@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace F4ConversationCloud.SuperAdmin.Models
 {
-    public class TemplateViewModel
+    public class TemplateViewModel : IValidatableObject
     {
         [Required(ErrorMessage = "Please enter template name")]
         [RegularExpression("^[a-z0-9_]+$", ErrorMessage = "Template names can only contain small letters, numbers and underscores.")]
+        [StringLength(512, ErrorMessage = "Template Name should be less than 512 characters.")]
         public string TemplateName { get; set; }
 
         [Required(ErrorMessage = "Please select template category")]
@@ -39,7 +40,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string FileUrl { get; set; }
 
         [StringLength(60, ErrorMessage = "Header should be less than 60 characters.")]
-        [HeaderVariableFormat("VariableType", ErrorMessage = "Invalid variable format.")]
+        [HeaderVariableFormat("VariableType")]
         public string Header { get; set; }
 
         [Required(ErrorMessage = "Please enter a message.")]
@@ -47,5 +48,18 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string MessageBody { get; set; }
         [StringLength(60, ErrorMessage = "Footer should be less than 60 characters.")]
         public string Footer { get; set; }
+        public string HeaderVariableName { get; set; }
+        public string HeaderVariableValue { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!string.IsNullOrWhiteSpace(HeaderVariableName) && string.IsNullOrWhiteSpace(HeaderVariableValue))
+            {
+                yield return new ValidationResult(
+                    "Add sample text.",
+                    new[] { nameof(HeaderVariableValue) }
+                );
+            }
+        }
     }
 }

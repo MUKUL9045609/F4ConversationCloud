@@ -75,8 +75,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 var response = await _clientManagement.GetClientDetailsById(Id);
                 var filter = new TemplatesListFilter
                 {
-                    //PageNumber = model.TemplatesList.PageNumber,
-                    //PageSize = model.TemplatesList.PageSize
+                    ClientInfoId = Id
+                  
                 };
                 var templates = await _templateManagementService.TemplateListAsync(filter);
                 var model = new ClientDetailsViewModel()

@@ -10,8 +10,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
 {
     public interface ITemplateService
     {
-        Task<dynamic> CreateTemplate(MessageTemplate requestBody);
-        Task<dynamic> EditTemplate(MessageTemplate requestBody, int TemplateID);
+        Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody);
+        Task<dynamic> EditTemplate(MessageTemplateDTO requestBody, int TemplateID);
         Task<dynamic> DeleteTemplate(int TemplateId, string TemplateName);
         Task<dynamic> DeleteTemplateByName(string TemplateName);
     }

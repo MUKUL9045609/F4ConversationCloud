@@ -17,6 +17,10 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
 
         public static string CreateTemplateMessage { get; private set; } = "{{WABA-ID}}/message_templates";
         public static string GetAllTemplateMessage { get; private set; } = "{{WABA-ID}}/message_templates";
+        public static string GetTemplateById { get; private set; } = "{{TEMPLATE_ID}}";
+        public static string DeleteTemplateMessage { get; private set; } = "{{WABA-ID}}/message_templates?hsm_id={{HSM_ID}}&name={{NAME}}";
+
+
 
         public static Uri GraphDeleteApiVersionBaseAddress { get; private set; } = new Uri("https://graph.facebook.com/v23.0/message_templates?hsm_id={{hsm_id}}&name={{name}}");
 

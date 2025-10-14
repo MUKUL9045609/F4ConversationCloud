@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Exceptions
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
@@ -77,7 +78,11 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
             return await WhatsAppBusinessPostAsync<ResponseTemplateMessageCreationResponse>(template, formattedWhatsAppEndpoint, cancellationToken);
         }
 
-
+        public async Task<TemplateByIdResponse> GetTemplateByIdAsync(string templateId, CancellationToken cancellationToken = default)
+        {
+            var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.GetTemplateById.Replace("{{TEMPLATE_ID}}", templateId);
+            return await WhatsAppBusinessGetAsync<TemplateByIdResponse>(formattedWhatsAppEndpoint, cancellationToken);
+        }
 
         public async Task<TemplateResponse> GetAllTemplatesAsync(string whatsAppBusinessAccountId, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, string pagingUrl = null, CancellationToken cancellationToken = default)
         {
@@ -102,6 +107,25 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
             {
                 return await WhatsAppBusinessGetAsync<TemplateResponse>(pagingUrl, cancellationToken);
             }
+        }
+
+
+        public async Task<BaseSuccessResponse> DeleteTemplateByIdAsync(string whatsAppBusinessAccountId, string templateId, string templateName, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, CancellationToken cancellationToken = default)
+        {
+            if (cloudApiConfig is not null)
+            {
+                _whatsAppConfig = cloudApiConfig;
+            }
+
+            var builder = new StringBuilder();
+
+            builder.Append(WhatsAppBusinessRequestEndpoint.DeleteTemplateMessage);
+            builder.Replace("{{WABA-ID}}", whatsAppBusinessAccountId);
+            builder.Replace("{{HSM_ID}}", templateId);
+            builder.Replace("{{NAME}}", templateName);
+
+            var formattedWhatsAppEndpoint = builder.ToString();
+            return await WhatsAppBusinessDeleteAsync<BaseSuccessResponse>(formattedWhatsAppEndpoint, cancellationToken);
         }
 
 
@@ -165,6 +189,36 @@ namespace F4ConversationCloud.Infrastructure.Service.Meta
             }
         }
 
+
+        private async Task<T> WhatsAppBusinessDeleteAsync<T>(string whatsAppBusinessEndpoint, CancellationToken cancellationToken = default, bool isHeaderAccessTokenProvided = true) where T : new()
+        {
+            if (isHeaderAccessTokenProvided)
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppConfig.AccessToken);
+            }
+            T result = new();
+            cancellationToken.ThrowIfCancellationRequested();
+            var response = await _httpClient.DeleteAsync(whatsAppBusinessEndpoint, cancellationToken).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+                {
+                    result = await JsonSerializer.DeserializeAsync<T>(stream, cancellationToken: cancellationToken);
+                }
+            }
+            else
+            {
+                WhatsAppErrorResponse whatsAppErrorResponse = new WhatsAppErrorResponse();
+                using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+                {
+                    whatsAppErrorResponse = await JsonSerializer.DeserializeAsync<WhatsAppErrorResponse>(stream, cancellationToken: cancellationToken);
+                }
+                throw new WhatsappBusinessCloudAPIException(new HttpRequestException(whatsAppErrorResponse.Error.Message), response.StatusCode, whatsAppErrorResponse);
+
+            }
+            return result;
+        }
 
 
 

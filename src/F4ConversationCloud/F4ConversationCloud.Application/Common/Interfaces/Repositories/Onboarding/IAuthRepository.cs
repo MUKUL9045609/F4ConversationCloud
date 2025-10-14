@@ -2,6 +2,8 @@
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding
 {
