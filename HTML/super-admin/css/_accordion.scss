@@ -2,23 +2,26 @@
 @import "mixin";
 
 .accordion-guide {
-    &.client-accordion{
-        .user-list{
-            padding-left: 0px!important;
+    &.client-accordion {
+        .user-list {
+            padding-left: 0px !important;
         }
     }
+
     .accordion {
+        position: relative;
         .accordion-item {
             border-color: $accordion !important;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
             border-radius: 8px;
             overflow: hidden;
-
+            background-color: #f4f4f4;
             &:first-of-type {
                 border-radius: 8px !important;
 
                 .accordion-button {
                     border-radius: 0 !important;
+                    padding: 14px 15px;
                 }
             }
 
@@ -29,20 +32,29 @@
                     border-radius: 0 !important;
                 }
             }
-
+            .accordion-header {
+                // margin: 0px 10px;
+               
+                .accordion-button {
+                    border-bottom: 1px solid #ddd;
+                    &.collapsed {
+                        border-bottom: 0px;
+                    }
+                }
+            }
             .accordion-button {
-                background-color: $accordion !important;
+                background-color: transparent !important;
                 box-shadow: none !important;
                 font-size: 14px;
                 color: $textColor;
                 font-weight: 500;
-
+                padding: 14px 15px;
                 &:focus {
                     box-shadow: none !important;
                 }
 
                 &::after {
-                    background-image: url("data:image/svg+xml,%3Csvg width='16' height='11' viewBox='0 0 16 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.5481 1.40031L7.99284 7.29249L2.43758 1.40031C1.87919 0.808052 0.977181 0.808052 0.418792 1.40031C-0.139597 1.99256 -0.139597 2.94928 0.418792 3.54154L6.9906 10.5119C7.54899 11.1042 8.45101 11.1042 9.0094 10.5119L15.5812 3.54154C16.1396 2.94928 16.1396 1.99256 15.5812 1.40031C15.0228 0.823238 14.1065 0.808052 13.5481 1.40031Z' fill='%23283342'/%3E%3C/svg%3E%0A");
+                    background-image: url("data:image/svg+xml,%3Csvg width='12' height='6' viewBox='0 0 12 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0.5L6 5.5L11 0.5' stroke='%23626262' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
                     width: 16px;
                     height: 11px;
                     background-size: contain;
@@ -50,8 +62,13 @@
             }
 
             .accordion-body {
-                padding: 20px;
-
+                padding: 10px;
+                background-color: #fff;
+                label {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #686868 !important;
+                }
                 video {
                     width: 100%;
                     height: auto;
@@ -74,8 +91,8 @@
                 }
 
                 p {
-                    font-size: 14px;
-                    color: $textColor;
+                    font-size: 13px;
+                    color: #707070;
                 }
 
                 ul,
@@ -94,5 +111,44 @@
                 }
             }
         }
+    }
+    &.template-accordion {
+        position: relative;
+        &::before {
+            border: 1px dashed #ddd;
+            height: 100%;
+            content: "";
+            position: absolute;
+            left: 50%;
+            z-index: 0;
+            top: 0;
+        }
+        .accordion-item {
+            margin-bottom: 19px !important;
+            .accordion-header {
+                margin: 0px 10px;
+
+                .accordion-button {
+                    border-bottom: 1px solid #ddd;
+                        padding: 14px 0px;
+                    &.collapsed {
+                        border-bottom: 0px;
+                    }
+                }
+                
+            }
+            .accordion-body {
+                background-color: transparent;
+            }
+        }
+    }
+}
+
+.small-input {
+    width: 80px;
+    text-align: center;
+    .form-control {
+        text-align: center;
+        padding: 0.475rem 0.25rem !important;
     }
 }
