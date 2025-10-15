@@ -2,7 +2,7 @@
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
-    public class CampaignsController : Controller
+    public class CampaignsController : BaseController
     {
         public IActionResult CampaignList()
         {

@@ -2,7 +2,7 @@
 
 namespace F4ConversationCloud.ClientAdmin.Models.AuthViewModel
 {
-    public class LoginViewModel
+    public class ClientLoginViewModel
     {
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter a valid email")]
