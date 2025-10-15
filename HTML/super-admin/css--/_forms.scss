@@ -99,7 +99,7 @@
     cursor: pointer;
     &.radio-btn {
         .form-check-input {
-            border: 2px solid #ddd;
+            border: 2px solid $tabs;
             background-color: #fff;
             cursor: pointer;
             width: 20px;
@@ -107,28 +107,13 @@
             margin-left: -23px;
             margin-top: .10em;
             border-radius: 50%!important;
-            padding: 0px;
         }
-        .form-check-label{margin-bottom: 0px;font-weight: 400;color: #474747;}
-        input[type="radio"]:checked + div > label {
-            color: $tabs
-        }
-        
-        
+        .form-check-label{margin-bottom: 0px;}
     }
-    &.template-radio{
-       
-            .form-check-input{
-                margin-top: 0.3em!important;
-            }
-            
-       
-    }
+
     .form-check-input {
             margin-left: -24px!important;
-            float: inherit!important;
         &:checked[type=radio] {
-            border: 2px solid $tabs;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%2303A9F5'/%3e%3c/svg%3e");
         }
 
@@ -138,7 +123,7 @@
     }
 
     .form-check-label {
-        font-size: 14px;
+        font-size: 15px;
         padding-left: 3px;
         
     }
@@ -148,7 +133,6 @@
         .form-check-input{margin-left: -2.0em;}
     }
 }
-
 .floating-fill{
     &.form-floating{
         .form-select{
