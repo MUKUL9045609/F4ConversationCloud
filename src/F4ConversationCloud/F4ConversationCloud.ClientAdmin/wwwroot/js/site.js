@@ -1,4 +1,20 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var swiper = new Swiper(".useCasesSwiper", {
+    spaceBetween: 30,
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true
+    },
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+    },
+    loop: true
+});
+$('nav ul ul').hide();
+$('nav > ul > li > a').on('click', function (e) {
+    e.stopPropagation();
+    $('nav ul ul').slideUp();
+    $(this).next().is(":visible") || $(this).next().slideDown();
+});
 
-// Write your JavaScript code.
+$('li').has('ul').find('a').not('ul ul a').addClass('caret');
