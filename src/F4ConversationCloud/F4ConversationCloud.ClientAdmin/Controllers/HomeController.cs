@@ -1,8 +1,7 @@
-using F4ConversationCloud.ClientAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
-namespace F4ConversationCloud.ClientAdmin.Controllers
+using F4ConversationCloud.ClientAdmin.Models;
+namespace ClientAdmin.Controllers
 {
     public class HomeController : Controller
     {
@@ -18,7 +17,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Privacy() 
         {
             return View();
         }
