@@ -1,540 +1,185 @@
-﻿@model CreateTemplateViewModel
-@{
-    ViewData["Title"] = "Create Template";
-}
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Enum
+@using System.ComponentModel.DataAnnotations
 
-<div class="content">
+@{
+    var categoryType = string.Empty;
+    categoryType = Model.TemplateCategoryList
+            .Where(x => x.Value == Model.TemplateCategory.ToString())
+            .Select(x => x.Text)
+            .FirstOrDefault();
+
+    var m = Model;
+}
+<div class="content bg-light">
     <div class="main-content">
         <div class="container-fluid">
-            <div class="d-flex justify-content-between headerWrap mb-3">
-                <div class="d-flex align-items-center gap-2">
-                    <h3 class="sub-heading mb-0">
-                        <a href="#" class="back"></a>Create Template
-                    </h3>
 
+            <div class="template-content-wrap">
+                <div class="template-creation-content">
+                    <div class="creation-card template-creation">
+
+                        <h3 class="mb-2">Set Up Your Template</h3>
+                        <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
+                        <input asp-for="TemplateCategory" type="hidden" />
+                        <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
+                                    <span class="marketing-icon tab-icon"></span> Marketing
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="utility-tab" data-bs-toggle="tab" data-bs-target="#utility" type="button" role="tab" aria-controls="utility" aria-selected="false">
+                                    <span class="utlity-icon tab-icon"></span> Utility
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="authentication-tab" data-bs-toggle="tab" data-bs-target="#authentication" type="button" role="tab" aria-controls="authentication" aria-selected="false">
+                                    <span class="authentication-icon tab-icon"></span> Authentication
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pb-0" id="myTabContent">
+                            @if (Model.TemplateCategory == (int)TemplateModuleType.Marketing || Model.TemplateCategory == 0)
+                            {
+                                <div class="tab-pane fade show active" id="marketing" role="tabpanel" aria-labelledby="marketing">
+                                    <partial name="_MarketingTemplateTypeOptions" model="@Model" />
+                                </div>
+                            }
+                            else if (Model.TemplateCategory == (int)TemplateModuleType.Utility)
+                            {
+                                <div class="tab-pane fade show active" id="utility" role="tabpanel" aria-labelledby="Utility">
+                                    <partial name="_UtilityTemplateTypeOptions" model="@Model" />
+                                </div>
+                            }
+                            else if (Model.TemplateCategory == (int)TemplateModuleType.Authentication)
+                            {
+                                <div class="tab-pane fade show active" id="authentication" role="tabpanel" aria-labelledby="Authentication">
+                                    <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
-                <!-- <div>
-                    <button type="button" class="btn primary-btn" data-bs-toggle="modal"
-                            data-bs-target="#createTemplate">
-                        View Sample Template
-                    </button>
-                </div> -->
-            </div>
-            <div class="row">
-                <form asp-action="CreateTemplate" asp-controller="TemplateManagement" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="col-md-8">
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Template name<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Give your message template a name.</label>
-                                <input asp-for="TemplateName"
-                                       type="text"
-                                       class="form-control"
-                                       id="exampleInputEmail1"
-                                       placeholder="Eg.fortune_sale"
-                                       aria-describedby="emailHelp" />
-                                <div id="emailHelp" class="form-text">
-                                    Template names can only contain small letters, numbers and
-                                    underscores.
-                                </div>
-                            </div>
-                        </div>
+                <div class="template-creation-preview">
+                    <div class="template-preview-card creation-card">
+                        <h4>Template Preview</h4>
+                        <div class="template-preview">
+                            <div class="template-white-card">
 
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Category<sup>*</sup></h3>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose what type of message template you want to
-                                    create.
-                                </label>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault1"
-                                                   value="UTILITY" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault1">
-                                                Utility
-                                            </label>
+                                <div class="swiper useCasesSwiper">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide swiper-card">
+                                            <div class="template-slide-card">
+                                                @* <span><img src="images/card-img-03.png"></span> *@
+                                                <div class="description">
+                                                    <p>Dear {{1}}</p>
+                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                </div>
+                                                <div class="time">1:59 PM</div>
+                                            </div>
+                                            <div class="buy-link">
+                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                <a href="#"><i class="forward"></i> My Account Balance</a>
+
+
+                                            </div>
                                         </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
+                                        <div class="swiper-slide swiper-card">
+                                            <div class="template-slide-card">
+                                                @* <span><img src="images/card-img-03.png"></span> *@
+                                                <div class="description">
+                                                    <p>Dear {{1}}</p>
+                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                </div>
+                                                <div class="time">1:59 PM</div>
+                                            </div>
+                                            <div class="buy-link">
+                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                <!-- <a href="#"><i class="backward"></i> Yes </a>
+                                                <a href="#"><i class="call"></i> Call Us </a> -->
+
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault2"
-                                                   value="AUTHENTICATION" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault2">
-                                                Authentication
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault3"
-                                                   value="MARKETING" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault3">
-                                                Marketing
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Language<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose which languages your message template will be sent
-                                    in.
-                                </label>
-                                <select asp-for="Language" class="form-select" aria-label="Default select example">
-                                    <option selected>select languages</option>
-                                    <option value="en_US">English (US)</option>
-
-                                    <option value="3">Hindi</option>
-                                    <option value="4">Marathi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Types Of Variables<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Name</option>
-                                    <option value="1">Number</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Media Samples<sup>*</sup> <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-
-                                <select class="form-select" id="mySelect" aria-label="Default select example">
-                                    <option selected disabled>Select Media</option>
-                                    <option value="Text">Text</option>
-                                    <option value="Image">Image</option>
-                                    <option value="Video">Video</option>
-                                    <option value="Document">Document</option>
-                                    <option value="Location">Location</option>
-
-                                </select>
-                                <div class="drag-file-wrapper" id="attatchment" style="display: none;">
-                                    <label class="drag-file">
-                                        <input type="file" />
-                                        <span class="drag-title">Drag and drop to upload or <a href="#">choose files on your device</a></span>
-
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Header <span class="key">Optional</span></h3>
-                                <input type="hidden" asp-for="Components[0].Type" value="HEADER" />
-                                <input type="hidden" asp-for="Components[0].Format" value="TEXT" />
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Add a 60 character title to your message. Only one variable
-                                    is supported in the header.
-                                </label>
-                                <input type="text" id="Headerinput" asp-for="Components[0].Text" class="form-control">
-                                <input type="hidden" asp-for="Components[0].Example.HeaderText" id="Header_Text_value" value="" />
-
-                                <div class="d-flex justify-content-end">
-                                    <a class="add-variables" id="AddHeaderVariable">Add Variables</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding" style="display: none;">
-                            <h6>Variable samples</h6>
-                            <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
-                            <ul class="add-veriables" id="addHeader-veriables">
-                            </ul>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Body <span class="key">Required</span></h3>
-                                <input type="hidden" asp-for="Components[1].Type" value="BODY" />
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Enter the text for your message in the language you have
-                                    selected.
-                                </label>
-                                <div class="note d-flex align-items-center ">
-                                    <span class="exclamatory"></span>
-                                    <p>
-                                        The text limit in the body should be less than 550
-                                        characters and emojis should be less than 10 to avoid
-                                        any template rejection
-                                    </p>
-                                </div>
-                                <br />
-                                @* <div id="content" contenteditable="true" spellcheck="false">
-                                        
-                                    </div> *@
-                                <textarea id="body-text" asp-for="Components[1].Text" class="form-control" placeholder="Body Text"></textarea>
-                                <input type="hidden" asp-for="Components[1].Example.BodyText" id="Body_Text_value" value="" />
-
-                                <div class="toolbar">
-                                    <a class="add-variables" id="addBodyvariables">Add Variables</a>
-                                    @* <div class="btn-toolbar">
-
-                                            <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
-                                            <button onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
-                                            <button onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
-                                            <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button>
-                                            <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
-                                            <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button>
-
-                                        </div> *@
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="card padding" style="display: none;">
-                            <h6>Variable samples</h6>
-                            <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
-                            <ul class="add-veriables" id="AddVariableli">
-                            </ul>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Footer <span class="key">Optional</span></h3>
-                                <input type="hidden" asp-for="Components[2].Type" value="FOOTER" />
-
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Add a 60 character footer to your message. Variables are not supported in the footer.</label>
-                                <input class="form-control" asp-for="Components[2].Text" />
-                                <div class="d-flex justify-content-end">
-                                    <button class="add-variables">Add Variables</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Button <span class="key">Optional</span></h3>
-                                <input type="hidden" asp-for="Components[3].Type" value="BUTTONS" />
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Please choose buttons to be added to the template. You can choose upto 10 buttons</label>
-                                <div class="dropdown add-btn-template">
-                                    <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Add button
-                                    </button>
-                                    <ul class="dropdown-menu" id="template-btn" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#" id="custom"><span class=""></span> Custom</a></li>
-                                        <li><a class="dropdown-item" href="#" id="visit-website">Visit Website</a></li>
-                                    </ul>
 
                                 </div>
-                                <ul class="add-template-button-list">
-                                    <li>
-                                        <div class="d-flex align-items-center form-wrapper gap-3">
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
 
-                                            <div>
-                                                <label>Type</label>
-                                                <input class="form-control" value="Custom" />
-                                            </div>
-                                            <div>
-                                                <label>Button Text</label>
-                                                <input class="form-control" value="Quick Reply" />
-                                            </div>
-                                        </div>
-                                        <div class="drag-close">
 
-                                            <button class="close"></button>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="d-flex align-items-center form-wrapper gap-3">
-
-                                            <div>
-                                                <label>Type</label>
-                                                <input class="form-control" value="Visit Website" />
-                                            </div>
-                                            <div>
-                                                <label>Button Text</label>
-                                                <input class="form-control" value="Visit Website" />
-                                            </div>
-                                        </div>
-                                        <div class="drag-close">
-
-                                            <button class="close"></button>
-                                        </div>
-                                    </li>
-                                </ul>
                             </div>
-                            <!-- <div class="d-flex gap-3">
-                                <button class="btn secondary-btn add-btn d-flex">Quick Reply</button>
-                                <button class="btn secondary-btn add-btn d-flex">Add CTA</button>
-                            </div> -->
                         </div>
-                        <div class="d-flex gap-2 mb-3">
-                            <button class="btn danger-btn">Clear All</button>
-                            <button class="btn primary-btn" type="submit">Submit</button>
+                        <div class="mt-3 guidline">
+                            <h4 class="mb-1">This template is good for</h4>
+                            <p>Welcome messages, promotions, offers, coupons, newsletters, announcements</p>
+                        </div>
+                        <div class="mt-3 guidline">
+                            <h4 class="mb-1">Template areas you can customize</h4>
+                            <p>Media, header, body, footer, button</p>
                         </div>
                     </div>
-                </form>
 
-                <div class="col-md-4">
-                    <div class="template-preview">
-                        <h4>Preview</h4>
-                        <div class="template-white-card">
-                            <span><img src="images/card-img-03.webp"></span>
-                            <div class="description">
-                                <p>Dear {{1}}</p>
-                                <p>We are excited to present you with an exclusive offer ! {{}}</p>
-                            </div>
-                            <div class="time">1:59 PM</div>
-
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        <partial name="_ValidationScriptsPartial" />
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-        <partial name="_ValidationScriptsPartial" />
-    }
+<div class="bottom-strip">
+    <div class="bottom-container">
+        <button type="button" class="btn secondary-btn">Discard</button>
+        <button type="button" class="btn primary-btn">Next</button>
+        <button type="submit" class="btn primary-btn" style="display:none;">Submit for review</button>
+    </div>
+</div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <script>
         $(document).ready(function () {
-            let BodyvariableCount = 0;
-            let HeadervariableCount = 0;
-            var hiddenValue = $('#Body_Text_value').val();
+            $('.nav-link').on('click', function () {
+                const selectedTabId = $(this).attr('id');
+                let categoryValue;
+                let categoryName = "";
 
-
-            $('#addBodyvariables').click(function () {
-                BodyvariableCount++;
-                var inputevariable = $("#body-text");
-                if (BodyvariableCount === 1) {
-                    $('.card.padding').show();
+                switch (selectedTabId) {
+                    case 'marketing-tab':
+                        categoryValue = @((int)TemplateModuleType.Marketing);
+                        categoryName = "@(TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)";
+                        break;
+                    case 'utility-tab':
+                        categoryValue = @((int)TemplateModuleType.Utility);
+                        categoryName = "@(TemplateModuleType.Utility.Get<DisplayAttribute>().Name)";
+                        break;
+                    case 'authentication-tab':
+                        categoryValue = @((int)TemplateModuleType.Authentication);
+                        categoryName = "@(TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)";
+                        break;
                 }
 
-                const variable = `{{${BodyvariableCount}}}`;
+                $('#TemplateCategory').val(categoryValue);
 
+                $('#myTabContent').show();
 
+                var req = {
+                    TemplateCategory: parseInt(categoryValue),
+                    TemplateCategoryName: categoryName
+                };
 
-                 const newRow = $(`
-                        <li style="margin-top: 10px;" data-variable="${variable}">
-                            <div class="d-flex gap-3">
-                                <div>
-                                    <input type="text" class="form-control" value="${variable}" readonly>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <input type="text" class="form-control variable-value" id="Body_Var_value_${BodyvariableCount}">
-                                </div>
-                                <button type="button" id="add-variable" class="btn btn-primary">add</button>
-                                <button type="button" id="remove-variable" class="btn btn-danger">Remove</button>
-                            </div>
-                        </li>
-                    `);
+                var url = "/TemplateManagement/GetTemplateTypePartialView";
 
-
-                $('#AddVariableli').append(newRow);
-
-                updateTextarea(variable,inputevariable)
-
-                newRow.find(`#Body_Var_value_${BodyvariableCount}`).change(function () {
-                    //var inputVarValue = $(this).val();
-                    updateBodyTextValue();
-                });
-
-                newRow.find('#remove-variable').click(function () {
-                   removeFromTextarea(variable,inputevariable);
-                    newRow.remove();
-                    BodyvariableCount--;
-                    checkIfBodyEmpty();
-                });
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                    $('#myTabContent').html(response);
+                    $('#template-category').hide();
+                    $('#previous-btn').show();
+                    commonHelper.showHideLoader(false);
+                }, null);
             });
-
-                             function updateBodyTextValue() {
-                                    let innerValues = [];
-
-                                    $(".variable-value").each(function () {
-                                        let val = $(this).val().trim();
-                                        if (val) {
-                                            innerValues.push(val);
-                                        }
-                                    });
-
-                                    //let bodyTextArray = [innerValues];
-
-                                    let jsonValue = JSON.stringify(innerValues);
-
-                                    debugger;
-
-                                    $('#Body_Text_value').val(jsonValue);
-                                }
-
-                    //  function updateBodyTextValue() {
-                    //     let values = [];
-
-                    //         $(".variable-value").each(function () {
-                    //             let val = $(this).val().trim();
-                    //             if (val) {
-                    //                 values.push(val);
-                    //             }
-                    //         });
-
-
-                    //     $('#Body_Text_value').val(JSON.stringify(values));
-                    // }
-
-
-
-             $('#AddHeaderVariable').click(function () {
-                 const addvarinInpute = $('#Headerinput');
-
-                 HeadervariableCount++;
-
-                if (HeadervariableCount === 1) {
-                    $('.card.padding').show();
-                }
-
-                const variable = `{{${HeadervariableCount}}}`;
-
-                const newRow = $(`
-                    <li style="margin-top: 10px;" data-variable="${variable}">
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input type="text" class="form-control" value="${variable}" readonly>
-                            </div>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control variable-value"  id="Header_Var_value_${HeadervariableCount}">
-                            </div>
-                            <button type="button" id="remove-Header-var"  class="btn btn-danger">Remove</button>
-                        </div>
-                    </li>
-                `);
-
-                $('#addHeader-veriables').append(newRow);
-
-               // updateTextarea(variable);
-
-
-                updateTextarea(variable,addvarinInpute)
-                    newRow.find(`#Header_Var_value_${HeadervariableCount}`).change(function () {
-                        var inputVarValue = $(this).val();
-                        updateHeaderTextvalue(inputVarValue);
-                    });
-                newRow.find('#remove-Header-var').click(function () {
-
-                    removeFromTextarea(variable,addvarinInpute);
-                    newRow.remove();
-                    HeadervariableCount--;
-                    checkIfHeaderEmpty();
-                });
-            });
-
-
-            function updateHeaderTextvalue(inputVarValue) {
-
-                    let existingValue = $('#Header_Text_value').val();
-                    let valueArray = existingValue ? existingValue.split(',') : [];
-
-                    if (inputVarValue.trim() !== "") {
-                        valueArray.push(inputVarValue);
-                    }
-
-                    $('#Header_Text_value').val(valueArray.map(i => `${i}` ).join(', '));
-            }
-
-
-             function updateTextarea(variable,addvarinInpute) {
-                let textarea =addvarinInpute;
-
-                let currentVal = textarea.val();
-
-                if (!currentVal.includes(variable)) {
-                    if (currentVal.length > 0) currentVal += ' ';
-
-                    textarea.val(currentVal+variable);
-                    //textarea.val(currentVal + variable);
-                }
-            }
-
-            function removeFromTextarea(variable,addvarinInpute) {
-
-               const textarea = addvarinInpute;
-                let currentVal =  addvarinInpute.val();
-                const regex = new RegExp(variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                textarea.val(currentVal.replace(regex, '').replace(/\s+/g, ' ').trim());
-
-            }
-            function checkIfHeaderEmpty() {
-                if ($('#addHeader-veriables li').length === 0) {
-                    $('.card.padding').hide();
-                    variableCount = 0;
-                }
-            }
-             function checkIfBodyEmpty() {
-                if ($('#AddVariableli li').length === 0) {
-
-                    $('.card.padding').hide();
-                    variableCount = 0;
-                }
-            }
         });
     </script>
-
 }

@@ -29,45 +29,45 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             return View();
         }
 
-        [HttpGet("create-template")]
-        public IActionResult CreateTemplate()
-        {
-            return View();
-        }
+        //[HttpGet("create-template")]
+        //public IActionResult CreateTemplate()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost("create-template")]
-        public IActionResult CreateTemplate(CreateTemplateViewModel Request)
-        {
-            try
-            {
-                if(!ModelState.IsValid)
-                {
-                    return View(Request);
-                }
+        //[HttpPost("create-template")]
+        //public IActionResult CreateTemplate(CreateTemplateViewModel Request)
+        //{
+        //    try
+        //    {
+        //        if(!ModelState.IsValid)
+        //        {
+        //            return View(Request);
+        //        }
 
-                var templateRequest = new WhatsAppTemplateRequest
-                {
-                    Name = Request.TemplateName,
-                    Language = Request.Language,
-                    Category = Request.Category,
-                    Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
-                };
-
-
-                var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
-
-                var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
-
-                return View(Request);
-            }
-            catch (Exception)
-            {
-
-                return View(Request);
-            }
+        //        var templateRequest = new WhatsAppTemplateRequest
+        //        {
+        //            Name = Request.TemplateName,
+        //            Language = Request.Language,
+        //            Category = Request.Category,
+        //            Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
+        //        };
 
 
-        }
+        //        var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
+
+        //        var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
+
+        //        return View(Request);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return View(Request);
+        //    }
+
+
+        //}
 
         [HttpGet("update-template/{Template_id}")]
         public async Task<IActionResult> UpdateTemplate(string Template_id)
@@ -129,7 +129,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateTemplate()
         {
             try
             {
@@ -152,7 +152,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TemplateViewModel model)
+        public async Task<IActionResult> CreateTemplate(TemplateViewModel model)
         {
             try
             {

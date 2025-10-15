@@ -20,7 +20,11 @@ namespace F4ConversationCloud.Domain.Enum
 
         [Description("Calling permissions request")]
         [Display(Name = "Calling permissions request")]
-        CallingPermissionsRequest = 3
+        CallingPermissionsRequest = 3,
+
+        [Description("Carousel")]
+        [Display(Name = "Carousel")]
+        Carousel = 4
     }
 
     public enum UtilityTemplateType
@@ -31,7 +35,11 @@ namespace F4ConversationCloud.Domain.Enum
 
         [Description("Calling permissions request")]
         [Display(Name = "Calling permissions request")]
-        CallingPermissionsRequest = 2
+        CallingPermissionsRequest = 2,
+
+        [Description("Carousel")]
+        [Display(Name = "Carousel")]
+        Carousel = 3
     }
 
     public enum AuthenticationTemplateType
