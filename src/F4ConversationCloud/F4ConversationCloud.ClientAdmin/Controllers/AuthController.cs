@@ -17,7 +17,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
         }
         
 
-        [HttpGet("Login")]
+        /*[HttpGet("Login")]
         public async Task<IActionResult> Login(LoginViewModel request)
         {
             if (!ModelState.IsValid)
@@ -30,6 +30,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 PassWord = requst.Password
             });
             return View(request);
-        }
+        }*/
     }
 }

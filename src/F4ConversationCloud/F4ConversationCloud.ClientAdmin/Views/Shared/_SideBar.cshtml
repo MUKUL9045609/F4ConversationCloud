@@ -1,0 +1,112 @@
+﻿<aside class="app-sidebar">
+    <a href="#" class="main-sidebar-header">
+        <img src="/images/logo.svg" />
+    </a>
+    <div class="company-logo">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="company-template">
+                    <span class="logo">
+                        <img src="~/images/nbbi-logo.svg" />
+                    </span>
+                    <div>
+                        <span class="company-title">NBBL - NPCI Bharat...</span>
+                        <span class="company-name">Fortune4 Internal</span>
+                    </div>
+                </div>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-side-navigation">
+        <nav>
+            <ul>
+                <li class="active">
+                    <a href="index.html" class="home icon">Home</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                    <ul class="submenu">
+                        <li><a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a></li>
+                        <li><a asp-controller="Campaigns" asp-action="Guide">Guide</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="template icon">Templates</a>
+                </li>
+                <li>
+                    @* <a href="#" class="bot icon carret">Bot Studio</a> *@
+                    <ul class="submenu">
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </li>
+                @* <li>
+                    <a href="#" class="agent icon carret">Agent Assist</a>
+                    <ul class="submenu">
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </li> *@
+                @* <li>
+                    <a href="#" class="analytics icon">Analytics</a>
+                </li> *@
+
+                @* <li>
+                    <a href="#" class="channels icon carret">Channels</a>
+                    <ul class="submenu">
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </li> *@
+                @* <li>
+                    <a href="#" class="integrations icon carret">Integrations</a>
+                    <ul class="submenu">
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </li> *@
+                @* <li>
+                    <a href="#" class="event icon">Events</a>
+                </li>
+                <li>
+                    <a href="#" class="extensions icon carret">Extensions</a>
+                    <ul class="submenu">
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </li> *@
+            </ul>
+        </nav>
+    </div>
+    <div class="bottom-navigation">
+        <nav>
+            <ul>
+                <li>
+                    <a href="#" class="org-analytics icon">Org Analytics</a>
+                </li>
+                <li>
+                    <a href="#" class="billing icon">Billing</a>
+                </li>
+                <li>
+                    <a href="#" class="project icon">Manage Project</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>
