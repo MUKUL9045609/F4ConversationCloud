@@ -6,4 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\F4ConversationCloud.Application\F4ConversationCloud.Application.csproj" />
+    <ProjectReference Include="..\F4ConversationCloud.Infrastructure\F4ConversationCloud.Infrastructure.csproj" />
+    <ProjectReference Include="..\F4ConversationCloud.SuperAdmin\F4ConversationCloud.SuperAdmin.csproj" />
+    <ProjectReference Include="..\Onboarding\F4ConversationCloud.Onboarding.csproj" />
+  </ItemGroup>
+
 </Project>

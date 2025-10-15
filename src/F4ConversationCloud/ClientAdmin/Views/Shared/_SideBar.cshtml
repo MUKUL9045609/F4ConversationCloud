@@ -1,6 +1,6 @@
 ﻿<aside class="app-sidebar">
     <a href="#" class="main-sidebar-header">
-        <img src="images/logo.svg" />
+        <img src="/images/logo.svg" />
     </a>
     <div class="company-logo">
         <div class="dropdown">
@@ -32,8 +32,8 @@
                 <li>
                     <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
                     <ul class="submenu">
-                        <li><a href="./campaigns/broadcast.html">Broadcast</a></li>
-                        <li><a href="./campaigns/guide.html">Guide</a></li>
+                        <li><a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a></li>
+                        <li><a asp-controller="Campaigns" asp-action="Guide">Guide</a></li>
                     </ul>
                 </li>
                 <li>
