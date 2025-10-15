@@ -7,9 +7,11 @@ using F4ConversationCloud.SuperAdmin.Handler;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.DataClassification;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json;
+using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -255,8 +257,26 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
                 ModelState.Clear();
             }
-
+            ViewData["Index"] = 0;
             return PartialView(viewName, model);
+        }
+
+        public IActionResult AddMessageVariable(int index)
+        {
+            var model = new TemplateViewModel();
+
+            // Ensure the list is initialized
+            if (model.bodyVariables == null)
+                model.bodyVariables = new List<BodyVariable>();
+
+            // Add empty items until the list has the required index
+            while (model.bodyVariables.Count <= index)
+            {
+                model.bodyVariables.Add(new BodyVariable());
+            }
+
+            ViewData["Index"] = index;
+            return PartialView("_MessageVariableBody", model);
         }
     }
 }
