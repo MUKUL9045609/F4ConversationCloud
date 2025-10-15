@@ -126,11 +126,11 @@
         .accordion-item {
             margin-bottom: 19px !important;
             .accordion-header {
-                margin: 0px 10px;
+                // margin: 0px 10px;
 
                 .accordion-button {
                     border-bottom: 1px solid #ddd;
-                        padding: 14px 0px;
+                    padding: 14px 15px;
                     &.collapsed {
                         border-bottom: 0px;
                     }
@@ -139,6 +139,7 @@
             }
             .accordion-body {
                 background-color: transparent;
+                padding: 10px 15px;
             }
         }
     }
