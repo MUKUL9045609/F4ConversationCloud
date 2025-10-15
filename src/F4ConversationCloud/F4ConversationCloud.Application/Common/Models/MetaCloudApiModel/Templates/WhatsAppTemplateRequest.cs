@@ -16,9 +16,12 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonPropertyName("components")]
         public List<CreateTemplateComponent> Components { get; set; }
 
+        [JsonPropertyName("cards")]
+        public List<Cards> cards { get; set; }
+
         //[JsonPropertyName("paging")]
         //public TemplatePaging Paging { get; set; }
-
+ 
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -32,6 +35,8 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
 
         [JsonPropertyName("category")]
         public string Category { get; set; }
+
+        public int ClientInfoId { get; set; }
     }
 
 
@@ -56,6 +61,9 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
         [JsonPropertyName("buttons")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<TemplateButton> Buttons { get; set; }
+
+        [JsonPropertyName("cards")]
+        public List<Cards> cards { get; set; }
     }
     public class TemplateButton
     {
@@ -95,5 +103,12 @@ namespace F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templa
 
         [JsonPropertyName("example")]
         public string Example { get; set; }
+    }
+
+    public class Cards {
+
+        [JsonPropertyName("components")]
+        public List<CreateTemplateComponent> Components { get; set; }
+
     }
 }

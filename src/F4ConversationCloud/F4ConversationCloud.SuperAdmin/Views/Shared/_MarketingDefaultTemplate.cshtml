@@ -11,7 +11,7 @@
             <label asp-for="TemplateName" class="form-label">Give your message template a name.</label>
             <input asp-for="TemplateName" type="text"
                    class="form-control"
-                   placeholder="Template name" />
+                   placeholder="Template name" maxlength="512"/>
             <div class="form-text">
                 Template names can only contain small letters, numbers and
                 underscores.
@@ -36,17 +36,14 @@
     </div>
     <div class="card padding">
         <div class="d-flex justify-content-between mb-3">
-            <h3>Types Of Variables<sup>*</sup></h3>
+            <h3>Types Of Variables<sup> *</sup></h3>
             <span class="question"></span>
         </div>
         <div class="template-question mb-3">
-
-            <select class="form-select" aria-label="Default select example">
-                <option selected>Name</option>
-                <option value="1">Number</option>
-
+            <select asp-for="VariableType" asp-items="Model.VariableTypeList" class="form-select" aria-label="Default select example">
             </select>
         </div>
+        <span asp-validation-for="VariableType" class="text-danger"></span>
     </div>
     <div class="card padding">
         <div class="d-flex justify-content-between mb-3">
@@ -86,8 +83,9 @@
                 is supported in the header.
             </label>
             <input asp-for="Header" type="text" class="form-control" maxlength="60">
+            <span asp-validation-for="Header" class="text-danger"></span>
             <div class="d-flex justify-content-end">
-                <button class="add-variables" id="header-add-btn">Add Variables</button>
+                <button class="add-variables" id="header-add-btn" type="button">Add Variables</button>
             </div>
         </div>
     </div>
@@ -109,7 +107,8 @@
                     any template rejection
                 </p>
             </div>
-            <input asp-for="MessageBody" id="content" contenteditable="true" spellcheck="false" maxlength="550" />
+            <div id="content" contenteditable="true" spellcheck="false" class="form-control"></div>
+            <input asp-for="MessageBody" type="hidden" />
             @* <div id="content" contenteditable="true" spellcheck="false">
                                         Lorem, ipsum.
                                     </div> *@
@@ -127,25 +126,25 @@
             <span asp-validation-for="MessageBody" class="text-danger"></span>
         </div>
     </div>
-    <div class="card padding">
+    <div class="card padding" id="variable-card" style="display:none;">
         <h6>Variable samples</h6>
         <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
 
-        <ul class="add-veriables">
+        <ul class="add-veriables" id="variable-card-header" style="display:none;">
             <li>
                 <small class="fw-medium">Header</small>
                 <div class="d-flex gap-3">
                     <div>
-                        <input type="text" class="form-control" value="{{1}}" readonly>
+                        <input asp-for="HeaderVariableName" type="text" class="form-control" readonly>
                     </div>
                     <div class="flex-grow-1">
-                        <input type="text" class="form-control">
+                        <input asp-for="HeaderVariableValue" type="text" class="form-control">
                     </div>
                 </div>
             </li>
         </ul>
 
-        <ul class="add-veriables">
+        <ul class="add-veriables" id="variable-card-body" style="display:none;">
             <li>
                 <small class="fw-medium">Body</small>
                 <div class="d-flex gap-3">

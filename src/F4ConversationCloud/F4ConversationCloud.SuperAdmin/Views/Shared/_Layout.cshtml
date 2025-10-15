@@ -7,11 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - F4ConversationCloud.SuperAdmin</title>
     <script type="importmap"></script>
+
+
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="~/css/daterangepicker.css">
+
 </head>
 <body>
     <div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
@@ -102,16 +105,22 @@
     </div>
     <div class="toastWrap">
     </div>
-    @* <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script> *@
-    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    @* <script src="~/js/jquery.min.js"></script> *@
     <script src="~/js/popper.min.js" crossorigin="anonymous"></script>
     <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
     <script src="~/js/moment.min.js"></script>
     <script src="~/js/daterangepicker.min.js"></script>
     <script src="~/js/commonHelper.js" asp-append-version="true"></script>
     <script src="~/js/ajaxhelper.js" asp-append-version="true"></script>
+    <script src="~/js/unobtrusiveHelper.js" asp-append-version="true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
         $(document).ready(function () {
             commonHelper.showHideLoader(true);
