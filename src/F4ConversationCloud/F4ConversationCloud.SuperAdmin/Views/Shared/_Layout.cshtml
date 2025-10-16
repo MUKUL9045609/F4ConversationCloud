@@ -30,10 +30,10 @@
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                                 <a asp-controller="Dashboard" asp-action="Index" class="home icon">Dashboard</a>
                             </li>
-                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" || ViewContext.RouteData.Values["Controller"]?.ToString() == "TemplateManagement" ? "active" : "")">
                                 <a asp-controller="ClientManagement" asp-action="List" class="users icon">Clients</a>
                             </li>
-                            <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "UserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                            <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "UserManagement" ? "active" : "")">
                                 <a asp-controller="UserManagement" asp-action="List" class="user icon">User Management</a>
                             </li>
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientUserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">

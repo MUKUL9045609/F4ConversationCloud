@@ -12,140 +12,177 @@
 
     var m = Model;
 }
-<div class="content bg-light">
-    <div class="main-content">
-        <div class="container-fluid">
 
-            <div class="template-content-wrap">
-                <div class="template-creation-content">
-                    <div class="creation-card template-creation">
+<form asp-action="Create" method="post" enctype="multipart/form-data" id="mainForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="content bg-light">
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="template-content-wrap">
+                    <div class="template-creation-content" id="first-page">
+                        <div class="creation-card template-creation">
 
-                        <h3 class="mb-2">Set Up Your Template</h3>
-                        <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
-                        <input asp-for="TemplateCategory" type="hidden" />
-                        <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
-                                    <span class="marketing-icon tab-icon"></span> Marketing
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="utility-tab" data-bs-toggle="tab" data-bs-target="#utility" type="button" role="tab" aria-controls="utility" aria-selected="false">
-                                    <span class="utlity-icon tab-icon"></span> Utility
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="authentication-tab" data-bs-toggle="tab" data-bs-target="#authentication" type="button" role="tab" aria-controls="authentication" aria-selected="false">
-                                    <span class="authentication-icon tab-icon"></span> Authentication
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pb-0" id="myTabContent">
-                            @if (Model.TemplateCategory == (int)TemplateModuleType.Marketing || Model.TemplateCategory == 0)
-                            {
-                                <div class="tab-pane fade show active" id="marketing" role="tabpanel" aria-labelledby="marketing">
-                                    <partial name="_MarketingTemplateTypeOptions" model="@Model" />
-                                </div>
-                            }
-                            else if (Model.TemplateCategory == (int)TemplateModuleType.Utility)
-                            {
-                                <div class="tab-pane fade show active" id="utility" role="tabpanel" aria-labelledby="Utility">
-                                    <partial name="_UtilityTemplateTypeOptions" model="@Model" />
-                                </div>
-                            }
-                            else if (Model.TemplateCategory == (int)TemplateModuleType.Authentication)
-                            {
-                                <div class="tab-pane fade show active" id="authentication" role="tabpanel" aria-labelledby="Authentication">
-                                    <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="template-creation-preview">
-                    <div class="template-preview-card creation-card">
-                        <h4>Template Preview</h4>
-                        <div class="template-preview">
-                            <div class="template-white-card">
-
-                                <div class="swiper useCasesSwiper">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide swiper-card">
-                                            <div class="template-slide-card">
-                                                @* <span><img src="images/card-img-03.png"></span> *@
-                                                <div class="description">
-                                                    <p>Dear {{1}}</p>
-                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
-                                                </div>
-                                                <div class="time">1:59 PM</div>
-                                            </div>
-                                            <div class="buy-link">
-                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                <a href="#"><i class="forward"></i> My Account Balance</a>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide swiper-card">
-                                            <div class="template-slide-card">
-                                                @* <span><img src="images/card-img-03.png"></span> *@
-                                                <div class="description">
-                                                    <p>Dear {{1}}</p>
-                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
-                                                </div>
-                                                <div class="time">1:59 PM</div>
-                                            </div>
-                                            <div class="buy-link">
-                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                <!-- <a href="#"><i class="backward"></i> Yes </a>
-                                                <a href="#"><i class="call"></i> Call Us </a> -->
-
-                                            </div>
-                                        </div>
-
+                            <h3 class="mb-2">Set Up Your Template</h3>
+                            <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
+                            <input asp-for="TemplateCategory" type="hidden" />
+                            <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
+                                        <span class="marketing-icon tab-icon"></span> Marketing
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="utility-tab" data-bs-toggle="tab" data-bs-target="#utility" type="button" role="tab" aria-controls="utility" aria-selected="false">
+                                        <span class="utlity-icon tab-icon"></span> Utility
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="authentication-tab" data-bs-toggle="tab" data-bs-target="#authentication" type="button" role="tab" aria-controls="authentication" aria-selected="false">
+                                        <span class="authentication-icon tab-icon"></span> Authentication
+                                    </button>
+                                </li>
+                            </ul>
+                            <div class="tab-content pb-0" id="myTabContent">
+                                @if (Model.TemplateCategory == (int)TemplateModuleType.Marketing || Model.TemplateCategory == 0)
+                                {
+                                    <div class="tab-pane fade show active" id="marketing" role="tabpanel" aria-labelledby="marketing">
+                                        <partial name="_MarketingTemplateTypeOptions" model="@Model" />
                                     </div>
-
-                                </div>
-                                <div class="swiper-button-prev"></div>
-                                <div class="swiper-button-next"></div>
-
-
+                                }
+                                else if (Model.TemplateCategory == (int)TemplateModuleType.Utility)
+                                {
+                                    <div class="tab-pane fade show active" id="utility" role="tabpanel" aria-labelledby="Utility">
+                                        <partial name="_UtilityTemplateTypeOptions" model="@Model" />
+                                    </div>
+                                }
+                                else if (Model.TemplateCategory == (int)TemplateModuleType.Authentication)
+                                {
+                                    <div class="tab-pane fade show active" id="authentication" role="tabpanel" aria-labelledby="Authentication">
+                                        <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
+                                    </div>
+                                }
                             </div>
                         </div>
-                        <div class="mt-3 guidline">
-                            <h4 class="mb-1">This template is good for</h4>
-                            <p>Welcome messages, promotions, offers, coupons, newsletters, announcements</p>
-                        </div>
-                        <div class="mt-3 guidline">
-                            <h4 class="mb-1">Template areas you can customize</h4>
-                            <p>Media, header, body, footer, button</p>
+                    </div>
+                    <div class="template-creation-content" id="partialForTemplateForm" style="display:none;">
+                        @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                        {
+                            if (Model.TemplateType == (int)MarketingTemplateType.Default)
+                            {
+                                <partial name="_MarketingDefaultTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)MarketingTemplateType.Catalogue)
+                            {
+                                <partial name="_MarketingCatalogueTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)MarketingTemplateType.CallingPermissionsRequest)
+                            {
+                                <partial name="_MarketingCallingPermissionsRequestTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)MarketingTemplateType.Carousel)
+                            {
+                                <partial name="_MarketingCarouselTemplate" model="@Model" />
+                            }
+                        }
+                        else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                        {
+                            if (Model.TemplateType == (int)UtilityTemplateType.Default)
+                            {
+                                <partial name="_UtilityDefaultTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)UtilityTemplateType.CallingPermissionsRequest)
+                            {
+                                <partial name="_UtilityCallingPermissionsRequestTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)UtilityTemplateType.Carousel)
+                            {
+                                <partial name="_UtilityCarouselTemplate" model="@Model" />
+                            }
+                        }
+                        else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
+                        && Model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
+                        {
+                            <partial name="_AuthenticationOneTimePasscodeTemplate" model="@Model" />
+                        }
+                    </div>
+                    <div class="template-creation-preview">
+                        <div class="template-preview-card creation-card">
+                            <h4>Template Preview</h4>
+                            <div class="template-preview">
+                                <div class="template-white-card">
+                                    <div class="swiper useCasesSwiper">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide swiper-card">
+                                                <div class="template-slide-card">
+                                                    @* <span><img src="images/card-img-03.png"></span> *@
+                                                    <div class="description">
+                                                        <p>Dear {{1}}</p>
+                                                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                    </div>
+                                                    <div class="time">1:59 PM</div>
+                                                </div>
+                                                <div class="buy-link">
+                                                    <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                    <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide swiper-card">
+                                                <div class="template-slide-card">
+                                                    @* <span><img src="images/card-img-03.png"></span> *@
+                                                    <div class="description">
+                                                        <p>Dear {{1}}</p>
+                                                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                    </div>
+                                                    <div class="time">1:59 PM</div>
+                                                </div>
+                                                <div class="buy-link">
+                                                    <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                    <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                    <!-- <a href="#"><i class="backward"></i> Yes </a>
+                                                    <a href="#"><i class="call"></i> Call Us </a> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
+                                </div>
+                            </div>
+                            <div class="mt-3 guidline">
+                                <h4 class="mb-1">This template is good for</h4>
+                                <p>Welcome messages, promotions, offers, coupons, newsletters, announcements</p>
+                            </div>
+                            <div class="mt-3 guidline">
+                                <h4 class="mb-1">Template areas you can customize</h4>
+                                <p>Media, header, body, footer, button</p>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="bottom-strip">
-    <div class="bottom-container">
-        <button type="button" class="btn secondary-btn">Discard</button>
-        <button type="button" class="btn primary-btn">Next</button>
-        <button type="submit" class="btn primary-btn" style="display:none;">Submit for review</button>
+    <div class="bottom-strip">
+        <div class="bottom-container">
+            <button type="button" class="btn secondary-btn" id="discard-btn">Discard</button>
+            <button type="button" class="btn secondary-btn" id="previous-btn" style="display:none;">Previous</button>
+            <button type="button" class="btn primary-btn" id="next-btn">Next</button>
+            <button type="submit" class="btn primary-btn" id="submit-btn" style="display:none;">Submit for review</button>
+        </div>
     </div>
-</div>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <script>
         $(document).ready(function () {
+            $('#TemplateCategory').val(1);
             $('.nav-link').on('click', function () {
-                const selectedTabId = $(this).attr('id');
-                let categoryValue;
-                let categoryName = "";
+                var selectedTabId = $(this).attr('id');
+                var categoryValue;
+                var categoryName = "";
 
                 switch (selectedTabId) {
                     case 'marketing-tab':
@@ -175,11 +212,199 @@
 
                 ajaxHelper.ajaxPost(url, null, req, function (response) {
                     $('#myTabContent').html(response);
-                    $('#template-category').hide();
-                    $('#previous-btn').show();
                     commonHelper.showHideLoader(false);
                 }, null);
             });
+        });
+
+        $(document).on('click', '#next-btn', function () {
+            commonHelper.showHideLoader(true);
+            var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
+            var templateCategory = $('[name="TemplateCategory"]').val();
+            var templateTypeText = $('input[name="TemplateType"]:checked').next('label').text().trim();
+            var templateType = $('input[name="TemplateType"]:checked').val();
+
+            $('#partialForTemplateForm').show();
+            var req = {
+                TemplateCategory: parseInt(templateCategory),
+                TemplateCategoryName: templateCategoryText,
+                TemplateType: parseInt(templateType),
+                TemplateTypeName: templateTypeText
+            };
+
+            var url = "/TemplateManagement/GetTemplateFormPartialView";
+
+            ajaxHelper.ajaxPost(url, null, req, function (response) {
+                $('#partialForTemplateForm').html(response);
+                $('#first-page').hide();
+                $('#next-btn').hide();
+                $('#discard-btn').hide();
+                $('#submit-btn').show();
+                $('#previous-btn').show();
+                $('#title').text('untitled');
+                $('#language-title').text('English');
+
+                //$.validator.unobtrusive.parse($("#partialForTemplateForm"));
+                var $form = $("#mainForm");
+
+                // Remove old validator instances
+                $form.removeData("validator").removeData("unobtrusiveValidation"); // Unobtrusive Validation
+
+                // Re-parse unobtrusive validation attributes
+                $.validator.unobtrusive.parse($form);
+                $('[name="MediaType"]').trigger('change');
+
+                commonHelper.showHideLoader(false);
+            }, null);
+        });
+
+        $(document).on('click', '#previous-btn', function () {
+            commonHelper.showHideLoader(true);
+            $('#partialForTemplateForm').hide();
+            $('#first-page').show();
+            $('#next-btn').show();
+            $('#discard-btn').show();
+            $('#submit-btn').hide();
+            $('#previous-btn').hide();
+            commonHelper.showHideLoader(false);
+        });
+
+        $(document).on('input', '[name="TemplateName"]', function () {
+            var nameVal = $(this).val().trim();
+
+            if (nameVal == ''){
+                $('#title').text('untitled');
+            }
+            else{
+                $('#title').text(nameVal);
+            }
+        });
+
+        $(document).on('change', '[name="Language"]', function () {
+            var languageVal = $('[name="Language"] option:selected').text();
+
+            if (languageVal == ''){
+                $('#language-title').text('');
+            }
+            else{
+                $('#language-title').text(languageVal);
+            }
+        });
+
+        $(document).on('change', '[name="MediaType"]', function () {
+            var selectedValue = $('input[name="MediaType"]:checked').val();
+            var selectedText = $('input[name="MediaType"]:checked').next('label').text().trim();
+            var $fileInput = $('#UploadedFile');
+            var $attachment = $('#attachment');
+            var $existingFileLink = $('#existingFileLink');
+            var $fileValidationMessage = $('[data-valmsg-for="File"]');
+                
+            $fileInput.val('');
+            $existingFileLink.html('');
+            $fileInput.removeAttr('accept');
+
+            var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+
+            if (selectedValue > 0 && selectedText != 'Location') {
+                $attachment.show();
+
+                switch (selectedText) {
+                    case 'Image':
+                        $fileInput.attr('accept', '.jpg,.jpeg,.png');
+                        break;
+                    case 'Video':
+                        $fileInput.attr('accept', '.mp4,.avi,.mov,.wmv');
+                        break;
+                    case 'Document':
+                        $fileInput.attr('accept', '.pdf,.doc,.docx,.xls,.xlsx');
+                        break;
+                }
+            }else if (!hasValidationError) {
+                $attachment.hide();
+            }
+
+            if (selectedValue > 0){
+                $("#header-add-btn").attr("disabled", true);
+                $('#Header').attr('readonly', true);
+            }
+            else{
+                $("#header-add-btn").removeAttr("disabled");
+                $('#Header').removeAttr('readonly');
+            }
+        });
+
+        $(document).on('click', '#header-add-btn', function (e) {
+            e.preventDefault();
+           
+            var headerInput = document.querySelector("input[name='Header']");
+            var variableTypeSelect = $('input[name="VariableType"]:checked').next('label').text().trim();
+            var variableToInsert = "";
+
+            if (variableTypeSelect == null || variableTypeSelect == ''){
+                commonHelper.showError("Please select type of variable.");
+                return;
+            } else if (variableTypeSelect === "Number") {
+                variableToInsert = "{{1}}";
+            } else if (variableTypeSelect === "Name") {
+                variableToInsert = "{{variable_name}}";
+            }
+            $('#variable-card').show();
+            $('#variable-card-header').show();
+            $('[name="HeaderVariableName"]').val(variableToInsert);
+
+            // Check if variable already exists
+            if (!headerInput.value.includes("{{")) {
+                headerInput.value += variableToInsert;
+                $('#header-add-btn').attr('disabled', true);
+            } else {
+                commonHelper.showError("Only one variable is supported in the header.");
+            }
+        });
+
+        $(document).on('input', '[name="Header"]', function () {
+            var headerVal = $(this).val().trim();
+
+            // Enable the button only if the input is empty
+            $('#header-add-btn').attr('disabled', headerVal !== '');
+
+            // Trigger validation and store result
+            var isValid = $(this).valid();
+
+            // Show/hide variable card based on validity
+            if (isValid && headerVal != '') {
+                $('#variable-card').show();
+                $('#variable-card-header').show();
+                // Update the readonly input with asp-for="HeaderVariableName"
+                $('[name="HeaderVariableName"]').val(headerVal);
+            } else {
+                $('#variable-card').hide();
+                $('#variable-card-header').hide();
+                $('[name="HeaderVariableName"]').val('');
+            }
+        });
+
+        $(document).on('change', '[name="VariableType"]', function () {
+            $('#header-add-btn').attr('disabled', false);
+            var newMessage = "";
+            var variableTypeSelect = $('input[name="VariableType"]:checked').next('label').text().trim();
+
+            if (variableTypeSelect === "Number") {
+                newMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).";
+            } else if (variableTypeSelect === "Name") {
+                newMessage = "Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (e.g., {{customer_name}}, {{order_id}}).";
+            }
+
+            var $headerInput = $('[name="Header"]');
+
+            // Update the data attribute (optional, for consistency)
+            $headerInput.attr('data-val-headervariableformat', newMessage);
+
+            // Update the validator's internal message directly
+            var validator = $headerInput.closest("form").validate();
+            validator.settings.messages.Header = validator.settings.messages.Header || {};
+            validator.settings.messages.Header.headervariableformat = newMessage;
+
+            $('#Header').valid();
         });
     </script>
 }

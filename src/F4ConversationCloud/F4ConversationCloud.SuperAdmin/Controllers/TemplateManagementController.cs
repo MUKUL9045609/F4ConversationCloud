@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Handler;
 using F4ConversationCloud.SuperAdmin.Models;
@@ -213,37 +214,45 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
             if (model != null)
             {
-                var templateCategoryName = model.TemplateCategoryName;
-                var templateTypeName = model.TemplateTypeName;
+                var templateCategoryName = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
+                model.TemplateCategoryName = templateCategoryName;
 
                 if (templateCategoryName == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
                 {
-                    if (templateTypeName == MarketingTemplateType.Default.Get<DisplayAttribute>().Name)
+                    if (model.TemplateType == (int)MarketingTemplateType.Default)
                     {
                         viewName = "_MarketingDefaultTemplate";
                     }
-                    else if (templateTypeName == MarketingTemplateType.Catalogue.Get<DisplayAttribute>().Name)
+                    else if (model.TemplateType == (int)MarketingTemplateType.Catalogue)
                     {
 
                     }
-                    else if (templateTypeName == MarketingTemplateType.CallingPermissionsRequest.Get<DisplayAttribute>().Name)
+                    else if (model.TemplateType == (int)MarketingTemplateType.CallingPermissionsRequest)
                     {
 
+                    }
+                    else if (model.TemplateType == (int)MarketingTemplateType.Carousel)
+                    {
+                        viewName = "_MarketingCarouselTemplate";
                     }
                 }
                 else if (templateCategoryName == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
                 {
-                    if (templateTypeName == UtilityTemplateType.Default.Get<DisplayAttribute>().Name)
+                    if (model.TemplateType == (int)UtilityTemplateType.Default)
                     {
                         viewName = "_UtilityDefaultTemplate";
                     }
-                    else if (templateTypeName == UtilityTemplateType.CallingPermissionsRequest.Get<DisplayAttribute>().Name)
+                    else if (model.TemplateType == (int)UtilityTemplateType.CallingPermissionsRequest)
                     {
 
                     }
+                    else if (model.TemplateType == (int)UtilityTemplateType.Carousel)
+                    {
+                        viewName = "_UtilityCarouselTemplate";
+                    }
                 }
                 else if (templateCategoryName == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
-                && templateTypeName == AuthenticationTemplateType.OneTimePasscode.Get<DisplayAttribute>().Name)
+                && model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
                 {
                     viewName = "_AuthenticationOneTimeCodeTemplate";
                 }

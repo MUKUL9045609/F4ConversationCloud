@@ -11,7 +11,7 @@ function addLink() {
     formatDoc("createLink", url);
 }
 
-const content = document.getElementById("content");
+//const content = document.getElementById("content");
 
 //content.addEventListener("mouseenter", function () {
 //    const a = content.querySelectorAll("a");
