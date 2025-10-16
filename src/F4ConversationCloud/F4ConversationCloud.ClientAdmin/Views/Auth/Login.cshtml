@@ -9,9 +9,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fortune4 Conversation Cloud</title>
-    <link rel="stylesheet" href="css/gupshuplogin.css" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="~/css/gupshuplogin.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/login.css">
 </head>
 
 <body>
@@ -20,7 +20,7 @@
 
             <span class="login-bg">
                 <div class="fortune4-login">
-                    <img src="images/logo.svg" />
+                    <img src="/images/logo.svg" />
                 </div>
             </span>
         </div>
@@ -41,7 +41,7 @@
                         <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
                     </div>
 
-                    <a href="@Url.Action("forgotpassword", "Onboarding")" class="forgot">Forgot password?</a>
+                    <a href="@Url.Action("forgotpassword", "Auth")" class="forgot">Forgot password?</a>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

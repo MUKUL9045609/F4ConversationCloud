@@ -28,14 +28,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 }
                 var path = context.HttpContext.Request.Path.Value?.ToLower() ?? "";
 
-                if (path.Contains("/auth/login") ||
-                    path.Contains("/auth/logout") ||
-                    path.Contains("/auth/issessionactive") ||
-                    path.Contains(".js") ||
-                    path.Contains(".css") ||
-                    path.Contains(".png") ||
-                    path.Contains(".jpg") ||
-                    path.Contains(".ico"))
+                if (path.StartsWith("/auth/login"))
                 {
                     base.OnActionExecuting(context);
                     return; 

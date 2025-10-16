@@ -24,10 +24,15 @@
                    aria-expanded="false">
                     D
                 </a>
+                @{
+                    var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value;
+                }
+
+
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <span class="name">Dinesh Sharma</span>
+                    <span class="name">@userNameClaim</span>
                     <li><a class="dropdown-item user" href="#">Profile</a></li>
-                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                    <li><a class="dropdown-item signout" href="@Url.Action("Logout", "Auth")">Sign Out</a></li>
 
                 </ul>
             </div>

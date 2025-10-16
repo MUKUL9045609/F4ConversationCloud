@@ -1,4 +1,4 @@
-﻿var swiper = new Swiper(".useCasesSwiper", {
+﻿/*var swiper = new Swiper(".useCasesSwiper", {
     spaceBetween: 30,
     pagination: {
         el: ".swiper-pagination",
@@ -9,7 +9,7 @@
         disableOnInteraction: false,
     },
     loop: true
-});
+});*/
 $('nav ul ul').hide();
 $('nav > ul > li > a').on('click', function (e) {
     e.stopPropagation();
