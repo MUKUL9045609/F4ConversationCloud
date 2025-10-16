@@ -36,6 +36,18 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public HeadersExample? example { get; set; } = null;
     }
 
+    public class HeadersImageComponent
+    {
+        [JsonPropertyName("Type")]
+        public string? type { get; set; } = null;
+
+        [JsonPropertyName("Format")]
+        public string? format { get; set; } = null;
+
+        [JsonPropertyName("Example")]
+        public HeadersImageExample? example { get; set; } = null;
+    }
+
     public class BodysComponent
     {
         [JsonPropertyName("Type")]
@@ -70,8 +82,18 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
     {
         [JsonPropertyName("Header_Text")]
         public List<string>? header_text { get; set; } = null;
+
+        
     }
 
+
+    public class HeadersImageExample
+    {
+        [JsonPropertyName("HeaderFile")]
+        public List<string>? header_handle { get; set; } = null;
+
+
+    }
     public class BodysExample
     {
         [JsonPropertyName("Body_Text")]

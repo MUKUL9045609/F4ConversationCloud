@@ -3,6 +3,8 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace F4ConversationCloud.Infrastructure.Service
 {
@@ -57,6 +59,9 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
+
+
+        
 
     }
 

@@ -1,4 +1,6 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Infrastructure.Service;
@@ -14,11 +16,13 @@ namespace F4ConversationCloud.WebUI.Controllers
     public class TemplateController : Controller
     {
         private readonly ITemplateService _templateService;
+        private readonly ITemplateRepositories _templateRepositories;
 
-        public TemplateController(ITemplateService templateService)
+        public TemplateController(ITemplateService templateService , ITemplateRepositories templateRepositories)
         {
 
             _templateService = templateService;
+            _templateRepositories = templateRepositories;
         }
 
 
@@ -92,8 +96,7 @@ namespace F4ConversationCloud.WebUI.Controllers
 
             try
             {
-                MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(request);
-                await _templateService.CreateTemplate(messageTemplate);
+                await _templateRepositories.MetaCreateTemplate(request);
 
                 return Ok();
             }
@@ -151,6 +154,23 @@ namespace F4ConversationCloud.WebUI.Controllers
                 await _templateService.DeleteTemplateByName(Template_Name);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+
+        [HttpPost("UploadFacebookImage")]
+        public async Task<IActionResult> UploadFacebookImage([FromBody] UploadImage uploadImage)
+        {
+            try
+            {
+                var response = await _templateService.UploadMetaImage(uploadImage.base64Image);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

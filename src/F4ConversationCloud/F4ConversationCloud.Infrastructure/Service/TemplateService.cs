@@ -1,16 +1,11 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Interfaces.Services;
-using F4ConversationCloud.Domain.Entities;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using F4ConversationCloud.Application.Common.Models.Templates;
-using Twilio.Jwt.AccessToken;
-using Microsoft.Extensions.Configuration;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.Templates;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -215,19 +210,53 @@ namespace F4ConversationCloud.Infrastructure.Service
 
 
                 //HeaderComponent
+
                 string headJson = JsonSerializer.Serialize(request.TemplateHeader);
                 using var headdoc = JsonDocument.Parse(headJson);
                 var headroot = headdoc.RootElement;
-                
+
+                //if (headroot.TryGetProperty("type", out JsonElement typeheadElement) || headroot.TryGetProperty("Type", out typeheadElement))
+                //{
+                //    string typeValue = typeheadElement.GetString()?.ToLower();
+
+                //    if (typeValue == "header")
+                //    {
+                //        var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
+                //        messageTemplate.components.Add(bodyComponent);
+
+                //    }
+
+                //}
+
+
                 if (headroot.TryGetProperty("type", out JsonElement typeheadElement) || headroot.TryGetProperty("Type", out typeheadElement))
                 {
                     string typeValue = typeheadElement.GetString()?.ToLower();
+                    string headerFile = "";
 
                     if (typeValue == "header")
                     {
-                        var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
-                        messageTemplate.components.Add(bodyComponent);
 
+                        if (headroot.TryGetProperty("format", out JsonElement typehead) || headroot.TryGetProperty("Format", out typehead))
+                        {
+                            string _typeValue = typehead.GetString()?.ToLower();
+                            if (_typeValue == "image")
+                            {
+                                var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(headJson, options);
+
+                                // Now read the HeaderFile
+                                headerFile = headersComponent.example.header_handle.FirstOrDefault();
+
+                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
+                                messageTemplate.components.Add(bodyComponent);
+                            }
+                            else
+                            {
+                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
+                                messageTemplate.components.Add(bodyComponent);
+                            }
+
+                        }
                     }
                 }
 
@@ -235,7 +264,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 string BodyJson = JsonSerializer.Serialize(request.TemplateBody);
                 using var Bodydoc = JsonDocument.Parse(BodyJson);
                 var Bodyroot = Bodydoc.RootElement;
-                
+
                 if (Bodyroot.TryGetProperty("type", out JsonElement BodyElement) || Bodyroot.TryGetProperty("Type", out BodyElement))
                 {
                     string typeValue = BodyElement.GetString()?.ToLower();
@@ -312,7 +341,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 var options = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true 
+                    PropertyNameCaseInsensitive = true
                 };
 
                 string templateBodyJson = JsonSerializer.Serialize(request.TemplateBody);
@@ -354,6 +383,87 @@ namespace F4ConversationCloud.Infrastructure.Service
             return messageTemplate;
         }
 
+        public async Task<dynamic> UploadMetaImage(string base64Image)
+        {
+            try
+            {
+                string accessToken = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+                // Step 1: Decode base64
+                var base64Data = base64Image.Substring(base64Image.IndexOf(",") + 1);
+                var imageBytes = Convert.FromBase64String(base64Data);
+                var fileLength = imageBytes.Length;
+                var fileName = "upload.jpg";
+                var fileType = "image/jpeg";
+
+                // Step 2: POST to /app/uploads
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                using var content = new MultipartFormDataContent();
+                var fileContent = new ByteArrayContent(imageBytes);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(fileType);
+                content.Add(fileContent, "file", fileName);
+                content.Add(new StringContent(fileLength.ToString()), "file_length");
+                content.Add(new StringContent(fileType), "file_type");
+                content.Add(new StringContent(fileName), "file_name");
+
+                var uploadResponse = await client.PostAsync("https://graph.facebook.com/v23.0/app/uploads", content);
+                var uploadResponseString = await uploadResponse.Content.ReadAsStringAsync();
+
+                if (!uploadResponse.IsSuccessStatusCode)
+                {
+                    return new
+                    {
+                        Success = false,
+                        Message = "Failed at /app/uploads",
+                        StatusCode = uploadResponse.StatusCode,
+                        Response = uploadResponseString
+                    };
+                }
+
+                var uploadJson = JObject.Parse(uploadResponseString);
+                var uploadId = uploadJson["id"]?.ToString();
+                if (string.IsNullOrEmpty(uploadId))
+                {
+                    return new
+                    {
+                        Success = false,
+                        Message = "Upload ID not found in response."
+                    };
+                }
+
+                // Step 3: POST to /upload:<id>
+                string secondUrl = $"https://graph.facebook.com/v23.0/{uploadId}";
+
+                var secondResponse = await client.PostAsync(secondUrl, new ByteArrayContent(imageBytes));
+
+                var secondResponseString = await secondResponse.Content.ReadAsStringAsync();
+
+                if (!secondResponse.IsSuccessStatusCode)
+                {
+                    return new
+                    {
+                        Success = false,
+                        Message = "Failed at second upload step",
+                        StatusCode = secondResponse.StatusCode,
+                        Response = secondResponseString
+                    };
+                }
+
+                return secondResponseString;
+
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Success = false,
+                    Message = "Exception occurred during image upload.",
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
     }
 
 
