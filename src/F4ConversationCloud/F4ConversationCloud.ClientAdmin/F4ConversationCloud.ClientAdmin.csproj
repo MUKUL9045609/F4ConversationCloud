@@ -2,13 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\F4ConversationCloud.Application\F4ConversationCloud.Application.csproj" />
     <ProjectReference Include="..\F4ConversationCloud.Infrastructure\F4ConversationCloud.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Handler\" />
   </ItemGroup>
 
 </Project>

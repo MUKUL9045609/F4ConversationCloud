@@ -26,6 +26,28 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     ViewData["ToastMsg"] = new { Type = "Error", Message = errorMsg };
                     TempData.Remove("ErrorMessage");
                 }
+                var path = context.HttpContext.Request.Path.Value?.ToLower() ?? "";
+
+                if (path.Contains("/auth/login") ||
+                    path.Contains("/auth/logout") ||
+                    path.Contains("/auth/issessionactive") ||
+                    path.Contains(".js") ||
+                    path.Contains(".css") ||
+                    path.Contains(".png") ||
+                    path.Contains(".jpg") ||
+                    path.Contains(".ico"))
+                {
+                    base.OnActionExecuting(context);
+                    return; 
+                }
+
+                var username = context.HttpContext.Session.GetString("Username");
+
+                if (string.IsNullOrEmpty(username))
+                {
+                    context.Result = new RedirectToActionResult("Login", "Auth", null);
+                    return;
+                }
 
                 base.OnActionExecuting(context);
             }

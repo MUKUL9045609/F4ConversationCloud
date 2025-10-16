@@ -2,8 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using F4ConversationCloud.ClientAdmin.Models;
 using F4ConversationCloud.ClientAdmin.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace ClientAdmin.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
