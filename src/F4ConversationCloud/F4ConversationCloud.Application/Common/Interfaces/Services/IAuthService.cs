@@ -1,4 +1,5 @@
-﻿using System;
+﻿using F4ConversationCloud.Application.Common.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<Tuple<string, int>> GenerateToken();
+        Task<Tuple<string, int>> GenerateToken(UserContextModel userContextModel);
+        Task<APILoginResponse> ValidateUser(UserDetailsDTO request);
     }
 }

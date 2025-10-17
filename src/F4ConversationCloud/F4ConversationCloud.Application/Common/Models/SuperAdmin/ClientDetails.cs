@@ -37,5 +37,16 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public bool Delete { get; set; }
         public bool All { get; set; }
         public bool AllowUserManagement { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string PhoneNumer { get; set; }
+        public string Address { get; set; }
+        public string Country { get; set; }
+        public string ClientTimeZone { get; set; }
+        public string Stage { get; set; }
+        public string Role { get; set; }
+
     }
 }

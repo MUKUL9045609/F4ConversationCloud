@@ -5,6 +5,9 @@ using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeMode
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using System.Reflection.Metadata;
+using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 
 
 namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
@@ -227,6 +230,23 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
+
+
+        public async Task<ClientDetails> GetClientInfoByEmailId(UserDetailsDTO userDetailsDTO)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("EmailID", userDetailsDTO.EmailId);
+                var response = await _repository.GetByValuesAsync<ClientDetails>("[sp_GetClientInfoByEmailId]", parameters);
+                return response;
+            }
+            catch (Exception)
+            {
+                return new ClientDetails();
+            }
+        }
+
 
     }
 }

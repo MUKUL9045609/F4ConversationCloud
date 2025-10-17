@@ -1,9 +1,11 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+﻿using F4ConversationCloud.Application.Common.Handler;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Infrastructure.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -11,8 +13,9 @@ using Twilio.TwiML.Voice;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
+    [Authorize(Roles = "1")]
     [ApiController]
-    [Route("Template")]
+    [Route("MessageTemplates")]
     public class TemplateController : Controller
     {
         private readonly ITemplateService _templateService;
@@ -25,67 +28,9 @@ namespace F4ConversationCloud.WebUI.Controllers
             _templateRepositories = templateRepositories;
         }
 
-
-        //[HttpPost("CreateTemplate")]
-        //[Consumes("multipart/form-data")]
-        //public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplate request)
-        //{
-        //    try
-        //    {
-        //        List<dynamic> components = new List<dynamic>();
-
-        //        MessageTemplateDTO messageTemplate = new MessageTemplateDTO();
-        //        messageTemplate.category = request.Templatecategory;
-        //        messageTemplate.name = request.Templatename;
-        //        messageTemplate.language = request.Templatelanguage;
-
-        //        //foreach (var component in request.components)
-        //        //{
-
-        //        //    if (component.TryGetProperty("type", out JsonElement typeElement))
-        //        //    {
-        //        //        string typeValue = typeElement.GetString().ToLower();
-        //        //        if (typeValue == "header")
-        //        //        {
-        //        //            HeaderComponent headerComponent = JsonSerializer.Deserialize<HeaderComponent>(request.components[0].GetRawText());
-        //        //            components.Add(headerComponent);
-        //        //        }
-        //        //        else if (typeValue == "body")
-        //        //        {
-        //        //            BodyComponent bodyComponent = JsonSerializer.Deserialize<BodyComponent>(request.components[1].GetRawText());
-        //        //            components.Add(bodyComponent);
-        //        //        }
-        //        //        else if (typeValue == "footer")
-        //        //        {
-        //        //            FooterComponent footerComponent = JsonSerializer.Deserialize<FooterComponent>(request.components[2].GetRawText());
-        //        //            components.Add(footerComponent);
-        //        //        }
-        //        //        else if (typeValue == "buttons")
-        //        //        {
-        //        //            ButtonComponent buttonComponent = JsonSerializer.Deserialize<ButtonComponent>(request.components[3].GetRawText());
-        //        //            components.Add(buttonComponent);
-        //        //        }
-        //        //    }
-        //        //}
-
-        //        messageTemplate.components = new List<dynamic>();
-        //        messageTemplate.components.AddRange(components);
-
-        //        await _templateService.CreateTemplate(messageTemplate);
-
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500);
-
-        //    }
-        //}
-
-
         [HttpPost("CreateTemplate")]
         [Consumes("application/json")]
-
+        [HasPermission("CreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)
