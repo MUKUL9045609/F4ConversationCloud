@@ -203,7 +203,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
             //    yield break;
             //}
             if (!string.IsNullOrEmpty(Type))
-             {
+            {
 
                 switch (Type.ToUpper())
                 {
@@ -265,7 +265,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
     public class HeaderExample : IValidatableObject
     {
         public List<string>? Header_Text { get; set; }
-        public string? HeaderFile { get; set; }
+        public List<string>? HeaderFile { get; set; }
         public string? Format { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -285,7 +285,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
                     break;
                 case "IMAGE":
                 case "DOCUMENT":
-                    if (string.IsNullOrWhiteSpace(HeaderFile))
+                    if (HeaderFile == null)
                         yield return new ValidationResult($"HeaderFile is required for {format} format.");
                     break;
                 case "LOCATION":

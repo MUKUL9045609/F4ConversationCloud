@@ -41,14 +41,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
-                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.ToString());
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString());
                         using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
                         JsonElement root = doc.RootElement;
 
                         if (root.TryGetProperty("h", out JsonElement hProperty))
                         {
                             string hValue = hProperty.GetString();
-                            requestBody.TemplateHeader.Example.HeaderFile = hValue;
+                            requestBody.TemplateHeader.Example.HeaderFile.Clear();
+                            requestBody.TemplateHeader.Example.HeaderFile.Add(hValue);
                         }
                     }
                 }
