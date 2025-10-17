@@ -73,6 +73,14 @@
         options.rules["headervariableformat"] = options.params.VariableType;
         options.messages["headervariableformat"] = options.message;
     });
-
+    $.validator.addMethod("dategreaterthan", function (value, element, params) {
+        var otherVal = $('#' + params.other).val();
+        if (!value || !otherVal) return true;
+        return new Date(value) >= new Date(otherVal);
+    });
+    $.validator.unobtrusive.adapters.add("dategreaterthan", ["other"], function (options) {
+        options.rules["dategreaterthan"] = { other: options.params.other };
+        options.messages["dategreaterthan"] = options.message;
+    });
     $("form").validate();
 });

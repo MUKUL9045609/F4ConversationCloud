@@ -1,5 +1,4 @@
 ﻿ @model F4ConversationCloud.ClientAdmin.Models.CampaignViewModel.CreateCampaignViewModel;
-
 @{
     ViewData["Title"] = "Create Campaign";
 }
@@ -38,22 +37,47 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="details" role="tabpanel"
-                 aria-labelledby="details-tab">
-                <partial name="_BroadcastDetailsPartial" model="@Model" />
-            </div>
-
-            <div class="tab-pane fade show" id="audience" role="tabpanel" aria-labelledby="audience-tab">
-                <partial name="_AudiencePartial" model="@Model" />
-            </div>
-
-            <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
-             
-                <partial name="_TemplateListPartial" model="@Model" />
-            </div>
-            <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
-                <partial name="_PreviewCampaignPartial" model="@Model" />
-            </div>
+            <form asp-action="CreateCampaign" method="post">
+                <div class="tab-pane fade show active" id="details" role="tabpanel"
+                aria-labelledby="details-tab">
+                    <partial name="_BroadcastDetailsPartial" model="@Model" />
+                </div>
+                <div class="tab-pane fade" id="audience" role="tabpanel" aria-labelledby="audience-tab">
+                    <partial name="_AudiencePartial" model="@Model" />
+                </div>
+        
+                <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
+                    <partial name="_TemplateListPartial" model="@Model" />
+                </div>
+           
+                <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
+                    <partial name="_PreviewCampaignPartial" model="@Model" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+   @*  <partial name="_ValidationScriptsPartial" /> *@
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var req = @Html.Raw(Json.Serialize(Model));
+           
+            if(req.currentTab === "Preview"){
+                $('#preview').addClass('show active');
+                $('#template').removeClass('show active');
+                $('#audience').removeClass('show active');
+                $('#details').removeClass('show active');
+                 $('#details-tab').removeClass('active');
+                $('#audience-tab').removeClass('active');
+                $('#template-tab').removeClass('active');
+                 $('#preview-tab').addClass('active');
+                
+            }
+       });
+    </script>
+
+}
