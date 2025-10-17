@@ -50,6 +50,13 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string Footer { get; set; }
         public string HeaderVariableName { get; set; }
         public string HeaderVariableValue { get; set; }
+        public List<BodyVariable> bodyVariables { get; set; } = new List<BodyVariable>();
+
+        public class BodyVariable()
+        {
+            public string BodyVariableName { get; set; }
+            public string BodyVariableValue { get; set; }
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

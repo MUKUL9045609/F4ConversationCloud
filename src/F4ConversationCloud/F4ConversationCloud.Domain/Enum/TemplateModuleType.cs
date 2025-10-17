@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace F4ConversationCloud.Domain.Enum
 {
@@ -14,12 +15,12 @@ namespace F4ConversationCloud.Domain.Enum
         [Display(Name = "Marketing")]
         Marketing = 1,
 
-        [Description("Authentication")]
-        [Display(Name = "Authentication")]
-        Authentication = 2,
-
         [Description("Utility")]
         [Display(Name = "Utility")]
-        Utility = 3
+        Utility = 2,
+
+        [Description("Authentication")]
+        [Display(Name = "Authentication")]
+        Authentication = 3
     }
 }
