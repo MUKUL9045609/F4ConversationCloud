@@ -10,6 +10,10 @@ namespace F4ConversationCloud.Domain.Enum
 {
     public enum MediaType
     {
+        [Description("None")]
+        [Display(Name = "None")]
+        None = 0,
+
         [Description("Image")]
         [Display(Name = "Image")]
         Image = 1,

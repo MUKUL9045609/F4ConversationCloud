@@ -41,6 +41,21 @@ namespace BuldanaUrban.Domain.Helpers
                             .GetCustomAttribute<TAttribute>();
         }
 
+        public static string GetDisplayNameById<TEnum>(int id) where TEnum : Enum
+        {
+            var enumValue = (TEnum)(object)id;
+            var memberInfo = typeof(TEnum).GetMember(enumValue.ToString()).FirstOrDefault();
 
+            if (memberInfo != null)
+            {
+                var displayAttr = memberInfo.GetCustomAttribute<DisplayAttribute>();
+                if (displayAttr != null)
+                {
+                    return displayAttr.Name;
+                }
+            }
+
+            return enumValue.ToString(); // fallback to enum name
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
+using System.Threading.Tasks;
 
 
 namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
