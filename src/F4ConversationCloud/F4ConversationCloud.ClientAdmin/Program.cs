@@ -1,6 +1,7 @@
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Twilio.TwiML.Voice;
@@ -32,6 +33,7 @@ WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConf
 whatsAppConfig.AccessToken = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["AccessToken"];
 builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
