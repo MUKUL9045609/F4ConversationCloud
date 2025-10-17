@@ -1,5 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Helper
 {

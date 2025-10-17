@@ -70,6 +70,9 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IF4AppCloudeService, F4AppCloudeService>();
             //services.AddScoped<MetaConfigurationService >();
             
+
+            services.AddScoped<ITemplateService, TemplateService>();
+            services.AddScoped<ITemplateRepositories, TemplateRepositories>();
             return services;
         }
 
