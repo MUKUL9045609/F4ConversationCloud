@@ -1,3 +1,4 @@
+using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
 using F4ConversationCloud.Infrastructure.Service;
 using F4ConversationCloud.WebUI.Services;
@@ -20,6 +21,11 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHttpClient<WebhookService>();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
+
+whatsAppConfig.AccessToken = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["AccessToken"];
+builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 
 
 builder.Services.AddCors(options =>

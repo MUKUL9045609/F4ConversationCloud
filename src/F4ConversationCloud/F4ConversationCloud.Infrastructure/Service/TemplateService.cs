@@ -215,24 +215,9 @@ namespace F4ConversationCloud.Infrastructure.Service
                 using var headdoc = JsonDocument.Parse(headJson);
                 var headroot = headdoc.RootElement;
 
-                //if (headroot.TryGetProperty("type", out JsonElement typeheadElement) || headroot.TryGetProperty("Type", out typeheadElement))
-                //{
-                //    string typeValue = typeheadElement.GetString()?.ToLower();
-
-                //    if (typeValue == "header")
-                //    {
-                //        var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
-                //        messageTemplate.components.Add(bodyComponent);
-
-                //    }
-
-                //}
-
-
                 if (headroot.TryGetProperty("type", out JsonElement typeheadElement) || headroot.TryGetProperty("Type", out typeheadElement))
                 {
                     string typeValue = typeheadElement.GetString()?.ToLower();
-                    string headerFile = "";
 
                     if (typeValue == "header")
                     {
@@ -243,12 +228,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                             if (_typeValue == "image")
                             {
                                 var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(headJson, options);
-
-                                // Now read the HeaderFile
-                                headerFile = headersComponent.example.header_handle.FirstOrDefault();
-
-                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
-                                messageTemplate.components.Add(bodyComponent);
+                                messageTemplate.components.Add(headersComponent);
                             }
                             else
                             {
