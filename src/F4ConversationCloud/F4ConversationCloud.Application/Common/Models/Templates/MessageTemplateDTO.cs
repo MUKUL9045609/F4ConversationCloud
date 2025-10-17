@@ -5,67 +5,107 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Models.Templates
 {
-    public class MessageTemplateDTO 
+    public class MessageTemplateDTO
     {
-        [Required(ErrorMessage = "Template name is required.")]
-        [RegularExpression(@"^[a-zA-Z0-9_-]{3,50}$", ErrorMessage = "Template name must be between 3 and 50 characters and can only contain letters, numbers, hyphens, and underscores.")]
-        [Display(Name = "Template Name")]
         public string? name { get; set; }
         public string? language { get; set; }
 
-        [Required(ErrorMessage = "Category is required.")]
-        [ValidMetaTemplateCategory(ErrorMessage = "The category must be 'Authentication', 'Marketing', or 'Utility'.")]
         public string category { get; set; }
 
-        [Required(ErrorMessage = "At least one component is required.")]
         public List<dynamic> components { get; set; } = new List<dynamic>();
 
     }
 
-    public class HeaderComponent
+    public class HeadersComponent
     {
+        [JsonPropertyName("Type")]
         public string? type { get; set; } = null;
+
+        [JsonPropertyName("Format")]
         public string? format { get; set; } = null;
+
+        [JsonPropertyName("Text")]
         public string? text { get; set; } = null;
-        public HeaderExample? example { get; set; } = null;
+
+        [JsonPropertyName("Example")]
+        public HeadersExample? example { get; set; } = null;
     }
 
-    public class BodyComponent
+    public class HeadersImageComponent
     {
+        [JsonPropertyName("Type")]
         public string? type { get; set; } = null;
-        public string? text { get; set; } = null;
-        public BodyExample? example { get; set; } = null;
+
+        [JsonPropertyName("Format")]
+        public string? format { get; set; } = null;
+
+        [JsonPropertyName("Example")]
+        public HeadersImageExample? example { get; set; } = null;
     }
 
-    public class FooterComponent
+    public class BodysComponent
     {
+        [JsonPropertyName("Type")]
         public string? type { get; set; } = null;
+
+        [JsonPropertyName("Text")]
+        public string? text { get; set; } = null;
+
+        [JsonPropertyName("Body_Example")]
+        public BodysExample? example { get; set; } = null;
+    }
+
+    public class FootersComponent
+    {
+        [JsonPropertyName("Type")]
+        public string? type { get; set; } = null;
+
+        [JsonPropertyName("Text")]
         public string? text { get; set; } = null;
     }
 
-    public class ButtonComponent
+    public class ButtonsComponent
     {
+        [JsonPropertyName("Type")]
         public string? type { get; set; } = null;
+
+        [JsonPropertyName("Buttons")]
         public List<Button>? buttons { get; set; } = null;
     }
 
-    public class HeaderExample
+    public class HeadersExample
     {
+        [JsonPropertyName("Header_Text")]
         public List<string>? header_text { get; set; } = null;
+
+        
     }
 
-    public class BodyExample
+
+    public class HeadersImageExample
     {
+        [JsonPropertyName("HeaderFile")]
+        public List<string>? header_handle { get; set; } = null;
+
+
+    }
+    public class BodysExample
+    {
+        [JsonPropertyName("Body_Text")]
         public List<List<string>>? body_text { get; set; } = null;
     }
 
-    public class Button
+    public class Buttons
     {
+        [JsonPropertyName("Type")]
         public string? type { get; set; } = null;
+
+        [JsonPropertyName("Text")]
         public string? text { get; set; } = null;
     }
 

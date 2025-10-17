@@ -72,6 +72,7 @@ namespace F4ConversationCloud.Infrastructure
             
 
             services.AddScoped<ITemplateService, TemplateService>();
+            services.AddScoped<ITemplateRepositories, TemplateRepositories>();
             return services;
         }
 

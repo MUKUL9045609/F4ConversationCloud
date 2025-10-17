@@ -29,5 +29,42 @@ namespace F4ConversationCloud.WebUI.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost("UploadFile")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ConvertFileToBase64(IFormFile file)
+        {
+            try
+            {
+
+                if (file == null || file.Length == 0)
+                    return BadRequest("No file uploaded.");
+
+                if (!file.ContentType.StartsWith("image/"))
+                    return BadRequest("Only image files are supported.");
+
+                using var memoryStream = new MemoryStream();
+                await file.CopyToAsync(memoryStream);
+                byte[] fileBytes = memoryStream.ToArray();
+
+                string base64 = Convert.ToBase64String(fileBytes);
+                string dataUri = $"data:{file.ContentType};base64,{base64}";
+
+                return Ok(new
+                {
+                    file.FileName,
+                    file.ContentType,
+                    Base64Data = dataUri
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok();
+            }
+        }
+
+
+
+
     }
 }
