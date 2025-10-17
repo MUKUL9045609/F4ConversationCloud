@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
                 builder.Services.AddSession(options =>
                 {
-                    options.IdleTimeout = TimeSpan.FromMinutes(1);
+                    options.IdleTimeout = TimeSpan.FromMinutes(20);
                     options.Cookie.HttpOnly = true;
                     options.Cookie.IsEssential = true;
                     options.Cookie.Name = "SessionCookie";
@@ -22,7 +22,7 @@ builder.Services.AddAuthentication("CookieAuthentication")
                      config.Cookie.Name = "UserLoginCookie";
                      config.LoginPath = "/Auth/Login";
                      config.AccessDeniedPath = "/Auth/AccessDenied";
-                     config.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                     config.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                      config.SlidingExpiration = true;
                  });
 builder.Services.AddInfrastructureServices(builder.Configuration);

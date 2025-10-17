@@ -68,6 +68,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
                        
                         HttpContext.Session.SetString("Username", clientdetails.Email);
+                        HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
                         HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
 
                         TempData["WarningMessage"] = "Welcome";
