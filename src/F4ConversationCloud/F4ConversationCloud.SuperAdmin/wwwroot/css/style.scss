@@ -1393,13 +1393,14 @@ fill:#878787;
     color: #686868;
     font-size: 12px;
 }
+.emoji{
+    position: relative;
+}
 .emoji-wrapper{
     position: absolute;
-    top:0px;
-        right: 30px;
-        z-index: 99;
-        opacity: 0;
-        visibility: hidden;
+    top: 37px;
+    left: 0px;
+    z-index: 99;
     .emojipicker{
         
     }
@@ -1407,12 +1408,11 @@ fill:#878787;
 .picker{
     background-color: transparent!important;
 }
-.bx-emoji{
-    
-        &:hover{
-            .emoji-wrapper{
-            opacity: 1;
-            visibility: visible;
-        }
-    }
-}
+// .emoji{
+//     &:hover{
+//         .emoji-wrapper{
+//             opacity: 1;
+//             visibility: visible;
+//         }
+//     }
+// }
