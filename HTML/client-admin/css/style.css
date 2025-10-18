@@ -7,19 +7,27 @@
   padding: 0;
 }
 .modal-wrapper .modal-content .modal-header h5 {
-  font-size: 14px;
+  font-size: 17px;
   color: #1D242E;
 }
 .modal-wrapper .modal-content .modal-body {
   padding: 20px 0;
 }
 .modal-wrapper .modal-content .modal-body p {
-  font-size: 12px;
+  font-size: 15px;
   color: #1D242E;
 }
 .modal-wrapper .modal-content .modal-footer {
   border-top: none;
   padding: 0;
+}
+.modal-wrapper .btn-close {
+  position: absolute;
+  right: -33px;
+  top: 0;
+  background-color: #fff;
+  border-radius: 50%;
+  background-size: 39%;
 }
 .modal-wrapper .primary-btn {
   border: 1px solid #03A9F5 !important;
@@ -376,7 +384,7 @@
 }
 
 .form-wrapper label {
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(29, 36, 46, 0.5019607843);
   margin-bottom: 5px;
 }
@@ -599,6 +607,13 @@
   background-size: 74%;
   display: block;
 }
+.action .download-icon {
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.00016 10.3333L2.8335 6.16668L4.00016 4.95834L6.16683 7.12501V0.333344H7.8335V7.12501L10.0002 4.95834L11.1668 6.16668L7.00016 10.3333ZM2.00016 13.6667C1.54183 13.6667 1.14961 13.5036 0.823496 13.1775C0.497385 12.8514 0.334052 12.4589 0.333496 12V9.50001H2.00016V12H12.0002V9.50001H13.6668V12C13.6668 12.4583 13.5038 12.8508 13.1777 13.1775C12.8516 13.5042 12.4591 13.6672 12.0002 13.6667H2.00016Z' fill='%2303A9F5'/%3E%3C/svg%3E%0A");
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-repeat: no-repeat;
+}
 
 .info {
   background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.363636' y='0.363636' width='15.2727' height='15.2727' rx='7.63636' stroke='%231D242E' stroke-width='0.727273'/%3E%3Cpath d='M7.98545 4.90327L7.87345 9.99418H7.09964L6.98764 4.90327H7.98545ZM7.52727 12.0611C7.35079 12.0611 7.20145 12 7.07927 11.8778C6.95709 11.7556 6.896 11.6063 6.896 11.4298C6.896 11.2533 6.95709 11.104 7.07927 10.9818C7.20145 10.8596 7.35079 10.7985 7.52727 10.7985C7.69697 10.7985 7.83952 10.8596 7.95491 10.9818C8.07709 11.104 8.13818 11.2533 8.13818 11.4298C8.13818 11.6063 8.07709 11.7556 7.95491 11.8778C7.83952 12 7.69697 12.0611 7.52727 12.0611Z' fill='%231D242E'/%3E%3C/svg%3E%0A");
@@ -637,8 +652,12 @@
   border-style: solid;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+}
 .pagination li {
-  margin-right: 10px;
+  margin-right: 8px;
 }
 .pagination li a {
   padding: 10px;
@@ -646,8 +665,11 @@
   font-size: 12px;
   color: #000000;
   line-height: 6px;
-  min-width: 28px;
-  min-height: 28px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .pagination li a:hover {
   background-color: #03A9F5;
@@ -693,6 +715,7 @@
   gap: 10px;
   font-size: 14px;
   border-radius: 5px;
+  margin-bottom: 12px;
 }
 .template-card .not-allowed .not-icon {
   background-image: url("data:image/svg+xml,%3Csvg width='17' height='18' viewBox='0 0 17 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath opacity='0.5' d='M8.33333 0.666656C12.9167 0.666656 16.6667 4.41666 16.6667 8.99999C16.6667 13.5833 12.9167 17.3333 8.33333 17.3333C3.75 17.3333 0 13.5833 0 8.99999C0 4.41666 3.75 0.666656 8.33333 0.666656ZM8.33333 2.33332C6.75 2.33332 5.33333 2.83332 4.25 3.74999L13.5833 13.0833C14.4167 11.9167 15 10.5 15 8.99999C15 5.33332 12 2.33332 8.33333 2.33332ZM12.4167 14.25L3.08333 4.91666C2.16667 5.99999 1.66667 7.41666 1.66667 8.99999C1.66667 12.6667 4.66667 15.6667 8.33333 15.6667C9.91667 15.6667 11.3333 15.1667 12.4167 14.25Z' fill='%23283342'/%3E%3C/svg%3E%0A");
@@ -1470,7 +1493,7 @@
 }
 
 .btn {
-  padding: 0.475rem 0.75rem !important;
+  padding: 0.575rem 0.75rem !important;
   font-size: 12px !important;
   font-weight: 400 !important;
   border-radius: 8px !important;
@@ -2410,10 +2433,12 @@ body {
   font-size: 14px;
 }
 .page .main-content .broadcast-tabs .download-sample {
-  margin: 15px 0;
+  margin: 0px 0 15px;
 }
 .page .main-content .broadcast-tabs .download-sample .form-control {
-  height: 40px;
+  background-color: #fbfbfb;
+  min-width: 400px;
+  max-width: 400px;
 }
 .page .main-content .broadcast-tabs .download-sample a {
   font-size: 14px;
@@ -4054,4 +4079,57 @@ body {
 .guidline p {
   color: #707070 !important;
   margin-bottom: 0px;
+}
+
+.date-picker {
+  position: relative;
+}
+
+.date-icon {
+  position: absolute;
+  top: 36px;
+  right: 24px;
+}
+.date-icon::after {
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg fill='%23999999' width='800px' height='800px' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M266.815 537.708c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.77 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.775 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.77 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zM266.815 679.347c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.77 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.775 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.77 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zM266.815 820.988c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.77 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.775 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zm182.77 0c0 22.62-18.34 40.96-40.96 40.96s-40.96-18.34-40.96-40.96 18.34-40.96 40.96-40.96 40.96 18.34 40.96 40.96zM228.18 81.918v153.6c0 11.311 9.169 20.48 20.48 20.48s20.48-9.169 20.48-20.48v-153.6c0-11.311-9.169-20.48-20.48-20.48s-20.48 9.169-20.48 20.48zm528.09 0v153.6c0 11.311 9.169 20.48 20.48 20.48s20.48-9.169 20.48-20.48v-153.6c0-11.311-9.169-20.48-20.48-20.48s-20.48 9.169-20.48 20.48z'/%3E%3Cpath d='M890.877 137.517c33.931 0 61.44 27.509 61.44 61.44v703.375c0 33.931-27.509 61.44-61.44 61.44h-757.76c-33.931 0-61.44-27.509-61.44-61.44V198.957c0-33.931 27.509-61.44 61.44-61.44h757.76zm-757.76 40.96c-11.309 0-20.48 9.171-20.48 20.48v703.375c0 11.309 9.171 20.48 20.48 20.48h757.76c11.309 0 20.48-9.171 20.48-20.48V198.957c0-11.309-9.171-20.48-20.48-20.48h-757.76z'/%3E%3Cpath d='M575.03 338.288c0-33.93-27.51-61.44-61.44-61.44s-61.44 27.51-61.44 61.44c0 33.93 27.51 61.44 61.44 61.44s61.44-27.51 61.44-61.44zm40.96 0c0 56.551-45.849 102.4-102.4 102.4s-102.4-45.849-102.4-102.4c0-56.551 45.849-102.4 102.4-102.4s102.4 45.849 102.4 102.4z'/%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+}
+
+.time-picker {
+  position: relative;
+}
+.time-picker .time-icon {
+  position: absolute;
+  top: 37px;
+  right: 22px;
+}
+.time-picker .time-icon::after {
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 6V12' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16.24 16.24L12 12' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+}
+
+input[type=time i] {
+  font-size: 13px !important;
+  cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-header {
+  background-color: #03A9F5;
+  color: #fff;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+  font-size: 12px;
 }/*# sourceMappingURL=style.css.map */

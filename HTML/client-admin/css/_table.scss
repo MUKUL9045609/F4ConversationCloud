@@ -104,6 +104,13 @@
         background-size: 74%;
         display: block;
     }
+    .download-icon {
+        background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.00016 10.3333L2.8335 6.16668L4.00016 4.95834L6.16683 7.12501V0.333344H7.8335V7.12501L10.0002 4.95834L11.1668 6.16668L7.00016 10.3333ZM2.00016 13.6667C1.54183 13.6667 1.14961 13.5036 0.823496 13.1775C0.497385 12.8514 0.334052 12.4589 0.333496 12V9.50001H2.00016V12H12.0002V9.50001H13.6668V12C13.6668 12.4583 13.5038 12.8508 13.1777 13.1775C12.8516 13.5042 12.4591 13.6672 12.0002 13.6667H2.00016Z' fill='%2303A9F5'/%3E%3C/svg%3E%0A");
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background-repeat: no-repeat;
+    }
 }
 
 .info {

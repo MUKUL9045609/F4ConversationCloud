@@ -501,10 +501,13 @@
         }
 
         .download-sample {
-            margin: 15px 0;
-
+            margin: 0px 0 15px; 
+            
             .form-control {
-                height: 40px;
+                // height: 40px;
+                background-color: #fbfbfb;
+                min-width: 400px;
+                max-width: 400px;
             }
 
             a {

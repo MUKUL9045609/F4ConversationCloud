@@ -10,7 +10,7 @@
             padding: 0;
 
             h5 {
-                font-size: 14px;
+                font-size: 17px;
                 color: $textColor;
             }
         }
@@ -19,7 +19,7 @@
             padding: 20px 0;
 
             p {
-                font-size: 12px;
+                font-size: 15px;
                 color: $textColor;
             }
         }
@@ -28,6 +28,14 @@
             border-top: none;
             padding: 0;
         }
+    }
+    .btn-close{
+        position: absolute;
+        right: -33px;
+        top: 0;
+        background-color: #fff;
+        border-radius: 50%;
+        background-size: 39%;
     }
 
     .primary-btn {
