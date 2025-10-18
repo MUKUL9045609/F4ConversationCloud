@@ -21,16 +21,16 @@ namespace F4ConversationCloud.WebUI.Controllers
         private readonly ITemplateService _templateService;
         private readonly ITemplateRepositories _templateRepositories;
 
-        public TemplateController(ITemplateService templateService , ITemplateRepositories templateRepositories)
+        public TemplateController(ITemplateService templateService, ITemplateRepositories templateRepositories)
         {
 
             _templateService = templateService;
             _templateRepositories = templateRepositories;
         }
 
-        [HttpPost("CreateTemplate")]
+        [HttpPost("[action]")]
         [Consumes("application/json")]
-        [HasPermission("CreateTemplate")]
+        [HasPermission("IsCreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)
@@ -51,8 +51,9 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
-        [HttpPost("EditTemplate")]
-        public async Task<IActionResult> EditTemplate(TemplateRequest request , string id )
+        [HttpPost("[action]")]
+        [HasPermission("IsEditTemplate")]
+        public async Task<IActionResult> EditTemplate(TemplateRequest request, string id)
         {
 
             if (!ModelState.IsValid)
@@ -63,7 +64,7 @@ namespace F4ConversationCloud.WebUI.Controllers
             try
             {
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(request);
-                await _templateService.EditTemplate(messageTemplate,id);
+                await _templateService.EditTemplate(messageTemplate, id);
 
                 return Ok();
             }
@@ -75,7 +76,8 @@ namespace F4ConversationCloud.WebUI.Controllers
         }
 
 
-        [HttpPost("DeleteTemplate")]
+        [HttpPost("[action]")]
+        [HasPermission("IsDeleteTemplate")]
         public async Task<IActionResult> DeleteTemplate(int Template_Id, string Template_Name)
         {
             try
@@ -91,7 +93,8 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
-        [HttpPost("DeleteTemplateByName")]
+        [HttpPost("[action]")]
+        [HasPermission("IsDeleteTemplate")]
         public async Task<IActionResult> DeleteTemplateByName(string Template_Name)
         {
             try
@@ -107,8 +110,42 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
+        [HttpPost("[action]")]
+        [HasPermission("IsView")]
+        public async Task<IActionResult> ViewTemplate(int Template_Id, string Template_Name)
+        {
+            try
+            {
 
-        [HttpPost("UploadFacebookImage")]
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpPost("[action]")]
+        [HasPermission("IsView")]
+        public async Task<IActionResult> TemplateList(int Template_Id, string Template_Name)
+        {
+            try
+            {
+
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+
+        [HttpPost("[action]")]
         public async Task<IActionResult> UploadFacebookImage([FromBody] UploadImage uploadImage)
         {
             try

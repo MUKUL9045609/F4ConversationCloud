@@ -59,12 +59,23 @@ builder.Services.AddHttpLogging(logging =>
 
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("HasPermission", policy =>
+//    {
+//        policy.Requirements.Add(new PermissionRequirement("IsCreateTemplate"));
+//        policy.Requirements.Add(new PermissionRequirement("IsDeleteTemplate"));
+//        policy.Requirements.Add(new PermissionRequirement("IsEditTemplate"));
+//        policy.Requirements.Add(new PermissionRequirement("IsView"));
+
+//    });
+//});
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("HasPermission", policy =>
-    {
-        policy.Requirements.Add(new PermissionRequirement("CreateTemplate"));
-    });
+    options.AddPolicy("Permission_IsCreateTemplate", policy =>
+        policy.Requirements.Add(new PermissionRequirement("True")));
+
 });
 
 var app = builder.Build();

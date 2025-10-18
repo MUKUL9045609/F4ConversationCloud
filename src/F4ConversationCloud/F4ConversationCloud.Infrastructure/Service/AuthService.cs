@@ -68,8 +68,8 @@ namespace F4ConversationCloud.Infrastructure.Service
                             Role = userDetails.Role ?? string.Empty,
                             IsCreateTemplate = false,
                             IsDeleteTemplate = true,
-                            IsEditTemplate = false,
-                            IsView = false
+                            IsEditTemplate = true,
+                            IsView = true
                         }).Result;
 
                         return new APILoginResponse()
