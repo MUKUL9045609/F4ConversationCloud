@@ -176,6 +176,9 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js';
+    </script>
     <script>
         $(document).ready(function () {
             $('#TemplateCategory').val(1);
@@ -244,15 +247,125 @@
                 $('#title').text('untitled');
                 $('#language-title').text('English');
 
-                //$.validator.unobtrusive.parse($("#partialForTemplateForm"));
                 var $form = $("#mainForm");
-
-                // Remove old validator instances
-                $form.removeData("validator").removeData("unobtrusiveValidation"); // Unobtrusive Validation
-
-                // Re-parse unobtrusive validation attributes
+                $form.removeData("validator").removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse($form);
                 $('[name="MediaType"]').trigger('change');
+
+                var variableCounter = 1;
+                var selectedVariableType = null;
+                var editorInstance;
+
+                ClassicEditor
+                    .create(document.querySelector('#MessageBody'), {
+                        toolbar: [
+                            'bold', 'italic', 'underline', 'strikethrough',
+                            'numberedList', 'bulletedList',
+                            'link'
+                        ]
+                    })
+                    .then(editor => {
+                        editorInstance = editor;
+
+                        // Live validation on content change
+                        editor.model.document.on('change:data', () => {
+                            var content = editor.getData();
+                            validateWhatsAppVariables(content);
+                        });
+
+                        // Emoji picker
+                        var picker = document.getElementById('picker');
+                        picker.addEventListener('emoji-click', event => {
+                            editor.model.change(writer => {
+                                var insertPosition = editor.model.document.selection.getFirstPosition();
+                                writer.insertText(event.detail.unicode, insertPosition);
+                            });
+                        });
+
+                        // Variable insertion
+                        $(document).on("click", "#add-body-variable", function () {
+                            if (!selectedVariableType) {
+                                commonHelper.showError("Please select type of variable.");
+                                return;
+                            }
+
+                            var variableText = ` {{${variableCounter}}}`;
+                            editor.model.change(writer => {
+                                var insertPosition = editor.model.document.selection.getFirstPosition();
+                                writer.insertText(variableText, insertPosition);
+                            });
+ 
+                            variableCounter++;
+
+                            // Trigger validation after insertion
+                            var content = editor.getData();
+                            validateWhatsAppVariables(content);
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+                // Variable type selection
+                document.querySelectorAll('input[name="VariableType"]').forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        selectedVariableType = this.value;
+                    });
+                });
+
+                // WhatsApp variable validation logic
+                function validateWhatsAppVariables(content) {
+                    var regex = /{{\d+}}/g;
+                    var matches = [...content.matchAll(regex)];
+
+                    var numbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, '')));
+                    var uniqueNumbers = [...new Set(numbers)];
+
+                    var errorMessage = "";
+
+                    if (numbers.length !== uniqueNumbers.length) {
+                        errorMessage += "Duplicate variables found. "
+                    }
+
+                    uniqueNumbers.sort((a, b) => a - b);
+                    for (var i = 0; i < uniqueNumbers.length; i++) {
+                        if (uniqueNumbers[i] !== i + 1) {
+                            errorMessage += "Variables must be sequential starting from {{1}}. "
+                        }
+                    }
+
+                    var hasSurroundingWordError = false;
+
+                    for (var match of matches) {
+                        var index = match.index;
+                        var before = content.substring(0, index).trim();
+                        var after = content.substring(index + match[0].length).trim();
+
+                        var beforeWords = before.split(/\s+/).filter(w => w.length > 0);
+                        var afterWords = after.split(/\s+/).filter(w => w.length > 0);
+
+                        if ((beforeWords.length + afterWords.length) < 3) {
+                            hasSurroundingWordError = true;
+                            break; 
+                        }
+                    }
+
+                    if (hasSurroundingWordError) {
+                        errorMessage += "Each variable must be surrounded by at least 3 words combined before and after.";
+                    }
+
+                    var errorSpan = document.getElementById("messageBodyError");
+                    console.log(errorMessage)
+                    if (errorMessage != '') {
+                        errorSpan.innerText = errorMessage.trim();
+                        errorSpan.style.display = "block";
+                    } else {
+                        errorSpan.innerText = "";
+                        errorSpan.style.display = "none";
+                    }
+
+                    return errorMessage;
+                }
 
                 commonHelper.showHideLoader(false);
             }, null);
