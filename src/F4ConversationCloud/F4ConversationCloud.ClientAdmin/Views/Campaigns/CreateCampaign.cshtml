@@ -36,25 +36,27 @@
                 </button>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
-            <form asp-action="CreateCampaign" method="post">
-                <div class="tab-pane fade show active" id="details" role="tabpanel"
-                aria-labelledby="details-tab">
-                    <partial name="_BroadcastDetailsPartial" model="@Model" />
-                </div>
-                <div class="tab-pane fade" id="audience" role="tabpanel" aria-labelledby="audience-tab">
-                    <partial name="_AudiencePartial" model="@Model" />
-                </div>
-        
-                <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
-                    <partial name="_TemplateListPartial" model="@Model" />
-                </div>
-           
-                <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
-                    <partial name="_PreviewCampaignPartial" model="@Model" />
-                </div>
-            </form>
-        </div>
+        <form asp-action="CreateCampaign" method="post" id="mainForm">
+            <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="details" role="tabpanel"
+                    aria-labelledby="details-tab">
+                        <partial name="_BroadcastDetailsPartial" model="@Model" />
+                    </div>
+              
+                    <div class="tab-pane fade " id="audience" role="tabpanel" aria-labelledby="audience-tab">
+                        <partial name="_AudiencePartial" model="@Model" />
+                    </div>
+             
+                    <div class="tab-pane fade " id="template" role="tabpanel" aria-labelledby="template-tab">
+                        <partial name="_TemplateListPartial" model="@Model" />
+                    </div>
+             
+                    <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
+                        <partial name="_PreviewCampaignPartial" model="@Model" />
+                    </div>
+             
+            </div>
+        </form>
     </div>
 </div>
 
@@ -66,17 +68,64 @@
         $(document).ready(function() {
             var req = @Html.Raw(Json.Serialize(Model));
            
-            if(req.currentTab === "Preview"){
-                $('#preview').addClass('show active');
-                $('#template').removeClass('show active');
-                $('#audience').removeClass('show active');
-                $('#details').removeClass('show active');
-                 $('#details-tab').removeClass('active');
-                $('#audience-tab').removeClass('active');
-                $('#template-tab').removeClass('active');
-                 $('#preview-tab').addClass('active');
-                
-            }
+            
+            
+             $(document).on('click', '#details-btn', function (e) {
+                  e.preventDefault();
+                  const form = $("#campaigname").valid();
+
+                    if (!form) {
+                        // form.validate().focusInvalid();
+                         return false; 
+                     }
+                    
+                 const NextTab = "Audience";
+                    var req = {
+                        NextTabName: NextTab
+                };
+                var url = "@Url.ActionLink("GetCampaignFlowTabPartialView", "Campaigns")";
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                     console.log(response)
+                        // $('#details').html(response);
+                          $('#audience').addClass('show active');
+                           $('#audience-tab').addClass('active');
+                            $('#details-tab').removeClass('active');
+                             $('#details').removeClass('show active');
+                    // $('#preview').removeClass('show active');
+                    // $('#template').removeClass('show active');
+                    // $('#audience').addClass('show active');
+                    // $('#details').removeClass('show active');
+                    // $('#details-tab').removeClass('active');
+                    // $('#audience-tab').addClass('active');
+                    // $('#template-tab').removeClass('active');
+                    // $('#preview-tab').removeClass('active');
+
+                }, null);
+            });
+            $(document).on('click', '#audience-btn', function (e) {
+                 e.preventDefault();
+              
+ 
+                const NextTab = "Template";
+                    var req = {
+                        NextTabName: NextTab
+                };
+                var url = "@Url.ActionLink("GetCampaignFlowTabPartialView", "Campaigns")";
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                         $('#preview').removeClass('show active');
+                         $('#template').addClass('show active');
+                        $('#audience').removeClass('show active');
+                         $('#details').removeClass('show active');
+                        $('#details-tab').removeClass('active');
+                        $('#audience-tab').removeClass('active');
+                        $('#template-tab').addClass('active');
+                        $('#preview-tab').removeClass('active');
+
+                }, null);
+
+            });
+              
+             
        });
     </script>
 

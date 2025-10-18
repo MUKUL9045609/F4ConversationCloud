@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using System.Net;
-using Twilio.Types;
 namespace F4ConversationCloud.ClientAdmin.Models.CampaignViewModel
 {
     public class CreateCampaignViewModel
@@ -12,42 +9,18 @@ namespace F4ConversationCloud.ClientAdmin.Models.CampaignViewModel
         public bool? IsEdit { get; set; }
         public bool? Isdraft { get; set; }
 
+        [Required(ErrorMessage = "Campaign name is required.")]
         public string CampaignName { get; set; }
 
 
-        public DateTime? FromDate { get; set; }
+        [Required(ErrorMessage = "From Date is required.")]
+        public DateTime FromDate { get; set; }
 
+        [Required(ErrorMessage = "To Date is required.")]
         [DateGreaterThan("FromDate", ErrorMessage = "To Date cannot be earlier than From Date.")]
-        public DateTime? ToDate { get; set; }
-        public string CurrentTab { get; set; } = "Preview";
+        public DateTime ToDate { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (CurrentTab == "Preview")
-            {
-                if (FromDate == null && ToDate == null)
-                {
-                    if (FromDate == null)
-                    {
-                        yield return new ValidationResult("From Date is required.", new[] { nameof(CampaignName) });
-                    }
-                    if (ToDate == null)
-                    {
-                        yield return new ValidationResult("To Date is required.", new[] { nameof(CampaignName) });
-                    }
-                }
-            
-            }
-            else if (CurrentTab == "details")
-            {
-                if (string.IsNullOrWhiteSpace(CampaignName))
-                {
-                    yield return new ValidationResult("Campaign name is required.", new[] { nameof(CampaignName) });
-                }
-
-
-            }
-        }
+        public string NextTabName { get; set; }
     }
 
 
