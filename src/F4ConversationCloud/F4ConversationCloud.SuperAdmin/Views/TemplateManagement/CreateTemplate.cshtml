@@ -254,7 +254,6 @@
 
                 var variableCounter = 1;
                 var selectedVariableType = null;
-                var editorInstance;
 
                 ClassicEditor
                     .create(document.querySelector('#MessageBody'), {
@@ -304,6 +303,19 @@
                     })
                     .catch(error => {
                         console.error(error);
+                    });
+
+                    document.addEventListener('click', function (event) {
+                        const emojiBtn = document.getElementById('emoji-btn');
+                        const emojiCard = document.getElementById('emoji-card');
+
+                        if (emojiBtn.contains(event.target)) {
+                            // Toggle emoji picker
+                            emojiCard.style.display = emojiCard.style.display === 'none' ? 'block' : 'none';
+                        } else if (!emojiCard.contains(event.target)) {
+                            // Clicked outside emoji picker
+                            emojiCard.style.display = 'none';
+                        }
                     });
 
                 // Variable type selection
