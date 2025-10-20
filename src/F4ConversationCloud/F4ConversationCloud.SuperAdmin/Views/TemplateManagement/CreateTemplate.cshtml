@@ -108,7 +108,8 @@
                     <div class="template-creation-preview">
                         <div class="template-preview-card creation-card">
                             <h4>Template Preview</h4>
-                            <div class="template-preview">
+
+                            <div class="template-preview" id="carousel-template-preview" style="display:none;">
                                 <div class="template-white-card">
                                     <div class="swiper useCasesSwiper">
                                         <div class="swiper-wrapper">
@@ -116,6 +117,7 @@
                                                 <div class="template-slide-card">
                                                     @* <span><img src="images/card-img-03.png"></span> *@
                                                     <div class="description">
+                                                        <h6 class="variables-title">Hey {{customer_name}},</h6>
                                                         <p>Dear {{1}}</p>
                                                         <p>We are excited to present you with an exclusive offer ! {{}}</p>
                                                     </div>
@@ -147,6 +149,66 @@
                                     <div class="swiper-button-prev"></div>
                                     <div class="swiper-button-next"></div>
                                 </div>
+                            </div>
+
+                            <div class="template-preview" id="template-preview">
+                                <div class="message-chat d-none">
+                                    <p>Check out our exclusive festival offers below</p>
+                                    <div class="time">11:59</div>
+                                </div>
+                                <div class="swiper-card">
+                                    <div class="template-slide-card">
+                                        @* <span><img src="images/card-img-03.png"></span> *@
+                                        <div class="description">
+                                            <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
+                                            <p>Dear {{1}}</p>
+                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                        <a href="#"><i class="forward"></i> My Account Balance</a>
+                                        <a href="#"><i class="backward"></i> Yes </a>
+                                        <a href="#"><i class="call"></i> Call Us </a>
+                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+
+                                        <div class="description">
+                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                            <span class="description-small-text">Tap below to explore now</span>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"><i class="buy-icon"></i> Shop Now</a>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+                                        <span class="default-image image-smaple"></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+                                        <span class="default-image location"></span>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+                                        <span class="default-image video"></span>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="mt-3 guidline">
                                 <h4 class="mb-1">This template is good for</h4>
@@ -218,6 +280,28 @@
                     commonHelper.showHideLoader(false);
                 }, null);
             });
+        });
+
+        $(document).on('change', 'input[name="TemplateType"]', function () {
+            var templateCategory = $('[name="TemplateCategory"]').val();
+            var templateType = $('input[name="TemplateType"]:checked').val();
+            
+            if ((templateCategory == @((int)TemplateModuleType.Marketing) && templateType == @((int)MarketingTemplateType.Carousel))
+            || (templateCategory == @((int)TemplateModuleType.Utility) && templateType == @((int)UtilityTemplateType.Carousel))){
+                $('#carousel-template-preview').show();
+                $('#template-preview').hide();
+            }
+            else{
+                $('#carousel-template-preview').hide();
+                $('#template-preview').show();
+            }
+        });
+
+        $(document).on('click', '#marketing-tab, #utility-tab, #authentication-tab', function () {
+            var category = $(this).text().trim();
+
+            $('#carousel-template-preview').hide();
+            $('#template-preview').show();
         });
 
         $(document).on('click', '#next-btn', function () {
@@ -293,7 +377,7 @@
                                 var insertPosition = editor.model.document.selection.getFirstPosition();
                                 writer.insertText(variableText, insertPosition);
                             });
- 
+
                             variableCounter++;
 
                             // Trigger validation after insertion
@@ -358,7 +442,7 @@
 
                         if ((beforeWords.length + afterWords.length) < 3) {
                             hasSurroundingWordError = true;
-                            break; 
+                            break;
                         }
                     }
 
@@ -423,7 +507,7 @@
             var $attachment = $('#attachment');
             var $existingFileLink = $('#existingFileLink');
             var $fileValidationMessage = $('[data-valmsg-for="File"]');
-                
+
             $fileInput.val('');
             $existingFileLink.html('');
             $fileInput.removeAttr('accept');
@@ -460,7 +544,7 @@
 
         $(document).on('click', '#header-add-btn', function (e) {
             e.preventDefault();
-           
+
             var headerInput = document.querySelector("input[name='Header']");
             var variableTypeSelect = $('input[name="VariableType"]:checked').next('label').text().trim();
             var variableToInsert = "";
@@ -501,10 +585,13 @@
                 $('#variable-card-header').show();
                 // Update the readonly input with asp-for="HeaderVariableName"
                 $('[name="HeaderVariableName"]').val(headerVal);
+                $('#header-text-preview').show();
+                $('#header-text-preview').text(headerVal);
             } else {
                 $('#variable-card').hide();
                 $('#variable-card-header').hide();
                 $('[name="HeaderVariableName"]').val('');
+                $('#header-text-preview').hide();
             }
         });
 
