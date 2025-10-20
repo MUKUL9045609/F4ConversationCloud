@@ -7,6 +7,7 @@
     <title>Fortune4 Conversation Cloud</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
 </head>
 
 <body>
@@ -88,6 +89,7 @@
                             <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
                             <ul class="submenu d-block">
                                 <li class="sub-active"><a href="../campaigns/broadcast.html">Broadcast</a></li>
+                                <li><a href="../campaigns/audience.html">Audience</a></li>
                                 <li><a href="../campaigns/guide.html">Guide</a></li>
                             </ul>
                         </li>
@@ -198,21 +200,20 @@
                         <div class="tab-pane fade show active" id="details" role="tabpanel"
                             aria-labelledby="details-tab">
                             <div class="card padding">
-                                <h3>Select Audience</h3>
+                                
                                 <div class="form-wrapper mt-2">
                                     <form>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label>Name</label>
-                                                <input type="text" class="form-control" placeholder="Enter name">
+                                                <label>Campaign Name</label>
+                                                <input type="text" class="form-control" placeholder="Enter Campaign name">
                                             </div>
                                             <div class="col-md-6">
-                                                <label>Select Account</label>
+                                                <label>WABA Number</label>
                                                 <select class="form-select">
-                                                    <option selected>Select Account</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
+                                                    <option>+91 9877474645</option>
+                                                    <option>+91 9877474645</option>
+                                                    <option>+91 9877474645</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -226,12 +227,51 @@
 
                         <div class="tab-pane fade" id="audience" role="tabpanel" aria-labelledby="audience-tab">
                             <div class="card padding">
-                                <h3>Select Audience</h3>
-                                <div class="upload-list">
+                                
+                                <div class="form-wrapper">
+                                    <div class="d-flex align-content-end gap-3 mb-3">
+                                        <div class="form-group w-50">
+                                            <label>Select Audience</label>
+                                            <select class="form-select">
+                                                
+                                                <option value="1">Diwali Campaign</option>
+                                                <option value="2">Student</option>
+                                                <option value="3">Employee</option>
+                                            </select>  
+                                        </div>
+                                        <div class="d-flex align-items-end">
+                                            <a href="audience.html" class="btn primary-btn">Create Audience</a>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <!-- <div class="download-sample">
+                                    <div class="form-control">
+                                        <a href="#" class="d-flex align-items-center gap-2">
+                                            <span class="download-icon"></span>Monthly_Sales_Report.xlsx
+                                        </a>
+                                    </div>
+                                </div> -->
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button class="btn primary-btn">Next</button>
+                                </div>
+
+                                <!-- <div class="form-wrapper mt-5">
+                                    <input class="form-control" type="file" id="formFile">
+                                    <div class="download-sample">
+                                        <div class="form-control">
+                                            <a href="#" class="d-flex align-items-center gap-2">
+                                                <span class="download-icon"></span>Download Sample
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="upload-list">
                                     Upload list
                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                </div>
-                                <div class="form-check my-3">
+                                </div> -->
+                                <!-- <div class="form-check my-3">
                                     <input class="form-check-input" type="checkbox" value="" id="linkTracking">
                                     <label class="form-check-label" for="linkTracking">
                                         Enable link tracking
@@ -240,34 +280,20 @@
                                 <p class="track-link">Track link clicks to effectively manage your campaigns, applicable
                                     only if you upload list with URLs. Links must be in the format
                                     “https://www.someurl.xyz/uvw”. <a href="#">Learn More</a>
-                                </p>
-                                <div class="form-wrapper">
-                                    <input class="form-control" type="file" id="formFile">
-
-                                    <div class="download-sample">
-                                        <div class="form-control">
-                                            <a href="#" class="d-flex align-items-center gap-2">
-                                                <span class="download-icon"></span>Download Sample
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <ul class="mandatory">
+                                </p> -->
+                                <!-- <ul class="mandatory">
                                     <li>“Phone” column is mandatory.</li>
                                     <li>Phone number should have country code as prefix and no '+' symbol</li>
-                                </ul>
+                                </ul> -->
 
-                                <div class="form-check confirm">
+                                <!-- <div class="form-check confirm">
                                     <input class="form-check-input" type="checkbox" value="" id="confirm">
                                     <label class="form-check-label" for="confirm">
                                         I confirm that the contacts uploaded have agreed to receive this communication.
                                     </label>
-                                </div>
+                                </div> -->
 
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button class="btn primary-btn disabled">Next</button>
-                                </div>
+                                
                             </div>
                         </div>
 
@@ -281,17 +307,30 @@
                                                 <i class="not-icon"></i>
                                                 Not rated
                                             </div>
-                                            <div class="template-message-card">
-                                                <div class="template-white-card">
-                                                    <span><img src="../images/card-image.png" /></span>
-                                                    <div class="description">
-                                                        <p> Dear Amar,</p>
-                                                        <p>We are excited to present you with an exclusive offer ! Get a
-                                                            5% interest rate on your next loan application</p>
+                                            <div class="template-preview">
+                                                
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        <span><img src="../images/card-img-03.png"></span>
+                                                        <div class="description">
+                                                            <p>Dear {{1}}</p>
+                                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
                                                     </div>
-                                                    <div class="time">1:59 PM</div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                        <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                        <a href="#"><i class="backward"></i> Yes </a>
+                                                        <a href="#"><i class="call"></i> Call Us </a>
+                                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                                    </div>
                                                 </div>
+
+                                                
+
                                             </div>
+                                            
                                             <div class="manage-section">
                                                 <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
                                                 <button class="btn secondary-btn" id="selectTemplate">Select</button>
@@ -305,18 +344,12 @@
                                                 <i class="not-icon"></i>
                                                 Not rated
                                             </div>
-                                            <div class="template-message-card">
-                                                <div class="template-white-card">
-                                                    <span><img src="../images/card-image02.webp" /></span>
-                                                    <div class="description">
-                                                        <p> 10</p>
-                                                        <p>Avail home loan at 5%</p>
-                                                    </div>
-                                                    <div class="time">1:59 PM</div>
-                                                    <div class="buy-link">
-                                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                    </div>
+                                            <div class="template-preview">
+                                                <div class="message-chat">
+                                                    <p>Check out our exclusive festival offers below</p>
+                                                    <div class="time">11:59</div>
                                                 </div>
+                                               
                                             </div>
                                             <div class="manage-section">
                                                 <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
@@ -331,16 +364,20 @@
                                                 <i class="not-icon"></i>
                                                 Not rated
                                             </div>
-                                            <div class="template-message-card">
-                                                <div class="template-white-card">
-                                                    <span><img src="../images/card-image02.webp" /></span>
-                                                    <div class="description">
-                                                        <p>Dear Vikas,</p>
-                                                        <p>Your appointment has been scheduled. Below are the
-                                                            appointment details.</p>
-                                                        <p>Below are the appointment details.</p>
+                                            <div class="template-preview">
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        
+                                                        <div class="description">
+                                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                            <span class="description-small-text">Tap below to explore now</span>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
                                                     </div>
-                                                    <div class="time">1:59 PM</div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="manage-section">
@@ -356,16 +393,11 @@
                                                 <i class="not-icon"></i>
                                                 Not rated
                                             </div>
-                                            <div class="template-message-card">
-                                                <div class="template-white-card">
-                                                    <span><img src="../images/card-image02.webp" /></span>
-                                                    <div class="description">
-                                                        <p>Dear Vikas,</p>
-                                                        <p>Your appointment has been scheduled. Below are the
-                                                            appointment details.</p>
-                                                        <p>Below are the appointment details.</p>
-                                                    </div>
-                                                    <div class="time">1:59 PM</div>
+                                            <div class="template-preview">
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image location"></span>
+                                                    </div> 
                                                 </div>
                                             </div>
                                             <div class="manage-section">
@@ -381,18 +413,11 @@
                                                 <i class="not-icon"></i>
                                                 Not rated
                                             </div>
-                                            <div class="template-message-card">
-                                                <div class="template-white-card">
-                                                    <div class="description">
-                                                        <p> Good morrning ☀️ vikas Here are our Recommended Services. 👇
-                                                        </p>
-                                                    </div>
-                                                    <div class="time">1:59 PM</div>
-                                                    <div class="buy-link">
-                                                        <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                        <a href="#"><i class="forward"></i> Bill Payment</a>
-                                                        <a href="#"><i class="forward"></i> Explore More Menu</a>
-                                                    </div>
+                                            <div class="template-preview">
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image video"></span>
+                                                    </div>  
                                                 </div>
                                             </div>
                                             <div class="manage-section">
@@ -408,21 +433,20 @@
                                                 <i class="not-icon"></i>
                                                 Not rated
                                             </div>
-                                            <div class="template-message-card">
-                                                <div class="template-white-card">
-                                                    <div class="description">
-                                                        <p>🚀 Invest in FD today & watch your wealth grow safely! 🔒💰
-                                                        </p>
-                                                        <p>🎉 Exciting Promotions!</p>
-                                                        <p>💰 High-Interest Rates - Earn attractive returns on your
-                                                            investment! 🚀 Instant FD Opening - Open your FD in minutes
-                                                            with hassle-free online processing! 📅 Flexible Tenure
-                                                            Options - Choose from short-term & 🎁 Loyalty Bonus for
-                                                            Renewals - Enjoy additional interest on FD renewals! 🔄
-                                                            Auto-Renewal Facility - Keep growing your savings
-                                                            effortlessly!</p>
+                                            <div class="template-preview">
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        
+                                                        <div class="description">
+                                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                            <span class="description-small-text">Tap below to explore now</span>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
                                                     </div>
-                                                    <div class="time">1:59 PM</div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="manage-section">
@@ -449,9 +473,9 @@
                             </div>
 
                             <div class="edit-template" style="display: none;">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="card padding">
+                                <div class="template-content-wrap">
+                                    <div class="template-creation-content">
+                                        <div class="card border-0">
                                             <h3 class="mb-2">Template</h3>
                                             <div class="template-body card padding">
                                                 <ul>
@@ -568,28 +592,78 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="template-preview">
-                                            <h4>Preview</h4>
-                                            <div class="template-white-card">
-                                                <span><img src="../images/card-img-03.webp"></span>
-                                                <div class="description">
-                                                    <p>Dear {{1}}</p>
-                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                    <div class="template-creation-preview">
+                                        <div class="template-preview-card creation-card">
+                                            <h4>Template Preview</h4>
+                                            <div class="template-preview">
+                                                <div class="message-chat d-none">
+                                                    <p>Check out our exclusive festival offers below</p>
+                                                    <div class="time">11:59</div>
                                                 </div>
-                                                <div class="time">1:59 PM</div>
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        <span><img src="../images/card-img-03.png"></span>
+                                                        <div class="description">
+                                                            <p>Dear {{1}}</p>
+                                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
+                                                    </div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                        <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                        <a href="#"><i class="backward"></i> Yes </a>
+                                                        <a href="#"><i class="call"></i> Call Us </a>
+                                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                                    </div>
+                                                </div>
 
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        
+                                                        <div class="description">
+                                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                            <span class="description-small-text">Tap below to explore now</span>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
+                                                    </div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image image-smaple"></span> 
+                                                    </div>
+                                                </div>
+
+                                                
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image location"></span>
+                                                    </div>  
+                                                </div>
+
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image video"></span>
+                                                    </div>  
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
                             <div class="edit-template">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="card padding">
+                                <div class="template-content-wrap">
+                                    <div class="template-creation-content">
+                                        <div class="card border-0">
                                             <h3 class="mb-2">Preview</h3>
                                             <div class="template-body card padding">
                                                 <ul>
@@ -614,7 +688,7 @@
                                                         <span>loan_demo</span>
                                                     </li>
                                                     <li>
-                                                        <p>Type <a href="#" class="edit-icon"></a></p>
+                                                        <p>Type</p>
                                                         <span class="link">One Way</span>
                                                     </li>
                                                 </ul>
@@ -631,7 +705,7 @@
                                                         </div>
                                                         <div class="form-check radio-btn mb-2">
                                                             <input class="form-check-input" type="radio"
-                                                                name="flexRadioDefault" id="scheduleForLater">
+                                                                name="flexRadioDefault" id="scheduleForLater" data-bs-toggle="modal" data-bs-target="#scheduleModal">
                                                             <label class="form-check-label" for="scheduleForLater">
                                                                 Schedule for later
                                                             </label>
@@ -644,23 +718,73 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="template-preview">
-                                            <h4>Preview</h4>
-                                            <div class="template-white-card">
-                                                <span><img src="../images/card-img-03.webp"></span>
-                                                <div class="description">
-                                                    <p>Dear {{1}}</p>
-                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                    <div class="template-creation-preview">
+                                        <div class="template-preview-card creation-card">
+                                            <h4>Template Preview</h4>
+                                            <div class="template-preview">
+                                                <div class="message-chat d-none">
+                                                    <p>Check out our exclusive festival offers below</p>
+                                                    <div class="time">11:59</div>
                                                 </div>
-                                                <div class="time">1:59 PM</div>
+                                                <div class="swiper-card">
+                                                    <div class="template-slide-card">
+                                                        <span><img src="../images/card-img-03.png"></span>
+                                                        <div class="description">
+                                                            <p>Dear {{1}}</p>
+                                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
+                                                    </div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                        <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                        <a href="#"><i class="backward"></i> Yes </a>
+                                                        <a href="#"><i class="call"></i> Call Us </a>
+                                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                                    </div>
+                                                </div>
 
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        
+                                                        <div class="description">
+                                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                            <span class="description-small-text">Tap below to explore now</span>
+                                                        </div>
+                                                        <div class="time">1:59 PM</div>
+                                                    </div>
+                                                    <div class="buy-link">
+                                                        <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image image-smaple"></span> 
+                                                    </div>
+                                                </div>
+
+                                                
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image location"></span>
+                                                    </div>  
+                                                </div>
+
+                                                <div class="swiper-card d-none">
+                                                    <div class="template-slide-card">
+                                                        <span class="default-image video"></span>
+                                                    </div>  
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -687,7 +811,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <p>This action can't be undone.</p>
+                    <p>You’re about to send this campaign to all recipients. Are you sure you want to continue?</p>
                 </div>
 
                 <div class="modal-footer">
@@ -700,10 +824,45 @@
     </div>
     <!-- Confirm modal end -->
 
+    <div class="modal fade modal-wrapper" id="scheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule your broadcast campaign</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-wrapper mt-2">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 date-picker">
+                                <label>Select Date</label>
+                                <input type="text" class="form-control datepicker" placeholder="Select Date">
+                                <span class="date-icon"></span>
+                            </div>
+                            <div class="col-md-6 time-picker">
+                                <label>Time (Asia/kolkata GMT )</label>
+                                <input type="time" class="form-control time" placeholder="Enter name">
+                                <!-- <span class="time-icon"></span> -->
+                            </div>
+                        </div>
+                      
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn primary-btn m-0" data-bs-dismiss="modal">Submit</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../js/popper.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
     <script>
         $('nav ul ul').hide();
         $('nav > ul > li > a').on('click', function (e) {
@@ -758,6 +917,11 @@
             reader.readAsDataURL(event.target.files[0]);
         };
 
+    </script>
+     <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
     </script>
 </body>
 

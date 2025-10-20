@@ -1,14 +1,16 @@
+.btn {
+  padding: 0.575rem 0.75rem !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  border-radius: 8px !important;
+}
+
 .primary-btn {
   border: 1px solid #03A9F5 !important;
   background-color: #03A9F5 !important;
   color: #fff !important;
-  font-size: 12px !important;
-  font-weight: 400 !important;
-  border-radius: 8px !important;
   max-width: -moz-fit-content !important;
   max-width: fit-content !important;
-  height: 35px;
-  line-height: 20px !important;
 }
 .primary-btn:hover {
   color: #03A9F5 !important;
@@ -27,13 +29,6 @@
   border: 1px solid #03A9F5 !important;
   background-color: #fff !important;
   color: #03A9F5 !important;
-  font-size: 12px !important;
-  font-weight: 400 !important;
-  border-radius: 8px !important;
-  max-width: -moz-fit-content !important;
-  max-width: fit-content !important;
-  height: 35px;
-  line-height: 20px !important;
 }
 .secondary-btn:hover {
   color: #fff !important;
@@ -54,13 +49,6 @@
   border: 1px solid #F0483E !important;
   background-color: #F0483E !important;
   color: #fff !important;
-  font-size: 12px !important;
-  font-weight: 400 !important;
-  border-radius: 8px !important;
-  max-width: -moz-fit-content !important;
-  max-width: fit-content !important;
-  height: 35px;
-  line-height: 20px !important;
 }
 .danger-btn:hover {
   color: #F0483E !important;
@@ -102,6 +90,10 @@
 }
 .add-btn:hover::before {
   background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+.reset-btn {
+  padding: 0.59rem 0.75rem !important;
 }
 
 .loginwrapper {

@@ -4652,19 +4652,16 @@ body {
   font-size: 12px;
 }
 
+.emoji {
+  position: relative;
+}
+
 .emoji-wrapper {
   position: absolute;
-  top: 0px;
-  right: 30px;
+  top: 37px;
+  left: 0px;
   z-index: 99;
-  opacity: 0;
-  visibility: hidden;
 }
 .picker {
   background-color: transparent !important;
-}
-
-.bx-emoji:hover .emoji-wrapper {
-  opacity: 1;
-  visibility: visible;
 }/*# sourceMappingURL=style.css.map */

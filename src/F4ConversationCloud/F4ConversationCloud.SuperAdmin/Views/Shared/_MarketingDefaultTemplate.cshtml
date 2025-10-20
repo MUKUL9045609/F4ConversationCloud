@@ -24,14 +24,18 @@
                     <input asp-for="TemplateName" type="text"
                     class="form-control" placeholder="Enter a template name" maxlength="512" />
                 </div>
-                <span asp-validation-for="TemplateName" class="text-danger"></span>
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="TemplateName"></span>
+                </div>
             </div>
             <div class="mb-2 w-25">
                 <label>Select language</label>
                 <select asp-for="Language" asp-items="Model.LanguageList" class="form-select" aria-label="Default select example">
                 </select>
             </div>
-            <span asp-validation-for="Language" class="text-danger"></span>
+            <div class="invalid-feedback mt-0">
+                <span asp-validation-for="Language"></span>
+            </div>
         </div>
         <hr>
 
@@ -55,7 +59,9 @@
                     </div>
                 }
             }
-            <span asp-validation-for="VariableType" class="text-danger"></span>
+        </div>
+        <div class="invalid-feedback mt-0">
+            <span asp-validation-for="VariableType"></span>
         </div>
         <label class="mt-3">Media sample</label>
         <div class="d-flex gap-3">
@@ -103,42 +109,47 @@
                 }
             </div>
         </div>
-        <span asp-validation-for="File" class="text-danger"></span>
-
+        <div class="invalid-feedback mt-0">
+            <span asp-validation-for="File"></span>
+        </div>
         <div>
             <div class="mb-2 flex-grow-1">
                 <label>Header</label>
                 <div class="input-group">
                     <input asp-for="Header" type="text" class="form-control" maxlength="60" placeholder="Add a short line of text to the header of your message in English">
                 </div>
-                <span asp-validation-for="Header" class="text-danger"></span>
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="Header"></span>
+                </div>
                 <div class="d-flex justify-content-end">
                     <button class="add-variables" id="header-add-btn" type="button">Add Variables</button>
                 </div>
             </div>
             <div class="mb-2 flex-grow-1">
                 <label>Body <sup class="error-star">*</sup></label>
-                <div id="content" contenteditable="true" spellcheck="false">
-                    Lorem, ipsum.
-                </div>
+                <textarea asp-for="MessageBody" id="MessageBody"></textarea>
 
                 <div class="toolbar">
                     <div class="btn-toolbar">
                         <div class="emoji">
-                            <button class='bx bx-emoji'>
-                                <div class="emoji-wrapper">
+                            <button type="button" class='bx bx-emoji' id="emoji-btn">
+                                <div class="emoji-wrapper" id="emoji-card" style="display:none;">
                                     <emoji-picker class="emojipicker" id="picker"></emoji-picker>
                                 </div>
                             </button>
                         </div>
-                        <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
-                        <button onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
-                        <button onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
-                        <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button>
-                        <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
-                        <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button>
+                        @* <button type="button" onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
+                        <button type="button" onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
+                        <button type="button" onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
+                        <button type="button" onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button> *@
+                        @* <button type="button" onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
+                        <button type="button" onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button> *@
                     </div>
-                    <button class="add-variables">Add Variables</button>
+                    <button type="button" class="add-variables" id="add-body-variable">Add Variables</button>
+                </div>
+
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="MessageBody" id="messageBodyError"></span>
                 </div>
             </div>
             <div class="variables-sample mb-2" id="variable-card" style="display:none;">
@@ -176,7 +187,9 @@
                 <div class="input-group">
                     <input asp-for="Footer" class="form-control" maxlength="60" placeholder="Enter Text" />
                 </div>
-                <span asp-validation-for="Footer" class="text-danger"></span>
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="Footer"></span>
+                </div>
             </div>
             <div class="mb-3 flex-grow-1">
                 <label>Button </label>
