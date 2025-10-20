@@ -25,6 +25,11 @@ using F4ConversationCloud.Infrastructure.Repositories;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+
 
 
 namespace F4ConversationCloud.Infrastructure
@@ -73,6 +78,8 @@ namespace F4ConversationCloud.Infrastructure
 
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<ITemplateRepositories, TemplateRepositories>();
+
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
 
@@ -109,6 +116,8 @@ namespace F4ConversationCloud.Infrastructure
             }).AddPolicyHandler(request => request.Method.Equals(HttpMethod.Get) ? retryPolicy : noOpPolicy);
 
         }
+
+
 
     }
 }

@@ -1,9 +1,11 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+﻿using F4ConversationCloud.Application.Common.Handler;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Infrastructure.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -11,81 +13,24 @@ using Twilio.TwiML.Voice;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
+    [Authorize(Roles = "1")]
     [ApiController]
-    [Route("Template")]
+    [Route("MessageTemplates")]
     public class TemplateController : Controller
     {
         private readonly ITemplateService _templateService;
         private readonly ITemplateRepositories _templateRepositories;
 
-        public TemplateController(ITemplateService templateService , ITemplateRepositories templateRepositories)
+        public TemplateController(ITemplateService templateService, ITemplateRepositories templateRepositories)
         {
 
             _templateService = templateService;
             _templateRepositories = templateRepositories;
         }
 
-
-        //[HttpPost("CreateTemplate")]
-        //[Consumes("multipart/form-data")]
-        //public async Task<IActionResult> CreateTemplate([FromForm] MessageTemplate request)
-        //{
-        //    try
-        //    {
-        //        List<dynamic> components = new List<dynamic>();
-
-        //        MessageTemplateDTO messageTemplate = new MessageTemplateDTO();
-        //        messageTemplate.category = request.Templatecategory;
-        //        messageTemplate.name = request.Templatename;
-        //        messageTemplate.language = request.Templatelanguage;
-
-        //        //foreach (var component in request.components)
-        //        //{
-
-        //        //    if (component.TryGetProperty("type", out JsonElement typeElement))
-        //        //    {
-        //        //        string typeValue = typeElement.GetString().ToLower();
-        //        //        if (typeValue == "header")
-        //        //        {
-        //        //            HeaderComponent headerComponent = JsonSerializer.Deserialize<HeaderComponent>(request.components[0].GetRawText());
-        //        //            components.Add(headerComponent);
-        //        //        }
-        //        //        else if (typeValue == "body")
-        //        //        {
-        //        //            BodyComponent bodyComponent = JsonSerializer.Deserialize<BodyComponent>(request.components[1].GetRawText());
-        //        //            components.Add(bodyComponent);
-        //        //        }
-        //        //        else if (typeValue == "footer")
-        //        //        {
-        //        //            FooterComponent footerComponent = JsonSerializer.Deserialize<FooterComponent>(request.components[2].GetRawText());
-        //        //            components.Add(footerComponent);
-        //        //        }
-        //        //        else if (typeValue == "buttons")
-        //        //        {
-        //        //            ButtonComponent buttonComponent = JsonSerializer.Deserialize<ButtonComponent>(request.components[3].GetRawText());
-        //        //            components.Add(buttonComponent);
-        //        //        }
-        //        //    }
-        //        //}
-
-        //        messageTemplate.components = new List<dynamic>();
-        //        messageTemplate.components.AddRange(components);
-
-        //        await _templateService.CreateTemplate(messageTemplate);
-
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500);
-
-        //    }
-        //}
-
-
-        [HttpPost("CreateTemplate")]
+        [HttpPost("[action]")]
         [Consumes("application/json")]
-
+        [HasPermission("IsCreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)
@@ -106,8 +51,9 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
-        [HttpPost("EditTemplate")]
-        public async Task<IActionResult> EditTemplate(TemplateRequest request , string id )
+        [HttpPost("[action]")]
+        [HasPermission("IsEditTemplate")]
+        public async Task<IActionResult> EditTemplate(TemplateRequest request, string id)
         {
 
             if (!ModelState.IsValid)
@@ -118,7 +64,7 @@ namespace F4ConversationCloud.WebUI.Controllers
             try
             {
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(request);
-                await _templateService.EditTemplate(messageTemplate,id);
+                await _templateService.EditTemplate(messageTemplate, id);
 
                 return Ok();
             }
@@ -130,7 +76,8 @@ namespace F4ConversationCloud.WebUI.Controllers
         }
 
 
-        [HttpPost("DeleteTemplate")]
+        [HttpPost("[action]")]
+        [HasPermission("IsDeleteTemplate")]
         public async Task<IActionResult> DeleteTemplate(int Template_Id, string Template_Name)
         {
             try
@@ -146,7 +93,8 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
-        [HttpPost("DeleteTemplateByName")]
+        [HttpPost("[action]")]
+        [HasPermission("IsDeleteTemplate")]
         public async Task<IActionResult> DeleteTemplateByName(string Template_Name)
         {
             try
@@ -162,8 +110,42 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
+        [HttpPost("[action]")]
+        [HasPermission("IsView")]
+        public async Task<IActionResult> ViewTemplate(int Template_Id, string Template_Name)
+        {
+            try
+            {
 
-        [HttpPost("UploadFacebookImage")]
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpPost("[action]")]
+        [HasPermission("IsView")]
+        public async Task<IActionResult> TemplateList(int Template_Id, string Template_Name)
+        {
+            try
+            {
+
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+
+        [HttpPost("[action]")]
         public async Task<IActionResult> UploadFacebookImage([FromBody] UploadImage uploadImage)
         {
             try

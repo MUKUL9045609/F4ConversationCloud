@@ -1,7 +1,11 @@
+using F4ConversationCloud.Application.Common.Handler;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
 using F4ConversationCloud.Infrastructure.Service;
+using F4ConversationCloud.WebUI;
 using F4ConversationCloud.WebUI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.OpenApi.Models;
 
@@ -21,6 +25,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHttpClient<WebhookService>();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddWebUIServices(builder.Configuration);
 
 WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
 
@@ -52,6 +57,27 @@ builder.Services.AddHttpLogging(logging =>
     logging.ResponseBodyLogLimit = 4096;
 });
 
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("HasPermission", policy =>
+//    {
+//        policy.Requirements.Add(new PermissionRequirement("IsCreateTemplate"));
+//        policy.Requirements.Add(new PermissionRequirement("IsDeleteTemplate"));
+//        policy.Requirements.Add(new PermissionRequirement("IsEditTemplate"));
+//        policy.Requirements.Add(new PermissionRequirement("IsView"));
+
+//    });
+//});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Permission_IsCreateTemplate", policy =>
+        policy.Requirements.Add(new PermissionRequirement("True")));
+
+});
+
 var app = builder.Build();
 
 app.UseHttpLogging();
@@ -62,7 +88,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("MyAllowSpecificOrigins");
 
-app.UseAuthorization();
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -70,6 +96,9 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "F4ConversationCloud API V1");
     c.RoutePrefix = string.Empty;
 });
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
