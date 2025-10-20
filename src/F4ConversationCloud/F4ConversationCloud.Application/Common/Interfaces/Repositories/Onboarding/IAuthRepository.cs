@@ -1,5 +1,7 @@
-﻿using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+﻿using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using System.Collections.Generic;
@@ -15,16 +17,15 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
         Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid);
         Task<int> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel command);
 
-        Task <int> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration command);
+        Task<int> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration command);
         Task<UserDetailsViewModel> GetCustomerById(int userId);
 
         Task<LoginViewModel> ValidateClientCreadiatial(string email);
         Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
-
         Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId);
-
         Task<int> UpdatePasswordAsync(ConfirmPasswordModel model);
         Task<int> sp_GetRegisteredClientCountAsync();
+        Task<ClientDetails> GetClientInfoByEmailId(UserDetailsDTO userDetailsDTO);
 
 
     }
