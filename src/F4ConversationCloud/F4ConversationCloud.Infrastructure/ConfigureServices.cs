@@ -25,7 +25,6 @@ using F4ConversationCloud.Infrastructure.Repositories;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
