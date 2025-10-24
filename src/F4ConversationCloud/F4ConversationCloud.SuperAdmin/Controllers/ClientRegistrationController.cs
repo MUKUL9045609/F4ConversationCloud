@@ -26,6 +26,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 {
                     NameFilter = model.NameFilter ?? String.Empty,
                     EmailFilter = model.EmailFilter ?? String.Empty,
+                    ContactNumberFilter = model.ContactNumberFilter ?? String.Empty,
                     RoleFilter = model.RoleFilter,
                     CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
                     UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
@@ -50,6 +51,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     SrNo = x.SrNo,
                     Name = x.FirstName + " " + x.LastName,
                     Email = x.Email,
+                    ContactNumber = x.ContactNumber,
                     Role = x.Role,
                     RegistrationStatus = x.RegistrationStatus,
                     CreatedOn = x.CreatedOn,
@@ -94,6 +96,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
+                    ContactNumber = model.ContactNumber,
                     Role = model.Role,
                     RegistrationStatus = (int)ClientRegistrationStatus.PreRegistration
                 });

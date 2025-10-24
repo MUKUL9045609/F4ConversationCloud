@@ -4,12 +4,6 @@ using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
-using F4ConversationCloud.SuperAdmin.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 {
@@ -32,6 +26,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("firstName", clientRegistration.FirstName);
             parameters.Add("lastName", clientRegistration.LastName);
             parameters.Add("email", clientRegistration.Email);
+            parameters.Add("contactNumber", clientRegistration.ContactNumber);
             parameters.Add("role", clientRegistration.Role);
             parameters.Add("registrationStatus", clientRegistration.RegistrationStatus);
 
@@ -44,6 +39,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
             parameters.Add("nameFilter", filter.NameFilter);
             parameters.Add("emailFilter", filter.EmailFilter);
+            parameters.Add("contactNumberFilter", filter.ContactNumberFilter);
             parameters.Add("roleFilter", filter.RoleFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);

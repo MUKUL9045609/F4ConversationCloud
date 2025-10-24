@@ -21,6 +21,11 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [EmailAddress(ErrorMessage = "Please enter valid Email")]
         public string Email { get; set; }
 
+        [Display(Name = "Contact Number")]
+        [Required]
+        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Please enter valid Contact Number.")]
+        public string ContactNumber { get; set; }
+
         [Display(Name = "Role")]
         [Required]
         public int Role { get; set; }

@@ -7,6 +7,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
     {
         public string NameFilter { get; set; } = string.Empty;
         public string EmailFilter { get; set; } = string.Empty;
+        public string ContactNumberFilter { get; set; } = string.Empty;
         public int RoleFilter { get; set; } = 0;
         public string CreatedOnFilter { get; set; } = string.Empty;
         public string UpdatedOnFilter { get; set; } = string.Empty;
@@ -30,6 +31,9 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Email Address")]
             public string Email { get; set; }
+
+            [Display(Name = "Contact Number")]
+            public string ContactNumber { get; set; }
 
             [Display(Name = "Role")]
             public int Role { get; set; }

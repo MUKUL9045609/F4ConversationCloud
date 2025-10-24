@@ -10,6 +10,7 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
     {
         public string NameFilter { get; set; } = string.Empty;
         public string EmailFilter { get; set; } = string.Empty;
+        public string ContactNumberFilter { get; set; } = string.Empty;
         public int RoleFilter { get; set; } = 0;
         public string CreatedOnFilter { get; set; } = string.Empty;
         public string UpdatedOnFilter { get; set; } = string.Empty;

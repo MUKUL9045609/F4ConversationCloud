@@ -39,9 +39,18 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-2">
+                        <label>Contact Number <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input asp-for="ContactNumber" type="text" class="form-control" placeholder="Enter Contact Number" />
+                        </div> 
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
                         <label>Role <span class="text-danger">*</span></label>
                         <select asp-for="Role" asp-items="(IEnumerable<SelectListItem>)ViewBag.Roles" class="form-control">
-                            <option value="">--select--</option>
+                            <option value="" disabled selected>Select Role</option>
                         </select>
                     </div>
                     <span asp-validation-for="Role" class="text-danger"></span>
