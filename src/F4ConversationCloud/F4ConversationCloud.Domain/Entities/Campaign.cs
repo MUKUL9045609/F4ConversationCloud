@@ -15,5 +15,7 @@ namespace F4ConversationCloud.Domain.Entities
         public DateTime? ToDate { get; set; }
         public string Message { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+
+
     }
 }

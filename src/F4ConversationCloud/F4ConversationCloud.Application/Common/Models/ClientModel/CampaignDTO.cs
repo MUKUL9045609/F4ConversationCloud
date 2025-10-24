@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Application.Common.Models
+namespace F4ConversationCloud.Application.Common.Models.ClientModel
 {
     public class CampaignDTO
     {
