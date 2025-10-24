@@ -12,7 +12,6 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddHttpClient();
 WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
 
-WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
 
 whatsAppConfig.AccessToken = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["AccessToken"];
 builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
