@@ -315,23 +315,23 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
                
-                 var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
-                    if (ClientDetails is null)
+               var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
+                if (ClientDetails is null)
+                    return new LoginResponse
+                    {
+                        Message = "InvalidEmail",
+                        IsSuccess = false,
+
+                    };
+                var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
+                    if (!isPasswordValid)
+                    {
                         return new LoginResponse
                         {
-                            Message = "InvalidEmail",
+                            Message = "InvalidPassword",
                             IsSuccess = false,
-
                         };
-                    var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
-                        if (!isPasswordValid)
-                        {
-                            return new LoginResponse
-                            {
-                                Message = "InvalidPassword",
-                                IsSuccess = false,
-                            };
-                        }
+                    }
                 return new LoginResponse()
                 {
                     Message = "Login Success",

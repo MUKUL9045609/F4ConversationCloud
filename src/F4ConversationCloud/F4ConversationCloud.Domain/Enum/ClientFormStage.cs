@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace F4ConversationCloud.Domain.Enum;
 public enum ClientFormStage
@@ -12,5 +13,8 @@ public enum ClientFormStage
     draft = 1,
 
     [Display(Name = "Meta-registered")]
-    metaregistered = 2
+    metaregistered = 2,
+
+    [Display(Name = "Admin-Approval")]
+     adminapproval = 3
 }

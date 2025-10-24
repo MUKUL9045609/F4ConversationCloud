@@ -1,0 +1,41 @@
+﻿<div class="appheader-wrap">
+    <div class="searchBox">
+        @* <div class="input-group flex-nowrap">
+            <input type="text" class="form-control" placeholder="Search for anything here.."
+                   aria-label="Username" aria-describedby="addon-wrapping">
+            <span class="input-group-text" id="addon-wrapping"></span>
+        </div> *@
+    </div>
+    <div class="profile-dropdown">
+        @* <div class="lang">
+            <select class="form-select" aria-label="Default select example">
+                <option selected><span class="lang-icon"></span> English (US)</option>
+                <option value="1">Hindi</option>
+                <option value="2">Portugal</option>
+
+            </select>
+        </div> *@
+        @* <div class="ask-ai">
+            <a href="#">Ask AI Assistant <span class="question"></span></a>
+        </div> *@
+        <div class="profile">
+            <div class="dropdown">
+                <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    D
+                </a>
+                @{
+                    var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value;
+                }
+
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <span class="name">@userNameClaim</span>
+                    <li><a class="dropdown-item user" href="#">Profile</a></li>
+                    <li><a class="dropdown-item signout" href="@Url.Action("Logout", "Auth")">Sign Out</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
