@@ -144,7 +144,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
-                    FullPhoneNumber = command.FullPhoneNumber,
+                    FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
                     Role = ClientRole.Admin,
                     ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
@@ -203,6 +203,21 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             return Json(new { response.status, response.message });
         }
+
+        public async Task<IActionResult> VarifyWhatsAppNumber( VarifyMobileNumberModel command)
+        {
+            if (string.IsNullOrWhiteSpace(command.UserPhoneNumber))
+            {
+                return Json(new { status = false, message = "Please enter a valid WhatsApp number." });
+            }
+
+            var response = await _onboardingService.VarifyWhatsAppContactNoAsync(command);
+            return Json(new { response.status, response.message });
+        }
+
+
+
+
         public async Task<IActionResult> VerifyOTP([FromBody] ValidateRegistrationOTPModel command)
         {
             var response = await _onboardingService.VerifyOTPAsync(command);

@@ -109,13 +109,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
-        public async Task<int> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel command)
+        public async Task<int> IsMailExitAsync(VarifyMobileNumberModel command)
         {
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("UserEmailId", command.UserEmailId);
-                var response = await _repository.GetByValuesAsync<int>("[sp_CheckMailOrPhoneNumber]", parameters);
+                var response = await _repository.GetByValuesAsync<int>("[sp_IsEMailExit]", parameters);
                 return response;
             }
             catch (Exception)
@@ -123,7 +123,20 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
-
+        public async Task<int> IsContactNoExitAsync(VarifyMobileNumberModel command)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@ClientContactNo", command.UserPhoneNumber);
+                var response = await _repository.GetByValuesAsync<int>("[sp_IsContactNoExit]", parameters);
+                return response;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
         public async Task<int> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration command)
         {
             try

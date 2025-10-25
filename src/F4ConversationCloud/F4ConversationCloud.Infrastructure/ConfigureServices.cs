@@ -98,6 +98,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddSingleton(new WhatsAppBusinessCloudApiConfig
             {
                 AccessToken = whatsAppConfig.AccessToken,
+                WhatsAppBusinessPhoneNumberId=whatsAppConfig.WhatsAppBusinessPhoneNumberId
             });
             services.AddHttpClient<IMetaCloudAPIService, MetaCloudAPIService>(options =>
             {

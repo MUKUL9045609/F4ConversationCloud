@@ -15,8 +15,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
         Task<int> InsertOTPAsync(VarifyMobileNumberModel command);
         Task<int> VerifyOTPAsync(ValidateRegistrationOTPModel oTPCommand);
         Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid);
-        Task<int> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel command);
-
+        Task<int> IsMailExitAsync(VarifyMobileNumberModel command);
+        Task<int> IsContactNoExitAsync(VarifyMobileNumberModel command);
         Task<int> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration command);
         Task<UserDetailsViewModel> GetCustomerById(int userId);
 

@@ -51,9 +51,9 @@
                 <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid">
                 <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
                 <span asp-validation-for="EmailOtpVerified" class="error-message text-danger small" id="emailvarifyerror"></span>
-                <div class="verifyBtnLink" id="sendmail">
+                @* <div class="verifyBtnLink" id="sendmail">
                     <span>Verify Email</span>
-                </div>
+                </div> *@
 
             </div>
 
@@ -75,19 +75,19 @@
 
 
                 <div class="col-md-6">
-                    <label class="form-label">Phone number <sup>*</sup></label>
+                <label class="form-label">Contact Number<sup>*</sup></label>
 
                     <div class="d-flex">
                         <input asp-for="PhoneNumber" type="text" class="form-control flex-grow-1"
-                               placeholder="Enter phone number"
+                           placeholder="Enter Contact Number"
                                id="PhoneNumber" maxlength="10"   />
                     </div>
                     <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
                     @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
 
-                    <input type="hidden" asp-for="FullPhoneNumber" id="FullPhoneNumberid" />
-                    <span asp-validation-for="FullPhoneNumber" class="error-message text-danger small" id="phoneError"></span>
-                    @* <div class="verifyBtnLink" id="varifyPhoneNumber"><span>Verify Phone No</span></div> *@
+                <input type="hidden" asp-for="CountryCode" id="CountryCodeid" />
+                <span asp-validation-for="CountryCode" class="error-message text-danger small" id="phoneError"></span>
+                <div class="verifyBtnLink" id="varifyPhoneNumber"><span>Verify Contact No</span></div>
                 </div>
 
             <div class="col-md-6 mb-3" id="codeSection" style="display: none;">
@@ -116,9 +116,9 @@
 
             <div class="col-md-6 mb-3">
                 <label asp-for="PassWord" class="form-label">Create Password <sup>*</sup></label>
-               
 
-                    @if (ViewBag.IsReadOnly)
+
+                     @if(ViewBag.IsReadOnly)
                     {
                         <input type="text" class="form-control" value="**********" readonly />
                     }
@@ -298,67 +298,37 @@
         });
 
 
-//#region send mail --
+        //#region Varify Contact No --
 
-$(document).ready(function () {
+        $(document).ready(function () {
 
+            $('#varifyPhoneNumber').click(function (e) {
+                e.preventDefault();
 
-                $('#sendmail').click(function(){
-                    let email = $('#emailid').val().trim();
+                if (!$("#PhoneNumber").valid()) {
+                    return; 
+                }
 
-                    if(email === ''){
-                        $('#emailError').text('Please enter your email address.');
-                        return;
+                  var PhoneNumber = $('#PhoneNumber').val();
+                  var CountryCode = $('#CountryCodeid').val();
+                var req = {
+                     UserPhoneNumber: PhoneNumber,
+                      CountryCode:CountryCode
+                 };
+
+                var url = "@Url.ActionLink("VarifyWhatsAppNumber", "Onboarding")";
+
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                    if (response.status === true) {
+                         showToast(response.message, "success");
                     } else {
-                        $('#emailError').text('');
+                        $('#phoneError').text(response.message);
                     }
-
-                    let emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
-
-                    if (!emailPattern.test(email)) {
-                        $('#emailError').text('Please enter a valid email address');
-
-                        return;
-                    }
-                    $("#loader").show();
-                    $.ajax({
-                        url:"@Url.ActionLink("VarifyMail", "Onboarding")",
-                        type: "POST",
-                        data: JSON.stringify({
-                            UserEmailId: email,
-                            //UserPhoneNumber: $('#phone').val(),
-                            OTP_Source: "EMAIL"
-                        }),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            if (response.status === true) {
-                                    $('#codeSection').show();
-                                    showToast("OTP sent successfully!", "success");
-                                    $('#sendmail').addClass('disabled-btn');
-                                    $('#sendmail span').text('');
-                            }
-                            else if(response.status === false && response.message === "Email already exists")
-                            {
-                                $('#emailError').text('Email already exists. Please use a different email.');
-
-                                    showToast("Email already exists. Please use another one.", "warning");
-                            }
-                            else {
-                                        showToast("Failed to send OTP. Please try again.", "danger");
-                            }
-
-                        },
-                        error: function (xhr) {
-                                            showToast("technical Error", "danger");
-                        },
-                        complete: function () {
-                            $("#loader").hide();
-                        }
-                    });
-
-                });
-
+                }, null);
             });
+
+        });
+
 
         // varify mail otp
         $(document).ready(function () {
@@ -476,32 +446,30 @@ $(document).ready(function () {
 
 
     <script>
+                        
+
         document.addEventListener("DOMContentLoaded", function () {
             var input = document.getElementById("PhoneNumber");
-            var hiddenInput = document.getElementById("FullPhoneNumberid");
-            if (input) {
+            var hiddenInput = document.getElementById("CountryCodeid");
+
+            if (input && hiddenInput) {
                 var iti = window.intlTelInput(input, {
-                    initialCountry: "in",
-                    separateDialCode: true,
-                    nationalMode: false, 
-                    formatOnDisplay: false,
+                    initialCountry: "in",          
+                    separateDialCode: true,       
+                    nationalMode: false,
+                    formatOnDisplay: true,
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
                 });
 
-                
-                input.addEventListener("input", function () {
-                    input.value = input.value.replace(/\s+/g, '').replace(/\D/g, '');
-                });
+              
+                var updateHiddenField = function () {
+                    var countryData = iti.getSelectedCountryData();
+                    hiddenInput.value = "+" + countryData.dialCode; 
+                };
 
-                input.form.addEventListener("submit", function () {
-                    if (hiddenInput) {
-                        hiddenInput.value = iti.getNumber().replace(/\s+/g, '');
-                    }
-                });
+                updateHiddenField();
 
-                if (input.value) {
-                    input.value = input.value.replace(/\s+/g, '').replace(/\D/g, '');
-                }
+                input.addEventListener('countrychange', updateHiddenField);
             }
         });
 

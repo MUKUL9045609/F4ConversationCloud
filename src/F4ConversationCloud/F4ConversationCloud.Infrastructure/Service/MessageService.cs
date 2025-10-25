@@ -1,5 +1,8 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using Microsoft.Extensions.Configuration;
 using System.Net;
@@ -14,13 +17,14 @@ namespace F4ConversationCloud.Infrastructure.Service
     {
         private IConfiguration _configuration { get; }
         private IAPILogService _aPILogService { get; set; }
+        private IMetaCloudAPIService _metaCloudAPIService;
 
-      
 
 
-        public MessageService( IConfiguration configuration)
+        public MessageService( IConfiguration configuration,IMetaCloudAPIService metaCloudAPIService)
         {
             _configuration = configuration;
+            _metaCloudAPIService = metaCloudAPIService;
         }
 
         
@@ -72,7 +76,56 @@ namespace F4ConversationCloud.Infrastructure.Service
         }
 
 
+        public async Task<OnboardingContactNoVerificationResponse> SendOnboardingVerificationAsync(VarifyMobileNumberModel request)
+        {
+            try
+            {
+                var whatsappRequest = new TextTemplateMessageRequest
+                {
+                    To = request.UserPhoneNumber,
+                    Template = new TextMessageTemplate
+                    {
+                        Name = "onboarding_contact_varification",
+                        Language = new TextMessageLanguage
+                        {
+                            Code = "en_US"
+                        },
+                        Components = new List<TextMessageComponent>
+                                {
+                                    new TextMessageComponent
+                                    {
+                                        Type = "body",
+                                        Parameters = new List<TextMessageParameter>
+                                        {
+                                            new TextMessageParameter
+                                            {
+                                                Type = "text",
+                                                Text = request.OTP
+                                            }
+                                        }
+                                    }
+                                }
+                    }
+                };
 
+
+             var whatsAppMessagereponse = await _metaCloudAPIService.SendTextMessageTemplateAsync(whatsappRequest); 
+
+                return new OnboardingContactNoVerificationResponse
+                {
+                    MessageId = whatsAppMessagereponse != null && whatsAppMessagereponse.Messages != null && whatsAppMessagereponse.Messages.Count > 0 ? whatsAppMessagereponse.Messages[0].Id : null
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return
+                    new OnboardingContactNoVerificationResponse
+                    {
+                    };
+
+            }
+        }
 
         public async Task<bool> SendEmail(EmailRequest Request)
         {

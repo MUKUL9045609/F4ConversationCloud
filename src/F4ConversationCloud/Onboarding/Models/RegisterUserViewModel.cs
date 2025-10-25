@@ -26,7 +26,7 @@ namespace Onboarding.Models
             [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
             public string PhoneNumber { get; set; }
 
-            public string? FullPhoneNumber { get; set; }
+            public string CountryCode { get; set; }
 
             [Required(ErrorMessage = "Address is required ")]
             public string Address { get; set; }

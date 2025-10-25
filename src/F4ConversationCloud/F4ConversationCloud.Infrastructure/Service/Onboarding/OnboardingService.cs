@@ -34,7 +34,7 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-                int ismailExit = await _authRepository.CheckMailOrPhoneNumberAsync(request);
+                int ismailExit = await _authRepository.IsMailExitAsync(request);
                 var CreateOTP = OtpGenerator.GenerateRandomOTP();
                 if (ismailExit != 1)
                 {
@@ -97,6 +97,68 @@ namespace F4ConversationCloud.Application.Common.Services
             }
 
         }
+
+        public async Task<VarifyUserDetailsResponse> VarifyWhatsAppContactNoAsync(VarifyMobileNumberModel request)
+        {
+            try
+            {
+              int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
+                            var CreateOTP = OtpGenerator.GenerateRandomOTP();
+                                    if (ContactNoExit != 0)
+                                    {
+                                        return new VarifyUserDetailsResponse
+                                        {
+                                            status = false,
+                                            message = "Already Registered With this Number!"
+
+                                        };
+
+                                    }
+                            var varificationRequest = new VarifyMobileNumberModel
+                            {
+                                UserEmailId = request.UserEmailId,
+                                UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                                OTP = CreateOTP,
+                                OTP_Source = "WhatsApp"
+                            };
+                                var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                                        if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
+                                        {
+                                            return new VarifyUserDetailsResponse
+                                            {
+                                                status = false,
+                                                message = "Failed to send OTP via WhatsApp"
+                                            };
+                                        }
+                               var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
+                                        if (insertOTPResponse != 1)
+                                        {
+                                            return new VarifyUserDetailsResponse
+                                            {
+                                                status = false,
+                                                message = "Failed generate OTP"
+                                            };
+                                        }
+                    return new VarifyUserDetailsResponse
+                        {
+                            status = true,
+                            message = "OTP sent successfully to your WhatsApp.!"
+                        };
+                    
+                
+            }
+            catch (Exception)
+            {
+                return new VarifyUserDetailsResponse
+                {
+                    status = false,
+                    message = "Technical Error!"
+                };
+            }
+
+        }
+
+
 
         public async Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request)
         {
