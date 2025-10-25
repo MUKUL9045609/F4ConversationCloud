@@ -12,6 +12,7 @@ namespace F4ConversationCloud.Domain.Entities.SuperAdmin
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string ContactNumber { get; set; }
         public int Role { get; set; }
         public int RegistrationStatus { get; set; }
         public bool IsActive { get; set; }
