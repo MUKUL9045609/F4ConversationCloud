@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css">
+</head>
+
+<body>
+    <div class="page">
+        
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li class="active">
+                              <a href="meta-details.html" class="meta icon">Meta Details</a>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    <div class="profile-dropdown ms-auto"> 
+                    <div class="profile">
+                        <div class="dropdown">
+                            <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                               <span class="profile-name">D</span> 
+                               <div>
+                                    <p>Dinesh Sharma</p>
+                                    <span class="profile-role">Super Admin</span>
+                               </div>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+             <div class="content bg-light">
+                <div class="container-fluid">
+                    <div class="card padding">
+                        <div class="fb-wrap">
+                            <div class="left-col">
+                                <h3>Connect with Facebook</h3>
+                                <p>Click the button below to securely connect your WhatApp number with Facebook. No manual entry needed</p>
+                            </div>
+                            <div class="right-col">
+                                <div class="text-center">
+                                    <a href="#" class="btn btn-facebook"><span class="facebook-icon"></span> Continue With Facebook</a>
+                                    <span class="small-text">We'll request your phone number from Facebook and verify automatically.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="facebook-header">
+                            <h3>Phone Numbers</h3>
+                            <button class="btn sync-btn"> Sync</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sr. No.</th>
+                                    <th>Whatsapp Display Name</th>
+                                    <th>Whatsapp Phone Number</th>
+                                    <th>Account Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>01</td>
+                                    <td>Buldana Urban Coop.</td>
+                                    <td>+91 8268478568</td>
+                                    <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                                </tr>
+                                <tr>
+                                    <td>02</td>
+                                    <td>BrightLeaf Organics</td>
+                                    <td>+91 8268478360</td>
+                                    <td><a href="#" class="text-danger text-decoration-none fw-medium">Failed</a></td>
+                                </tr>
+                                <tr>
+                                    <td>03</td>
+                                    <td>BrightLeaf Organics</td>
+                                    <td>+91 8268478360</td>
+                                    <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+        </div>
+
+        
+        
+    </div>
+
+    <!-- Reject Modal -->
+    <div class="modal fade comment-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <span class="action-icon reject"></span>
+                    <h4>Are you sure ?</h4>
+                    <p>Are you sure you want to reject this records? This process can not be undone</p>
+                    <form class="form-wrapper">
+                        <div class="mb-2">
+                            <div class="form-group">
+                                <label class="form-label">Comment</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                            <button class="btn danger-btn">Reject </button>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end Reject modal -->
+
+    <!-- Approved Modal -->
+    <div class="modal fade comment-modal" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <span class="action-icon approved"></span>
+                    <h4>Are you sure ?</h4>
+                    <p>Are you sure you want to approved this records</p>
+                    <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                        <button class="btn success-btn" data-bs-dismiss="modal">Approved </button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end Reject modal -->
+
+    <!-- Reject comment Modal -->
+    <div class="modal fade comment-modal" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <span class="action-icon reject"></span>
+                    <h4>Rejected Comment</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id porro velit quam blanditiis quasi perspiciatis sit tempore necessitatibus error explicabo, excepturi eaque suscipit consectetur obcaecati, temporibus quia illum dignissimos illo?</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end Reject comment Modal -->
+
+    <div class="backdrop"></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+    
+</body>
+
+</html>
