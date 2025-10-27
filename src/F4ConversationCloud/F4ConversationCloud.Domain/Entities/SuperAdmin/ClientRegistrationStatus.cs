@@ -10,9 +10,9 @@ namespace F4ConversationCloud.Domain.Entities.SuperAdmin
 {
     public enum ClientRegistrationStatus
     {
-        [Description("Pre-Registration")]
-        [Display(Name = "Pre-Registration")]
-        PreRegistration = 1,
+        [Description("Pre-Registered")]
+        [Display(Name = "Pre-Registered")]
+        PreRegistered = 1,
 
         [Description("Registration Completed")]
         [Display(Name = "Registration Completed")]

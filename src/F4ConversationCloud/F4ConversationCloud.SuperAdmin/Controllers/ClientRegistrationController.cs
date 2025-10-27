@@ -21,6 +21,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 model.RolesList = EnumExtensions.ToSelectList<ClientRole>();
+                model.RegistrationStatusList = EnumExtensions.ToSelectList<ClientRegistrationStatus>();
 
                 var response = await _clientRegistrationService.GetFilteredRegistrations(new ClientRegistrationListFilter
                 {
@@ -30,7 +31,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RoleFilter = model.RoleFilter,
                     CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
                     UpdatedOnFilter = model.UpdatedOnFilter ?? String.Empty,
-                    RegistrationStatusFilter = model.RegistrationStatusFilter ?? String.Empty,
+                    RegistrationStatusFilter = model.RegistrationStatusFilter,
                     PageNumber = model.PageNumber,
                     PageSize = model.PageSize,
                 });
@@ -54,9 +55,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     ContactNumber = x.ContactNumber,
                     Role = x.Role,
                     RegistrationStatus = x.RegistrationStatus,
+                    RegistrationStatusName = x.RegistrationStatus == 0 ? "" : ((ClientRegistrationStatus)x.RegistrationStatus).GetDisplayName(),
                     CreatedOn = x.CreatedOn,
                     UpdatedOn = x.UpdatedOn,
-                    RoleName = x.RoleName
+                    RoleName = ((ClientRole)x.Role).GetDisplayName()
                 });
 
                 return View(model);
@@ -98,10 +100,74 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
-                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistration
+                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
                 });
 
                 TempData["SuccessMessage"] = "Client pre-registered successfully";
+
+                return RedirectToAction("List");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
+        }
+
+        public async Task<IActionResult> Edit([FromRoute] int id)
+        {
+            try
+            {
+                ClientRegistration cr = await _clientRegistrationService.GetByIdAsync(id);
+
+                if (cr is null)
+                {
+                    TempData["ErrorMessage"] = "Details not found";
+
+                    return RedirectToAction("List");
+                }
+
+                ViewBag.Roles = EnumExtensions.ToSelectList<ClientRole>();
+
+                CreateUpdateClientRegistrationViewModel model = new CreateUpdateClientRegistrationViewModel()
+                {
+                    Id = cr.Id,
+                    FirstName = cr.FirstName,
+                    LastName = cr.LastName,
+                    Email = cr.Email,
+                    ContactNumber = cr.ContactNumber,
+                    Role = cr.Role
+                };
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CreateUpdateClientRegistrationViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
+                {
+                    Id = model.Id,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    ContactNumber = model.ContactNumber,
+                    Role = model.Role,
+                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
+                });
+
+                TempData["SuccessMessage"] = "Client Registration updated successfully";
 
                 return RedirectToAction("List");
             }

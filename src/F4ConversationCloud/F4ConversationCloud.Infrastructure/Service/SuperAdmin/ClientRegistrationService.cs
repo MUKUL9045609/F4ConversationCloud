@@ -2,14 +2,6 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
-using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
-using F4ConversationCloud.SuperAdmin.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Twilio.Rest.Trunking.V1;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -29,6 +21,24 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         public async Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter)
         {
             return Tuple.Create(await _clientRegistrationRepository.GetFilteredAsync(filter), await _clientRegistrationRepository.GetCountAsync(filter));
+        }
+
+        public async Task<ClientRegistration> GetByIdAsync(int id)
+        {
+            ClientRegistration cr = await _clientRegistrationRepository.GetByIdAsync(id);
+
+            if (cr is null) return null;
+
+            return new ClientRegistration
+            {
+                Id = cr.Id,
+                FirstName = cr.FirstName,
+                LastName = cr.LastName,
+                Email = cr.Email,
+                ContactNumber = cr.ContactNumber,
+                Role = cr.Role,
+                RegistrationStatus = cr.RegistrationStatus,
+            };
         }
     }
 }

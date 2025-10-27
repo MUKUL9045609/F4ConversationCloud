@@ -13,5 +13,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
     {
         Task<int> CreateUpdateAsync(ClientRegistration clientRegistration);
         Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter);
+        Task<ClientRegistration> GetByIdAsync(int id);
     }
 }
