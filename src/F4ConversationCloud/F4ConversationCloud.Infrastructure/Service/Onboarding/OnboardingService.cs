@@ -114,31 +114,32 @@ namespace F4ConversationCloud.Application.Common.Services
                                         };
 
                                     }
-                            var varificationRequest = new VarifyMobileNumberModel
-                            {
-                                UserEmailId = request.UserEmailId,
-                                UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
-                                OTP = CreateOTP,
-                                OTP_Source = "WhatsApp"
-                            };
-                                var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
-                                        if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
+                                    var varificationRequest = new VarifyMobileNumberModel
+                                    {
+                                        UserEmailId = request.UserEmailId,
+                                        UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                                        OTP = CreateOTP,
+                                        OTP_Source = "WhatsApp"
+                                    };
+                        var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
+                                    if (insertOTPResponse != 1)
+                                    {
+                                        return new VarifyUserDetailsResponse
                                         {
-                                            return new VarifyUserDetailsResponse
-                                            {
-                                                status = false,
-                                                message = "Failed to send OTP via WhatsApp"
-                                            };
-                                        }
-                               var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
-                                        if (insertOTPResponse != 1)
-                                        {
-                                            return new VarifyUserDetailsResponse
-                                            {
-                                                status = false,
-                                                message = "Failed generate OTP"
-                                            };
-                                        }
+                                            status = false,
+                                            message = "Failed generate OTP"
+                                        };
+                                    }
+                          var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                                if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
+                                {
+                                    return new VarifyUserDetailsResponse
+                                    {
+                                        status = false,
+                                        message = "Failed to send OTP via WhatsApp"
+                                    };
+                                }
+                               
                     return new VarifyUserDetailsResponse
                         {
                             status = true,
@@ -256,32 +257,51 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         }
 
-        
+
 
         public async Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request)
         {
             try
             {
-                var checkOTP = await _authRepository.VerifyOTPAsync(request);
+                var verifyOtpRequest = new ValidateRegistrationOTPModel
+                {
+                    OTP = request.OTP,
+                    UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                };
+
+                var checkOTP = await _authRepository.VerifyOTPAsync(verifyOtpRequest);
 
                 if (checkOTP > 0)
                 {
-                    return new ValidateRegistrationOTPResponse { status = true };
+                    return new ValidateRegistrationOTPResponse
+                    {
+                        status = true,
+                        message = " OTP verified successfully!"
+                    };
                 }
                 else
                 {
-                    return new ValidateRegistrationOTPResponse { status = false };
+                    return new ValidateRegistrationOTPResponse
+                    {
+                        status = false,
+                        message = "Invalid or expired OTP. Please check and try again."
+                    };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return new ValidateRegistrationOTPResponse { status = false };
+               
+                return new ValidateRegistrationOTPResponse
+                {
+                    status = false,
+                    message = "Technical Error!"
+                };
             }
         }
 
 
-       public async Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId) {
+
+        public async Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId) {
             try
             {
                 var response = await _authRepository.GetCustomerById(UserId);

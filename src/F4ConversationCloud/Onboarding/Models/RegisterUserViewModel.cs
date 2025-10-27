@@ -20,7 +20,9 @@ namespace Onboarding.Models
             [EmailAddress(ErrorMessage = "Enter a valid email")]
             public string Email { get; set; }
 
-            public string? OTP { get; }
+            [Required(ErrorMessage = "OTP is required")]
+            [RegularExpression(@"^\d{6}$", ErrorMessage = "OTP must be a 6-digit number")]
+            public string OTP { get; set; }
 
             [Required(ErrorMessage = "Phone number is required")]
             [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]

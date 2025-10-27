@@ -57,7 +57,7 @@
 
             </div>
 
-            <div class="col-md-6 mb-3" id="codeSection" style="display: none;">
+            @* <div class="col-md-6 mb-3" id="codeSection" style="display: none;">
                 <label for="emailCode" class="form-label">Enter 6 Digit Verification Code</label>
                 <div class="d-flex gap-2">
                     <input type="number" asp-for="OTP" class="form-control flex-grow-1" placeholder="Enter OTP" id="otp">
@@ -70,7 +70,7 @@
                     <a id="resendotp" class="verifyBtnLink">Resend OTP</a>
                 </div>
                 <span asp-validation-for="OTP" class="error-message text-danger small" id="OtpError"></span>
-            </div>
+            </div> *@
 
 
 
@@ -87,22 +87,22 @@
 
                 <input type="hidden" asp-for="CountryCode" id="CountryCodeid" />
                 <span asp-validation-for="CountryCode" class="error-message text-danger small" id="phoneError"></span>
-                <div class="verifyBtnLink" id="varifyPhoneNumber"><span>Verify Contact No</span></div>
+                <div class="verifyBtnLink" id="varifyPhoneNumberbtn"><span>Verify Contact No</span></div>
                 </div>
 
-            <div class="col-md-6 mb-3" id="codeSection" style="display: none;">
+            <div class="col-md-6 mb-3" id="contactNoOtpDiv" style="display: none;">
                 <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
                 <div class="d-flex gap-2">
-                    <input type="number" class="form-control flex-grow-1" placeholder="Enter OTP" id="otp">
-                    <button type="button" id="varifyOtp" class="btn verifyBtn">Verify</button>
+                    <input asp-for="OTP" type="number" class="form-control flex-grow-1" placeholder="Enter OTP" id="contactNoOtpinput">
+                    <button type="button" id="varifycontactNoOtpbtn" class="btn verifyBtn">Verify</button>
                 </div>
                 <div class="otp-timer">
                     <span class="otp-text d-none">
                         Time remaining: <span class="fw-bold" id="timeRemaining">5:00</span>
                     </span>
-                    <a id="resetBtn" class="verifyBtnLink">Resend OTP</a>
+                    <a id="resendOtpBtn" class="verifyBtnLink">Resend OTP</a>
                 </div>
-                <span asp-validation-for="OTP" class="error-message text-danger small" id="OtpError"></span>
+                <span asp-validation-for="OTP" class="error-message text-danger small" id="contactNoOtpError"></span>
             </div>
 
 
@@ -225,7 +225,7 @@
 
                 let remaining = timerDuration;
 
-                $("#resendotp").addClass("d-none");
+                 $("#resendOtpBtn").addClass("d-none");
                 $(".otp-text").removeClass("d-none");
                 $("#timeRemaining").text(formatTime(remaining));
 
@@ -239,7 +239,7 @@
                     if (remaining < 0) {
                         clearInterval(interval);
                         $(".otp-text").addClass("d-none");
-                                $("#resendotp").removeClass("d-none");
+                                 $("#resendOtpBtn").removeClass("d-none");
                     }
                 }, 1000);
             }
@@ -249,173 +249,148 @@
                 let secs = seconds % 60;
                 return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
             }
+            function sendOTP() {
+                if (!$("#PhoneNumber").valid()) return;
 
+                $("#loader").show();
 
-            $("#sendmail").click(function () {
-                startTimer();
-            });
+                var PhoneNumber = $('#PhoneNumber').val();
+                var CountryCode = $('#CountryCodeid').val();
 
-        $("#resendotp").click(function () {
-
-
-                let email = $('#emailid').val().trim();
-                    $("#loader").show();
-
-            $.ajax({
-                    url: "@Url.ActionLink("VarifyMail", "Onboarding")",
-                    type: "POST",
-                    data: JSON.stringify({
-                        UserEmailId: email,
-                        OTP_Source: "EMAIL"
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (response) {
-                        if (response.status === true) {
-                                $('#codeSection').show();
-                            // alert("OTP sent successfully!");
-                            showToast("OTP sent successfully!", "success");
-                        }
-                        else if(response.status === false && response.message === "Email already exists")
-                        {
-                            $('#emailError').text('Email already exists. Please use a different email.');
-                        }
-                        else {
-                            showToast("Failed to send OTP. Please try again.", "danger");
-                        }
-
-                    },
-                    error: function (xhr) {
-                        showToast("technical Error", "danger");
-                    },
-                        complete: function () {
-                        $("#loader").hide();
-                    }
-            });
-
-
-
-            });
-        });
-
-
-        //#region Varify Contact No --
-
-        $(document).ready(function () {
-
-            $('#varifyPhoneNumber').click(function (e) {
-                e.preventDefault();
-
-                if (!$("#PhoneNumber").valid()) {
-                    return; 
-                }
-
-                  var PhoneNumber = $('#PhoneNumber').val();
-                  var CountryCode = $('#CountryCodeid').val();
                 var req = {
-                     UserPhoneNumber: PhoneNumber,
-                      CountryCode:CountryCode
-                 };
+                    UserPhoneNumber: PhoneNumber,
+                    CountryCode: CountryCode
+                };
 
                 var url = "@Url.ActionLink("VarifyWhatsAppNumber", "Onboarding")";
 
-                ajaxHelper.ajaxPost(url, null, req, function (response) {
-                    if (response.status === true) {
-                         showToast(response.message, "success");
-                    } else {
-                        $('#phoneError').text(response.message);
+                ajaxHelper.ajaxPost(
+                    url,
+                    null,
+                    req,
+                    function (response) {
+                           $("#loader").hide();
+                        if (response.status === true) {
+                            showToast(response.message, "success");
+                            $('#contactNoOtpDiv').show();
+                               $('#varifyPhoneNumberbtn').hide();
+                            startTimer(); 
+                        } else {
+                            $('#phoneError').text(response.message);
+                        }
+                    },
+                    function (xhr) {
+                        showToast("Technical Error. Please try again.", "danger");
+                    },
+                    function () {
+                        $("#loader").hide();
                     }
-                }, null);
+                );
+            }
+
+           // Initial OTP send
+             $('#varifyPhoneNumberbtn').click(function (e) {
+                e.preventDefault();
+                sendOTP();
             });
 
-        });
+            // Resend OTP
+             $('#resendOtpBtn').click(function (e) {
+                e.preventDefault();
+                sendOTP();
+            });
+
+         
+        
+       });
 
 
-        // varify mail otp
-        $(document).ready(function () {
+         // varify otp
+     $(document).ready(function () {
 
-                $('#varifyOtp').click(function () {
-                    let Otp = $('#otp').val();
-                            let email = $('#emailid').val().trim();
+             $('#varifycontactNoOtpbtn').click(function (e) {
+                e.preventDefault();
+               
+                if (!$("#PhoneNumber").valid() ) {
+                  return;
+                }
+                if (!$("#contactNoOtpinput").valid()) {
+                  return;
+                }
 
-                    // if (Otp === '' || email === '') {
-                    //     $('#OtpError').text('Please enter the OTP and email.');
-                    //     otpVerified = false;
-                    //     return;
-                    // }
-                       $("#loader").show();
-                    $.ajax({
-                        url:"@Url.ActionLink("VerifyOtp", "Onboarding")",
-                        type: "POST",
-                        data: JSON.stringify({
-                            UserEmailId: email,
-                            OTP: Otp,
-                            OTP_Source: "EMAIL"
-                        }),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
+                $("#loader").show();
 
-                            $('#OTP').val(response.status);
+                var PhoneNumber = $('#PhoneNumber').val();
+                var CountryCode = $('#CountryCodeid').val();
+                 var contactNoOTP = $('#contactNoOtpinput').val();
 
-                            if (response.status === true) {
+                var req = {
+                    UserPhoneNumber: PhoneNumber,
+                    CountryCode: CountryCode,
+                    OTP: contactNoOTP
+                };
 
-                                showToast("OTP verified successfully!", "success");
-                                $('#OtpError').text('');
-                                $('#codeSection').hide();
-                                $('#sendmail').addClass('disabled-btn');
-                                $('#sendmail span').text('');
-                                $('#emailvarifyerror').hide();
+                var url = "@Url.ActionLink("VerifyOtp", "Onboarding")";
 
-                               $('#emailid')
+                ajaxHelper.ajaxPost(
+                    url,
+                    null,
+                    req,
+                    function (response) {
+                        $("#loader").hide();
+                        debugger;
+                        if (response.status === true) {
+                           showToast(response.message, "success");
+
+                            $('#contactNoOtpDiv').hide();
+                              $('#varifyPhoneNumberbtn').addClass('disabled-btn');
+                              $('#varifyPhoneNumberbtn span').text('');
+                             $('#phoneError').hide();
+
+                             $('#PhoneNumber')
                                 .prop('readonly', true)
                                 .removeClass('is-invalid')
                                 .addClass('form-control flex-grow-1 success');
-                            } else {
-                                $('#OtpError').text('Invalid OTP. Please try again.');
-
-                            }
-                        },
-                        error: function (xhr) {
-                            $('#OtpError').text('Failed to verify OTP. Please try again.');
-
-                        },
-                        complete: function () {
-
-                                $("#loader").hide();
+                        } else {
+                              $("#resendOtpBtn").addClass("d-none");
+                              $('#contactNoOtpError').text(response.message || 'Invalid OTP. Please try again.');
                         }
-                    });
-                });
-
+                    },
+                    function (xhr) {
+                        $("#loader").hide();
+                        $('#OtpError').text('Failed to verify OTP. Please try again.');
+                    }
+                );
+            });
         });
+
     </script>
 
     <script>
-         $(document).ready(function () {
-
-           
-                
         // make form readonly
+         $(document).ready(function () {
          let $form = $("#firststepform");
 
             if ($form.hasClass("readonly-mode")) {
                  
-                    $form.find("input, select, textarea, button").each(function () {
-                        let $element = $(this);
+                $form.find("input, select, textarea, button").each(function () {
+                    let $element = $(this);
 
-                        if ($element.is("input") || $element.is("textarea")) {
-                            $element.prop("readonly", true);
-                        }
-                        if ($element.is("button") || $element.is("select")) {
-                            $element.prop("disabled", true);
-                        }
-                    });
-                        $('#nextBtn').prop("disabled",false);
-                        $(' #passicon, #cpassicon,#agreeTerms')
-                            .addClass('disabled')
-                            .css({
-                                'pointer-events': 'none',
-                                'opacity': '0.5'                  
-                             });
-                        $('#sendmail').hide();
+                    if ($element.is("input") || $element.is("textarea")) {
+                        $element.prop("readonly", true);
+                    }
+                    if ($element.is("button") || $element.is("select")) {
+                        $element.prop("disabled", true);
+                    }
+                });
+                $('#nextBtn').prop("disabled",false);
+                $(' #passicon, #cpassicon,#agreeTerms')
+                    .addClass('disabled')
+                    .css({
+                        'pointer-events': 'none',
+                        'opacity': '0.5'                  
+                        });
+                $('#sendmail').hide();
             } else {
                 $('#nextBtn').prop("disabled",true);
             }

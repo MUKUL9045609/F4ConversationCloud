@@ -218,10 +218,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
 
 
-        public async Task<IActionResult> VerifyOTP([FromBody] ValidateRegistrationOTPModel command)
+        public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
+            if (string.IsNullOrWhiteSpace(command.OTP))
+            {
+                return Json(new { status = false, message = "Enter A Valid OTP" });
+            }
             var response = await _onboardingService.VerifyOTPAsync(command);
-            return Json(new { response.status });
+            return Json(new { response.status, response.message });
         }
 
         [HttpPost]
