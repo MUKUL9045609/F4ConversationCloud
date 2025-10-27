@@ -902,6 +902,9 @@ button:disabled {
   width: 240px;
   margin: 0 auto;
 }
+.btn.btn-facebook:focus {
+  box-shadow: none !important;
+}
 .btn.btn-facebook:hover {
   color: #fff;
 }
@@ -1191,6 +1194,9 @@ body {
   background-color: #FFFFFF;
   max-height: 59px;
   min-height: 59px;
+}
+.page .app-header .appheader-wrap .main-sidebar-header.non-menu-logo {
+  display: none;
 }
 .page .app-header .appheader-wrap .searchBox .input-group {
   width: 400px;
@@ -3503,7 +3509,6 @@ body {
 }
 
 .footer {
-  padding-inline-start: 15rem;
   font-size: 13px;
   text-align: center;
   background-color: #fff;
@@ -3629,6 +3634,12 @@ body {
   rotate: -48deg;
   transform: translate(2px, -1px);
 }
+.sidemenutoggle.meta-page .burger {
+  display: none;
+}
+.sidemenutoggle.meta-page .main-sidebar-header.non-menu-logo {
+  display: block !important;
+}
 @media (max-width: 480px) {
   .sidemenutoggle .backdrop {
     position: fixed;
@@ -3639,6 +3650,9 @@ body {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5607843137);
   }
+}
+.sidemenutoggle.metapage .burger {
+  display: none !important;
 }
 
 .message-icon {
@@ -4733,7 +4747,7 @@ body {
   font-style: italic;
   max-width: 300px;
   text-align: center;
-  margin: 10px 0px 0px;
+  margin: 6px 0px 0px;
   color: #817d7d;
   display: block;
 }
@@ -4767,4 +4781,22 @@ body {
   height: 20px;
   width: 20px;
   display: inline-block;
+}
+
+.no-record-found {
+  height: 30vh;
+}
+.no-record-found small {
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.box-shadow {
+  border: 0px !important;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.buisness-type {
+  display: block;
+  width: 140px;
 }/*# sourceMappingURL=style.css.map */

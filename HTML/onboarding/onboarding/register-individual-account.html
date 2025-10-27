@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="loginwrapper">
-        <div class="loginBox register-login">
+        <div class="loginBox">
             <div class="left-col">
                 <a href="#" class="logo">
                     <img src="../images/logo.svg"/>
@@ -23,26 +23,26 @@
                 
             </div>
             <div class="right-col">
-                <div class="stepswrapper">
+                <!-- <div class="stepswrapper">
                     <a href="login.html" class="back-btn"> Back</a>
                     <div class="d-flex justify-content-end flex-column">
                         <span class="step-count">STEP <span>01/03</span></span>
                         <span class="step-info">Residency Info.</span>
                     </div>
-                </div>
+                </div> -->
                 <div class="bx_wrap">
                     <h4>Create Your Business Account!</h4>
                     <p>For the purpose of industry regulation, your details are required.</p>
                     <form class="login-form mt-4" id="registrationForm">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="fullName" class="form-label">Your Full Name <sup>*</sup></label>
+                                <label for="fullName" class="form-label">Full Name <sup class="error">*</sup></label>
                                 <input type="text" class="form-control" placeholder="Enter Full Name" id="fullName">
                                 <div class="error-message text-danger small" id="fullNameError"></div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email address <sup>*</sup></label>
+                                <label for="email" class="form-label">Email address <sup class="error">*</sup></label>
                                 <input type="text" class="form-control" placeholder="Enter Email Address" id="email">
                                 <div class="error-message text-danger small" id="emailError"></div>
                             </div>
@@ -50,34 +50,20 @@
                             
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Phone number <sup>*</sup></label>
+                                    <label class="form-label">Phone number <sup class="error">*</sup></label>
+                                    <div class="verifyBtnLink" id="sendmail">
+                                        <span>Verify</span>
+                                    </div>
                                     <div class="d-flex phonewrap">
                                         <select class="form-control country-option">
                                             <option>+91</option>
                                         </select>
                                         <input type="tel" id="PhoneNumber" class="form-control">
                                     </div>
-                                    <div class="verifyBtnLink" id="sendmail">
-                                        <span>Verify Number</span>
-                                    </div>
+                                    
                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Country of residence  <sup>*</sup></label>
-                                    <select class="form-select">
-                                        <option value="1">Iceland</option>
-                                        <option value="2">India</option>
-                                        <option value="3">Indonesia</option>
-                                        <option value="4">Iran, Islamic Republic Of</option>
-                                        <option value="5">Iraq</option>
-                                        <option value="6">Ireland</option>
-                                        <option value="7">Isle of Man</option>
-                                        <option value="8">Israel</option>
-
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <div class="col-md-12">
                                 <div class="mb-3 otp-section">
                                     <label class="form-label">Verify Phone number</label>
@@ -101,9 +87,10 @@
 
 
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Create password <sup>*</sup></label>
+                                    <label for="password" class="form-label">Password <sup class="error">*</sup></label>
                                     <div class="d-flex password-wrap">
                                         <input type="password" class="form-control" placeholder="Enter Password" id="password">
                                         <i class="toggle-password fa fa-fw fa-eye-slash"></i>
@@ -114,7 +101,7 @@
                             
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Confirm password <sup>*</sup></label>
+                                    <label for="password" class="form-label">Confirm Password <sup class="error">*</sup></label>
                                     <div class="d-flex password-wrap">
                                         <input type="password" class="form-control" placeholder="Enter Password" id="password">
                                         <i class="toggle-password fa fa-fw fa-eye-slash"></i>
@@ -122,7 +109,12 @@
                                     <div class="error-message text-danger small" id="passwordError"></div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Organizations Name (Optional) <sup class="error">*</sup></label>
+                                <input type="text" class="form-control" placeholder="Enter your organizations name" id="email">
+                                <div class="error-message text-danger small" id="emailError"></div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="emailCode" class="form-label">Select Current Time Zone</label>
                                     <select class="form-control">
@@ -154,9 +146,26 @@
                                         <option data-offset="+14:00" value="Etc/GMT-14">(GMT +14:00) Etc/GMT-14</option><option data-offset="+14:00" value="Pacific/Apia">(GMT +14:00) Pacific/Apia</option><option data-offset="+14:00" value="Pacific/Kiritimati">(GMT +14:00) Pacific/Kiritimati</option></select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Country of residence  <sup>*</sup></label>
+                                    <select class="form-select">
+                                        <option value="1">Iceland</option>
+                                        <option value="2">India</option>
+                                        <option value="3">Indonesia</option>
+                                        <option value="4">Iran, Islamic Republic Of</option>
+                                        <option value="5">Iraq</option>
+                                        <option value="6">Ireland</option>
+                                        <option value="7">Isle of Man</option>
+                                        <option value="8">Israel</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Your address<sup>*</sup></label>
+                                    <label for="password" class="form-label">Your address <sup>*</sup></label>
                                     <textarea class="form-control flex-grow-1" placeholder="Enter Address Here" data-val="true" data-val-required="Address is required " id="Address" name="Address"></textarea>
                                 </div>
                                 

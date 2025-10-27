@@ -25,6 +25,13 @@
         @media (max-width:480px) {
             // background-color: transparent;
         }
+        .main-sidebar-header{
+            &.non-menu-logo{
+                
+                    display: none;
+               
+            }
+        }
         .searchBox{
             .input-group{
                 width: 400px;

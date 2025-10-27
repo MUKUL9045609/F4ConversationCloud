@@ -12,14 +12,17 @@ button{
     border-radius: 4px !important;
     padding: 8px 20px!important;
     &.btn-facebook{
-       background-color: #0866ff;
+        background-color: #0866ff;
         color: #fff;
         display: flex;
         align-items: center;
         gap: 10px;
         justify-content: center;
         width: 240px;
-    margin: 0 auto;
+        margin: 0 auto;
+        &:focus{
+            box-shadow: none!important;
+        }
         &:hover{
             
             color: $white;

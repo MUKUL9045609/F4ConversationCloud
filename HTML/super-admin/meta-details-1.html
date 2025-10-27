@@ -14,7 +14,6 @@
 <body>
     <div class="page">
         
-
         <!-- side Bar -->
         <aside class="app-sidebar">
             <div class="sidenav-content">
@@ -28,7 +27,36 @@
                             <li class="active">
                               <a href="meta-details.html" class="meta icon">Meta Details</a>
                             </li>
-                            
+                            <li>
+                              <a href="client-registration.html" class="billing icon">Register</a>
+                        </li>
+                            <li>
+                                <a href="index.html" class="home icon">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="reports.html" class="reports icon">Reports</a>
+                            </li>
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li> 
                         </ul>
                     </nav>
                 </div>
@@ -46,30 +74,33 @@
                         <span class="bar"></span>
                         <span class="bar"></span>
                     </span>
+                  <a href="#" class="main-sidebar-header non-menu-logo">
+                        <img src="images/black-logo.svg" />
+                    </a>
                     <div class="profile-dropdown ms-auto"> 
-                    <div class="profile">
-                        <div class="dropdown">
-                            <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                               <span class="profile-name">D</span> 
-                               <div>
-                                    <p>Dinesh Sharma</p>
-                                    <span class="profile-role">Super Admin</span>
-                               </div>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
 
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </header>
             <!-- End Header Bar -->
              <div class="content bg-light">
                 <div class="container-fluid">
-                    <div class="card padding">
+                    <div class="card padding box-shadow">
                         <div class="fb-wrap">
                             <div class="left-col">
                                 <h3>Connect with Facebook</h3>
@@ -83,40 +114,66 @@
                             </div>
                         </div>
                         <hr/>
-                        <div class="facebook-header">
-                            <h3>Phone Numbers</h3>
-                            <button class="btn sync-btn"> Sync</button>
+                        <div class="">
+                            <div class="facebook-header">
+                                <h3>Phone Numbers</h3>
+                                <button class="btn sync-btn"> Sync</button>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>WABA ID</th>
+                                        <th>Business ID</th>
+                                        <th>Business Type</th>
+                                        <th>Whatsapp Display Name</th>
+                                        <th>Phone Number ID</th>
+                                        <th>Phone Number</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>01</td>
+                                        <td>878978465</td>
+                                        <td>878978465</td>
+                                        <td>
+                                            <span class="buisness-type">Transportation Services</span>
+                                        </td>
+                                        <td>Buldana Urban Coop.</td>
+                                        <td>8798465465464</td>
+                                        <td>+91 8268478568</td>
+                                        <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>02</td>
+                                        <td>878978465</td>
+                                        <td>878978465</td>
+                                        <td>
+                                            <span class="buisness-type"> Automobile Services </span></td>
+                                        <td>BrightLeaf Organics</td>
+                                        <td>8798465465464</td>
+                                        <td>+91 8268478360</td>
+                                        <td><a href="#" class="text-danger text-decoration-none fw-medium">Failed</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>03</td>
+                                        <td>878978465</td>
+                                        <td>878978465</td>
+                                        <td><span class="buisness-type">Finance</span></td>
+                                        <td>Okamura Corp.</td>
+                                        <td>8798465465464</td>
+                                        <td>+91 8268478360</td>
+                                        <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Sr. No.</th>
-                                    <th>Whatsapp Display Name</th>
-                                    <th>Whatsapp Phone Number</th>
-                                    <th>Account Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>01</td>
-                                    <td>Buldana Urban Coop.</td>
-                                    <td>+91 8268478568</td>
-                                    <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
-                                </tr>
-                                <tr>
-                                    <td>02</td>
-                                    <td>BrightLeaf Organics</td>
-                                    <td>+91 8268478360</td>
-                                    <td><a href="#" class="text-danger text-decoration-none fw-medium">Failed</a></td>
-                                </tr>
-                                <tr>
-                                    <td>03</td>
-                                    <td>BrightLeaf Organics</td>
-                                    <td>+91 8268478360</td>
-                                    <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!-- no found records -->
+                        <div class="d-flex justify-content-center align-items-center no-record-found d-none">
+                            <small class="text-danger">No Records Found</small>
+                        </div>
+                        <!-- no found records -->
                     </div>
                     
                 </div>
