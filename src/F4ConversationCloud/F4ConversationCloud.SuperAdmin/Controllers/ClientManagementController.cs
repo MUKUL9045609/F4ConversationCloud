@@ -1,8 +1,5 @@
 ﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
-using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
@@ -62,7 +59,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 return View(model);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
             }
@@ -76,7 +74,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 var filter = new TemplatesListFilter
                 {
                     ClientInfoId = Id
-                  
+
                 };
                 var templates = await _templateManagementService.TemplateListAsync(filter);
                 var model = new ClientDetailsViewModel()
@@ -127,7 +125,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
-            }           
+            }
         }
 
         [HttpPost]

@@ -43,7 +43,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("roleFilter", filter.RoleFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
-            parameters.Add("statusFilter", filter.RegistrationStatusFilter);
+            parameters.Add("registrationStatusFilter", filter.RegistrationStatusFilter);
 
             return await _repository.GetCountAsync("sp_GetClientRegistrationCount", parameters);
         }
@@ -54,6 +54,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
             parameters.Add("nameFilter", filter.NameFilter);
             parameters.Add("emailFilter", filter.EmailFilter);
+            parameters.Add("contactNumberFilter", filter.ContactNumberFilter);
             parameters.Add("roleFilter", filter.RoleFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
@@ -62,6 +63,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("pageSize", filter.PageSize);
 
             return await _repository.GetListByValuesAsync<ClientRegistrationListItemModel>("sp_GetFilteredClientRegistrations", parameters);
+        }
+
+        public async Task<ClientRegistration> GetByIdAsync(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("id", id);
+
+            return await _repository.GetByIdAsync("sp_GetClientRegistrationById", parameters);
         }
     }
 }

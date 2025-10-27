@@ -14,5 +14,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<int> CreateUpdateAsync(ClientRegistration clientRegistration);
         Task<IEnumerable<ClientRegistrationListItemModel>> GetFilteredAsync(ClientRegistrationListFilter filter);
         Task<int> GetCountAsync(ClientRegistrationListFilter filter);
+        Task<ClientRegistration> GetByIdAsync(int id);
     }
 }

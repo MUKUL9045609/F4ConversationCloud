@@ -11,13 +11,14 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public int RoleFilter { get; set; } = 0;
         public string CreatedOnFilter { get; set; } = string.Empty;
         public string UpdatedOnFilter { get; set; } = string.Empty;
-        public string RegistrationStatusFilter { get; set; } = string.Empty;
+        public int RegistrationStatusFilter { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public int TotalCount { get; set; } = 0;
         public ClientRegistrationListViewItem Columns { get; set; } = new ClientRegistrationListViewItem();
         public IEnumerable<ClientRegistrationListViewItem> data { get; set; } = new List<ClientRegistrationListViewItem>();
         public IEnumerable<SelectListItem> RolesList { get; set; }
+        public IEnumerable<SelectListItem> RegistrationStatusList { get; set; }
 
         public class ClientRegistrationListViewItem
         {
@@ -42,6 +43,8 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public string RoleName { get; set; }
             [Display(Name = "Registration Status")]
             public int RegistrationStatus { get; set; }
+            [Display(Name = "Registration Status")]
+            public string RegistrationStatusName { get; set; }
 
             [Display(Name = "Created Date & Time")]
             public DateTime CreatedOn { get; set; }
