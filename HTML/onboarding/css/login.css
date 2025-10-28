@@ -342,6 +342,9 @@
   font-size: 14px;
   color: #696F79;
 }
+.loginwrapper .loginBox .right-col .terms-check label {
+  cursor: pointer;
+}
 .loginwrapper .loginBox .right-col .phone-wrap .country-code {
   width: 100px;
   border-right: 0px;
@@ -637,4 +640,5 @@
 
 .modalTnc label {
   font-size: 14px;
+  cursor: pointer;
 }/*# sourceMappingURL=login.css.map */

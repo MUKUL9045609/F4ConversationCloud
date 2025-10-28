@@ -269,6 +269,10 @@
             .terms-check {
                 font-size: 14px;
                 color: #696F79;
+
+                label {
+                    cursor: pointer;
+                }
             }
 
             .phone-wrap {
@@ -622,5 +626,6 @@
 .modalTnc {
     label {
         font-size: 14px;
+        cursor: pointer;
     }
 }
