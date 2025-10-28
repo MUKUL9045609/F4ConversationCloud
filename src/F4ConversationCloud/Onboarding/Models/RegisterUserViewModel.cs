@@ -35,6 +35,11 @@ namespace Onboarding.Models
 
             [Required(ErrorMessage = "Country is required")]
             public string Country { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+            public string ZipCode { get; set; }
+            public string OptionalAddress { get; set; }
+
 
             [Required(ErrorMessage = "Password is required")]
             [StringLength(16, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
@@ -42,6 +47,7 @@ namespace Onboarding.Models
             ErrorMessage = "Password should be at least 8 characters long and it should contain at least one Uppercase, one lowercase, one special character, and one number")]
             [DataType(DataType.Password)]
             public string PassWord { get; set; }
+
 
             [Compare("PassWord", ErrorMessage = "Passwords do not match.")]
             [DataType(DataType.Password)]
@@ -59,8 +65,8 @@ namespace Onboarding.Models
             public string Timezone { get; set; }
             public ClientFormStage Stage { get; set; }
             public int UserId { get; set; }
-
-            public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
+           
+        public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
         }
     

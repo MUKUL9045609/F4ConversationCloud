@@ -32,7 +32,7 @@
           asp-action="RegisterIndividualAccount" method="post">
 
         @Html.AntiForgeryToken()
-        
+
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label asp-for="FirstName" class="form-label">Your Full Name <sup>*</sup></label>
@@ -74,21 +74,21 @@
 
 
 
-                <div class="col-md-6">
+            <div class="col-md-6">
                 <label class="form-label">Contact Number<sup>*</sup></label>
 
-                    <div class="d-flex">
-                        <input asp-for="PhoneNumber" type="text" class="form-control flex-grow-1"
+                <div class="d-flex">
+                    <input asp-for="PhoneNumber" type="text" class="form-control flex-grow-1"
                            placeholder="Enter Contact Number"
-                               id="PhoneNumber" maxlength="10"   />
-                    </div>
-                    <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
-                    @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
+                           id="PhoneNumber" maxlength="10" />
+                </div>
+                <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
+                @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
 
                 <input type="hidden" asp-for="CountryCode" id="CountryCodeid" />
                 <span asp-validation-for="CountryCode" class="error-message text-danger small" id="phoneError"></span>
                 <div class="verifyBtnLink" id="varifyPhoneNumberbtn"><span>Verify Contact No</span></div>
-                </div>
+            </div>
 
             <div class="col-md-6 mb-3" id="contactNoOtpDiv" style="display: none;">
                 <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
@@ -118,42 +118,42 @@
                 <label asp-for="PassWord" class="form-label">Create Password <sup>*</sup></label>
 
 
-                     @if(ViewBag.IsReadOnly)
-                    {
-                        <input type="text" class="form-control" value="**********" readonly />
-                    }
-                    else
-                    {
+                @* @if (ViewBag.IsReadOnly)
+                {
+                    <input type="text" class="form-control" value="**********" readonly />
+                }
+                else
+                { *@
 
-                        <div class="d-flex password-wrap">
-                             <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
-                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-                        </div>
-                    }
+                    <div class="d-flex password-wrap">
+                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
+                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                    </div>
+                @* } *@
                 <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup>*</sup></label>
-                    @if (ViewBag.IsReadOnly)
-                    {
-                        <input type="text" class="form-control" value="**********" readonly />
-                    }
-                    else
-                    {
-                        <div class="d-flex password-wrap">
-                            <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
-                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-                        </div>
-                    }                  
+                @* @if (ViewBag.IsReadOnly)
+                {
+                    <input type="text" class="form-control" value="**********" readonly />
+                } 
+                else
+                {*@
+                    <div class="d-flex password-wrap">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                    </div>
+                @* } *@
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
             </div>
-              <div class="mb-3">
-                            <label for="emailCode" class="form-label">Select Current Time Zone</label>
+            <div class="mb-3">
+                <label for="emailCode" class="form-label">Select Current Time Zone</label>
                 <select class="form-control select2" asp-for="Timezone">
                     <option value="" selected disabled>Select Time Zone</option>
                     <option value="@Model.Timezone">@Model.Timezone</option>
-                 
+
                     @foreach (var item in Model.TimeZones)
                     {
                         var settimean = item.name + item.current_utc_offset;
@@ -169,7 +169,7 @@
 
                 </select>
                 <span asp-validation-for="Timezone" class="error-message text-danger small"></span>
-               </div>
+            </div>
 
             <div class="col-md-12 mb-3">
                 <label asp-for="Address" class="form-label">Your address <sup>*</sup></label>
@@ -197,13 +197,13 @@
         </div>
     </form>
 
-  
+
 </div>
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-    
+
     @* @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     } *@
@@ -214,155 +214,148 @@
     </script>
 
     <script>
-       // #region Resend otp-- >
+        // #region Resend otp-- >
 
-        $(document).ready(function () {
-            let timerDuration = 5 * 60;
-            let interval;
+         $(document).ready(function () {
+             let timerDuration = 5 * 60;
+             let interval;
 
-            function startTimer() {
-                clearInterval(interval);
+             function startTimer() {
+                 clearInterval(interval);
 
-                let remaining = timerDuration;
+                 let remaining = timerDuration;
 
-                 $("#resendOtpBtn").addClass("d-none");
-                $(".otp-text").removeClass("d-none");
-                $("#timeRemaining").text(formatTime(remaining));
+                  $("#resendOtpBtn").addClass("d-none");
+                 $(".otp-text").removeClass("d-none");
+                 $("#timeRemaining").text(formatTime(remaining));
 
-                interval = setInterval(function () {
-                    remaining--;
+                 interval = setInterval(function () {
+                     remaining--;
 
-                    if (remaining >= 0) {
-                        $("#timeRemaining").text(formatTime(remaining));
-                    }
+                     if (remaining >= 0) {
+                         $("#timeRemaining").text(formatTime(remaining));
+                     }
 
-                    if (remaining < 0) {
-                        clearInterval(interval);
-                        $(".otp-text").addClass("d-none");
-                                 $("#resendOtpBtn").removeClass("d-none");
-                    }
-                }, 1000);
-            }
+                     if (remaining < 0) {
+                         clearInterval(interval);
+                         $(".otp-text").addClass("d-none");
+                                  $("#resendOtpBtn").removeClass("d-none");
+                     }
+                 }, 1000);
+             }
 
-            function formatTime(seconds) {
-                let minutes = Math.floor(seconds / 60);
-                let secs = seconds % 60;
-                return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
-            }
-            function sendOTP() {
-                if (!$("#PhoneNumber").valid()) return;
+             function formatTime(seconds) {
+                 let minutes = Math.floor(seconds / 60);
+                 let secs = seconds % 60;
+                 return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+             }
+             function sendOTP() {
+                 if (!$("#PhoneNumber").valid()) return;
 
-                $("#loader").show();
+                 $("#loader").show();
 
-                var PhoneNumber = $('#PhoneNumber').val();
-                var CountryCode = $('#CountryCodeid').val();
+                 var PhoneNumber = $('#PhoneNumber').val();
+                 var CountryCode = $('#CountryCodeid').val();
 
-                var req = {
-                    UserPhoneNumber: PhoneNumber,
-                    CountryCode: CountryCode
-                };
+                 var req = {
+                     UserPhoneNumber: PhoneNumber,
+                     CountryCode: CountryCode
+                 };
 
-                var url = "@Url.ActionLink("VarifyWhatsAppNumber", "Onboarding")";
+                 var url = "@Url.ActionLink("VarifyWhatsAppNumber", "Onboarding")";
 
-                ajaxHelper.ajaxPost(
-                    url,
-                    null,
-                    req,
-                    function (response) {
-                           $("#loader").hide();
-                        if (response.status === true) {
-                            showToast(response.message, "success");
-                            $('#contactNoOtpDiv').show();
-                               $('#varifyPhoneNumberbtn').hide();
-                            startTimer(); 
-                        } else {
-                            $('#phoneError').text(response.message);
-                        }
-                    },
-                    function (xhr) {
-                        showToast("Technical Error. Please try again.", "danger");
-                    },
-                    function () {
-                        $("#loader").hide();
-                    }
-                );
-            }
+                 ajaxHelper.ajaxPost(
+                     url,
+                     null,
+                     req,
+                     function (response) {
+                            $("#loader").hide();
+                         if (response.status === true) {
+                             showToast(response.message, "success");
+                             $('#contactNoOtpDiv').show();
+                                $('#varifyPhoneNumberbtn').hide();
+                             startTimer();
+                         } else {
+                             $('#phoneError').text(response.message);
+                         }
+                     },
+                     function (xhr) {
+                         showToast("Technical Error. Please try again.", "danger");
+                     },
+                     function () {
+                         $("#loader").hide();
+                     }
+                 );
+             }
 
-           // Initial OTP send
-             $('#varifyPhoneNumberbtn').click(function (e) {
-                e.preventDefault();
-                sendOTP();
-            });
-
-            // Resend OTP
-             $('#resendOtpBtn').click(function (e) {
-                e.preventDefault();
-                sendOTP();
-            });
-
-         
-        
-       });
+              $('#varifyPhoneNumberbtn').click(function (e) {
+                 e.preventDefault();
+                 sendOTP();
+             });
+              $('#resendOtpBtn').click(function (e) {
+                 e.preventDefault();
+                 sendOTP();
+             });
+        });
 
 
-         // varify otp
-     $(document).ready(function () {
+          // varify otp
+         $(document).ready(function () {
 
-             $('#varifycontactNoOtpbtn').click(function (e) {
-                e.preventDefault();
-               
-                if (!$("#PhoneNumber").valid() ) {
-                  return;
-                }
-                if (!$("#contactNoOtpinput").valid()) {
-                  return;
-                }
+              $('#varifycontactNoOtpbtn').click(function (e) {
+                 e.preventDefault();
 
-                $("#loader").show();
+                 if (!$("#PhoneNumber").valid() ) {
+                   return;
+                 }
+                 if (!$("#contactNoOtpinput").valid()) {
+                   return;
+                 }
 
-                var PhoneNumber = $('#PhoneNumber').val();
-                var CountryCode = $('#CountryCodeid').val();
+                 $("#loader").show();
+
+                 var PhoneNumber = $('#PhoneNumber').val();
+                 var CountryCode = $('#CountryCodeid').val();
                  var contactNoOTP = $('#contactNoOtpinput').val();
 
-                var req = {
-                    UserPhoneNumber: PhoneNumber,
-                    CountryCode: CountryCode,
-                    OTP: contactNoOTP
-                };
+                 var req = {
+                     UserPhoneNumber: PhoneNumber,
+                     CountryCode: CountryCode,
+                     OTP: contactNoOTP
+                 };
 
-                var url = "@Url.ActionLink("VerifyOtp", "Onboarding")";
+                 var url = "@Url.ActionLink("VerifyOtp", "Onboarding")";
 
-                ajaxHelper.ajaxPost(
-                    url,
-                    null,
-                    req,
-                    function (response) {
-                        $("#loader").hide();
-                        debugger;
-                        if (response.status === true) {
-                           showToast(response.message, "success");
-
-                            $('#contactNoOtpDiv').hide();
-                              $('#varifyPhoneNumberbtn').addClass('disabled-btn');
-                              $('#varifyPhoneNumberbtn span').text('');
-                             $('#phoneError').hide();
-
-                             $('#PhoneNumber')
-                                .prop('readonly', true)
-                                .removeClass('is-invalid')
-                                .addClass('form-control flex-grow-1 success');
-                        } else {
-                              $("#resendOtpBtn").addClass("d-none");
-                              $('#contactNoOtpError').text(response.message || 'Invalid OTP. Please try again.');
-                        }
-                    },
-                    function (xhr) {
-                        $("#loader").hide();
-                        $('#OtpError').text('Failed to verify OTP. Please try again.');
-                    }
-                );
-            });
-        });
+                 ajaxHelper.ajaxPost(
+                     url,
+                     null,
+                     req,
+                     function (response) {
+                         $("#loader").hide();
+                         debugger;
+                         if (response.status === true) {
+                            showToast(response.message, "success");
+                            $('#contactNoOtpDiv,#phoneError').hide();
+                            $('#varifyPhoneNumberbtn').addClass('disabled-btn');
+                            $('#varifyPhoneNumberbtn span').text('');
+                            $('#PhoneNumber')
+                                 .prop('readonly', true)
+                                 .removeClass('is-invalid')
+                                 .addClass('form-control flex-grow-1 success');
+                         } 
+                         else
+                         {
+                               $("#resendOtpBtn").addClass("d-none");
+                               $('#contactNoOtpError').text(response.message || 'Invalid OTP. Please try again.');
+                         }
+                     },
+                     function (xhr) {
+                         $("#loader").hide();
+                         $('#OtpError').text('Failed to verify OTP. Please try again.');
+                     }
+                 );        
+             });
+         });
 
     </script>
 
@@ -372,25 +365,25 @@
          let $form = $("#firststepform");
 
             if ($form.hasClass("readonly-mode")) {
-                 
-                $form.find("input, select, textarea, button").each(function () {
-                    let $element = $(this);
 
-                    if ($element.is("input") || $element.is("textarea")) {
-                        $element.prop("readonly", true);
-                    }
-                    if ($element.is("button") || $element.is("select")) {
-                        $element.prop("disabled", true);
-                    }
-                });
+                // $form.find("input, select, textarea, button").each(function () {
+                //     let $element = $(this);
+
+                //     if ($element.is("input") || $element.is("textarea")) {
+                //         $element.prop("readonly", true);
+                //     }
+                //     if ($element.is("button") || $element.is("select")) {
+                //         $element.prop("disabled", true);
+                //     }
+                // });
                 $('#nextBtn').prop("disabled",false);
-                $(' #passicon, #cpassicon,#agreeTerms')
-                    .addClass('disabled')
-                    .css({
-                        'pointer-events': 'none',
-                        'opacity': '0.5'                  
-                        });
-                $('#sendmail').hide();
+                // $(' #passicon, #cpassicon,#agreeTerms')
+                //     .addClass('disabled')
+                //     .css({
+                //         'pointer-events': 'none',
+                //         'opacity': '0.5'
+                //         });
+                // $('#sendmail').hide();
             } else {
                 $('#nextBtn').prop("disabled",true);
             }
@@ -421,7 +414,7 @@
 
 
     <script>
-                        
+
 
         document.addEventListener("DOMContentLoaded", function () {
             var input = document.getElementById("PhoneNumber");
@@ -429,17 +422,17 @@
 
             if (input && hiddenInput) {
                 var iti = window.intlTelInput(input, {
-                    initialCountry: "in",          
-                    separateDialCode: true,       
+                    initialCountry: "in",
+                    separateDialCode: true,
                     nationalMode: false,
                     formatOnDisplay: true,
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
                 });
 
-              
+
                 var updateHiddenField = function () {
                     var countryData = iti.getSelectedCountryData();
-                    hiddenInput.value = "+" + countryData.dialCode; 
+                    hiddenInput.value = "+" + countryData.dialCode;
                 };
 
                 updateHiddenField();
@@ -450,5 +443,5 @@
 
     </script>
 
-  
+
 }

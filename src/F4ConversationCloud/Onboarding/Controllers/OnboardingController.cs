@@ -9,22 +9,59 @@ using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
-using System;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController : Controller
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
-        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository)
+        private IConfiguration _configuration { get; }
+        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository, IConfiguration configuration)
         {
             _onboardingService = onboardingService;
             _authRepository = authRepository;
+            _configuration = configuration;
         }
-        public IActionResult Index()
+
+        [HttpGet("Index/{id}")]
+        public async Task<IActionResult>  Index([FromRoute] int id)
         {
-            TempData.Remove("registrationform");
-            return View();
+            int userId = 0;
+            try
+            {
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(id);
+                
+                var command = new RegisterUserViewModel
+                {
+                    UserId = clientdetails.UserId,
+                    FirstName = clientdetails.FirstName,
+                    LastName = clientdetails.LastName,
+                    Email = clientdetails.Email,
+                    PhoneNumber = clientdetails.PhoneNumber,
+                    //Address = clientdetails.Address,
+                  //  Country = clientdetails.Country,
+                    //Timezone = clientdetails.TimeZone,
+                    Stage = clientdetails.Stage
+                };
+
+                TempData.Put("registrationform", command);
+                //id = id.Replace("thisisslash", "/").Replace("thisisbackslash", @"\").Replace("thisisplus", "+");
+                //string decToken = id.Decrypt();
+
+                //int.TryParse(decToken.Split("|")[0], out userId);
+
+                return View();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+           // TempData.Remove("registrationform");
+           
+           
         }
 
         [HttpGet("Login")]
@@ -161,8 +198,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                     TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
-
-                    return RedirectToAction("BankVerification");
+                    string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
+                    return Redirect(RedirecttoClientAppLoginPage);
 
                 }
                 else
