@@ -57,39 +57,6 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
-        //public async Task<bool> Send(EmailRequest message)
-        //{
-        //    try
-        //    {
-        //        var emailSettings = _configuration.GetSection("EmailSettings").Get<EmailSettings>();
-
-        //        using (var smtpClient = new SmtpClient(emailSettings.SmtpServer, emailSettings.SmtpPort))
-        //        {
-        //            smtpClient.UseDefaultCredentials = false;
-        //            smtpClient.Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password);
-        //            smtpClient.EnableSsl = true;
-
-        //            var mailMessage = new MailMessage
-        //            {
-        //                From = new MailAddress(emailSettings.SenderEmail),
-        //                Subject = message.Subject,
-        //                IsBodyHtml = true,
-        //                Body = message.Body.Replace("{BaseUrl}", _configuration["BaseUrl"])
-        //            };
-
-        //            mailMessage.To.Add(message.ToEmail);
-
-        //            smtpClient.Send(mailMessage);
-        //        }
-
-        //        return true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public async Task<bool> Send(EmailRequest message)
         {
             try
