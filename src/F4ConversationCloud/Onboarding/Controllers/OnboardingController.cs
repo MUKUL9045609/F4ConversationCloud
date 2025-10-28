@@ -165,10 +165,10 @@ namespace F4ConversationCloud.Onboarding.Controllers
         {
             try
             {
-                //if (!command.PhoneNumberOtpVerified )
-                //{
-                //    ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
-                //}
+                if (!command.PhoneNumberOtpVerified)
+                {
+                    ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
+                }
                 var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
                 if (!ModelState.IsValid)
                 {
