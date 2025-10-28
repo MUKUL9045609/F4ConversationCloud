@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="mb-3 otp-section">
+                                <div class="mb-3 otp-section" style="display: none;">
                                     <label class="form-label">OTP Verification</label>
                                     <div class="d-flex gap-2">
                                         <div class="otp-form d-flex" id="otp-form">
@@ -1497,7 +1497,6 @@
         });
     </script>
     <script>
-        $('.otp-section').hide();
         $(document).ready(function () {
             $('#sendmail').click(function () {
                 $('.otp-section').show(300);
