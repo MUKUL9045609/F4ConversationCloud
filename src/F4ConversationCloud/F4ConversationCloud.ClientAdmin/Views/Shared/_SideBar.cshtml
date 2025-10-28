@@ -1,5 +1,17 @@
-﻿<aside class="app-sidebar">
-    <a asp-controller="Home" asp-action="Index" class="main-sidebar-header">
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using F4ConversationCloud.Domain.Enum;
+@{
+    int? stageValue = HttpContextAccessor.HttpContext.Session.GetInt32("StageId");
+    ClientFormStage? stage = null;
+
+    if (stageValue.HasValue)
+    {
+        stage = (ClientFormStage)stageValue.Value;
+    }
+}
+<aside class="app-sidebar">
+    <a href="#" class="main-sidebar-header">
         <img src="/images/logo.svg" />
     </a>
     <div class="company-logo">
@@ -26,32 +38,40 @@
     <div class="main-side-navigation">
         <nav>
             <ul>
-                <li class="active">
-                    <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
-                </li>
-                <li class="active">
-                    <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="home icon">Onboaring Configurations</a>
-                </li>
+                @if (stage.HasValue && stage.Value == ClientFormStage.draft || stage.Value == ClientFormStage.metaregistered)
+                {
+                    <li>
+                        <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="home icon">Meta Details</a>
+                    </li>
+                }
+                @if (stage.Value == ClientFormStage.metaregistered)
+                {
+                    <li class="active">
+                        <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
+                    </li>
+
+
+                    <li>
+                        <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                        <ul class="submenu">
+                            <li><a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a></li>
+                            <li><a asp-controller="Campaigns" asp-action="Guide">Guide</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="template icon">Templates</a>
+                    </li>
+                    <li>
+                        @* <a href="#" class="bot icon carret">Bot Studio</a> *@
+                        <ul class="submenu">
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                        </ul>
+                    </li>
+                }
                 
-                <li>
-                    <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
-                    <ul class="submenu">
-                        <li><a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a></li>
-                        <li><a asp-controller="Campaigns" asp-action="Guide">Guide</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="template icon">Templates</a>
-                </li>
-                <li>
-                    @* <a href="#" class="bot icon carret">Bot Studio</a> *@
-                    <ul class="submenu">
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                    </ul>
-                </li>
                 @* <li>
                     <a href="#" class="agent icon carret">Agent Assist</a>
                     <ul class="submenu">
@@ -98,19 +118,22 @@
             </ul>
         </nav>
     </div>
-    <div class="bottom-navigation">
-        <nav>
-            <ul>
-                <li>
-                    <a href="#" class="org-analytics icon">Org Analytics</a>
-                </li>
-                <li>
-                    <a href="#" class="billing icon">Billing</a>
-                </li>
-                <li>
-                    <a href="#" class="project icon">Manage Project</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    @if (stage.HasValue && stage.Value == ClientFormStage.metaregistered)
+    {
+        <div class="bottom-navigation">
+                <nav>
+                <ul>
+                    <li>
+                        <a href="#" class="org-analytics icon">Org Analytics</a>
+                    </li>
+                    <li>
+                        <a href="#" class="billing icon">Billing</a>
+                    </li>
+                    <li>
+                        <a href="#" class="project icon">Manage Project</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
 </aside>

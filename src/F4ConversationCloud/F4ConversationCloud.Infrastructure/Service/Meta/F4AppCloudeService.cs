@@ -31,7 +31,7 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
         {
             try
             {
-                var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
+                var baseUrl = _configuration["WhatsAppBusinessCloudApiConfiguration:FacebookGraphMessageEndpoint"];
                 var accessToken = _configuration["WhatsAppBusinessCloudApiConfiguration:AccessToken"];
 
                 string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(phoneNumberId)}" +

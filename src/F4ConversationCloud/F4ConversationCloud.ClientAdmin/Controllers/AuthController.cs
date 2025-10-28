@@ -70,9 +70,23 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         HttpContext.Session.SetString("Username", clientdetails.Email);
                         HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
                         HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
+                        HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
                         TempData["WarningMessage"] = "Welcome";
-                        return RedirectToAction("Index", "Home");
+                         var stageValue = HttpContext.Session.GetInt32("StageId");
+                         
+                                ClientFormStage stage = (ClientFormStage)stageValue.Value;
+
+                                if (stage == ClientFormStage.draft)
+                                {
+                                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                                }
+                                else {
+                                    return RedirectToAction("Index", "Home");
+
+                                }
+
+
 
                     //}
 

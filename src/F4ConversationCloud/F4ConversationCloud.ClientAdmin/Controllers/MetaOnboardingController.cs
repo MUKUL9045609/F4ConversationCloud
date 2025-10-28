@@ -1,6 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = clientEmail });
 
                         int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.metaregistered);
+                        
+                        HttpContext.Session.SetInt32("StageId", (int)ClientFormStage.metaregistered);
 
                         var message = "success";
                         

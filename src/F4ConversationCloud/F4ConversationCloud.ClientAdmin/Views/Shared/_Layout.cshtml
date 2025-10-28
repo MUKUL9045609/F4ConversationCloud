@@ -17,17 +17,18 @@
         <partial name="_SideBar" />
         <div class="main-content">
            @RenderBody()
+            <footer class="footer">
+                <div class="container">
+                    <span class="text-muted">
+                        Copyright © <span id="year"> 2025 </span>. Designed by
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a>
+                        All rights reserved
+                    </span>
+                </div>
+            </footer>
          </div>
 
-        <footer class="footer">
-            <div class="container">
-                <span class="text-muted">
-                    Copyright © <span id="year"> 2025 </span>. Designed by
-                    <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a>
-                    All rights reserved
-                </span>
-            </div>
-        </footer>
+        
   </div>
     @await RenderSectionAsync("Scripts", required: false)
 
