@@ -103,6 +103,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
                 });
 
+                var name = model.FirstName + " " + model.LastName;
+                await _clientRegistrationService.SendRegistrationEmailAsync(model.Email ,name, id);
+
                 TempData["SuccessMessage"] = "Client pre-registered successfully";
 
                 return RedirectToAction("List");
