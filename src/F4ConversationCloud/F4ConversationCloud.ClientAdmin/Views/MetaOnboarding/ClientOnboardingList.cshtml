@@ -1,0 +1,239 @@
+﻿@{
+    ViewData["Title"] = "Client Onboarding List";
+
+}
+<div class="content bg-light">
+    <div class="container-fluid">
+        <div class="card padding box-shadow">
+            <div class="fb-wrap">
+                <div class="left-col">
+                    <h3>Connect with Facebook</h3>
+                    <p>Click the button below to securely connect your WhatApp number with Facebook. No manual entry needed</p>
+                </div>
+                <div class="right-col">
+                    <div class="text-center">
+                        <a href="#" class="btn btn-facebook" onclick="launchWhatsAppSignup()"><span class="facebook-icon"></span> Continue With Facebook</a>
+                        
+                        <span class="small-text">We'll request your phone number from Facebook and verify automatically.</span>
+                    </div>
+                </div>
+            </div>
+            <button id="saveMetaBtn" class="btn btn-primary">Save Meta Configuration</button>
+
+            <hr />
+            <div class="d-none">
+                <div class="facebook-header">
+                    <h3>Phone Numbers</h3>
+                    <button class="btn sync-btn"> Sync</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>WABA ID</th>
+                            <th>Business ID</th>
+                            <th>Business Type</th>
+                            <th>Whatsapp Display Name</th>
+                            <th>Phone Number ID</th>
+                            <th>Phone Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td>878978465</td>
+                            <td>878978465</td>
+                            <td>
+                                <span class="buisness-type">Transportation Services</span>
+                            </td>
+                            <td>Buldana Urban Coop.</td>
+                            <td>8798465465464</td>
+                            <td>+91 8268478568</td>
+                            <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                        </tr>
+                        <tr>
+                            <td>02</td>
+                            <td>878978465</td>
+                            <td>878978465</td>
+                            <td>
+                                <span class="buisness-type"> Automobile Services </span>
+                            </td>
+                            <td>BrightLeaf Organics</td>
+                            <td>8798465465464</td>
+                            <td>+91 8268478360</td>
+                            <td><a href="#" class="text-danger text-decoration-none fw-medium">Failed</a></td>
+                        </tr>
+                        <tr>
+                            <td>03</td>
+                            <td>878978465</td>
+                            <td>878978465</td>
+                            <td><span class="buisness-type">Finance</span></td>
+                            <td>Okamura Corp.</td>
+                            <td>8798465465464</td>
+                            <td>+91 8268478360</td>
+                            <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- no found records -->
+            <div class="d-flex justify-content-center align-items-center no-record-found">
+                <small class="text-danger">No Records Found</small>
+            </div>
+            <!-- no found records -->
+        </div>
+
+    </div>
+</div>
+ @section Scripts {
+    <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
+  
+    <script>
+           
+        window.addEventListener('message', (event) => {
+          if (event.origin !== "https://www.facebook.com" && event.origin !== "https://web.facebook.com") {
+            return;
+          }
+
+          try {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'WA_EMBEDDED_SIGNUP') {
+              if (data.event === 'FINISH') {
+              
+                const waba_id = data.data.waba_id;
+                const phone_number_id = data.data.phone_number_id;
+                const business_id = data.data.business_id;
+
+                console.log("WABA ID:", waba_id);
+                console.log("Phone Number ID:", phone_number_id);
+                console.log("Business ID:", business_id);
+
+                
+                const metaResponse = {
+                  WabaId: waba_id,
+                  PhoneNumberId: phone_number_id,
+                  BusinessId: business_id
+                };
+
+
+                fetch('/MetaOnboarding/SaveMetaUserConfigurationDetails', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(metaResponse)
+                })
+                .then(res => {
+                  if (res.ok) {
+                    return res.json();
+                  } else {
+                    throw new Error('Network response was not ok');
+                  }
+                })
+                .then(responseData => {
+                  if (responseData.result) {
+                      window.location.href = '@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
+                    
+                  } else {
+                       showToast("Failed Account linked", "danger");
+
+                    console.log('Failed: ' + responseData.message);
+                  }
+                })
+                .catch(error => {
+                  console.error("Error saving Meta config:", error);
+                   showToast("Something went wrong while saving WhatsApp configuration.", "danger");
+                });
+
+              } else if (data.event === 'CANCEL') {
+                const { current_step } = data.data;
+                console.warn("User cancelled at step:", current_step);
+                 showToast(current_step ,"danger");
+              }
+              else if (data.event === 'ERROR') {
+                const { error_message } = data.data;
+                console.error("Meta error:", error_message);
+
+                showToast("Meta error: "+error_message ,"danger");
+              }
+            }
+
+            document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+
+          } catch {
+            console.log('Non JSON Responses', event.data);
+          }
+        });
+
+</script>
+    <script>
+        const fbLoginCallback = (response) => {
+          if (response.authResponse) {
+            const code = response.authResponse.code;
+       
+          }
+          document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
+        }
+
+        const launchWhatsAppSignup = () => {
+          
+          FB.login(fbLoginCallback, {
+            config_id: '9869767589818097', 
+            response_type: 'code', 
+            override_default_response_type: true, 
+            extras: {"version":"v3"}
+          });
+        }
+    </script>
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            //appId            : '2983579265274951',
+            appId            : '2199076023947769',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v23.0'
+          });
+        };
+    </script>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js">
+    </script>
+
+    <script>
+       // for test purpose only
+        document.getElementById('saveMetaBtn').addEventListener('click', function () {
+           
+            const metaResponse = {
+                 WabaId: "1289432215843735",
+                 PhoneNumberId: "745504358656439",
+                 BusinessId: "1502717307541680"
+            };
+
+             fetch('@Url.Action("SaveMetaUserConfigurationDetails", "MetaOnboarding")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(metaResponse)
+            })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(responseData => {
+               if (responseData.result) {
+                     window.location.href ='@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
+                } else {
+                   // showToast(responseData.message, "danger");
+                    console.log('Failed: ' + responseData.message);
+                }
+            })
+            .catch(err => {
+                //showToast("Technical Error!", "danger");
+                console.error(err);
+            });
+        });
+    </script>
+}

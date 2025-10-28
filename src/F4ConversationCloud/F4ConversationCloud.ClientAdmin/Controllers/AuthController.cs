@@ -49,8 +49,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 });
                 if (response.IsSuccess)
                 {
-                    if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
-                    {
+                    //if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
+                    //{
                         var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
                         var userClaims = new List<Claim>()
@@ -74,7 +74,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         TempData["WarningMessage"] = "Welcome";
                         return RedirectToAction("Index", "Home");
 
-                    }
+                    //}
 
 
                 }
