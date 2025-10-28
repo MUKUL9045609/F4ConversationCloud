@@ -224,7 +224,7 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
                 
-                var register = await _authRepository.CreateUserAsync(request);
+                var register = await _authRepository.UpdateClientDetailsAsync(request);
 
                 if (register <= 0)
                 {
@@ -239,7 +239,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
                     return new RegisterUserResponse
                     {
-                        Message = "User created successfully",
+                        Message = "User Updated successfully",
                         IsSuccess = true,
                         NewUserId = register
                     };

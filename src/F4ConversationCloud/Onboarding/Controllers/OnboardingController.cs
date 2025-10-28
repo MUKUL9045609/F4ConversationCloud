@@ -135,9 +135,17 @@ namespace F4ConversationCloud.Onboarding.Controllers
             //step1form = null;
             if (step1form != null)
             {
-                var existingData = new RegisterUserViewModel();
-                existingData = step1form;
+                var existingData = new RegisterUserViewModel
+                {
+                    TimeZones = await _authRepository.GetTimeZonesAsync(),
+                    FirstName = step1form.FirstName,
+                    LastName = step1form.LastName,
+                    Email = step1form.Email,
+                    PhoneNumber = step1form.PhoneNumber,
+
+                };
                 ViewBag.IsReadOnly = true;
+                
                 return View(existingData);
             }
            
@@ -156,32 +164,41 @@ namespace F4ConversationCloud.Onboarding.Controllers
         public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
         {
             try
-            { // command.CurrentStep = 1;
-                if (!command.EmailOtpVerified && command.Email != null)
-                {
-                    ModelState.AddModelError(nameof(command.EmailOtpVerified), "Please verify your Email before proceeding.");
-                }
+            {
+                //if (!command.PhoneNumberOtpVerified )
+                //{
+                //    ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
+                //}
+                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.IsReadOnly = false;
+                    ViewBag.IsReadOnly = true;
+                    
+                        command.FirstName = ClientTempData.FirstName;
+                        command.LastName = ClientTempData.LastName;
+                        command.Email = ClientTempData.Email;
+                        command.PhoneNumber = ClientTempData.PhoneNumber;
                     return View(command);
                 }
 
-                int TotalRegisteredClient = await _authRepository.sp_GetRegisteredClientCountAsync();
+                int TotalRegisteredClient = await _authRepository.GetRegisteredClientCountAsync();
 
                 command.Stage = ClientFormStage.draft;
                 var registerRequest = new RegisterUserModel
                 {
-                    FirstName = command.FirstName,
-                    LastName = command.LastName,
-                    Email = command.Email,
+                   
+                    UserId = ClientTempData.UserId,
                     Address = command.Address,
                     Country = command.Country,
                     Timezone = command.Timezone,
+                    CityId= command.CityId,
+                    StateId= command.StateId,
+                    ZipCode= command.ZipCode,
+                    OptionalAddress = command.OptionalAddress,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
-                    FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
+                    //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
                     Role = ClientRole.Admin,
                     ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
@@ -191,8 +208,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     command.UserId = isregister.NewUserId;
 
-                    TempData.Put("registrationform", command);
-                    ViewBag.IsReadOnly = true;
+                    //TempData.Put("registrationform", command);
+                    //ViewBag.IsReadOnly = true;
 
                     await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
 
@@ -204,7 +221,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
                 else
                 {
-                    ViewBag.IsReadOnly = false;
+                    ViewBag.IsReadOnly = true;
                     TempData["ErrorMessage"] = "Registration failed. Please try again.";
                     return View(command);
                 }

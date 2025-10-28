@@ -31,10 +31,10 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }
         public string ClientId { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
+        public string CityId { get; set; }
+        public string StateId { get; set; }
         public string ZipCode { get; set; }
-        public string optional_address { get; set; }
+        public string OptionalAddress { get; set; }
         
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 

@@ -9,23 +9,23 @@ namespace Onboarding.Models
 {
   public class RegisterUserViewModel
         {
-            [Required(ErrorMessage = "Full Name is required")]
-            [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]
-            [Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
-            public string FirstName { get; set; }
+            //[Required(ErrorMessage = "Full Name is required")]
+            //[RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Full Name can only contain letters And spaces")]
+            //[Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
+            public string? FirstName { get; set; }
 
             public string? LastName { get; set; }
 
-            [Required(ErrorMessage = "Email is required")]
-            [EmailAddress(ErrorMessage = "Enter a valid email")]
-            public string Email { get; set; }
+            //[Required(ErrorMessage = "Email is required")]
+            //[EmailAddress(ErrorMessage = "Enter a valid email")]
+            public string? Email { get; set; }
 
             [Required(ErrorMessage = "OTP is required")]
             [RegularExpression(@"^\d{6}$", ErrorMessage = "OTP must be a 6-digit number")]
             public string OTP { get; set; }
 
-            [Required(ErrorMessage = "Phone number is required")]
-            [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
+            //[Required(ErrorMessage = "Phone number is required")]
+            //[RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be 10 digits and not start with 1-5.")]
             public string PhoneNumber { get; set; }
 
             public string CountryCode { get; set; }
@@ -34,11 +34,11 @@ namespace Onboarding.Models
             public string Address { get; set; }
 
             [Required(ErrorMessage = "Country is required")]
-            public string Country { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string ZipCode { get; set; }
-            public string OptionalAddress { get; set; }
+            public string? Country { get; set; }
+            public string? CityId { get; set; }
+            public string? StateId { get; set; }
+            public string? ZipCode { get; set; }
+            public string? OptionalAddress { get; set; }
 
 
             [Required(ErrorMessage = "Password is required")]
@@ -57,8 +57,8 @@ namespace Onboarding.Models
             [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "This Field is Required.")]
             public bool TermsCondition { get; set; }
 
-            [Remote(action: "IsValidEmailOtpVerify", controller: "Validation", AdditionalFields = "Email", ErrorMessage = "OTP must be verified.")]
-            public bool EmailOtpVerified { get; set; } = false;
+            //[Remote(action: "IsPhoneNumberOTPVerify", controller: "Validation", AdditionalFields = "PhoneNumber", ErrorMessage = "OTP must be verified.")]
+            public bool PhoneNumberOtpVerified { get; set; } = false;
             public ClientRole Role { get; set; }
 
             [Required(ErrorMessage = "Select Time Zones")]
@@ -69,6 +69,20 @@ namespace Onboarding.Models
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
         }
-    
+    public class PhoneNumberVerifiedAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            
+            if (value is bool verified && !verified)
+            {
+                return new ValidationResult("Please verify your Contact Number before proceeding.");
+            }
+
+           
+            return ValidationResult.Success;
+        }
+    }
+
 }
 

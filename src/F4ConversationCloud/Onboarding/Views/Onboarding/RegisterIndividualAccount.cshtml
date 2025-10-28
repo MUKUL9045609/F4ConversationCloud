@@ -50,7 +50,6 @@
                 <label asp-for="Email" class="form-label">Email address <sup>*</sup></label>
                 <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid">
                 <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
-                <span asp-validation-for="EmailOtpVerified" class="error-message text-danger small" id="emailvarifyerror"></span>
                 @* <div class="verifyBtnLink" id="sendmail">
                     <span>Verify Email</span>
                 </div> *@
@@ -83,9 +82,9 @@
                            id="PhoneNumber" maxlength="10" />
                 </div>
                 <span asp-validation-for="PhoneNumber" class="error-message text-danger small" id="phoneError"></span>
-                @* <span asp-validation-for="PhoneOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span> *@
-
+                <span asp-validation-for="PhoneNumberOtpVerified" class="error-message text-danger small" id="PhoneOtpVerifiederror"></span>
                 <input type="hidden" asp-for="CountryCode" id="CountryCodeid" />
+                <input type="hidden" asp-for="PhoneNumberOtpVerified" id="PhoneNumberOtpVerifiedId">
                 <span asp-validation-for="CountryCode" class="error-message text-danger small" id="phoneError"></span>
                 <div class="verifyBtnLink" id="varifyPhoneNumberbtn"><span>Verify Contact No</span></div>
             </div>
@@ -189,7 +188,7 @@
                 <span asp-validation-for="TermsCondition" class="error-message text-danger small text-end"></span>
             </div>
 
-            <input type="hidden" asp-for="EmailOtpVerified" id="OTP">
+            
 
 
             <button type="submit" class="btn login-btn">Register Account</button>
@@ -334,6 +333,7 @@
                          $("#loader").hide();
                          debugger;
                          if (response.status === true) {
+                            $('#PhoneNumberOtpVerifiedId').val(response.status);
                             showToast(response.message, "success");
                             $('#contactNoOtpDiv,#phoneError').hide();
                             $('#varifyPhoneNumberbtn').addClass('disabled-btn');
@@ -376,7 +376,7 @@
                 //         $element.prop("disabled", true);
                 //     }
                 // });
-                $('#nextBtn').prop("disabled",false);
+                $('#fullName,#emailid,#PhoneNumber').prop("disabled",true)
                 // $(' #passicon, #cpassicon,#agreeTerms')
                 //     .addClass('disabled')
                 //     .css({
@@ -385,7 +385,7 @@
                 //         });
                 // $('#sendmail').hide();
             } else {
-                $('#nextBtn').prop("disabled",true);
+               
             }
 
         });
@@ -424,8 +424,8 @@
                 var iti = window.intlTelInput(input, {
                     initialCountry: "in",
                     separateDialCode: true,
-                    nationalMode: false,
-                    formatOnDisplay: true,
+                    nationalMode: true,
+                    formatOnDisplay: false,
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
                 });
 
@@ -435,9 +435,14 @@
                     hiddenInput.value = "+" + countryData.dialCode;
                 };
 
-                updateHiddenField();
 
                 input.addEventListener('countrychange', updateHiddenField);
+                var currentValue = input.value.trim();
+                    if (currentValue.startsWith('+')) {
+                        iti.setNumber(currentValue);
+                    }
+                   updateHiddenField();
+
             }
         });
 

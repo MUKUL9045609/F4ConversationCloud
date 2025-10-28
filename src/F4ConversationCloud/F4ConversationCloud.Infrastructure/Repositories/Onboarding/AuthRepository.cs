@@ -20,28 +20,25 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             _repository = repository;
         }
 
-        public async Task<int> CreateUserAsync(RegisterUserModel command)
+        public async Task<int> UpdateClientDetailsAsync(RegisterUserModel command)
         {
             try
             {
-               
-                    var nameParts = command.FirstName.Trim().Split(' ', 2); 
-                        command.FirstName = nameParts[0];
-                        command.LastName = nameParts.Length > 1 ? nameParts[1] : string.Empty;
-               
+
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("FirstName", command.FirstName);
-                parameters.Add("LastName", command.LastName);
-                parameters.Add("Email", command.Email);
+               parameters.Add("UserId", command.UserId);
                 parameters.Add("PassWord", command.PassWord);
                 parameters.Add("ClientTimeZone", command.Timezone);
                 parameters.Add("Stage", command.Stage);
-                parameters.Add("PhoneNumber", command.FullPhoneNumber);
                 parameters.Add("Address", command.Address);
                 parameters.Add("Country", command.Country);
                 parameters.Add("role", command.Role);
-                parameters.Add("@ClientId", command.ClientId);
-                var NewUserId =  await _repository.InsertUpdateAsync("[sp_RegisterNewUser]", parameters);
+                parameters.Add("ClientId", command.ClientId);
+                parameters.Add("CityId", command.CityId);
+                parameters.Add("StateId", command.StateId);
+                parameters.Add("ZipCode", command.ZipCode);
+                parameters.Add("OptionalAddress", command.OptionalAddress);
+                var NewUserId =  await _repository.InsertUpdateAsync("[sp_UpdateClientDetails]", parameters);
 
                 return NewUserId;
 
@@ -230,7 +227,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 
         }
 
-        public async Task<int> sp_GetRegisteredClientCountAsync()
+        public async Task<int> GetRegisteredClientCountAsync()
         {
             try
             {
