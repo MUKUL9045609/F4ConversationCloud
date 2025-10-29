@@ -175,7 +175,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     //TempData.Put("registrationform", command);
                     //ViewBag.IsReadOnly = true;
 
-                    await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
+                    //await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
 
                     TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
