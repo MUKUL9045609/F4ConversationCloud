@@ -35,7 +35,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string StateId { get; set; }
         public string ZipCode { get; set; }
         public string OptionalAddress { get; set; }
-        
+        public string? OrganizationsName { get; set; }
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
     }
@@ -92,6 +92,18 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 
         public string name { get; set; }
         public string current_utc_offset { get; set; }
+    }
+    public class Cities
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string StateId { get; set; }
+    }
+    public class States
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
 }
 

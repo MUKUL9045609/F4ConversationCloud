@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
@@ -10,6 +11,7 @@ using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Twilio.Types;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -130,15 +132,15 @@ namespace F4ConversationCloud.Application.Common.Services
                                             message = "Failed generate OTP"
                                         };
                                     }
-                          var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
-                                if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
-                                {
-                                    return new VarifyUserDetailsResponse
-                                    {
-                                        status = false,
-                                        message = "Failed to send OTP via WhatsApp"
-                                    };
-                                }
+                          //var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                          //      if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
+                          //      {
+                          //          return new VarifyUserDetailsResponse
+                          //          {
+                          //              status = false,
+                          //              message = "Failed to send OTP via WhatsApp"
+                          //          };
+                          //      }
                                
                     return new VarifyUserDetailsResponse
                         {
@@ -168,6 +170,8 @@ namespace F4ConversationCloud.Application.Common.Services
                 if (!string.IsNullOrEmpty(request.PhoneNumberId))
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
+                    var registerPhoneNumber = await _whatsAppCloude.RegisterClientAccountAsync( new ActivateClientAccountRequest { PhoneNumberId = request.PhoneNumberId });
+
 
 
                     string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
@@ -181,10 +185,10 @@ namespace F4ConversationCloud.Application.Common.Services
                         PhoneNumberId = request.PhoneNumberId,
                         BusinessId = request.BusinessId,
                         WhatsAppBotName = businessInfo.VerifiedName,
-                        Status = businessInfo.WhatsAppStatus,
+                        Status = registerPhoneNumber.status,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
-                        ApprovalStatus = "Pending",
+                        //ApprovalStatus = "Pending",
                         ClientEmail = email,
                         WebSite = websites,
                         Category = category,
@@ -284,7 +288,7 @@ namespace F4ConversationCloud.Application.Common.Services
                     return new ValidateRegistrationOTPResponse
                     {
                         status = false,
-                        message = "Invalid or expired OTP. Please check and try again."
+                        message = "OTP is Invalid or expired . Please check and Resend"
                     };
                 }
             }

@@ -9,6 +9,7 @@ using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
+using System;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController : Controller
@@ -26,7 +27,10 @@ namespace F4ConversationCloud.Onboarding.Controllers
         [HttpGet("Index/{id}")]
         public async Task<IActionResult>  Index([FromRoute] int id)
         {
-            int userId = 0;
+            
+            //string DecryptId = id.ToString().Decrypt();
+            //int Userid = Convert.ToInt32(DecryptId);
+                
             try
             {
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(id);
@@ -138,6 +142,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 var existingData = new RegisterUserViewModel
                 {
                     TimeZones = await _authRepository.GetTimeZonesAsync(),
+                    Cities = await _authRepository.GetCitiesAsync(),
+                    States = await _authRepository.GetStatesAsync(),
                     FirstName = step1form.FirstName,
                     LastName = step1form.LastName,
                     Email = step1form.Email,
@@ -151,13 +157,30 @@ namespace F4ConversationCloud.Onboarding.Controllers
            
             var model = new RegisterUserViewModel
             {
-                TimeZones = await _authRepository.GetTimeZonesAsync()
+                TimeZones = await _authRepository.GetTimeZonesAsync(),
+                Cities = await _authRepository.GetCitiesAsync(),
+                States = await _authRepository.GetStatesAsync(),
             };
 
 
             return View(model);
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCitiesByStateId(int stateId)
+        {
+            try
+            {
+                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
+                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
+            }
+            catch (Exception)
+            {
+                return Json(new { message = "Technical Error!" });
+            }
+        }
+
 
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
@@ -178,6 +201,9 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
+                        command.TimeZones = await _authRepository.GetTimeZonesAsync();
+                        command.Cities = await _authRepository.GetCitiesAsync();
+                        command.States = await _authRepository.GetStatesAsync();
                     return View(command);
                 }
 
@@ -195,6 +221,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     StateId= command.StateId,
                     ZipCode= command.ZipCode,
                     OptionalAddress = command.OptionalAddress,
+                    OrganizationsName = command.OrganizationsName
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
@@ -272,14 +299,55 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
 
 
+        //public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ModelState.AddModelError(nameof(command.OTP));
+        //    }
+        //    if (string.IsNullOrWhiteSpace(command.OTP))
+        //    {
+        //        return Json(new { status = false, message = "Enter A Valid OTP" });
+        //    }
+        //    var response = await _onboardingService.VerifyOTPAsync(command);
+        //    return Json(new { response.status, response.message });
+        //}
         public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
+          
+            if (!ModelState.IsValid)
+            {
+                
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new
+                {
+                    status = false,
+                    message = errors.Any() ? string.Join(", ", errors) : "Invalid input."
+                });
+            }
+
+            
             if (string.IsNullOrWhiteSpace(command.OTP))
             {
-                return Json(new { status = false, message = "Enter A Valid OTP" });
+                return Json(new
+                {
+                    status = false,
+                    message = "Enter a valid OTP"
+                });
             }
+
+            
             var response = await _onboardingService.VerifyOTPAsync(command);
-            return Json(new { response.status, response.message });
+
+            return Json(new
+            {
+                status = response.status,
+                message = response.message
+            });
         }
 
         [HttpPost]

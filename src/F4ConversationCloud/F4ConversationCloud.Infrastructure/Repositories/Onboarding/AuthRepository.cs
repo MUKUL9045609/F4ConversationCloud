@@ -38,6 +38,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("StateId", command.StateId);
                 parameters.Add("ZipCode", command.ZipCode);
                 parameters.Add("OptionalAddress", command.OptionalAddress);
+                parameters.Add("OrganizationsName", command.OrganizationsName);
                 var NewUserId =  await _repository.InsertUpdateAsync("[sp_UpdateClientDetails]", parameters);
 
                 return NewUserId;
@@ -200,6 +201,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             return await _repository.GetListByValuesAsync<TimeZoneResponse>("[sp_GetTimeZones]", dp);
         }
 
+        public async Task<IEnumerable<Cities>> GetCitiesAsync()
+        {
+            DynamicParameters dp = new DynamicParameters();
+            return await _repository.GetListByValuesAsync<Cities>("[sp_GetCities]", dp);
+        }
+        public async Task<IEnumerable<Cities>> GetCitiesByStatesIdAsync(int stateId)
+        {
+            DynamicParameters dp = new DynamicParameters();
+            dp.Add("stateId", stateId);
+            return await _repository.GetListByValuesAsync<Cities>("[sp_GetCityByStatesId]", dp);
+        }
+        public async Task<IEnumerable<States>> GetStatesAsync()
+        {
+            DynamicParameters dp = new DynamicParameters();
+            return await _repository.GetListByValuesAsync<States>("[sp_GetStates]", dp);
+        }
        
         public async Task<int> UpdatePasswordAsync(ConfirmPasswordModel model)
         {
