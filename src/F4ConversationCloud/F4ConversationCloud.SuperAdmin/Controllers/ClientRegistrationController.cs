@@ -91,8 +91,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
+                ViewBag.Roles = EnumExtensions.ToSelectList<ClientRole>();
                 if (!ModelState.IsValid)
                     return View(model);
+
+                var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
+
+                if (emailExist) {
+                    ModelState.AddModelError("Email", "This email is already registered.");
+                    return View(model);
+                }
 
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {

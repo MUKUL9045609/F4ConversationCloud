@@ -15,5 +15,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<IEnumerable<ClientRegistrationListItemModel>> GetFilteredAsync(ClientRegistrationListFilter filter);
         Task<int> GetCountAsync(ClientRegistrationListFilter filter);
         Task<ClientRegistration> GetByIdAsync(int id);
+        Task<bool> CheckEmailExist(string email);
     }
 }
