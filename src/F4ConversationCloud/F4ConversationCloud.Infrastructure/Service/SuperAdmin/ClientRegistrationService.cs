@@ -33,28 +33,33 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
         {
-            var logModel = new LogModel();
-            logModel.Source = "ClientRegistration/Create";
-            logModel.AdditionalInfo = $"Model: {clientRegistration}";
-            int response = 0;
-            try
-            {
-                response = await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
-                logModel.LogType = "Success";
-                logModel.Message = "Client pre-registered successfully";
-            }
-            catch (Exception ex)
-            {
-                logModel.LogType = "Error";
-                logModel.Message = ex.Message;
-                logModel.StackTrace = ex.StackTrace;
-            }
-            finally
-            {
-                await _logService.InsertLogAsync(logModel);
-            }
-            return response;
+            return await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
         }
+
+        //public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
+        //{
+        //    var logModel = new LogModel();
+        //    logModel.Source = "ClientRegistration/Create";
+        //    logModel.AdditionalInfo = $"Model: {clientRegistration}";
+        //    int response = 0;
+        //    try
+        //    {
+        //        response = await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
+        //        logModel.LogType = "Success";
+        //        logModel.Message = "Client pre-registered successfully";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logModel.LogType = "Error";
+        //        logModel.Message = ex.Message;
+        //        logModel.StackTrace = ex.StackTrace;
+        //    }
+        //    finally
+        //    {
+        //        await _logService.InsertLogAsync(logModel);
+        //    }
+        //    return response;
+        //}
 
         public async Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter)
         {
