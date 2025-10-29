@@ -72,13 +72,14 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IClientRegistrationRepository, ClientRegistrationRepository>();
 
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
-           // services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
+           //services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
             services.AddScoped<IF4AppCloudeService, F4AppCloudeService>();
             //services.AddScoped<MetaConfigurationService >();
             
 
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<ITemplateRepositories, TemplateRepositories>();
+            services.AddScoped<IMetaService, MetaService>();
 
             services.AddScoped<IAuthService, AuthService>();
             return services;
