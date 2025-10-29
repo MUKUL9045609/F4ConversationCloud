@@ -53,7 +53,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
-                        bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = clientEmail });
+                       // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = clientEmail });
 
                         int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.metaregistered);
 
