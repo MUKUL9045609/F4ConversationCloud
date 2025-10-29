@@ -114,7 +114,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var name = model.FirstName + " " + model.LastName;
                 await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id);
-
                 
                 TempData["SuccessMessage"] = "Client pre-registered successfully";
 
