@@ -4,6 +4,22 @@
   font-weight: 400 !important;
   border-radius: 8px !important;
 }
+.btn.btn-facebook {
+  background-color: #0866ff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  width: 220px;
+  margin: 0 auto;
+}
+.btn.btn-facebook:focus {
+  box-shadow: none !important;
+}
+.btn.btn-facebook:hover {
+  color: #fff;
+}
 
 .primary-btn {
   border: 1px solid #03A9F5 !important;

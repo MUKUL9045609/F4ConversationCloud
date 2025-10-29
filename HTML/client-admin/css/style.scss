@@ -14,10 +14,13 @@ body {
 }
 
 .page {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+    // display: flex;
+    // min-height: 100vh;
+    // flex-direction: column;
     // justify-content: center;
+    align-items: stretch;
+    display: flex;
+    width: 100%;
     @import "_header.scss";
     @import "_side-navigation.scss";
     @import "_main-content.scss";
@@ -30,7 +33,7 @@ body {
 
     .select-type {
         position: relative;
-        width: 55%;
+        width: 65%;
 
         .radio-button-container {
             cursor: pointer;
@@ -221,7 +224,7 @@ body {
     }
 }
 .footer{
-    padding-inline-start: 15rem;
+   
     font-size: 13px;
     text-align: center;
     background-color: $white;
@@ -709,4 +712,147 @@ input[type="time" i] {
 }
 .ui-state-default, .ui-widget-content .ui-state-default{
     font-size: 12px;
+}
+.fb-wrap{
+    display: flex;
+    align-items: center;
+    .left-col{
+        width: 50%;
+    }
+    .right-col{
+        width: 50%;
+        display: flex;
+        align-items: end;
+        flex-direction: column;
+    }
+    h3{
+        margin-bottom: 7px;
+        font-size: 16px;
+    }
+    p{
+        max-width: 400px;
+        font-size: 13px!important;
+    }
+    .small-text{
+        font-size: 12px;
+        font-style: italic;
+        max-width: 300px;
+        text-align: center;
+        margin: 6px 0px 0px;
+        color: #817d7d;
+        display: block;
+    }
+}
+.facebook-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 13px;
+    .sync-btn{
+        background-color: #009099;
+        color: #fff;
+        padding: 2px 12px!important;
+        &:focus{
+            box-shadow: none;
+        }
+        &:hover{
+            color: #fff;
+        }
+    }
+}
+.facebook-icon{
+    line-height: 1;
+    
+    &::after{
+        content:"";
+        background-image: url("data:image/svg+xml,%3Csvg width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M23 11.5001C23 5.14878 17.8513 5.53131e-05 11.5 5.53131e-05C5.14872 5.53131e-05 0 5.14878 0 11.5001C0 17.24 4.20538 21.9976 9.70312 22.8604V14.8243H6.7832V11.5001H9.70312V8.96646C9.70312 6.08427 11.42 4.49224 14.0468 4.49224C15.305 4.49224 16.6211 4.71685 16.6211 4.71685V7.54693H15.171C13.7424 7.54693 13.2969 8.4334 13.2969 9.34284V11.5001H16.4863L15.9765 14.8243H13.2969V22.8604C18.7946 21.9976 23 17.24 23 11.5001Z' fill='white'/%3E%3C/svg%3E");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height:20px;width:20px;display: inline-block;
+    }
+}
+.no-record-found{
+    height: 30vh;
+    small{
+        font-size: 17px;
+        font-weight: 400;
+    }
+}
+.box-shadow{
+    border: 0px!important;
+    box-shadow: 0px 2px 4px 0px rgb(0 0 0 / 10%);
+}
+.burger {
+    height: 35px;
+    width: 35px;
+    display: flex;
+    cursor: pointer;
+    background-color: #eee;
+    padding: 7px;
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    @media (max-width:667px) {
+        position: absolute;
+        right:15px
+    }
+    .bar{
+        background-color: #000;
+        width: 100%;
+        height: 2px;
+        display: block;
+        cursor: pointer;
+        transition: all .35s ease-in-out;
+        &:first-child{
+            margin-bottom: 5px;
+        }
+        &:nth-child(2){
+            margin-bottom: 5px;
+            width: 60%;
+        }
+    }
+}
+
+.sidemenutoggle{
+    overflow: hidden;
+    .app-sidebar{
+        margin-left: -260px;
+        transition: margin-left .35s ease-in-out, left .35s ease-in-out, margin-right .35s ease-in-out, right .35s ease-in-out;
+        @media (max-width:480px) {
+            margin-left: 0px;
+        }
+    }
+    .app-header{
+        margin-left:0px;
+        transition: margin-left .35s ease-in-out, left .35s ease-in-out, margin-right .35s ease-in-out, right .35s ease-in-out;
+        .appheader-wrap{
+            @media (max-width:480px) {
+                background-color: transparent;
+            }
+        }
+    }
+    .burger{
+        .bar{
+            &:first-child{
+                rotate: 46deg;
+                    transform: translate(4px, 3px);
+            }
+            &:nth-child(2){display: none;}
+            &:nth-child(3){
+                    rotate: -48deg;
+                    transform: translate(2px, -1px);
+            }
+        }
+    }
+   
+    &.meta-page{
+        .burger{
+            display: none;
+        }
+        .main-sidebar-header{
+            &.non-menu-logo{
+                display: block!important;
+            }
+        }
+    }
 }

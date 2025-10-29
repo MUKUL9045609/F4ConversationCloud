@@ -25,6 +25,13 @@
         @media (max-width:480px) {
             // background-color: transparent;
         }
+        .main-sidebar-header{
+            &.non-menu-logo{
+                
+                    display: none;
+               
+            }
+        }
         .searchBox{
             .input-group{
                 width: 400px;
@@ -116,7 +123,7 @@
                     text-decoration: none;
                     align-items: center;
                     p{
-                        margin-bottom: 0px;font-size: 16px;
+                        margin-bottom: 0px;font-size: 15px;
                         color: #000;
                     }
                     .profile-role{

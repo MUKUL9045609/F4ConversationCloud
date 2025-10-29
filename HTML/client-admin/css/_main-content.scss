@@ -3,18 +3,28 @@
 
 
 .main-content {
-    margin-inline-start: 15rem;
-    margin-top: 60px;
-    margin-bottom: 0px;
-    min-height: calc(100vh - 6.4rem);
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-    transition-duration: 0.05s;
-    transition-timing-function: ease;
-    padding: .75rem 0px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    transition: margin-left 0.35s 
+    ease-in-out, left 0.35s 
+    ease-in-out, margin-right 0.35s 
+    ease-in-out, right 0.35s 
+    ease-in-out;
+    width: 100%;
     // overflow: auto;
-
+    .content{
+        padding: 15px;
+        direction: ltr;
+        flex: 1;
+        max-width: 100vw;
+        margin-top: 59px;
+        .container-fluid{
+            padding: 0px;
+        }
+    }
     .main-heading {
         font-size: 24px;
         color: $textColor;

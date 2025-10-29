@@ -12,7 +12,7 @@
             <!-- Header Bar -->
             <header class="app-header">
                 <div class="appheader-wrap">
-                    <div class="searchBox">
+                    <!-- <div class="searchBox">
                         <div class="input-group flex-nowrap">
                             <input
                                 type="text"
@@ -23,8 +23,8 @@
                             />
                             <span class="input-group-text" id="addon-wrapping"></span>
                         </div>
-                    </div>
-                    <div class="profile-dropdown">
+                    </div> -->
+                    <div class="profile-dropdown ms-auto">
                         <div class="lang">
                             <select class="form-select" aria-label="Default select example">
                                 <option selected>
@@ -94,24 +94,21 @@
                 <div class="main-side-navigation">
                     <nav>
                         <ul>
-                            <li>
-                                <a href="#" class="home icon">Home</a>
+                            <li class="active">
+                                <a href="../index.html" class="home icon">Home</a>
                             </li>
                             <li>
-                                <a href="#" class="speaker icon carret">Campaigns</a>
-                                <ul>
-                                    <li><a href="#">Link</a></li>
-                                    <li><a href="#">Link</a></li>
-                                    <li><a href="#">Link</a></li>
-                                    <li><a href="#">Link</a></li>
+                                <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                                <ul class="submenu">
+                                    <li><a href="../campaigns/broadcast.html">Broadcast</a></li>
+                                    <li class="sub-active"><a href="../campaigns/audience.html">Audience</a></li>
+                                    <li><a href="../campaigns/guide.html">Guide</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="../templates/templates.html" class="template icon"
-                                    >Templates</a
-                                >
+                                <a href="templates/create-templates.html" class="template icon">Templates</a>
                             </li>
-                            <li class="active">
+                            <!-- <li class="active">
                                 <a href="javascript:void(0)" class="bot icon carret">Bot Studio</a>
                                 <ul class="submenu">
                                     <li>
@@ -171,7 +168,7 @@
                                     <li><a href="#">Link</a></li>
                                     <li><a href="#">Link</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
                     </nav>
                 </div>

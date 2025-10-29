@@ -1,8 +1,5 @@
-using F4ConversationCloud.Application;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
-using F4ConversationCloud.Infrastructure.Service;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
