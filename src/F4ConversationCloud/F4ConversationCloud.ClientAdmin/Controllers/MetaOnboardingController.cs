@@ -1,8 +1,11 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.ClientAdmin.Models;
 using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
@@ -10,16 +13,28 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
-        public MetaOnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository)
+        private readonly IAddPhoneNumberService _addPhoneNumberService;
+        public MetaOnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository, IAddPhoneNumberService addPhoneNumberService)
         {
             _onboardingService = onboardingService;
             _authRepository = authRepository;
+            _addPhoneNumberService = addPhoneNumberService;
         }
 
         [HttpGet("client-onboarding-list")]
-        public IActionResult ClientOnboardingList()
+        public async Task<IActionResult> ClientOnboardingList()
         {
-            return View();
+            var viewModel = new PhoneNumberListViewModel();
+            try
+            {
+                viewModel.addPhoneNumberModels = await _addPhoneNumberService.GetWhatsAppProfilesByUserId();
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(viewModel);
+            }
         }
 
         [HttpPost]

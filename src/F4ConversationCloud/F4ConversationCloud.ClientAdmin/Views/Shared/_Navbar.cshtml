@@ -1,4 +1,6 @@
-﻿<div class="appheader-wrap">
+﻿@using System.Security.Claims
+
+<div class="appheader-wrap">
     <div class="searchBox">
         @* <div class="input-group flex-nowrap">
             <input type="text" class="form-control" placeholder="Search for anything here.."
@@ -20,17 +22,14 @@
         </div> *@
         <div class="profile">
             <div class="dropdown">
-                <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    D
+                <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    @User.FindFirstValue(ClaimTypes.Name)?.Substring(0, 1)
                 </a>
-                @{
+                @* @{
                     var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value;
-                }
-
-
+                } *@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <span class="name">@userNameClaim</span>
+                    <span class="name">@User.FindFirstValue(ClaimTypes.Name)</span>
                     <li><a class="dropdown-item user" href="#">Profile</a></li>
                     <li><a class="dropdown-item signout" href="@Url.Action("Logout", "Auth")">Sign Out</a></li>
 
