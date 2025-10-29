@@ -33,33 +33,28 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
         {
-            return await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/Create";
+            logModel.AdditionalInfo = $"Model: {clientRegistration}";
+            int response = 0;
+            try
+            {
+                response = await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
+                logModel.LogType = "Success";
+                logModel.Message = "Client pre-registered successfully";
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+            return response;
         }
-
-        //public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
-        //{
-        //    var logModel = new LogModel();
-        //    logModel.Source = "ClientRegistration/Create";
-        //    logModel.AdditionalInfo = $"Model: {clientRegistration}";
-        //    int response = 0;
-        //    try
-        //    {
-        //        response = await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
-        //        logModel.LogType = "Success";
-        //        logModel.Message = "Client pre-registered successfully";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logModel.LogType = "Error";
-        //        logModel.Message = ex.Message;
-        //        logModel.StackTrace = ex.StackTrace;
-        //    }
-        //    finally
-        //    {
-        //        await _logService.InsertLogAsync(logModel);
-        //    }
-        //    return response;
-        //}
 
         public async Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter)
         {
@@ -98,7 +93,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 string baseUrl = $"{request.Scheme}://{request.Host}";
                 string encryptedId = id.ToString().Encrypt();
 
-                string registrationLink = $"{_configuration["OnboardingUrl"]}?id={encryptedId}";
+                string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}";
                 string currentYear = DateTime.Now.Year.ToString();
                 htmlBody = htmlBody.Replace("{user_name}", name)
                                    .Replace("{BaseUrl}", baseUrl)

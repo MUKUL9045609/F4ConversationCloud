@@ -22,6 +22,9 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
 
         Task<LoginViewModel> ValidateClientCreadiatial(string email);
         Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
+        Task<IEnumerable<Cities>> GetCitiesAsync();
+        Task<IEnumerable<States>> GetStatesAsync();
+        Task<IEnumerable<Cities>> GetCitiesByStatesIdAsync(int stateId);
         Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId);
         Task<int> UpdatePasswordAsync(ConfirmPasswordModel model);
         Task<int> GetRegisteredClientCountAsync();

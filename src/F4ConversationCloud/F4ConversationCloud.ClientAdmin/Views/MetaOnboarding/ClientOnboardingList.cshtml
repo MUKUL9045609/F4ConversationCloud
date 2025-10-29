@@ -57,7 +57,7 @@
                                     <td>@m.PhoneNumber</td>
                                     <td><a href="#" class="@(m.Status == "Connected" ? "text-success" : "text-danger") text-decoration-none fw-medium">@m.Status</a></td>
                                 </tr>
-                                {srNoCount++;}
+                                { srNoCount++; }
                             }
                         </tbody>
                     </table>
@@ -154,6 +154,43 @@
             location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
         });
     </script>
+  @*   <script>
+        const fbLoginCallback = (response) => {
+          if (response.authResponse) {
+            const code = response.authResponse.code;
+
+          }
+          document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
+        }
+
+        const launchWhatsAppSignup = () => {
+
+          FB.login(fbLoginCallback, {
+
+            config_id: '1798212677752254',
+            response_type: 'code',
+            override_default_response_type: true,
+            extras: {"version":"v3"}
+          });
+        }
+    </script>
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+
+            appId            : '2199076023947769',
+            autoLogAppEvents : true,
+            xfbml            : true,
+                version          : 'v23.0'
+          });
+        };
+    </script>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js">
+    </script> *@
+
+
+
     <script>
         const fbLoginCallback = (response) => {
           if (response.authResponse) {
@@ -166,21 +203,21 @@
         const launchWhatsAppSignup = () => {
 
           FB.login(fbLoginCallback, {
-                config_id: '1798212677752254',
+            config_id: '9869767589818097',
             response_type: 'code',
             override_default_response_type: true,
             extras: {"version":"v3"}
           });
         }
     </script>
+
     <script>
         window.fbAsyncInit = function() {
           FB.init({
-            //appId            : '2983579265274951',
-            appId            : '2199076023947769',
+            appId            : '2983579265274951',
             autoLogAppEvents : true,
             xfbml            : true,
-                version          : 'v24.0'
+            version          : 'v23.0'
           });
         };
     </script>
