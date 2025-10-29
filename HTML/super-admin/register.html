@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <title>Fortune4 Conversation Cloud</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    
 </head>
 
 <body>
     <div class="page">
-        
+       
         <!-- side Bar -->
         <aside class="app-sidebar">
             <div class="sidenav-content">
@@ -23,12 +23,13 @@
                 <div class="main-side-navigation">
                     <nav>
                         <ul>
+                            
                             <li>
-                            <a href="dashboard.html" class="home icon">Dashboard</a>
-                        </li>
-                        <li>
+                                <a href="dashboard.html" class="home icon">Dashboard</a>
+                            </li>
+                             <li class="active">
                               <a href="client-registration.html" class="billing icon">Register</a>
-                        </li>
+                            </li>
                             <li>
                                 <a href="index.html" class="users icon">Clients</a>
                             </li>
@@ -38,7 +39,7 @@
                             <li>
                                 <a href="client-management.html" class="user icon">Client User Management</a>
                             </li>
-                            
+                           
                             
                             <li>
                                 <a href="usages.html" class="usages icon">Usages</a>
@@ -46,16 +47,16 @@
                             <li>
                                 <a href="billing.html" class="billing icon">Billing</a>
                             </li>
-                            <li>
+                             <li>
                                 <a href="activity-log.html" class="log icon">Activity Log</a>
                             </li>
                             <li>
                                 <a href="master-price.html" class="billing icon">Master Price</a>
                             </li>
-                            <li>
+                             <li>
                                 <a href="master-tax.html" class="tax icon">Master Tax</a>
                             </li>
-                            <li class="active">
+                            <li>
                                 <a href="configuration.html" class="cofig icon">Configuration</a>
                             </li>  
                         </ul>
@@ -70,13 +71,11 @@
             <!-- Header Bar -->
             <header class="app-header">
                 <div class="appheader-wrap">
-                    
                     <span class="burger" id="toggleButton">
                         <span class="bar"></span>
                         <span class="bar"></span>
                         <span class="bar"></span>
                     </span>
-                    
                     <div class="profile-dropdown ms-auto"> 
                         <div class="profile">
                             <div class="dropdown">
@@ -99,24 +98,74 @@
                 </div>
             </header>
             <!-- End Header Bar -->
-
             <div class="content">
                 <div class="container-fluid">
-                    <h3 class="sub-heading">Configuration </h3>
-                    <ul class="user-list">
-                                <li>
-                                    <span class="formkey">API Key <span class="copy"></span></span>
-                                    <span class="formvalue">sk_live_4c5d6f7g8h9j0klmnop123456789abcd</span>
-                                </li>
-                                <li>
-                                    <span class="formkey">Token <span class="copy"></span></span>
-                                    <span class="formvalue">EAAJZCwZA1xMIBABABkZClZAOqZCZDZCpZCmYZA6kBZCkZCmxyz1234567890abcdefgZCZD</span>
-                                </li>
-                                
-                            </ul>
+                    <!-- <h3 class="sub-heading">Settings</h3> -->
+                    <h3 class="sub-heading"><a href="user-management.html"> <span class="back"></span> Register Users </a></h3>
+                    <form class="form-wrapper">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter user name">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter Last name">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Email Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter email address">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Phone Number</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Enter Phone Number">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label>Role</label>
+                                    <select class="form-select">
+                                        <option selected>Role</option>
+                                        <option value="2">Admin</option>
+                                        
+                                    </select>  
+                                </div>
+                            </div>
+                            
+                            
+                           
+                            
+                        </div>
+                        <div class="d-flex justify-content-start gap-2 mt-3">
+                            <a href="client-registration.html" class="btn primary-btn">Save</a>
+                            <button class="btn danger-btn">Cancel</button>
+                        </div>
+                    </form>
+                    
                 </div>
             </div>
-
             <footer class="footer"> 
                 <div class="container"> 
                     <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
@@ -125,16 +174,15 @@
                     </span> 
                 </div> 
 		    </footer>
-
-
         </div>
+
     </div>
 
-<div class="backdrop"></div>
+    <div class="backdrop"></div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js" crossorigin="anonymous"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
     <script>
         $('nav ul ul').hide();
@@ -145,6 +193,11 @@
         });
 
         $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
     </script>
     <script>
         $(document).ready(function() {
@@ -152,6 +205,17 @@
                 $('body').toggleClass('sidemenutoggle');
             });
         });
+    </script>
+    <script>
+        $(".toggle-password").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        input = $(this).parent().find("input");
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
     </script>
 </body>
 

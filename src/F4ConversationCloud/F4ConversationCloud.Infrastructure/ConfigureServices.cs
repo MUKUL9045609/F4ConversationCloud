@@ -70,6 +70,8 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IMasterTaxService, MasterTaxService>();
             services.AddScoped<IClientRegistrationService, ClientRegistrationService>();
             services.AddScoped<IClientRegistrationRepository, ClientRegistrationRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            services.AddScoped<ILogService, LogService>();
 
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
            //services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
