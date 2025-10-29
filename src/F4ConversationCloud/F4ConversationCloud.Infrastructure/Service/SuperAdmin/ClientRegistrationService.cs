@@ -98,7 +98,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 string baseUrl = $"{request.Scheme}://{request.Host}";
                 string encryptedId = id.ToString().Encrypt();
 
-                string registrationLink = $"{_configuration["OnboardingUrl"]}?id={encryptedId}";
+                string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}";
                 string currentYear = DateTime.Now.Year.ToString();
                 htmlBody = htmlBody.Replace("{user_name}", name)
                                    .Replace("{BaseUrl}", baseUrl)
