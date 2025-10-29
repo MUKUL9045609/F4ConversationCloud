@@ -74,12 +74,12 @@ namespace F4ConversationCloud.Infrastructure.Service
                         From = new MailAddress(emailSettings.SenderEmail),
                         Subject = message.Subject,
                         IsBodyHtml = true,
-                        Body = message.Body.Replace("{BaseUrl}", _configuration["BaseUrl"])
+                        Body = message.Body
                     };
 
                     mailMessage.To.Add(message.ToEmail);
 
-                    smtpClient.Send(mailMessage);
+                    await smtpClient.SendMailAsync(mailMessage);
                 }
 
                 return true;

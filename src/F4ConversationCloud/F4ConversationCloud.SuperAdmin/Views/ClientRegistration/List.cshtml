@@ -1,0 +1,185 @@
+﻿@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Entities.SuperAdmin
+@using F4ConversationCloud.Domain.Enum
+@using System.ComponentModel.DataAnnotations
+@model F4ConversationCloud.SuperAdmin.Models.ClientRegistrationListViewModel
+@{
+    ViewData["Title"] = "Register User";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between mb-3">
+            <h3 class="sub-heading mb-0">Registered Users </h3>
+            <div>
+                <a href="@Url.Action("Create", "ClientRegistration")" type="button" class="btn primary-btn add d-flex">Register User</a>
+            </div>
+        </div>
+        <div class="card padding">
+            <div class="table-responsive">
+                <table class="table user-table form-wrapper">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.SrNo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Name)
+                                <div class="input-group">
+                                    <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Email)
+                                <div class="input-group">
+                                    <input asp-for="EmailFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.ContactNumber)
+                                <div class="input-group">
+                                    <input asp-for="ContactNumberFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.RoleName)
+                                <select asp-for="RoleFilter" asp-items="Model.RolesList" class="form-select" onchange="loadData()">
+                                    <option value="0">Select Role</option>
+                                </select>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.CreatedOn)
+                                <input asp-for="CreatedOnFilter" type="date"
+                                       id="datepicker"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" onchange="loadData()" />
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.UpdatedOn)
+                                <input asp-for="UpdatedOnFilter" type="date"
+                                       id="datepicker"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" onchange="loadData()" />
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.RegistrationStatus)
+                                <select asp-for="RegistrationStatusFilter" asp-items="Model.RegistrationStatusList" class="form-select" onchange="loadData()">
+                                    <option value="0">Select Status</option>
+                                </select>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.data.Any())
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">No Records Found</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.data)
+                            {
+                                <tr>
+                                    <td align="center">
+                                        @Html.DisplayFor(modelItem => item.SrNo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RoleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UpdatedOn)
+                                    </td>
+                                    <td>
+                                        <span class="badge @(item.RegistrationStatusName == "Active" ? "success" : "danger")">@Html.DisplayFor(modelItem => item.RegistrationStatusName)</span>
+                                    </td>
+                                    <td>
+                                        @if (item.RegistrationStatusName == ClientRegistrationStatus.Pending.Get<DisplayAttribute>().Name)
+                                        {
+                                            <div class="action">
+                                                <form method="get" action="@Url.Action("Edit", "ClientRegistration", new { id = item.Id })">
+                                                    <a method="get" class="edit-icon" asp-controller="ClientRegistration" asp-action="Edit" asp-route-id="@item.Id"></a>
+                                                </form>
+                                            </div>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadData() {
+            let nameFilter = $("[name=NameFilter]").val();
+            let emailFilter = $("[name=EmailFilter]").val();
+            let contactNumberFilter = $("[name=ContactNumberFilter]").val();
+            let roleFilter = $("[name=RoleFilter]").val();
+            let createdOnFilter = $("[name=CreatedOnFilter]").val();
+            let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
+            let registrationStatusFilter = $("[name=RegistrationStatusFilter]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("List", "ClientRegistration")' +
+                '?NameFilter=' + nameFilter +
+                '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                '&ContactNumberFilter=' + encodeURIComponent(contactNumberFilter) +
+                '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
+                '&RegistrationStatusFilter=' + encodeURIComponent(registrationStatusFilter) +
+                '&PageNumber=' + pageNumber;
+        }
+
+        $(".srcIcon").on("keypress", function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                let nameFilter = $("[name=NameFilter]").val();
+                let emailFilter = $("[name=EmailFilter]").val();
+                let contactNumberFilter = $("[name=ContactNumberFilter]").val();
+                let roleFilter = $("[name=RoleFilter]").val();
+                let createdOnFilter = $("[name=CreatedOnFilter]").val();
+                let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
+                let registrationStatusFilter = $("[name=RegistrationStatusFilter]").val();
+
+                location.href = '@Url.Action("List", "ClientRegistration")' +
+                    '?NameFilter=' + nameFilter +
+                    '&EmailFilter=' + encodeURIComponent(emailFilter) +
+                    '&ContactNumberFilter=' + encodeURIComponent(contactNumberFilter) +
+                    '&RoleFilter=' + encodeURIComponent(roleFilter) +
+                    '&CreatedOnFilter=' + encodeURIComponent(createdOnFilter) +
+                    '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
+                    '&RegistrationStatusFilter=' + encodeURIComponent(registrationStatusFilter) +
+                    '&PageNumber=' + pageNumber;
+            }
+        });
+    </script>
+}

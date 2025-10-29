@@ -12,8 +12,8 @@
     });
 
     $.validator.addMethod("headervariableformat", function (value, element, param) {
-        const variableTypeElement = $(`[name="${param}"]`);
-        const variableType = variableTypeElement.find("option:selected").text().trim();
+        const variableTypeElement = $(`input[name="${param}"]:checked`)
+        const variableType = variableTypeElement.next('label').text().trim();
 
         const trimmedValue = value.trim();
 
@@ -39,7 +39,7 @@
 
         if (variableType === "Number") {
             // Only allow {{1}} exactly
-            return match === "{{1}}";
+            return match == "{{1}}";
         } else if (variableType === "Name") {
             // Must start with a letter, and only contain lowercase letters, numbers, underscores
             return /^\{\{[a-z][a-z0-9_]*\}\}$/.test(match);

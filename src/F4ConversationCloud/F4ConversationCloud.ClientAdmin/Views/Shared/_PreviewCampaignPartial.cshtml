@@ -1,0 +1,88 @@
+﻿@model F4ConversationCloud.ClientAdmin.Models.CampaignViewModel.CreateCampaignViewModel;
+
+<div class="edit-template">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card padding">
+                <h3 class="mb-2">Preview</h3>
+                <div class="template-body card padding">
+                    <ul>
+                        <li>
+                            <p>Channel</p>
+                            <span>WhatsApp</span>
+                        </li>
+                        <li>
+                            <p>From Account</p>
+                            <span>919321572847</span>
+                        </li>
+                        <li>
+                            <p>Name <a href="#" class="edit-icon"></a></p>
+                            <span>test</span>
+                        </li>
+                        <li>
+                            <p>Audience (Total rows - 1) <a href="#" class="edit-icon"></a></p>
+                            <span class="link">campaigngupshup.xlsx</span>
+                        </li>
+                        <li>
+                            <p>Template <a href="#" class="edit-icon"></a></p>
+                            <span>loan_demo</span>
+                        </li>
+                        <li>
+                            <p>Type <a href="#" class="edit-icon"></a></p>
+                            <span class="link">One Way</span>
+                        </li>
+                    </ul>
+                    <div class="template-question">
+                        <label class="form-label">
+                            When do you want to send the
+                            campaign?
+                        </label>
+                        <div>
+                            <div class="form-check radio-btn mb-2">
+                                <input class="form-check-input" type="radio"
+                                       name="flexRadioDefault" id="sendNow">
+                                <label class="form-check-label" for="sendNow">
+                                    Send Now
+                                </label>
+                            </div>
+                            
+                                <div class="form-check radio-btn mb-2">
+                                    <input class="form-check-input" type="radio"
+                                           name="flexRadioDefault" id="scheduleForLater">
+                                    <label class="form-check-label" for="scheduleForLater">
+                                        Schedule for later
+                                    </label>
+                                    <input type="date" asp-for="FromDate" value="" placeholder="From date"/>
+                                    <span asp-validation-for="FromDate" class="text-danger"></span>
+
+                                    <input type="date" asp-for="ToDate" value="" placeholder="Todate date" />
+                                    <span asp-validation-for="ToDate" class="text-danger"></span>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                @* <button type="submit" id="Audiencebtn" class="btn primary-btn">Next</button> *@
+                                </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#sendCampaign">Confirm</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="template-preview">
+                <h4>Preview</h4>
+                <div class="template-white-card">
+                    <span><img src="../images/card-img-03.webp"></span>
+                    <div class="description">
+                        <p>Dear {{1}}</p>
+                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                    </div>
+                    <div class="time">1:59 PM</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

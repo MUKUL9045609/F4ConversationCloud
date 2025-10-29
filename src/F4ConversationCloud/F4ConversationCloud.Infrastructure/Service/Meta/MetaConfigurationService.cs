@@ -1,33 +1,13 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
-using F4ConversationCloud.Application.Common.Interfaces.Services;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+﻿
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
-using F4ConversationCloud.Application.Common.Services;
-using F4ConversationCloud.Infrastructure.Interfaces;
-using F4ConversationCloud.Infrastructure.Persistence;
-using F4ConversationCloud.Infrastructure.Repositories;
-using F4ConversationCloud.Infrastructure.Repositories.Client;
-using F4ConversationCloud.Infrastructure.Repositories.Onboarding;
-using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
-using F4ConversationCloud.Infrastructure.Service.MetaServices;
-using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace F4ConversationCloud.Infrastructure.Service.Meta
 {

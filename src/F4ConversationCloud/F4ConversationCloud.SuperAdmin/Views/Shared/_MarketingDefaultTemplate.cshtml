@@ -1,256 +1,303 @@
-﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+﻿@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Enum
+@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@{
+    var templateTypeName = EnumExtensions.GetDisplayNameById<MarketingTemplateType>(Model.TemplateType);
+}
 
-<!-- marketing default set up -->
-<div id="" class="setup">
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Template name<sup>*</sup></h3>
-            <span class="question"></span>
+<div class="creation-card template-creation">
+    <div class="creation-header">
+        <div class="">
+            <h3><span id="title"></span> <span class="default ms-1">@templateTypeName</span></h3>
+            <span class="small-text">@Model.TemplateCategoryName</span>
         </div>
-        <div class="template-question mb-3">
-            <label asp-for="TemplateName" class="form-label">Give your message template a name.</label>
-            <input asp-for="TemplateName" type="text"
-                   class="form-control"
-                   placeholder="Template name" maxlength="512"/>
-            <div class="form-text">
-                Template names can only contain small letters, numbers and
-                underscores.
-            </div>
-            <span asp-validation-for="TemplateName" class="text-danger"></span>
+        <div>
+            <span class="lang" id="language-title"></span>
         </div>
     </div>
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Language<sup>*</sup></h3>
-            <span class="question"></span>
-        </div>
-        <div class="template-question mb-3">
-            <label for="exampleInputEmail1" class="form-label">
-                Choose which languages your message template will be sent
-                in.
-            </label>
-            <select asp-for="Language" asp-items="Model.LanguageList" class="form-select" aria-label="Default select example">
-            </select>
-        </div>
-        <span asp-validation-for="Language" class="text-danger"></span>
-    </div>
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Types Of Variables<sup> *</sup></h3>
-            <span class="question"></span>
-        </div>
-        <div class="template-question mb-3">
-            <select asp-for="VariableType" asp-items="Model.VariableTypeList" class="form-select" aria-label="Default select example">
-            </select>
-        </div>
-        <span asp-validation-for="VariableType" class="text-danger"></span>
-    </div>
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Media Samples <span class="key">Optional</span></h3>
-            <span class="question"></span>
-        </div>
-        <div class="template-question mb-3">
-            <select asp-for="MediaType" asp-items="Model.MediaTypeList" id="mediaType" class="form-select" aria-label="Default select example">
-                <option value="0" selected>None</option>
-            </select>
-            <div class="drag-file-wrapper" id="attachment" style="display: none;">
-                <label class="drag-file">
-                    <input asp-for="File" type="file" class="form-control file-upload-input" id="UploadedFile" accept=".jpg,.jpeg,.png" />
-                    <input type="hidden" asp-for="FileName" />
-                    <input type="hidden" asp-for="FileUrl" />
-                    <input type="file" />
-                    <span class="drag-title">Drag and drop to upload or <a href="#">choose files on your device</a></span>
-                </label>
-                <div class="mt-2" id="existingFileLink">
-                    @if (!string.IsNullOrEmpty(Model.FileUrl))
-                    {
-                        <a href="@Url.Content(Model.FileUrl)" target="_blank">@Model.FileName</a>
-                    }
+    <div class="mt-3 form-wrapper">
+        <h3 class="mb-2">Template name and language <sup class="error-star">*</sup></h3>
+        <div class="d-flex gap-3">
+            <div class="mb-2 flex-grow-1">
+                <label>Name your template</label>
+                <div class="input-group">
+                    <input asp-for="TemplateName" type="text"
+                    class="form-control" placeholder="Enter a template name" maxlength="512" />
+                </div>
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="TemplateName"></span>
                 </div>
             </div>
-            <span asp-validation-for="File" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Header <span class="key">Optional</span></h3>
-            <span class="question"></span>
-        </div>
-        <div class="template-question mb-3">
-            <label asp-for="Header" class="form-label">
-                Add a 60 character title to your message. Only one variable
-                is supported in the header.
-            </label>
-            <input asp-for="Header" type="text" class="form-control" maxlength="60">
-            <span asp-validation-for="Header" class="text-danger"></span>
-            <div class="d-flex justify-content-end">
-                <button class="add-variables" id="header-add-btn" type="button">Add Variables</button>
+            <div class="mb-2 w-25">
+                <label>Select language</label>
+                <select asp-for="Language" asp-items="Model.LanguageList" class="form-select" aria-label="Default select example">
+                </select>
+            </div>
+            <div class="invalid-feedback mt-0">
+                <span asp-validation-for="Language"></span>
             </div>
         </div>
-    </div>
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Body<sup> *</sup></h3>
-            <span class="question"></span>
+        <hr>
+
+        <h3 class="mb-1">Content</h3>
+        <p>Add a header, body and footer for your template. We will review the template variables and content to protect the security and integrity of our services</p>
+        <label>Type of variable</label>
+        <div class="d-flex gap-3">
+            @if (Model.VariableTypeList is not null)
+            {
+                @foreach (var t in Model.VariableTypeList)
+                {
+                    <div class="form-check radio-btn">
+                        <input asp-for="VariableType" class="form-check-input"
+                               type="radio"
+                               id="@t.Value"
+                               value="@t.Value" />
+                        <label class="form-check-label"
+                               for="flexRadioDefault1">
+                            @t.Text
+                        </label>
+                    </div>
+                }
+            }
         </div>
-        <div class="template-question mb-3">
-            <label for="exampleInputEmail1" class="form-label">
-                Enter the text for your message in the language you have
-                selected.
-            </label>
-            <div class="note d-flex align-items-center">
-                <span class="exclamatory"></span>
-                <p>
-                    The text limit in the body should be less than 550
-                    characters and emojis should be less than 10 to avoid
-                    any template rejection
-                </p>
+        <div class="invalid-feedback mt-0">
+            <span asp-validation-for="VariableType"></span>
+        </div>
+        <label class="mt-3">Media sample</label>
+        <div class="d-flex gap-3">
+            @if (Model.MediaTypeList is not null)
+            {
+                @foreach (var t in Model.MediaTypeList)
+                {
+                    <div class="form-check radio-btn">
+                        <input asp-for="MediaType" class="form-check-input"
+                               type="radio"
+                               id="@t.Value"
+                               value="@t.Value" />
+                        <label class="form-check-label"
+                               for="flexRadioDefault1">
+                            @t.Text
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+        <div class="mt-2">
+            <div class="image-upload">
+                <div>
+                    <span class="image">
+                        @* <img src="images/image 7.png"> *@
+                    </span>
+                    <span class="file-text">veggies.png</span>
+                </div>
+                <button class="close"></button>
             </div>
-            <div id="content" contenteditable="true" spellcheck="false" class="form-control"></div>
-            <input asp-for="MessageBody" type="hidden" />
-            @* <div id="content" contenteditable="true" spellcheck="false">
-                                        Lorem, ipsum.
-                                    </div> *@
-            <div class="toolbar">
-                <button class="add-variables">Add Variables</button>
-                <div class="btn-toolbar">
-                    <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
-                    <button onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
-                    <button onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
-                    <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button>
-                    <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
-                    <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button>
+        </div>
+        <div class="drag-file-wrapper" id="attachment" style="display: none;">
+            <label class="drag-file">
+                <input asp-for="File" type="file" class="form-control file-upload-input" id="UploadedFile" accept=".jpg,.jpeg,.png" />
+                <input type="hidden" asp-for="FileName" />
+                <input type="hidden" asp-for="FileUrl" />
+                <input type="file" />
+                <span class="download-icon"></span>
+                <span class="drag-title">Click or drag file to this area to upload</span>
+            </label>
+            <div class="mt-2" id="existingFileLink">
+                @if (!string.IsNullOrEmpty(Model.FileUrl))
+                {
+                    <a href="@Url.Content(Model.FileUrl)" target="_blank">@Model.FileName</a>
+                }
+            </div>
+        </div>
+        <div class="invalid-feedback mt-0">
+            <span asp-validation-for="File"></span>
+        </div>
+        <div>
+            <div class="mb-2 flex-grow-1">
+                <label>Header</label>
+                <div class="input-group">
+                    <input asp-for="Header" type="text" class="form-control" maxlength="60" placeholder="Add a short line of text to the header of your message in English">
+                </div>
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="Header"></span>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="add-variables" id="header-add-btn" type="button">Add Variables</button>
                 </div>
             </div>
-            <span asp-validation-for="MessageBody" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="card padding" id="variable-card" style="display:none;">
-        <h6>Variable samples</h6>
-        <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
+            <div class="mb-2 flex-grow-1">
+                <label>Body <sup class="error-star">*</sup></label>
+                <textarea asp-for="MessageBody" id="MessageBody"></textarea>
 
-        <ul class="add-veriables" id="variable-card-header" style="display:none;">
-            <li>
-                <small class="fw-medium">Header</small>
-                <div class="d-flex gap-3">
-                    <div>
-                        <input asp-for="HeaderVariableName" type="text" class="form-control" readonly>
+                <div class="toolbar">
+                    <div class="btn-toolbar">
+                        <div class="emoji">
+                            <button type="button" class='bx bx-emoji' id="emoji-btn">
+                                <div class="emoji-wrapper" id="emoji-card" style="display:none;">
+                                    <emoji-picker class="emojipicker" id="picker"></emoji-picker>
+                                </div>
+                            </button>
+                        </div>
+                        @* <button type="button" onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
+                        <button type="button" onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
+                        <button type="button" onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
+                        <button type="button" onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button> *@
+                        @* <button type="button" onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
+                        <button type="button" onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button> *@
+                    </div>
+                    <button type="button" class="add-variables" id="add-body-variable">Add Variables</button>
+                </div>
+
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="MessageBody" id="messageBodyError"></span>
+                </div>
+            </div>
+            <div class="variables-sample mb-2" id="variable-card" style="display:none;">
+                <div class="flex-grow-1">
+                    <label>Variable Samples</label>
+                    <p>Include samples of all variables in your message to help review your template. Remember not to include any customer information to protect your customer’s privacy.</p>
+                    <div class="form-wrapper" id="variable-card-header" style="display:none;">
+                        <label>Header</label>
+                        <div class="d-flex gap-2">
+                            <div class="small-input">
+                                <input asp-for="HeaderVariableName" type="text" class="form-control" readonly>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input asp-for="HeaderVariableValue" type="text" class="form-control" placeholder="Enter content for variable">
+                            </div>
+                            @* <a href="#" class="delete"></a> *@
+                        </div>
+                    </div>
+                    <div class="form-wrapper" id="variable-card-body" style="display:none;">
+                        <label>Body</label>
+                        <div class="d-flex gap-2">
+                            <div class="small-input">
+                                <input type="text" class="form-control" value="{{1}}" disabled>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control" placeholder="Enter content for {{1}}">
+                            </div>
+                            @* <a href="#" class="delete"></a> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2 flex-grow-1">
+                <label>Footer</label>
+                <div class="input-group">
+                    <input asp-for="Footer" class="form-control" maxlength="60" placeholder="Enter Text" />
+                </div>
+                <div class="invalid-feedback mt-0">
+                    <span asp-validation-for="Footer"></span>
+                </div>
+            </div>
+            <div class="mb-3 flex-grow-1">
+                <label>Button </label>
+                <div class="button-note">
+                    <i class="info"></i>Only one button is supported for this type of template and the button text is not editable.
+                </div>
+            </div>
+            <div class="mb-2 flex-grow-1">
+                <div class="d-flex align-items-center mb-1">
+                    <label class="mb-0">Button<span class="light-text">(Optional)</span> </label>
+                    <div class="dropdown add-btn-template">
+                        <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Add button
+                        </button>
+                        <ul class="dropdown-menu" id="template-btn" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#" id="custom"><span class=""></span> Custom</a></li>
+                            <li><a class="dropdown-item" href="#" id="visit-website">Visit Website</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <p>Create buttons that let customers respond to your message or take action. You can add up to 10 buttons. If you add more than 3 buttons, they will appear in a list.</p>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Enter Text">
+                </div>
+            </div>
+            <div class="custom-btn mt-4">
+                <h6>Quick Reply</h6>
+                <div class="d-flex align-items-end gap-2">
+                    <div class="w-25">
+                        <label>Type</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="1">Custom</option>
+
+                        </select>
                     </div>
                     <div class="flex-grow-1">
-                        <input asp-for="HeaderVariableValue" type="text" class="form-control">
+                        <label>Button Text</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Quick Reply">
+                        </div>
                     </div>
+                    <a href="#" class="delete"></a>
                 </div>
-            </li>
-        </ul>
-
-        <ul class="add-veriables" id="variable-card-body" style="display:none;">
-            <li>
-                <small class="fw-medium">Body</small>
-                <div class="d-flex gap-3">
-                    <div>
-                        <input type="text" class="form-control" value="{{1}}" readonly>
+            </div>
+            <div class="custom-btn mt-3">
+                <h6>Call to Action</h6>
+                <div class="actionbtn d-flex align-items-end gap-2">
+                    <div class="w-25 flex-grow-1">
+                        <label>Type of Action</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="1">Visit website</option>
+                        </select>
                     </div>
-                    <div class="flex-grow-1">
-                        <input type="text" class="form-control">
+                    <div class="w-25 flex-grow-1">
+                        <label>Button Text</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Visit website">
+                        </div>
                     </div>
+                    <div class="w-25 flex-grow-1">
+                        <label>URL Type</label>
+                        <div class="input-group">
+                            <select class="form-select" aria-label="Default select example">
+                                <option value="1">Static</option>
+                                <option value="2">Dynamic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-25 flex-grow-1">
+                        <label>Website URL</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="https://example.com/">
+                        </div>
+                    </div>
+                    <a href="#" class="delete"></a>
                 </div>
-            </li>
-        </ul>
-    </div>
-
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Footer <span class="key">Optional</span></h3>
-            <span class="question"></span>
-        </div>
-        <div class="template-question mb-3">
-            <label asp-for="Footer" class="form-label">Add a 60 character footer to your message. Variables are not supported in the footer.</label>
-            <input asp-for="Footer" class="form-control" maxlength="60" />
-        </div>
-        <span asp-validation-for="Footer" class="text-danger"></span>
-    </div>
-    <div class="card padding">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Button <span class="key">Optional</span></h3>
-            <span class="question"></span>
-        </div>
-        <div class="template-question mb-3">
-            <label for="exampleInputEmail1" class="form-label">Please choose buttons to be added to the template. You can choose upto 10 buttons</label>
-            <div class="dropdown add-btn-template">
-                <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Add button
-                </button>
-                <ul class="dropdown-menu" id="template-btn" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#" id="custom"><span class=""></span> Custom</a></li>
-                    <li><a class="dropdown-item" href="#" id="visit-website">Visit Website</a></li>
-                </ul>
-
+                <div class="actionbtn d-flex align-items-end gap-2 mb-0 pb-0 border-bottom-0">
+                    <div class="flex-grow-1 w-25">
+                        <label>Type of Action</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="1">Visit website</option>
+                        </select>
+                    </div>
+                    <div class="flex-grow-1 w-25">
+                        <label>Button Text</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Visit website">
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 w-25">
+                        <label>URL Type</label>
+                        <div class="input-group">
+                            <select class="form-select" aria-label="Default select example">
+                                <option value="1">Static</option>
+                                <option value="2">Dynamic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 w-25">
+                        <label>Website URL</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="https://example.com/">
+                        </div>
+                    </div>
+                    <a href="#" class="delete"></a>
+                </div>
             </div>
-            <ul class="add-template-button-list">
-                <li>
-                    <div class="d-flex align-items-center form-wrapper gap-3">
-
-                        <div>
-                            <label>Type</label>
-                            <input class="form-control" value="Custom" />
-                        </div>
-                        <div>
-                            <label>Button Text</label>
-                            <input class="form-control" value="Quick Reply" />
-                        </div>
-                    </div>
-                    <div class="drag-close">
-
-                        <button class="close"></button>
-                    </div>
-                </li>
-
-                <li>
-                    <div class="d-flex align-items-center form-wrapper gap-3">
-
-                        <div>
-                            <label>Type</label>
-                            <input class="form-control" value="Visit Website" />
-                        </div>
-                        <div>
-                            <label>Button Text</label>
-                            <input class="form-control" value="Visit Website" />
-                        </div>
-                    </div>
-                    <div class="drag-close">
-
-                        <button class="close"></button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-    </div>
-    <div class="card padding">
-        <h3 class="mb-2">Message validity period</h3>
-        <p>You can set a custom validity period that your marketing message must be delivered by before it expires. If a message is not delivered within this timeframe, you will not be charged and your customer will not see the message.</p>
-
-        <div class="d-flex">
-            <div>
-                <h3 class="mb-2">Set custom validity period for your message</h3>
-                <p>If you don't set a custom validity period, the standard 10 minutes WhatsApp message validity period will be applied.</p>
-            </div>
-            <div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> </div>
-        </div>
-        <div class="validity-periods template-question mt-3" id="toggleDiv">
-            <h3 class="mb-2">Validity period</h3>
-            <select class="form-select" aria-label="Default select example">
-
-                <option value="1" selected>12 hours</option>
-                <option value="2">24 hours</option>
-                <option value="3">48 hours</option>
-                <option value="4">72 hours</option>
-                <option value="4">96 hours</option>
-                <option value="4">168 hours</option>
-
-            </select>
         </div>
     </div>
 </div>
-<!-- End marketing default set up -->

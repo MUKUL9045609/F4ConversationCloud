@@ -1,0 +1,16 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@{
+    int index = ViewData["Index"] as int? ?? 0;
+}
+<li>
+    <small class="fw-medium">Body</small>
+    <div class="d-flex gap-3">
+        <div>
+            <input asp-for="bodyVariables[@index].BodyVariableName" type="text" class="form-control" readonly />
+        </div>
+        <div class="flex-grow-1">
+            <input asp-for="bodyVariables[@index].BodyVariableValue" type="text" class="form-control" />
+        </div>
+        <span asp-validation-for="bodyVariables[@index].BodyVariableValue" class="text-danger"></span>
+    </div>
+</li>

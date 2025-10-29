@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
@@ -16,16 +17,223 @@ namespace F4ConversationCloud.Onboarding.Controllers
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
-        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository)
+        private IConfiguration _configuration { get; }
+        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository, IConfiguration configuration)
         {
             _onboardingService = onboardingService;
             _authRepository = authRepository;
+            _configuration = configuration;
         }
-        public IActionResult Index()
+
+        [HttpGet("Id={id}")]
+        public async Task<IActionResult>  Index([FromRoute] string id)
         {
-            TempData.Remove("registrationform");
+
+            string DecryptId = id.ToString().Decrypt();
+            int Userid = Convert.ToInt32(DecryptId);
+
+            try
+            {
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
+                
+                var command = new RegisterUserViewModel
+                {
+                    UserId = clientdetails.UserId,
+                    FirstName = clientdetails.FirstName,
+                    LastName = clientdetails.LastName,
+                    Email = clientdetails.Email,
+                    PhoneNumber = clientdetails.PhoneNumber,
+                    //Address = clientdetails.Address,
+                  //  Country = clientdetails.Country,
+                    //Timezone = clientdetails.TimeZone,
+                    Stage = clientdetails.Stage
+                };
+
+                TempData.Put("registrationform", command);
+              
+
+                return View();
+
+            }
+            catch (Exception)
+            {
+
+                return View();
+            }
+            
+           
+           
+           
+        }
+
+        [HttpGet("register-Client-Info")]
+        public async Task<IActionResult> RegisterIndividualAccount()
+        {
+
+            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
+            ViewBag.IsReadOnly = false;
+            //step1form = null;
+            if (step1form != null)
+            {
+                var existingData = new RegisterUserViewModel
+                {
+                    TimeZones = await _authRepository.GetTimeZonesAsync(),
+                    Cities = await _authRepository.GetCitiesAsync(),
+                    States = await _authRepository.GetStatesAsync(),
+                    FirstName = step1form.FirstName,
+                    LastName = step1form.LastName,
+                    Email = step1form.Email,
+                    PhoneNumber = step1form.PhoneNumber,
+
+                };
+                ViewBag.IsReadOnly = true;
+                
+                return View(existingData);
+            }
+           
+            var model = new RegisterUserViewModel
+            {
+                TimeZones = await _authRepository.GetTimeZonesAsync(),
+                Cities = await _authRepository.GetCitiesAsync(),
+                States = await _authRepository.GetStatesAsync(),
+            };
+
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCitiesByStateId(int stateId)
+        {
+            try
+            {
+                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
+                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
+            }
+            catch (Exception)
+            {
+                return Json(new { message = "Technical Error!" });
+            }
+        }
+
+
+        [HttpPost("Register-Client-Info")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
+        {
+            try
+            {
+                if (!command.PhoneNumberOtpVerified)
+                {
+                    ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
+                }
+                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.IsReadOnly = true;
+                    
+                        command.FirstName = ClientTempData.FirstName;
+                        command.LastName = ClientTempData.LastName;
+                        command.Email = ClientTempData.Email;
+                        command.PhoneNumber = ClientTempData.PhoneNumber;
+                        command.TimeZones = await _authRepository.GetTimeZonesAsync();
+                        command.Cities = await _authRepository.GetCitiesAsync();
+                        command.States = await _authRepository.GetStatesAsync();
+                    return View(command);
+                }
+
+                int TotalRegisteredClient = await _authRepository.GetRegisteredClientCountAsync();
+
+                command.Stage = ClientFormStage.draft;
+                var registerRequest = new RegisterUserModel
+                {
+                   
+                    UserId = ClientTempData.UserId,
+                    Address = command.Address,
+                    Country = command.Country,
+                    Timezone = command.Timezone,
+                    CityId= command.CityId,
+                    StateId= command.StateId,
+                    ZipCode= command.ZipCode,
+                    OptionalAddress = command.OptionalAddress,
+                    OrganizationsName = command.OrganizationsName,
+                    PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
+                    IsActive = command.IsActive,
+                    Stage = command.Stage,
+                    //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
+                    Role = ClientRole.Admin,
+                    RegistrationStatus = ClientRegistrationStatus.Pending,
+                    ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
+                };
+                
+                var isregister = await _onboardingService.RegisterUserAsync(registerRequest);
+                if (isregister.IsSuccess)
+                {
+                    command.UserId = isregister.NewUserId;
+
+                    //TempData.Put("registrationform", command);
+                    //ViewBag.IsReadOnly = true;
+
+                    //await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
+
+                    TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
+
+                    string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
+                    return Redirect(RedirecttoClientAppLoginPage);
+
+                }
+                else
+                {
+                    ViewBag.IsReadOnly = true;
+                    TempData["ErrorMessage"] = "Registration failed. Please try again.";
+                    return View(command);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return View(command);
+            }
+        }
+        [HttpGet("meta-onboarding")]
+        public IActionResult BankVerification()
+        {
+            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
+            if (step1form is null)
+            {
+                TempData["WarningMessage"] = "Register details first!";
+                return RedirectToAction("RegisterIndividualAccount");
+            }
             return View();
         }
+
+
+        public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
+        {
+            // var response = await Mediator.Send(command);
+            if ( command.UserEmailId != null)
+            {
+                ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
+            }
+            var response = await _onboardingService.CheckIsMailExitsAsync(command);
+
+            return Json(new { response.status, response.message });
+        }
+
+        public async Task<IActionResult> VarifyWhatsAppNumber( VarifyMobileNumberModel command)
+        {
+            if (string.IsNullOrWhiteSpace(command.UserPhoneNumber))
+            {
+                return Json(new { status = false, message = "Please enter a valid WhatsApp number." });
+            }
+
+            var response = await _onboardingService.VarifyWhatsAppContactNoAsync(command);
+            return Json(new { response.status, response.message });
+        }
+
+
 
         [HttpGet("Login")]
         public async Task<IActionResult> Login()
@@ -43,9 +251,10 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     return View(requst);
                 }
-                var response = await _onboardingService.OnboardingLogin(new Loginrequest() {
-                          Email= requst.Email,
-                         PassWord= requst.Password
+                var response = await _onboardingService.OnboardingLogin(new Loginrequest()
+                {
+                    Email = requst.Email,
+                    PassWord = requst.Password
                 });
 
                 if (response.IsSuccess)
@@ -89,124 +298,56 @@ namespace F4ConversationCloud.Onboarding.Controllers
             return View(requst);
         }
 
-        [HttpGet("register-Client-Info")]
-        public async Task<IActionResult> RegisterIndividualAccount()
+
+        //public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ModelState.AddModelError(nameof(command.OTP));
+        //    }
+        //    if (string.IsNullOrWhiteSpace(command.OTP))
+        //    {
+        //        return Json(new { status = false, message = "Enter A Valid OTP" });
+        //    }
+        //    var response = await _onboardingService.VerifyOTPAsync(command);
+        //    return Json(new { response.status, response.message });
+        //}
+        public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
-
-            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
-            ViewBag.IsReadOnly = false;
-            //step1form = null;
-            if (step1form != null)
+          
+            if (!ModelState.IsValid)
             {
-                var existingData = new RegisterUserViewModel();
-                existingData = step1form;
-                ViewBag.IsReadOnly = true;
-                return View(existingData);
-            }
-           
-            var model = new RegisterUserViewModel
-            {
-                TimeZones = await _authRepository.GetTimeZonesAsync()
-            };
-
-
-            return View(model);
-
-        }
-
-        [HttpPost("Register-Client-Info")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
-        {
-            try
-            { // command.CurrentStep = 1;
-                if (!command.EmailOtpVerified && command.Email != null)
-                {
-                    ModelState.AddModelError(nameof(command.EmailOtpVerified), "Please verify your Email before proceeding.");
-                }
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.IsReadOnly = false;
-                    return View(command);
-                }
-
-                int TotalRegisteredClient = await _authRepository.sp_GetRegisteredClientCountAsync();
-
-                command.Stage = ClientFormStage.draft;
-                var registerRequest = new RegisterUserModel
-                {
-                    FirstName = command.FirstName,
-                    LastName = command.LastName,
-                    Email = command.Email,
-                    Address = command.Address,
-                    Country = command.Country,
-                    Timezone = command.Timezone,
-                    PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
-                    IsActive = command.IsActive,
-                    Stage = command.Stage,
-                    FullPhoneNumber = command.FullPhoneNumber,
-                    Role = ClientRole.Admin,
-                    ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
-                };
                 
-                var isregister = await _onboardingService.RegisterUserAsync(registerRequest);
-                if (isregister.IsSuccess)
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new
                 {
-                    command.UserId = isregister.NewUserId;
+                    status = false,
+                    message = errors.Any() ? string.Join(", ", errors) : "Invalid input."
+                });
+            }
 
-                    TempData.Put("registrationform", command);
-                    ViewBag.IsReadOnly = true;
-
-                    await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
-
-                    TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
-
-
-                    return RedirectToAction("BankVerification");
-
-                }
-                else
+            
+            if (string.IsNullOrWhiteSpace(command.OTP))
+            {
+                return Json(new
                 {
-                    ViewBag.IsReadOnly = false;
-                    TempData["ErrorMessage"] = "Registration failed. Please try again.";
-                    return View(command);
-                }
-
+                    status = false,
+                    message = "Enter a valid OTP"
+                });
             }
-            catch (Exception)
-            {
 
-                return View(command);
-            }
-        }
-        [HttpGet("meta-onboarding")]
-        public IActionResult BankVerification()
-        {
-            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
-            if (step1form is null)
-            {
-                TempData["WarningMessage"] = "Register details first!";
-                return RedirectToAction("RegisterIndividualAccount");
-            }
-            return View();
-        }
-
-
-        public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
-        {
-            // var response = await Mediator.Send(command);
-            if ( command.UserEmailId != null)
-            {
-                ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
-            }
-            var response = await _onboardingService.CheckIsMailExitsAsync(command);
-
-            return Json(new { response.status, response.message });
-        }
-        public async Task<IActionResult> VerifyOTP([FromBody] ValidateRegistrationOTPModel command)
-        {
+            
             var response = await _onboardingService.VerifyOTPAsync(command);
-            return Json(new { response.status });
+
+            return Json(new
+            {
+                status = response.status,
+                message = response.message
+            });
         }
 
         [HttpPost]

@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Helper;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,6 +32,13 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }
         public string ClientId { get; set; }
+        public string CityId { get; set; }
+        public string StateId { get; set; }
+        public string ZipCode { get; set; }
+        public string OptionalAddress { get; set; }
+        public string? OrganizationsName { get; set; }
+        public ClientRegistrationStatus RegistrationStatus { get; set; }
+
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
     }
@@ -87,6 +95,18 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 
         public string name { get; set; }
         public string current_utc_offset { get; set; }
+    }
+    public class Cities
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string StateId { get; set; }
+    }
+    public class States
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
 }
 

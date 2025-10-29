@@ -2,6 +2,8 @@
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using System.Threading;
+using System.Threading.Tasks;
 using ResponseTemplateMessageCreationResponse = F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response.TemplateMessageCreationResponse;
 
 
@@ -15,6 +17,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
         Task<TemplateByIdResponse> GetTemplateByIdAsync(string templateId, CancellationToken cancellationToken = default);
         Task<BaseSuccessResponse> DeleteTemplateByIdAsync(string whatsAppBusinessAccountId, string templateId, string templateName, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, CancellationToken cancellationToken = default);
 
-
+        Task<WhatsAppResponse> SendTextMessageTemplateAsync(TextTemplateMessageRequest textTemplateMessageRequest, WhatsAppBusinessCloudApiConfig? cloudApiConfig = null, CancellationToken cancellationToken = default);
     }
 }
