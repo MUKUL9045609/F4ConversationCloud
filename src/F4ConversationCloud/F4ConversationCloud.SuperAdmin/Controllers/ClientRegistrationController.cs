@@ -114,9 +114,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                logModel.LogType = "Error";
-                logModel.Message = ex.Message;
-                logModel.StackTrace = ex.StackTrace;
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
             }
