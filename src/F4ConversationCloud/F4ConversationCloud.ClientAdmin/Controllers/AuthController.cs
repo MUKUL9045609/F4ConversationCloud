@@ -49,8 +49,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 });
                 if (response.IsSuccess)
                 {
-                    if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
-                    {
+                    //if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
+                    //{
                         var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
                         var userClaims = new List<Claim>()
@@ -70,11 +70,25 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         HttpContext.Session.SetString("Username", clientdetails.Email);
                         HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
                         HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
+                        HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
                         TempData["WarningMessage"] = "Welcome";
-                        return RedirectToAction("Index", "Home");
+                         var stageValue = HttpContext.Session.GetInt32("StageId");
+                         
+                                ClientFormStage stage = (ClientFormStage)stageValue.Value;
 
-                    }
+                                if (stage == ClientFormStage.draft)
+                                {
+                                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                                }
+                                else {
+                                    return RedirectToAction("Index", "Home");
+
+                                }
+
+
+
+                    //}
 
 
                 }

@@ -11,12 +11,12 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
 {
     public interface IAuthRepository
     {
-        Task<int> CreateUserAsync(RegisterUserModel command);
+        Task<int> UpdateClientDetailsAsync(RegisterUserModel command);
         Task<int> InsertOTPAsync(VarifyMobileNumberModel command);
         Task<int> VerifyOTPAsync(ValidateRegistrationOTPModel oTPCommand);
         Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid);
-        Task<int> CheckMailOrPhoneNumberAsync(VarifyMobileNumberModel command);
-
+        Task<int> IsMailExitAsync(VarifyMobileNumberModel command);
+        Task<int> IsContactNoExitAsync(VarifyMobileNumberModel command);
         Task<int> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration command);
         Task<UserDetailsViewModel> GetCustomerById(int userId);
 
@@ -24,7 +24,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
         Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
         Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId);
         Task<int> UpdatePasswordAsync(ConfirmPasswordModel model);
-        Task<int> sp_GetRegisteredClientCountAsync();
+        Task<int> GetRegisteredClientCountAsync();
         Task<ClientDetails> GetClientInfoByEmailId(UserDetailsDTO userDetailsDTO);
 
 
