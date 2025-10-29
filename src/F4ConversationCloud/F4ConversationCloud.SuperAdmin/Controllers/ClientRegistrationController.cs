@@ -5,6 +5,7 @@ using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Helpers;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -104,14 +105,18 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 });
 
                 var name = model.FirstName + " " + model.LastName;
-                await _clientRegistrationService.SendRegistrationEmailAsync(model.Email ,name, id);
+                await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id);
 
+                
                 TempData["SuccessMessage"] = "Client pre-registered successfully";
 
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
             }

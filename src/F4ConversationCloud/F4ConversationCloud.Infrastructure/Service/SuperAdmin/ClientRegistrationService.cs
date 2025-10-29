@@ -8,6 +8,7 @@ using F4ConversationCloud.Domain.Extension;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -32,7 +33,27 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
         {
-            return await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/Create";
+            logModel.AdditionalInfo = $"Model: {clientRegistration}";
+            int response = 0;
+            try
+            {
+                response = await _clientRegistrationRepository.CreateUpdateAsync(clientRegistration);
+                logModel.LogType = "Success";
+                logModel.Message = "Client pre-registered successfully";
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+            return response;
         }
 
         public async Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter)
@@ -61,6 +82,8 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         public async Task SendRegistrationEmailAsync(string email, string name, int id)
         {
             var model = new LogModel();
+            model.Source = "SendRegistrationEmailAsync";
+            model.AdditionalInfo = $"Email: {email}, Name: {name}, ID: {id}";
             try
             {
                 string templatePath = Path.Combine(_env.WebRootPath, "Html", "RegistrationEmailTemplate.html");
@@ -88,15 +111,12 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
                 model.LogType = "Success";
                 model.Message = "Registration email sent successfully.";
-                model.AdditionalInfo = $"Email: {email}, Name: {name}, ID: {id}";
             }
             catch (Exception ex)
             {
-                model.Source = "SendRegistrationEmailAsync";
                 model.LogType = "Error";
                 model.Message = ex.Message;
                 model.StackTrace = ex.StackTrace;
-                model.AdditionalInfo = $"Email: {email}, Name: {name}, ID: {id}";
             }
             finally
             {
