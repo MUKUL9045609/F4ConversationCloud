@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F4ConversationCloud.Domain.Entities.SuperAdmin
+namespace F4ConversationCloud.Domain.Enum
 {
     public enum ClientRegistrationStatus
     {
