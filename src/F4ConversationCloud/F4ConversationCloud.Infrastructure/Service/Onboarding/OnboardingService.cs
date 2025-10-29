@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
@@ -10,6 +11,7 @@ using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Twilio.Types;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -102,18 +104,18 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-              int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
+              //int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
                             var CreateOTP = OtpGenerator.GenerateRandomOTP();
-                                    if (ContactNoExit != 0)
-                                    {
-                                        return new VarifyUserDetailsResponse
-                                        {
-                                            status = false,
-                                            message = "Already Registered With this Number!"
+                                    //if (ContactNoExit != 0)
+                                    //{
+                                    //    return new VarifyUserDetailsResponse
+                                    //    {
+                                    //        status = false,
+                                    //        message = "Already Registered With this Number!"
 
-                                        };
+                                    //    };
 
-                                    }
+                                    //}
                                     var varificationRequest = new VarifyMobileNumberModel
                                     {
                                         UserEmailId = request.UserEmailId,
@@ -130,17 +132,17 @@ namespace F4ConversationCloud.Application.Common.Services
                                             message = "Failed generate OTP"
                                         };
                                     }
-                          var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
-                                if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
-                                {
-                                    return new VarifyUserDetailsResponse
+                                    var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                                    if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
                                     {
-                                        status = false,
-                                        message = "Failed to send OTP via WhatsApp"
-                                    };
-                                }
-                               
-                    return new VarifyUserDetailsResponse
+                                        return new VarifyUserDetailsResponse
+                                        {
+                                            status = false,
+                                            message = "Failed to send OTP via WhatsApp"
+                                        };
+                                    }
+
+                return new VarifyUserDetailsResponse
                         {
                             status = true,
                             message = "OTP sent successfully to your WhatsApp.!"
@@ -168,6 +170,8 @@ namespace F4ConversationCloud.Application.Common.Services
                 if (!string.IsNullOrEmpty(request.PhoneNumberId))
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
+                    var registerPhoneNumber = await _whatsAppCloude.RegisterClientAccountAsync( new ActivateClientAccountRequest { PhoneNumberId = request.PhoneNumberId });
+
 
 
                     string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
@@ -181,10 +185,10 @@ namespace F4ConversationCloud.Application.Common.Services
                         PhoneNumberId = request.PhoneNumberId,
                         BusinessId = request.BusinessId,
                         WhatsAppBotName = businessInfo.VerifiedName,
-                        Status = businessInfo.WhatsAppStatus,
+                        Status = registerPhoneNumber.status,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
-                        ApprovalStatus = "Pending",
+                        //ApprovalStatus = "Pending",
                         ClientEmail = email,
                         WebSite = websites,
                         Category = category,
@@ -284,7 +288,7 @@ namespace F4ConversationCloud.Application.Common.Services
                     return new ValidateRegistrationOTPResponse
                     {
                         status = false,
-                        message = "Invalid or expired OTP. Please check and try again."
+                        message = "OTP is Invalid or expired . Please check and Resend"
                     };
                 }
             }
@@ -358,12 +362,12 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
 
-                var loginUrl = _urlHelper.Action(
-                        "Login",      
-                        "Onboarding",  
-                        null,          
-                        "https"        
-                    );
+                //var loginUrl = _urlHelper.Action(
+                //        "Login",      
+                //        "Onboarding",  
+                //        null,          
+                //        "https"        
+                //    );
 
 
 
@@ -374,8 +378,8 @@ namespace F4ConversationCloud.Application.Common.Services
                     Body = "<p>Dear Customer,</p><br />" +
                            "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
                            "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
-                           "To complete your Meta Registration, please use the link below:<br/><br/>" +
-                           $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
+                           //"To complete your Meta Registration, please use the link below:<br/><br/>" +
+                           //$"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
                            "Best regards,"
 
                 };

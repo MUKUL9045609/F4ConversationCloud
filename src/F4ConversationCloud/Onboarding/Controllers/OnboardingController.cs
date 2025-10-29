@@ -3,12 +3,14 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
+using System;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController : Controller
@@ -24,12 +26,15 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpGet("Id={id}")]
-        public async Task<IActionResult>  Index([FromRoute] int id)
+        public async Task<IActionResult>  Index([FromRoute] string id)
         {
-            int userId = 0;
+
+            string DecryptId = id.ToString().Decrypt();
+            int Userid = Convert.ToInt32(DecryptId);
+
             try
             {
-                var clientdetails = await _onboardingService.GetCustomerByIdAsync(id);
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
                 
                 var command = new RegisterUserViewModel
                 {
@@ -45,10 +50,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 };
 
                 TempData.Put("registrationform", command);
-                //id = id.Replace("thisisslash", "/").Replace("thisisbackslash", @"\").Replace("thisisplus", "+");
-                //string decToken = id.Decrypt();
-
-                //int.TryParse(decToken.Split("|")[0], out userId);
+              
 
                 return View();
 
@@ -56,74 +58,12 @@ namespace F4ConversationCloud.Onboarding.Controllers
             catch (Exception)
             {
 
-                throw;
+                return View();
             }
             
-           // TempData.Remove("registrationform");
            
            
-        }
-
-        [HttpGet("Login")]
-        public async Task<IActionResult> Login()
-        {
-
-            return View();
-        }
-
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginRequestModel requst)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return View(requst);
-                }
-                var response = await _onboardingService.OnboardingLogin(new Loginrequest() {
-                          Email= requst.Email,
-                         PassWord= requst.Password
-                });
-
-                if (response.IsSuccess)
-                {
-                    if (response.Data.Stage.Equals(ClientFormStage.draft))
-                    {
-                        var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
-
-                        clientdetails.TermsCondition = true;
-                        TempData.Put("registrationform", clientdetails);
-                        TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
-                        return RedirectToAction("BankVerification");
-                    }
-                    else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
-                    {
-                        TempData["Info"] = "You have already registered please Wait For Admin Approval !";
-                        return View(requst);
-                    }
-
-                }
-                else
-                {
-                    if (response.Message.Equals("InvalidEmail"))
-                    {
-                        ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
-                    }
-                    if (response.Message.Equals("InvalidPassword"))
-                    {
-                        ModelState.AddModelError(nameof(requst.Password), "Invalid Password");
-                    }
-
-                    return View(requst);
-
-                }
-            }
-            catch (Exception)
-            {
-
-                return View();
-            }
-            return View(requst);
+           
         }
 
         [HttpGet("register-Client-Info")]
@@ -138,6 +78,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 var existingData = new RegisterUserViewModel
                 {
                     TimeZones = await _authRepository.GetTimeZonesAsync(),
+                    Cities = await _authRepository.GetCitiesAsync(),
+                    States = await _authRepository.GetStatesAsync(),
                     FirstName = step1form.FirstName,
                     LastName = step1form.LastName,
                     Email = step1form.Email,
@@ -151,13 +93,30 @@ namespace F4ConversationCloud.Onboarding.Controllers
            
             var model = new RegisterUserViewModel
             {
-                TimeZones = await _authRepository.GetTimeZonesAsync()
+                TimeZones = await _authRepository.GetTimeZonesAsync(),
+                Cities = await _authRepository.GetCitiesAsync(),
+                States = await _authRepository.GetStatesAsync(),
             };
 
 
             return View(model);
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCitiesByStateId(int stateId)
+        {
+            try
+            {
+                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
+                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
+            }
+            catch (Exception)
+            {
+                return Json(new { message = "Technical Error!" });
+            }
+        }
+
 
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
@@ -178,6 +137,9 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
+                        command.TimeZones = await _authRepository.GetTimeZonesAsync();
+                        command.Cities = await _authRepository.GetCitiesAsync();
+                        command.States = await _authRepository.GetStatesAsync();
                     return View(command);
                 }
 
@@ -195,12 +157,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     StateId= command.StateId,
                     ZipCode= command.ZipCode,
                     OptionalAddress = command.OptionalAddress,
+                    OrganizationsName = command.OrganizationsName,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
                     //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
                     Role = ClientRole.Admin,
-                    ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
+                    RegistrationStatus = ClientRegistrationStatus.Pending,
+                    ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
                 
                 var isregister = await _onboardingService.RegisterUserAsync(registerRequest);
@@ -271,15 +235,119 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
 
 
+        [HttpGet("Login")]
+        public async Task<IActionResult> Login()
+        {
 
+            return View();
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginRequestModel requst)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(requst);
+                }
+                var response = await _onboardingService.OnboardingLogin(new Loginrequest()
+                {
+                    Email = requst.Email,
+                    PassWord = requst.Password
+                });
+
+                if (response.IsSuccess)
+                {
+                    if (response.Data.Stage.Equals(ClientFormStage.draft))
+                    {
+                        var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
+
+                        clientdetails.TermsCondition = true;
+                        TempData.Put("registrationform", clientdetails);
+                        TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                        return RedirectToAction("BankVerification");
+                    }
+                    else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
+                    {
+                        TempData["Info"] = "You have already registered please Wait For Admin Approval !";
+                        return View(requst);
+                    }
+
+                }
+                else
+                {
+                    if (response.Message.Equals("InvalidEmail"))
+                    {
+                        ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
+                    }
+                    if (response.Message.Equals("InvalidPassword"))
+                    {
+                        ModelState.AddModelError(nameof(requst.Password), "Invalid Password");
+                    }
+
+                    return View(requst);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                return View();
+            }
+            return View(requst);
+        }
+
+
+        //public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ModelState.AddModelError(nameof(command.OTP));
+        //    }
+        //    if (string.IsNullOrWhiteSpace(command.OTP))
+        //    {
+        //        return Json(new { status = false, message = "Enter A Valid OTP" });
+        //    }
+        //    var response = await _onboardingService.VerifyOTPAsync(command);
+        //    return Json(new { response.status, response.message });
+        //}
         public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
+          
+            if (!ModelState.IsValid)
+            {
+                
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new
+                {
+                    status = false,
+                    message = errors.Any() ? string.Join(", ", errors) : "Invalid input."
+                });
+            }
+
+            
             if (string.IsNullOrWhiteSpace(command.OTP))
             {
-                return Json(new { status = false, message = "Enter A Valid OTP" });
+                return Json(new
+                {
+                    status = false,
+                    message = "Enter a valid OTP"
+                });
             }
+
+            
             var response = await _onboardingService.VerifyOTPAsync(command);
-            return Json(new { response.status, response.message });
+
+            return Json(new
+            {
+                status = response.status,
+                message = response.message
+            });
         }
 
         [HttpPost]
