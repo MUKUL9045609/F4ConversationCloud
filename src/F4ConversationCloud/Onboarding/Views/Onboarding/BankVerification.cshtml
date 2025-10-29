@@ -122,7 +122,8 @@
         const launchWhatsAppSignup = () => {
           
           FB.login(fbLoginCallback, {
-            config_id: '9869767589818097', 
+            //config_id: '9869767589818097',
+            config_id: '990548139755793',
             response_type: 'code', 
             override_default_response_type: true, 
             extras: {"version":"v3"}
@@ -132,8 +133,8 @@
     <script>
         window.fbAsyncInit = function() {
           FB.init({
-            //appId            : '2983579265274951',
-            appId            : '2199076023947769',
+            appId            : '2983579265274951',
+            //appId            : '2199076023947769',
             autoLogAppEvents : true,
             xfbml            : true,
             version          : 'v23.0'
