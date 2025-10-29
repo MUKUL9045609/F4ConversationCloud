@@ -165,10 +165,10 @@
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="email" class="form-label">Organizations Name (Optional)</label>
-                <input type="text" class="form-control" placeholder="Enter your organizations name"
+                <label for="OrganizationsName" class="form-label">Organizations Name (Optional)</label>
+                <input asp-for="OrganizationsName" type="text" class="form-control" placeholder="Enter your organizations name"
                        id="email">
-                <div class="error-message text-danger small" id="emailError"></div>
+                <div asp-validation-for="OrganizationsName" class="error-message text-danger small" id="emailError"></div>
             </div>
            
             <div class="col-md-6 mb-3">
@@ -205,7 +205,7 @@
                 <div class="col-md-12">
                     <div class="mb-3">
                         <label class="form-label">Address Line 2 (Optional)</label>
-                        <input asp-for="OrganizationsName" type="text" class="form-control"
+                    <input asp-for="OptionalAddress" type="text" class="form-control"
                                placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
                                >
                     </div>

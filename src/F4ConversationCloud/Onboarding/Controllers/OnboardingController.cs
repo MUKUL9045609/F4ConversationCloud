@@ -26,15 +26,15 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpGet("Id={id}")]
-        public async Task<IActionResult>  Index([FromRoute] string id)
+        public async Task<IActionResult>  Index([FromRoute] int id)
         {
 
-            string DecryptId = id.ToString().Decrypt();
-            int Userid = Convert.ToInt32(DecryptId);
+            //string DecryptId = id.ToString().Decrypt();
+            //int Userid = Convert.ToInt32(DecryptId);
 
             try
             {
-                var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(id);
                 
                 var command = new RegisterUserViewModel
                 {
@@ -161,7 +161,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
-                    //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
                     Role = ClientRole.Admin,
                     RegistrationStatus = ClientRegistrationStatus.Pending,
                     ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
@@ -172,11 +171,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     command.UserId = isregister.NewUserId;
 
-                    //TempData.Put("registrationform", command);
-                    //ViewBag.IsReadOnly = true;
-
-                    //await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
-
                     TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
                     string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
@@ -185,6 +179,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
                 else
                 {
+
+                    command.FirstName = ClientTempData.FirstName;
+                    command.LastName = ClientTempData.LastName;
+                    command.Email = ClientTempData.Email;
+                    command.PhoneNumber = ClientTempData.PhoneNumber;
+                    command.TimeZones = await _authRepository.GetTimeZonesAsync();
+                    command.Cities = await _authRepository.GetCitiesAsync();
+                    command.States = await _authRepository.GetStatesAsync();
                     ViewBag.IsReadOnly = true;
                     TempData["ErrorMessage"] = "Registration failed. Please try again.";
                     return View(command);

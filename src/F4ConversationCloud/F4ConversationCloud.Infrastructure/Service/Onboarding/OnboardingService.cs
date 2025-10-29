@@ -6,6 +6,7 @@ using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -188,7 +189,7 @@ namespace F4ConversationCloud.Application.Common.Services
                         Status = registerPhoneNumber.status,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
-                        //ApprovalStatus = "Pending",
+                        ApprovalStatus = ClientRegistrationStatus.Active,
                         ClientEmail = email,
                         WebSite = websites,
                         Category = category,
