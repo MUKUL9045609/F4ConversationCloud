@@ -193,63 +193,66 @@
                 </select>
                 <span asp-validation-for="Timezone" class="error-message text-danger small"></span>
             </div>
-            <h5>Address</h5>
-            <div class="col-md-12">
-                <div class="mb-3">
-                     <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
-                    <textarea asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here"></textarea>
-                    <span asp-validation-for="Address" class="error-message text-danger small"></span>
+           
+                <h5>Address</h5>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                         <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
+                        <textarea asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here" id="addreessline1"></textarea>
+                        <span asp-validation-for="Address" class="error-message text-danger small"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12">
-                <div class="mb-3">
-                    <label class="form-label">Address Line 2 (Optional)</label>
-                    <input type="text" class="form-control"
-                           placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
-                           >
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label">Address Line 2 (Optional)</label>
+                        <input asp-for="OrganizationsName" type="text" class="form-control"
+                               placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
+                               >
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
-                    <select id="countrySelect" name="Country" class="form-select select2"></select>
-                    <span asp-validation-for="Country" class="error-message text-danger small"></span>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
+                        <select id="countrySelect" name="Country" class="form-select select2"></select>
+                        <span asp-validation-for="Country" class="error-message text-danger small"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="state" class="form-label">State <sup class="error">*</sup></label>
-                    <select id="StateSelect" class="form-control select2" asp-for="StateId">
-                        <option value="" selected disabled>Select State</option>
-                        @foreach (var item in Model.States)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-                    </select>
-                    <span asp-validation-for="StateId" class="error-message text-danger small"></span>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="state" class="form-label">State <sup class="error">*</sup></label>
+                        <select id="StateSelect" class="form-control select2" asp-for="StateId">
+                            <option value="" selected disabled>Select State</option>
+                            @foreach (var item in Model.States)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="StateId" class="error-message text-danger small"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="CitySelect" class="form-label">City <sup class="error">*</sup></label>
-                    <select id="CitySelect" class="form-control select2" asp-for="CityId">
-                        <option value="" selected disabled>Select City</option>
-                    </select>
-                    <span asp-validation-for="CityId" class="error-message text-danger small"></span>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="CitySelect" class="form-label">City <sup class="error">*</sup></label>
+                        <select id="CitySelect" class="form-control select2" asp-for="CityId">
+                            <option value="" selected disabled>Select City</option>
+                        </select>
+                        <span asp-validation-for="CityId" class="error-message text-danger small"></span>
+                    </div>
                 </div>
-            </div>
 
            
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="ZipCode" class="form-label">
-                        Postal / ZIP Code <sup class="error">*</sup>
-                    </label>
-                    <input asp-for ="ZipCode" type="text" class="form-control" id="postal_code" 
-                           placeholder="Enter your postal or ZIP code" >
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="ZipCode" class="form-label">
+                            Postal / ZIP Code <sup class="error">*</sup>
+                        </label>
+                        <input asp-for ="ZipCode" type="text" class="form-control" id="postal_code" 
+                               placeholder="Enter your postal or ZIP code" >
+                    </div>
                 </div>
-            </div>
+           
+        
         </div>
         <div class="form-check d-flex justify-content-end terms-check gap-2">
             <input asp-for="TermsCondition" class="form-check-input" id="agreeTerms" />
@@ -333,6 +336,20 @@
         // #region Resend otp-- >
 
          $(document).ready(function () {
+
+                 const fieldIds = [
+                    'addreessline1',
+                    'addresstwo',
+                    'countrySelect',
+                    'StateSelect',
+                    'CitySelect',
+                    'postal_code',
+                    'agreeTerms'
+                    ];
+
+                 fieldIds.forEach(id => {
+                    $('#' + id).prop('disabled', true);
+                });
              let timerDuration = 5 * 60;
              let interval;
 
@@ -459,6 +476,9 @@
                                  .prop('readonly', true)
                                  .removeClass('is-invalid')
                                  .addClass('form-control flex-grow-1 success');
+                                 fieldIds.forEach(id => {
+                                    $('#' + id).prop('disabled', false);
+                                });
                          }
                          else
                          {
