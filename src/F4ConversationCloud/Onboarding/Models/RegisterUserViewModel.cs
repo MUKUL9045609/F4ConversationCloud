@@ -35,11 +35,22 @@ namespace Onboarding.Models
 
             [Required(ErrorMessage = "Country is required")]
             public string? Country { get; set; }
-            public string? CityId { get; set; }
-            public string? StateId { get; set; }
-            public string? ZipCode { get; set; }
+
+
+            [Required(ErrorMessage = "Please select a state.")]
+            public string StateId { get; set; }
+
+
+            [Required(ErrorMessage = "Please select a city.")]
+            public string CityId { get; set; }
+
+            [Required(ErrorMessage = "Please enter a zip code.")]
+            [RegularExpression(@"^\d{5,6}$", ErrorMessage = "Please enter a valid 5 or 6 digit zip code.")]
+            public string ZipCode { get; set; }
+
             public string? OptionalAddress { get; set; }
 
+            public string? OrganizationsName { get; set; }
 
             [Required(ErrorMessage = "Password is required")]
             [StringLength(16, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
@@ -51,6 +62,7 @@ namespace Onboarding.Models
 
             [Compare("PassWord", ErrorMessage = "Passwords do not match.")]
             [DataType(DataType.Password)]
+            [Required(ErrorMessage = "Confirm Password is required")]   
             public string ConfirmPassword { get; set; }
             public bool IsActive { get; set; } = true;
 
@@ -67,8 +79,10 @@ namespace Onboarding.Models
             public int UserId { get; set; }
            
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
+        public IEnumerable<Cities> Cities { get; set; } = new List<Cities>();
+        public IEnumerable<States> States { get; set; } = new List<States>();
 
-        }
+    }
     public class PhoneNumberVerifiedAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

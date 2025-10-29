@@ -10,8 +10,8 @@ namespace F4ConversationCloud.Application.Common.Meta.BussinessProfile
     {
         public string PhoneNumberId { get; set; }
 
-        public string  Pin { get; set; }= "313466";
-        public string messaging_product { get; set; } = "whatsapp";
+        public string  Pin { get; set; }
+        public string messaging_product { get; set; }
     }
     public class ActivateClientAccountResponse
     {
