@@ -104,18 +104,18 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-              int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
+              //int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
                             var CreateOTP = OtpGenerator.GenerateRandomOTP();
-                                    if (ContactNoExit != 0)
-                                    {
-                                        return new VarifyUserDetailsResponse
-                                        {
-                                            status = false,
-                                            message = "Already Registered With this Number!"
+                                    //if (ContactNoExit != 0)
+                                    //{
+                                    //    return new VarifyUserDetailsResponse
+                                    //    {
+                                    //        status = false,
+                                    //        message = "Already Registered With this Number!"
 
-                                        };
+                                    //    };
 
-                                    }
+                                    //}
                                     var varificationRequest = new VarifyMobileNumberModel
                                     {
                                         UserEmailId = request.UserEmailId,
