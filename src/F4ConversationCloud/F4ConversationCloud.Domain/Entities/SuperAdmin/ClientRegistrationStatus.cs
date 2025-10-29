@@ -10,12 +10,12 @@ namespace F4ConversationCloud.Domain.Entities.SuperAdmin
 {
     public enum ClientRegistrationStatus
     {
-        [Description("Pre-Registered")]
-        [Display(Name = "Pre-Registered")]
-        PreRegistered = 1,
+        [Description("Pending")]
+        [Display(Name = "Pending")]
+        Pending = 1,
 
-        [Description("Registration Completed")]
-        [Display(Name = "Registration Completed")]
-        RegistrationCompleted = 2
+        [Description("Active")]
+        [Display(Name = "Active")]
+        Active = 2
     }
 }

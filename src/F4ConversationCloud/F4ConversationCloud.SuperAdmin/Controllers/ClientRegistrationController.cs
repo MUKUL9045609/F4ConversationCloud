@@ -109,7 +109,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
-                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
+                    RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
                 var name = model.FirstName + " " + model.LastName;
@@ -177,7 +177,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
-                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
+                    RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
                 TempData["SuccessMessage"] = "Client Registration updated successfully";

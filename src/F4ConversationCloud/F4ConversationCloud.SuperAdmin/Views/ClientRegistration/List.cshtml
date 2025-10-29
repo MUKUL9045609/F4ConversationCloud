@@ -110,7 +110,7 @@
                                         @Html.DisplayFor(modelItem => item.RegistrationStatusName)
                                     </td>
                                     <td>
-                                        @if (item.RegistrationStatusName == ClientRegistrationStatus.PreRegistered.Get<DisplayAttribute>().Name)
+                                        @if (item.RegistrationStatusName == ClientRegistrationStatus.Pending.Get<DisplayAttribute>().Name)
                                         {
                                             <div class="action">
                                                 <form method="get" action="@Url.Action("Edit", "ClientRegistration", new { id = item.Id })">
