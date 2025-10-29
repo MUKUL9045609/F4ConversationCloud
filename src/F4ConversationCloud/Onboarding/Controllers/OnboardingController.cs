@@ -9,22 +9,59 @@ using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
-using System;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController : Controller
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
-        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository)
+        private IConfiguration _configuration { get; }
+        public OnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository, IConfiguration configuration)
         {
             _onboardingService = onboardingService;
             _authRepository = authRepository;
+            _configuration = configuration;
         }
-        public IActionResult Index()
+
+        [HttpGet("Index/{id}")]
+        public async Task<IActionResult>  Index([FromRoute] int id)
         {
-            TempData.Remove("registrationform");
-            return View();
+            int userId = 0;
+            try
+            {
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(id);
+                
+                var command = new RegisterUserViewModel
+                {
+                    UserId = clientdetails.UserId,
+                    FirstName = clientdetails.FirstName,
+                    LastName = clientdetails.LastName,
+                    Email = clientdetails.Email,
+                    PhoneNumber = clientdetails.PhoneNumber,
+                    //Address = clientdetails.Address,
+                  //  Country = clientdetails.Country,
+                    //Timezone = clientdetails.TimeZone,
+                    Stage = clientdetails.Stage
+                };
+
+                TempData.Put("registrationform", command);
+                //id = id.Replace("thisisslash", "/").Replace("thisisbackslash", @"\").Replace("thisisplus", "+");
+                //string decToken = id.Decrypt();
+
+                //int.TryParse(decToken.Split("|")[0], out userId);
+
+                return View();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+           // TempData.Remove("registrationform");
+           
+           
         }
 
         [HttpGet("Login")]
@@ -98,9 +135,17 @@ namespace F4ConversationCloud.Onboarding.Controllers
             //step1form = null;
             if (step1form != null)
             {
-                var existingData = new RegisterUserViewModel();
-                existingData = step1form;
+                var existingData = new RegisterUserViewModel
+                {
+                    TimeZones = await _authRepository.GetTimeZonesAsync(),
+                    FirstName = step1form.FirstName,
+                    LastName = step1form.LastName,
+                    Email = step1form.Email,
+                    PhoneNumber = step1form.PhoneNumber,
+
+                };
                 ViewBag.IsReadOnly = true;
+                
                 return View(existingData);
             }
            
@@ -119,32 +164,41 @@ namespace F4ConversationCloud.Onboarding.Controllers
         public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
         {
             try
-            { // command.CurrentStep = 1;
-                if (!command.EmailOtpVerified && command.Email != null)
+            {
+                if (!command.PhoneNumberOtpVerified)
                 {
-                    ModelState.AddModelError(nameof(command.EmailOtpVerified), "Please verify your Email before proceeding.");
+                    ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
                 }
+                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.IsReadOnly = false;
+                    ViewBag.IsReadOnly = true;
+                    
+                        command.FirstName = ClientTempData.FirstName;
+                        command.LastName = ClientTempData.LastName;
+                        command.Email = ClientTempData.Email;
+                        command.PhoneNumber = ClientTempData.PhoneNumber;
                     return View(command);
                 }
 
-                int TotalRegisteredClient = await _authRepository.sp_GetRegisteredClientCountAsync();
+                int TotalRegisteredClient = await _authRepository.GetRegisteredClientCountAsync();
 
                 command.Stage = ClientFormStage.draft;
                 var registerRequest = new RegisterUserModel
                 {
-                    FirstName = command.FirstName,
-                    LastName = command.LastName,
-                    Email = command.Email,
+                   
+                    UserId = ClientTempData.UserId,
                     Address = command.Address,
                     Country = command.Country,
                     Timezone = command.Timezone,
+                    CityId= command.CityId,
+                    StateId= command.StateId,
+                    ZipCode= command.ZipCode,
+                    OptionalAddress = command.OptionalAddress,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
-                    FullPhoneNumber = command.FullPhoneNumber,
+                    //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
                     Role = ClientRole.Admin,
                     ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
@@ -154,20 +208,20 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     command.UserId = isregister.NewUserId;
 
-                    TempData.Put("registrationform", command);
-                    ViewBag.IsReadOnly = true;
+                    //TempData.Put("registrationform", command);
+                    //ViewBag.IsReadOnly = true;
 
                     await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
 
                     TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
-
-                    return RedirectToAction("BankVerification");
+                    string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
+                    return Redirect(RedirecttoClientAppLoginPage);
 
                 }
                 else
                 {
-                    ViewBag.IsReadOnly = false;
+                    ViewBag.IsReadOnly = true;
                     TempData["ErrorMessage"] = "Registration failed. Please try again.";
                     return View(command);
                 }
@@ -203,10 +257,29 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             return Json(new { response.status, response.message });
         }
-        public async Task<IActionResult> VerifyOTP([FromBody] ValidateRegistrationOTPModel command)
+
+        public async Task<IActionResult> VarifyWhatsAppNumber( VarifyMobileNumberModel command)
         {
+            if (string.IsNullOrWhiteSpace(command.UserPhoneNumber))
+            {
+                return Json(new { status = false, message = "Please enter a valid WhatsApp number." });
+            }
+
+            var response = await _onboardingService.VarifyWhatsAppContactNoAsync(command);
+            return Json(new { response.status, response.message });
+        }
+
+
+
+
+        public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
+        {
+            if (string.IsNullOrWhiteSpace(command.OTP))
+            {
+                return Json(new { status = false, message = "Enter A Valid OTP" });
+            }
             var response = await _onboardingService.VerifyOTPAsync(command);
-            return Json(new { response.status });
+            return Json(new { response.status, response.message });
         }
 
         [HttpPost]

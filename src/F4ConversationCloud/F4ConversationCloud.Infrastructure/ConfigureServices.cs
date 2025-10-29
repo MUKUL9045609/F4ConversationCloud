@@ -74,13 +74,14 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<ILogService, LogService>();
 
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
-           // services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
+           //services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
             services.AddScoped<IF4AppCloudeService, F4AppCloudeService>();
             //services.AddScoped<MetaConfigurationService >();
             
 
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<ITemplateRepositories, TemplateRepositories>();
+            services.AddScoped<IMetaService, MetaService>();
 
             services.AddScoped<IAuthService, AuthService>();
             return services;
@@ -102,6 +103,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddSingleton(new WhatsAppBusinessCloudApiConfig
             {
                 AccessToken = whatsAppConfig.AccessToken,
+                WhatsAppBusinessPhoneNumberId=whatsAppConfig.WhatsAppBusinessPhoneNumberId
             });
             services.AddHttpClient<IMetaCloudAPIService, MetaCloudAPIService>(options =>
             {

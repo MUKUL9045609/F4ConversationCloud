@@ -11,6 +11,7 @@ WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConf
 
 
 whatsAppConfig.AccessToken = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["AccessToken"];
+whatsAppConfig.WhatsAppBusinessPhoneNumberId = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["WhatsAppBusinessPhoneNumberId"];
 builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 var app = builder.Build();
 
