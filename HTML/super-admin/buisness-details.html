@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+</head>
+
+<body>
+    <div class="page">
+        
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="dashboard.html" class="home icon">Dashboard</a>
+                            </li>
+                            <li>
+                              <a href="client-registration.html" class="register icon">Register</a>
+                            </li>
+                            <li class="active">
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
+                            </li>
+                            <!-- <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li> -->
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    
+                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+             <div class="content">
+                <div class="container-fluid">
+                    <div class="card">
+                        
+                        <div class="header-content d-flex justify-content-between">
+                            <h3 class="sub-heading"> 
+                                <a href="index.html"> <span class="back"></span>Buldana Urban Co-op. Credit Society Ltd.</a> 
+                            </h3>
+                            <a href="buisness-waba-details.html" class="btn primary-btn">View Information</a>
+
+                        </div>
+            
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true"><span class="info-icon tab-icon"></span>Client Details</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><span class="setting tab-icon"></span>Account Configuration</button>
+                            </li>
+                            
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="client-tab" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab" aria-controls="client" aria-selected="false"><span class="whatsapp-icon tab-icon"></span> WhatsApp WABA Account <span class="light-text">(10)</span></button>
+                            </li>  
+                            
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <!-- client details -->
+                             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                <ul class="user-list">
+                                    <li>
+                                        <span class="formkey">Full Name</span>
+                                        <span class="formvalue">Deepak Singh</span>
+                                    </li>
+                                    
+                                    <li>
+                                        <span class="formkey">Phone Number</span>
+                                        <span class="formvalue">+91 9877 765 857</span>
+                                    </li>
+                                    <li>
+                                        <span class="formkey">Email Id</span>
+                                        <span class="formvalue">supports@Fortune4.in</span>
+                                    </li>
+                                    <li>
+                                        <span class="formkey">Status</span>
+                                        <span class="formvalue">Connected</span>
+                                    </li>
+                                    <li>
+                                        <span class="formkey">Address</span>
+                                        <span class="formvalue">D-502, Rizvi Nagar, Junction of Milan Subway & SV Road, Santa Cruz (W), Mumbai, Maharashtra 400054, India</span>
+                                    </li>
+                                    <li>
+                                        <span class="formkey">Country</span>
+                                        <span class="formvalue">India</span>
+                                    </li>
+                                    
+                                </ul> 
+                                
+                                <div class="accordion-guide client-accordion">
+                                    <div class="accordion" id="accordionWrap">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Onboarding Details
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                                data-bs-parent="#accordionWrap">
+                                                <div class="accordion-body">
+                                                    <ul class="user-list">
+                                                        <li>
+                                                            <span class="formkey">Business Display Name</span>
+                                                            <span class="formvalue">Buldana Urban Coop. </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">Business Type</span>
+                                                            <span class="formvalue">Bank</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">WhatsApp Buisness Account Name</span>
+                                                            <span class="formvalue">BuldanaUrban</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">WhatsApp Registered Number</span>
+                                                            <span class="formvalue">+91-9123456789</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">Buisness Email Address</span>
+                                                            <span class="formvalue">info@buldanaurban.in</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">WhatsApp Business Account ID (WABA ID)</span>
+                                                            <span class="formvalue">123456789012345</span>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <span class="formkey">Facebook Business ID</span>
+                                                            <span class="formvalue">112233445566778</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">Phone Number ID</span>
+                                                            <span class="formvalue">987654321098765</span>
+                                                        </li>
+                                                        
+                                                        <li>
+                                                            <span class="formkey">Created At</span>
+                                                            <span class="formvalue">19-08-2025</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">Last Updated</span>
+                                                            <span class="formvalue">22-08-2025</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">Last Updated ipaddress</span>
+                                                            <span class="formvalue">192.168.1.10</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">App Id</span>
+                                                            <span class="formvalue">WhatsApp</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="formkey">App Name</span>
+                                                            <span class="formvalue">CustomerSupportBot</span>
+                                                        </li>               
+                                                        <li>
+                                                            <span class="formkey">Date of onboarding</span>
+                                                            <span class="formvalue">20-08-2025, 06:04:55</span>
+                                                        </li>
+                                                        
+                                                        
+                                                        <li>
+                                                            <span class="formkey">Onboarding Status</span>
+                                                            <span class="formvalue">Completed</span>
+                                                        </li>
+
+
+                                                        
+                                                        
+                                                    </ul> 
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThird">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
+                                                    Template Details
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird"
+                                                data-bs-parent="#accordionWrap">
+                                                <div class="accordion-body">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <span class="lighttext">Created Templates are 142</span>
+                                                            <a href="create-templates.html" class="btn primary-btn d-flex">Create Templates</a>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            
+                                                            <table class="table user-table form-wrapper">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Sr. No.</th>
+                                                                        <th>
+                                                                            Template Name
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                                <span class="searchIcon"></span>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            Category
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                                <span class="searchIcon"></span>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            Language
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                                <span class="searchIcon"></span>
+                                                                            </div>
+                                                                        </th>
+                                                                        
+                                                                        
+                                                                        <th>Last Updated
+                                                                            <label class="datewrap" for="datepicker">
+                                                                                <input
+                                                                                    type="text"
+                                                                                    id="datepicker2"
+                                                                                    class="form-control datepicker search-form-control"
+                                                                                    placeholder="Select Date"
+                                                                                />
+                                                                                <span class="dateIcon"></span>
+                                                                            </label>
+
+                                                                        </th>
+                                                                        
+                                                                        <th>
+                                                                            Status
+                                                                            <select class="form-select">
+                                                                                <option selected>Select Status</option> 
+                                                                                <option>Approved</option> 
+                                                                                <option>Rejected</option> 
+                                                                                
+                                                                            </select>
+                                                                        </th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="center">01</td>
+                                                                        <td><span class="message-block">
+                                                                            Onboarding_Invite_Template
+                                                                        </span></td>
+                                                                        <td>Marketing</td>
+                                                                        <td>English (en)</td>
+                                                                        <td>
+                                                                            <span class="date">15 Apr 2025</span>    
+                                                                            <span class="datetime">at 11:30 am</span>
+                                                                        </td>
+                        
+                                                                        <td><span class="badge success">Active</span></td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon"></a>
+                                                                                <a href="#" class="delete-blue"></a>
+                                                                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="center">02</td>
+                                                                        <td><span class="message-block">
+                                                                            Welcome_Form
+                                                                        </span></td>
+                                                                        <td>Utility</td>
+                                                                        <td>English (en)</td>
+                                                                        <td>
+                                                                            <span class="date">15 Apr 2025</span>    
+                                                                            <span class="datetime">at 11:30 am</span>
+                                                                        </td>
+                        
+                                                                        <td><span class="badge danger">Reject</span></td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon"></a>
+                                                                                <a href="#" class="delete-blue"></a>
+                                                                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="center">03</td>
+                                                                        <td><span class="message-block">
+                                                                            Start_Onboard
+                                                                        </span></td>
+                                                                        <td>Authentication</td>
+                                                                        <td>English (en)</td>
+                                                                        <td>
+                                                                            <span class="date">15 Apr 2025</span>    
+                                                                            <span class="datetime">at 11:30 am</span>
+                                                                        </td>
+                        
+                                                                        <td><span class="badge warning">Pending</span></td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon"></a>
+                                                                                <a href="#" class="delete-blue"></a>
+                                                                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                
+                                                                
+                                                                
+                                                            </table>
+                                                        </div>
+                                                        <nav aria-label="navigation example">
+                                                            <ul class="pagination mt-4 d-flex justify-content-center">
+                                                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingFourth">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseFourth" aria-expanded="false" aria-controls="collapseFourth">
+                                                    Campaigns & Offers
+                                                </button>
+                                            </h2>
+                                            <div id="collapseFourth" class="accordion-collapse collapse" aria-labelledby="headingFourth"
+                                                data-bs-parent="#accordionWrap">
+                                                
+                                                <div class="accordion-body">
+                                                    
+                                                    <div class="table-responsive">
+                                                    <table class="table user-table form-wrapper">
+                                                            <tr>
+                                                                <th>Sr. No.</th>
+                                                                <th>
+                                                                    Campaign ID
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                        <span class="searchIcon"></span>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    Campaign Name
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                        <span class="searchIcon"></span>
+                                                                    </div>
+                                                                </th>
+                                                                
+                                                                <th>
+                                                                    Duration
+                                                                    <label class="datewrap" for="datepicker">
+                                                                        <input
+                                                                            type="text"
+                                                                            id="datepicker3"
+                                                                            class="form-control datepicker search-form-control"
+                                                                            placeholder="Select Date"
+                                                                        />
+                                                                        <span class="dateIcon"></span>
+                                                                    </label>
+                                                                </th>
+                                                                <th>
+                                                                    Status
+                                                                    <select class="form-select">
+                                                                        <option selected>Select Status</option> 
+                                                                        <option>Active</option> 
+                                                                        <option>Paused</option> 
+                                                                        
+                                                                    </select>
+                                                                </th>
+                                                                
+                                                                <th>
+                                                                    Created By
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                        <span class="searchIcon"></span>
+                                                                    </div>
+                                                                </th>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center">1</td>
+                                                                <td>CMP-00123</td>
+                                                                <td>Diwali Festive Email Blast</td>
+                                                                <td>15 Oct 2025 - 05 Nov 2025 </td>
+                                                                <td><span class="badge success">Active</span> </td>
+                                                                
+                                                                <td>admin@company.com</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center">2</td>
+                                                                <td>CMP-00124</td>
+                                                                <td>Instagram Product Teasers</td>
+                                                                <td>09 Sept 2025 - 30 Sept 2025 </td>
+                                                                <td><span class="badge warning">Paused</span> </td>
+                                                                
+                                                                <td>marketing@company.com</td>
+                                                            </tr>
+                                                            
+                                                            
+                                                    </table>
+                                                    </div>
+                                                    <nav aria-label="navigation example">
+                                                        <ul class="pagination mt-5 d-flex justify-content-center">
+                                                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                            <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingSeven">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                                    Client Logo
+                                                </button>
+                                            </h2>
+                                            <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                                                data-bs-parent="#accordionWrap">
+                                                
+                                                <div class="accordion-body">
+                                                    <ul class="logo-list">
+                                                        <li>
+                                                            <label class="choose-picture">
+                                                                <span class="plus-logo"></span>
+                                                                <span class="choose-title">Choose Image</span>
+                                                                <input type="file" class="form-control" disabled/>
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="choose-picture">
+                                                                <img src="images/logo.png"/>
+                                                                <span class="existing">Existing</span>
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="bottom-btn mt-4">
+                                            <button id="next-btn" class="btn primary-btn">Next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End client details -->
+
+                            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="tab-copy">     
+                                    <div class="">
+                                        <h6>Permissions</h6>
+                                        <ul class="allow-user mb-4">
+                                            <li>
+                                                <div class="d-flex">
+                                                        Allow Users Management<div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> </div>
+                                                </div>
+                                                    
+                                            </li>
+                                            
+                                        </ul>
+                                        <h6 class="mb-3">Select Module Type</h6>
+                                        <ul class="module-list">
+                                            <li>
+                                                <div class="form-check form-checkbox mb-2" id="check-Marketing">
+                                                    <input class="form-check-input" type="checkbox" id="checkbox-marketing">
+                                                    <label class="form-check-label ps-2" for="checkbox-marketing">Marketing</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check form-checkbox mb-2" id="check-authentication">
+                                                    <input class="form-check-input" type="checkbox" id="checkbox-authentication">
+                                                    <label class="form-check-label ps-2" for="checkbox-authentication">Authentication</label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="form-check form-checkbox mb-2" id="check-Utility">
+                                                <input class="form-check-input" type="checkbox" id="checkbox-utility">
+                                                <label class="form-check-label ps-2" for="checkbox-utility">Utility</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        
+                                            
+                                            <div class="marketing mb-4" id="marketing" style="display:none;">
+                                                <div class="card padding bglight">
+                                                    <h6 class="module-title">Role & Permissions For Marketing</h6>
+                                                    <table class="table">
+                                                        <tr>
+                                                            <thead>
+                                                                <th></th>
+                                                                <th class="text-center">Create</th>
+                                                                <th class="text-center">Add</th>
+                                                                <th class="text-center">Edit</th>
+                                                                <th class="text-center">Delete</th>
+                                                                <th class="text-center">All Permissions</th>
+                                                            </thead>
+                                                        </tr>
+                                                        
+                                                        <tr class="selectall">
+                                                            <td>Templete Creation</td>
+                                                            <td align="center">
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" name="sample[]" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" name="sample[]" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" name="sample[]" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" name="sample[]" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" name="sample[]" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <div class="mt-4">
+                                                         <h6 class="module-title">Set For Marketing Price</h6>
+                                                        <div class="table-responsive">
+                                                            <table class="table user-table form-wrapper">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Conversation Type </th>
+                                                                        <th>Duration</th> 
+                                                                        <th>Message</th>
+                                                                        <th>Price</th>
+                                                                        <th>Markup Price</th>
+                                                                       <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Marketing</td>
+                                                                        <td>22-03-2025 to 22-08-2025</td>
+                                                                        <td>0</td>
+                                                                        <td>
+                                                                            &#8377;00.00 
+                                                                        </td>
+                                                                        <td>
+                                                                           <input class="form-control" id="name" value="&#8377;105" readonly/>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon" id="editBtn"></a>
+                                                                                
+                                                                            </div>
+                                                                        </td>
+                                                                        
+                                                                    </tr> 
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                  
+                                                </div>
+                                            </div>
+
+                                            <div class="authentication mb-4" id="authentication" style="display:none;">
+                                                <div class="card padding bglight">
+                                                    <h6 class="module-title">Role & Permissions For Authentication</h6>
+                                                    <table class="table">
+                                                        <tr>
+                                                            <thead>
+                                                                <th></th>
+                                                                <th class="text-center">Create</th>
+                                                                <th class="text-center">Add</th>
+                                                                <th class="text-center">Edit</th>
+                                                                <th class="text-center">Delete</th>
+                                                                <th class="text-center">All Permissions</th>
+                                                            </thead>
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td>Templete Creation</td>
+                                                            <td align="center">
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <div class="mt-4">
+                                                         <h6 class="module-title">Set Price For Authentication</h6>
+                                                        <div class="table-responsive">
+                                                            <table class="table user-table form-wrapper">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Conversation Type </th>
+                                                                        <th>Duration</th>
+                                                                        <th>Message</th>
+                                                                        <th>Price</th>
+                                                                        <th>Markup Price</th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                       
+                                                                        
+                                                                        <td>Authentication</td>
+                                                                        <td>22-03-2025 to  22-08-2025</td>
+                                                                        <td>0</td>
+                                                                        <td>&#8377;00.00</td>
+                                                                        <td>
+                                                                            <div class="d-flex gap-2">
+                                                                                <input class="form-control" id="name" value="&#8377;105" readonly/>
+                                                                                <button class="btn primary-btn" id="saveBtn" style="display: none;">Save</button>
+                                                                            </div>
+                                                                        </td>
+                                                                        
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon" id="editBtn"></a>
+                                                                                
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr> 
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
+
+                                            <div class="utility-permission mb-4" id="utility" style="display:none;">
+                                                    <div class="card padding bglight">
+                                                        <h6>Role & Permissions For Utility</h6>
+                                                        <table class="table">
+                                                            <tr>
+                                                                <thead>
+                                                                    <th></th>
+                                                                    <th class="text-center">Create</th>
+                                                                    <th class="text-center">Add</th>
+                                                                    <th class="text-center">Edit</th>
+                                                                    <th class="text-center">Delete</th>
+                                                                    <th class="text-center">All Permissions</th>
+                                                                </thead>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td>Templete Creation</td>
+                                                                <td align="center">
+                                                                    <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-checkbox d-flex justify-content-center">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault0">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="mt-4">
+                                                         <h6 class="module-title">Set For Utility Price</h6>
+                                                        <div class="table-responsive">
+                                                            <table class="table user-table form-wrapper">
+                                                                <thead>
+                                                                    <tr>
+                                                                      
+                                                                        <th>Conversation Type </th>
+                                                                        <th>Duration</th>
+                                                                        <th>Message</th>
+                                                                        <th>Price</th>
+                                                                        <th>Markup Price</th>
+                                                                       <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Utility </td>
+                                                                        <td>22-03-2025  to  22-08-2025</td>
+                                                                        <td>0</td>
+                                                                        <td>
+                                                                            &#8377;00.00
+                                                                            
+                                                                        </td>
+                                                                        <td>
+                                                                           <input class="form-control" id="name" value="&#8377;105" readonly/>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon" id="editBtn"></a>
+                                                                                
+                                                                            </div>
+                                                                        </td>
+                                                                        
+                                                                    </tr> 
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                        
+                                                    </div>
+                                            </div>
+
+                                            <div class="mt-2 d-flex justify-content-end">
+                                                <button class="btn primary-btn" id="save-btn">Save</button>
+                                            </div>
+
+                                            <hr/>
+                                            <ul class="user-list">
+                                                
+                                                <li>
+                                                    <span class="formkey">App API Key <span class="copy"></span></span>
+                                                    <span class="formvalue">sk_live_4c5d6f7g8h9j0klmnop123456789abcd <span class="show"></span>
+                                                </li>
+                                                <li>
+                                                    <span class="formkey">Token <span class="copy"></span></span>
+                                                    <span class="formvalue">EAAJZCwZA1xMIBABABkZClZAOqZCZDZCpZCmYZA6kBZCkZCmxyz1234567890abcdefgZCZD</span>
+                                                </li>
+                                        
+                                                
+                                            </ul> 
+                                            <button class="btn primary-btn">Regenerate Key</button>
+                                            <hr />
+                                            
+                                    </div>
+                                </div>
+                                <div class="action mt-4">
+                                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal10">Approve</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal11">Reject</button>     
+                                </div>
+                            </div>
+                            
+                            <!-- WABA details -->
+                            <div class="tab-pane fade" id="client" role="tabpanel" aria-labelledby="client-tab">
+                                <div class="tab-copy">
+                                    <div class="tabheader">
+                                        <h3>Buldhana Urban Corp <span class="badge success">Active</span></h3>
+                                        <small class="lighttext">WABA ID : 334455667788990</small>  
+                                    </div>   
+                                    <div class="accordion-guide client-accordion">
+                                        <div class="accordion" id="accordionWrap">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        Onboarding Details
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                                    data-bs-parent="#accordionWrap">
+                                                    <div class="accordion-body">
+                                                        <ul class="user-list">
+                                                            <li>
+                                                                <span class="formkey">Business Type</span>
+                                                                <span class="formvalue">Finance </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="formkey">WhatsApp Buisness Account Name</span>
+                                                                <span class="formvalue">Buldana Urban Management Services</span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="formkey">Date of Onboarding</span>
+                                                                <span class="formvalue">04 January 2025 at 06:00 pm</span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="formkey">Buisness Email Address</span>
+                                                                <span class="formvalue">info@buldanaurban.in</span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="formkey">Facebook Business ID</span>
+                                                                <span class="formvalue">112233445566778</span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="formkey">WhatsApp Registered Number</span>
+                                                                <span class="formvalue">+91-9123456789</span>
+                                                            </li>
+                                                        
+                                                            <li>
+                                                                <span class="formkey">Phone Number ID</span>
+                                                                <span class="formvalue">987654321098765</span>
+                                                            </li>
+                                                            
+                                                            
+
+
+                                                            
+                                                            
+                                                        </ul> 
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingThird">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
+                                                        Templates <span class="light-text ms-1">(5)</span>
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird"
+                                                    data-bs-parent="#accordionWrap">
+                                                    <div class="accordion-body">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <span class="lighttext">Created Templates are 142</span>
+                                                            <a href="create-templates.html" class="btn primary-btn d-flex">Create Templates</a>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            
+                                                            <table class="table user-table form-wrapper">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Sr. No.</th>
+                                                                        <th>
+                                                                            Template Name
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                                <span class="searchIcon"></span>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            Category
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                                <span class="searchIcon"></span>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            Language
+                                                                            <div class="input-group">
+                                                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                                <span class="searchIcon"></span>
+                                                                            </div>
+                                                                        </th>
+                                                                        
+                                                                        
+                                                                        <th>Last Updated
+                                                                            <label class="datewrap" for="datepicker">
+                                                                                <input
+                                                                                    type="text"
+                                                                                    id="datepicker2"
+                                                                                    class="form-control datepicker search-form-control"
+                                                                                    placeholder="Select Date"
+                                                                                />
+                                                                                <span class="dateIcon"></span>
+                                                                            </label>
+
+                                                                        </th>
+                                                                        
+                                                                        <th>
+                                                                            Status
+                                                                            <select class="form-select">
+                                                                                <option selected>Select Status</option> 
+                                                                                <option>Approved</option> 
+                                                                                <option>Rejected</option> 
+                                                                                
+                                                                            </select>
+                                                                        </th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="center">01</td>
+                                                                        <td><span class="message-block">
+                                                                            Onboarding_Invite_Template
+                                                                        </span></td>
+                                                                        <td>Marketing</td>
+                                                                        <td>English (en)</td>
+                                                                        <td>
+                                                                            <span class="date">15 Apr 2025</span>    
+                                                                            <span class="datetime">at 11:30 am</span>
+                                                                        </td>
+                        
+                                                                        <td><span class="badge success">Active</span></td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon"></a>
+                                                                                <a href="#" class="delete-blue"></a>
+                                                                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="center">02</td>
+                                                                        <td><span class="message-block">
+                                                                            Welcome_Form
+                                                                        </span></td>
+                                                                        <td>Utility</td>
+                                                                        <td>English (en)</td>
+                                                                        <td>
+                                                                            <span class="date">15 Apr 2025</span>    
+                                                                            <span class="datetime">at 11:30 am</span>
+                                                                        </td>
+                        
+                                                                        <td><span class="badge danger">Reject</span></td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon"></a>
+                                                                                <a href="#" class="delete-blue"></a>
+                                                                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="center">03</td>
+                                                                        <td><span class="message-block">
+                                                                            Start_Onboard
+                                                                        </span></td>
+                                                                        <td>Authentication</td>
+                                                                        <td>English (en)</td>
+                                                                        <td>
+                                                                            <span class="date">15 Apr 2025</span>    
+                                                                            <span class="datetime">at 11:30 am</span>
+                                                                        </td>
+                        
+                                                                        <td><span class="badge warning">Pending</span></td>
+                                                                        <td>
+                                                                            <div class="action">
+                                                                                <a href="#" class="edit-icon"></a>
+                                                                                <a href="#" class="delete-blue"></a>
+                                                                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                
+                                                                
+                                                                
+                                                            </table>
+                                                        </div>
+                                                        <nav aria-label="navigation example">
+                                                            <ul class="pagination mt-4 d-flex justify-content-center">
+                                                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingFourth">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseFourth" aria-expanded="false" aria-controls="collapseFourth">
+                                                        Campaigns
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseFourth" class="accordion-collapse collapse" aria-labelledby="headingFourth"
+                                                    data-bs-parent="#accordionWrap">
+                                                    
+                                                    <div class="accordion-body">
+                                                        
+                                                        <div class="table-responsive">
+                                                        <table class="table user-table form-wrapper">
+                                                                <tr>
+                                                                    <th>Sr. No.</th>
+                                                                    <th>
+                                                                        Campaign ID
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                            <span class="searchIcon"></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        Campaign Name
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                            <span class="searchIcon"></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    
+                                                                    <th>
+                                                                        Duration
+                                                                        <label class="datewrap" for="datepicker">
+                                                                            <input
+                                                                                type="text"
+                                                                                id="datepicker3"
+                                                                                class="form-control datepicker search-form-control"
+                                                                                placeholder="Select Date"
+                                                                            />
+                                                                            <span class="dateIcon"></span>
+                                                                        </label>
+                                                                    </th>
+                                                                    <th>
+                                                                        Status
+                                                                        <select class="form-select">
+                                                                            <option selected>Select Status</option> 
+                                                                            <option>Active</option> 
+                                                                            <option>Paused</option> 
+                                                                            
+                                                                        </select>
+                                                                    </th>
+                                                                    
+                                                                    <th>
+                                                                        Created By
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                                            <span class="searchIcon"></span>
+                                                                        </div>
+                                                                    </th>
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="center">1</td>
+                                                                    <td>CMP-00123</td>
+                                                                    <td>Diwali Festive Email Blast</td>
+                                                                    <td>
+                                                                        <span class="date">28 Oct 2025</span>    
+                                                                        <span class="datetime">at 11:30 am</span>
+                                                                    </td>
+                                                                    <td><span class="badge success">Active</span> </td>
+                                                                    
+                                                                    <td>admin@company.com</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="center">2</td>
+                                                                    <td>CMP-00124</td>
+                                                                    <td>Instagram Product Teasers</td>
+                                                                    <td>
+                                                                        <span class="date">28 Oct 2025</span>    
+                                                                        <span class="datetime">at 11:30 am</span>
+                                                                    </td>
+                                                                    <td><span class="badge warning">Paused</span> </td>
+                                                                    
+                                                                    <td>marketing@company.com</td>
+                                                                </tr>
+                                                                
+                                                                
+                                                        </table>
+                                                        </div>
+                                                        <nav aria-label="navigation example">
+                                                            <ul class="pagination mt-5 d-flex justify-content-center">
+                                                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                           
+                                            
+                                        </div>
+                                     </div>
+                                </div>
+                                
+                            </div>
+                            <!--end WABA details -->
+
+                            
+                            
+                        
+                        </div>
+                    </div>
+                </div>
+             </div>
+
+             <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+            
+        </div>
+
+        <!-- Message Modal -->
+        <div class="modal fade template-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <span class="lighttext d-block">Preview</span>
+                    <h5 class="modal-title" id="exampleModalLabel">Onboarding_Invite_Template</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="template-preview">
+                        <div class="swiper-card">
+                            <div class="template-slide-card">
+                                <span><img src="images/card-img-03.png"></span>
+                                <div class="description">
+                                    <p>Dear {{1}}</p>
+                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                </div>
+                                <div class="time">1:59 PM</div>
+                            </div>
+                            <div class="buy-link">
+                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                <!-- <a href="#"><i class="backward"></i> Yes </a>
+                                <a href="#"><i class="call"></i> Call Us </a> -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+        <!--end message modal -->
+
+        
+
+        <!-- Reject Modal -->
+        <div class="modal fade comment-modal" id="exampleModal11" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <span class="action-icon reject"></span>
+                        <h4>Are you sure ?</h4>
+                        <p>Are you sure you want to reject this records? This process can not be undone</p>
+                        <form class="form-wrapper">
+                            <div class="mb-2">
+                                <div class="form-group">
+                                    <label class="form-label">Comment</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                                <button class="btn danger-btn">Reject </button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end Reject modal -->
+
+        <!-- Approved Modal -->
+        <div class="modal fade comment-modal" id="exampleModal10" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <span class="action-icon approved"></span>
+                        <h4>Are you sure ?</h4>
+                        <p>Are you sure you want to approved this records</p>
+                        <div class="btn-wrap d-flex justify-content-center gap-3 mt-4">
+                            <button class="btn success-btn" data-bs-dismiss="modal">Approved </button>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end Reject modal -->
+
+    
+
+        
+    </div>
+
+    <div class="backdrop"></div>
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+       
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#save-btn').hide();
+            $('#checkbox-marketing').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#marketing').show();
+                    $('#save-btn').show();
+                } else {
+                    $('#marketing').hide();
+                    $('#save-btn').hide();
+                }
+            });
+
+            $('#checkbox-authentication').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#authentication').show();
+                    $('#save-btn').show();
+                } else {
+                    $('#authentication').hide();
+                    $('#save-btn').hide();
+                }
+            });
+
+            $('#checkbox-utility').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#utility').show();
+                    $('#save-btn').show();
+                } else {
+                    $('#utility').hide();
+                    $('#save-btn').hide();
+                }
+            });
+            });
+    </script>
+    <!-- <script>
+        $(document).ready(function() {
+            $('#editBtn').click(function() {
+                // Show the Save button
+                $('#saveBtn').show();
+                
+                // Remove the readonly attribute from the input
+                $('#name').removeAttr('readonly');
+            });
+            $('#home-tab').click(function() {
+                $('#home').show();
+                $('#client').removeClass("show active");
+                
+            });
+            $('#next-btn').click(function() {
+                $('#client-tab').removeAttr('disabled');
+                $('#home-tab').removeClass('active');
+                $('#home').hide();
+                $('#client').addClass("show active");
+                $('#client-tab').addClass("active");
+
+            });
+            $('#save-btn').click(function() {
+                $('#name').attr('readonly')
+            });
+        });
+    </script> -->
+    <script>
+        $(document).ready(function() {
+            $('.flexCheckDefault10').on('click', function() {
+                if ($('.flexCheckDefault10:checked').length === $('.flexCheckDefault10').length) {
+                $('#flexCheckDefault0').prop('checked', true);
+                } else {
+                $('#flexCheckDefault0').prop('checked', false);
+                }
+            });
+            $('.selectall').click(function() {
+                if ($(this).is(':checked')) {
+                    $('input:checkbox').attr('checked', true);
+                } else {
+                    $('input:checkbox').attr('checked', false);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -110,14 +110,15 @@
     }
 }
 .template-modal{
-    .modal-header{padding: 15px 30px;}
+    .modal-content{padding: 15px;}
+    .modal-header{padding: 0px;flex-direction: column;align-items: flex-start;padding-bottom: 10px;}
     .modal-title{
-        font-size: 18px;
+        font-size: 15px;
         
     }
     .modal-body{
         font-size: 15px;
-        padding: 15px 30px;
+        padding: 15px 0px;
         p{
             
         }

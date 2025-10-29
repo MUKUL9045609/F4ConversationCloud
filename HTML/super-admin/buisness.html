@@ -30,11 +30,14 @@
                               <a href="dashboard.html" class="home icon">Dashboard</a>
                             </li>
                             <li>
-                              <a href="client-registration.html" class="billing icon">Register</a>
+                              <a href="client-registration.html" class="register icon">Register</a>
                             </li>
                             <li class="active">
-                                <a href="index.html" class="users icon">Clients</a>
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
                             </li>
+                            <!-- <li>
+                                <a href="index.html" class="users icon">Clients</a>
+                            </li> -->
                             <li>
                                 <a href="user-management.html" class="user icon">User Management</a>
                             </li>
@@ -102,25 +105,34 @@
                 <div class="container-fluid">
                     
                     <div class="card">
-                        
                         <div class="header-content">
-                            <h3 class="sub-heading">Client List</h3>
+                            <h3 class="sub-heading">Business Accounts</h3>
                         </div>
+                        
                         <div class="table-responsive">
                             <table class="table user-table form-wrapper">
                                     <thead>
                                         <tr>
                                             <th>Sr.No</th>
                                             <th>
-                                                Client Name
+                                                Phone Number
+                                                <select class="form-select">
+                                                    <option selected>Select Mobile Number</option> 
+                                                    <option>Connected</option> 
+                                                    <option>Offline</option> 
+                                                </select>
+                                            </th>
+                                            <th>
+                                                WhatsApp Display Name
                                                 <div class="input-group">
                                                         <input type="text" class="form-control srcIcon" placeholder="Search">
                                                         <span class="searchIcon"></span>
                                                 </div>
+                                                
                                             </th>
                                             <th>
-                                                Onboarding On
-                                                <label class="datewrap" for="datepicker">
+                                                Onboarding Date
+                                               <label class="datewrap" for="datepicker">
                                                     <input
                                                         type="text"
                                                         id="datepicker"
@@ -130,21 +142,12 @@
                                                     <span class="dateIcon"></span>
                                                 </label>
                                             </th>
+                                            
                                             <th>
-                                                Status
-                                               <select class="form-select">
-                                                <option selected>Select Status</option> 
-                                                <option>Connected</option> 
-                                                <option>Offline</option> 
-                                                </select>
-                                            </th>
-                                            <th>Reject Comments</th>
-                                            <th>
-                                                Onboarding Status
+                                                WhatsApp Account Status
                                                 <select class="form-select">
                                                     <option selected>Select Status</option> 
-                                                    <option>Approved</option> 
-                                                    <option>Rejected</option> 
+                                                    <option>Connected</option> 
                                                     <option>Pending</option> 
                                                 </select>
                                             </th>
@@ -153,82 +156,92 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td align="center">1</td>
+                                            <td align="center">01</td>
                                             <td>
-                                                <a href="client-details.html">Buldana Urban</a>
-                                                <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
-                                                <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                                <a href="buisness-details.html">+91-9123456789</a>
+                                                <span class="buisness-category"><span>Category :</span>  Bank</span>
+                                                <span class="buisness-category"><span>Client Id :</span> Cl-00001</span>
                                             </td> 
+                                            <td><span class="display-name">Buldana Urban Co-op. Credit Society Ltd.</span></td>
                                             <td>
-                                                <span>08-22-2025,</span>    
-                                                <span>06:04:55</span>
+                                                <span class="date">28 Oct 2025</span>    
+                                                <span class="datetime">at 11:30 am</span>
                                             </td>
-                                            <td>-</td>
                                             
                                             <td>
-                                                <span class="message-block">
-                                                    -
-                                                </span>
+                                                <span class="badge success">Connected</span>
                                             </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td align="center">02</td>
+                                            <td>
+                                                <a href="buisness-details.html">+91-9123456789</a>
+                                                <span class="buisness-category"><span>Category :</span>  Bank</span>
+                                                <span class="buisness-category"><span>Client Id :</span> Cl-00002</span>
+                                            </td> 
+                                            <td>JPMorgan Chase</td>
+                                            <td>
+                                                <span class="date">15 Apr 2025</span>    
+                                                <span class="datetime">at 11:30 am</span>
+                                            </td>
+                                            
                                             <td>
                                                 <span class="badge warning">Pending</span>
                                             </td>
                                             
                                         </tr>
                                         <tr>
-                                            <td align="center">2</td>
+                                            <td align="center">03</td>
                                             <td>
-                                                <a href="client-details.html">BrightLeaf Organics</a>
-                                                <span class="buisness-category"><span class="fw-medium">Category :</span>  Retail</span>
-                                                <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00002</span>
+                                                <a href="buisness-details.html">+91-9123456789</a>
+                                                <span class="buisness-category"><span>Category :</span>  Bank</span>
+                                                <span class="buisness-category"><span>Client Id :</span> Cl-00003</span>
                                             </td> 
-                                            <td>07-02-2025, 06:04:55</td>
+                                            <td>Agricultural Bank of China</td>
                                             <td>
-                                                <span class="online">Connected</span></td>
-                                            <td>
-                                                <span class="message-block"> - </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge success">Approved</span>
+                                                <span class="date">28 March 2025</span>    
+                                                <span class="datetime">at 11:30 am</span>
                                             </td>
                                             
-
+                                            <td>
+                                                <span class="badge success">Connected</span>
+                                            </td>
+                                            
                                         </tr>
                                         <tr>
-                                            <td align="center">3</td>
+                                            <td align="center">04</td>
                                             <td>
-                                                <a href="client-details.html">BrightLeaf Organics</a>
-                                                <span class="buisness-category"><span class="fw-medium">Category :</span>  Retail</span>
-                                                <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00003</span>
+                                                <a href="buisness-details.html">+91-9123456789</a>
+                                                <span class="buisness-category"><span>Category :</span>  Bank</span>
+                                                <span class="buisness-category"><span>Client Id :</span> Cl-00004</span>
+                                            </td> 
+                                            <td>Agricultural Bank of China</td>
+                                            <td>
+                                                <span class="date">14 Jan 2025</span>    
+                                                <span class="datetime">at 11:30 am</span>
                                             </td>
                                             
-                                            <td>07-02-2025, 06:04:55</td>
-                                            <td>-</td>
-                                            
                                             <td>
-                                                <!-- <span class="message-block">
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                                </span> -->
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">View</a>
+                                                <span class="badge warning">Pending</span>
                                             </td>
-                                            <td><span class="badge danger">Rejected</span></td>
                                             
-
                                         </tr>
+
+                                        
+                                        
                                     </tbody>
                             </table>
                         </div>
                         <nav aria-label="navigation example">
                             <ul class="pagination mt-5 d-flex justify-content-center">
-                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                <li class="page-item"><button class="page-link" disabled>&lt;</button></li>
+                                <li class="page-item active"><button class="page-link" href="#">1</button></li>
+                                <li class="page-item"><button class="page-link" href="#">2</button></li>
+                                <li class="page-item"><button class="page-link" href="#">..</button></li>
+                                <li class="page-item"><a class="page-link" href="#">9</a></li>
+                                <li class="page-item"><a class="page-link" href="#">10</a></li>
+                                
                                 <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
                             </ul>
                         </nav>

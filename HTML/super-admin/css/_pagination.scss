@@ -14,15 +14,17 @@
         }
         &.active{  
             .page-link{
-                background-color: $tabs;
+                background-color: transparent;
                 border: 1px solid $tabs;
+                color: $tabs;
             }
         }
 
-        a {
+        .page-link {
             padding: 10px;
             border-radius: 4px;
             font-size: 14px;
+            font-weight: 400;
             color: #000000;
             line-height: 6px;
             min-width: 38px;
@@ -34,11 +36,14 @@
                 background-color: $tabs;
                 color: #FFFFFF;
             }
-
+            &:disabled{
+                background-color: #919EAB;
+            }
             &:focus {
                 box-shadow: none;
-                background-color: $tabs;
-                color: #FFFFFF;
+                background-color: transparent;
+                border: 1px solid $tabs;
+                color: $tabs;
             }
             @media (max-width:480px) {
                 min-width: 33px;
