@@ -4,15 +4,15 @@
 @using System.ComponentModel.DataAnnotations
 @model F4ConversationCloud.SuperAdmin.Models.ClientRegistrationListViewModel
 @{
-    ViewData["Title"] = "Register Client";
+    ViewData["Title"] = "Register User";
 }
 
 <div class="content">
     <div class="container-fluid">
         <div class="d-flex justify-content-between mb-3">
-            <h3 class="sub-heading mb-0">Registered Clients </h3>
+            <h3 class="sub-heading mb-0">Registered Users </h3>
             <div>
-                <a href="@Url.Action("Create", "ClientRegistration")" type="button" class="btn primary-btn add d-flex">Register Client</a>
+                <a href="@Url.Action("Create", "ClientRegistration")" type="button" class="btn primary-btn add d-flex">Register User</a>
             </div>
         </div>
         <div class="card padding">
@@ -107,10 +107,10 @@
                                         @Html.DisplayFor(modelItem => item.UpdatedOn)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RegistrationStatusName)
+                                        <span class="badge @(item.RegistrationStatusName == "Active" ? "success" : "danger")">@Html.DisplayFor(modelItem => item.RegistrationStatusName)</span>
                                     </td>
                                     <td>
-                                        @if (item.RegistrationStatusName == ClientRegistrationStatus.PreRegistered.Get<DisplayAttribute>().Name)
+                                        @if (item.RegistrationStatusName == ClientRegistrationStatus.Pending.Get<DisplayAttribute>().Name)
                                         {
                                             <div class="action">
                                                 <form method="get" action="@Url.Action("Edit", "ClientRegistration", new { id = item.Id })">

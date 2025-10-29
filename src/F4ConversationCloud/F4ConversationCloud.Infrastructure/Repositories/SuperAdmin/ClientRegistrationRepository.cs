@@ -73,5 +73,14 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
             return await _repository.GetByIdAsync("sp_GetClientRegistrationById", parameters);
         }
+
+        public async Task<bool> CheckEmailExist(string email)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("email", email);
+
+            return await _repository.CheckExistAsync("sp_CheckRegisterEmailExist", parameters);
+        }
     }
 }

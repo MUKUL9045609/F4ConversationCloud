@@ -91,8 +91,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
+                ViewBag.Roles = EnumExtensions.ToSelectList<ClientRole>();
                 if (!ModelState.IsValid)
                     return View(model);
+
+                var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
+
+                if (emailExist) {
+                    ModelState.AddModelError("Email", "This email is already registered.");
+                    return View(model);
+                }
 
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {
@@ -101,7 +109,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
-                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
+                    RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
                 var name = model.FirstName + " " + model.LastName;
@@ -169,7 +177,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
-                    RegistrationStatus = (int)ClientRegistrationStatus.PreRegistered
+                    RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
                 TempData["SuccessMessage"] = "Client Registration updated successfully";
