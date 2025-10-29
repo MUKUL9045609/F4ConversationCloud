@@ -81,8 +81,8 @@
             return;
           }
 
-          try {
-            const data = JSON.parse(event.data);
+              try {
+                const data = JSON.parse(event.data);
 
             if (data.type === 'WA_EMBEDDED_SIGNUP') {
               if (data.event === 'FINISH') {
@@ -91,9 +91,9 @@
                 const phone_number_id = data.data.phone_number_id;
                 const business_id = data.data.business_id;
 
-                console.log("WABA ID:", waba_id);
-                console.log("Phone Number ID:", phone_number_id);
-                console.log("Business ID:", business_id);
+                    console.log("WABA ID:", waba_id);
+                    console.log("Phone Number ID:", phone_number_id);
+                    console.log("Business ID:", business_id);
 
 
                 const metaResponse = {
@@ -122,33 +122,33 @@
                   } else {
                        showToast("Failed Account linked", "danger");
 
-                    console.log('Failed: ' + responseData.message);
+                        console.log('Failed: ' + responseData.message);
+                      }
+                    })
+                    .catch(error => {
+                      console.error("Error saving Meta config:", error);
+                       showToast("Something went wrong while saving WhatsApp configuration.", "danger");
+                    });
+
+                  } else if (data.event === 'CANCEL') {
+                    const { current_step } = data.data;
+                    console.warn("User cancelled at step:", current_step);
+                     showToast(current_step ,"danger");
                   }
-                })
-                .catch(error => {
-                  console.error("Error saving Meta config:", error);
-                   showToast("Something went wrong while saving WhatsApp configuration.", "danger");
-                });
+                  else if (data.event === 'ERROR') {
+                    const { error_message } = data.data;
+                    console.error("Meta error:", error_message);
 
-              } else if (data.event === 'CANCEL') {
-                const { current_step } = data.data;
-                console.warn("User cancelled at step:", current_step);
-                 showToast(current_step ,"danger");
+                    showToast("Meta error: "+error_message ,"danger");
+                  }
+                }
+
+                document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+
+              } catch {
+                console.log('Non JSON Responses', event.data);
               }
-              else if (data.event === 'ERROR') {
-                const { error_message } = data.data;
-                console.error("Meta error:", error_message);
-
-                showToast("Meta error: "+error_message ,"danger");
-              }
-            }
-
-            document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
-
-          } catch {
-            console.log('Non JSON Responses', event.data);
-          }
-        });
+            });
 
         $("#sync-btn").click(function(){
             location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
@@ -166,7 +166,7 @@
         const launchWhatsAppSignup = () => {
 
           FB.login(fbLoginCallback, {
-            config_id: '9869767589818097',
+                config_id: '1798212677752254',
             response_type: 'code',
             override_default_response_type: true,
             extras: {"version":"v3"}
@@ -180,7 +180,7 @@
             appId            : '2199076023947769',
             autoLogAppEvents : true,
             xfbml            : true,
-            version          : 'v23.0'
+                version          : 'v24.0'
           });
         };
     </script>
