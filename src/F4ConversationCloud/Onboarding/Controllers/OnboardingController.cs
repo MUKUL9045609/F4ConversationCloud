@@ -23,7 +23,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("Index/{id}")]
+        [HttpGet("Id={id}")]
         public async Task<IActionResult>  Index([FromRoute] int id)
         {
             int userId = 0;
