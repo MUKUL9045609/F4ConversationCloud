@@ -144,7 +144,6 @@ namespace F4ConversationCloud.WebUI.Controllers
             }
         }
 
-
         [HttpPost("[action]")]
         public async Task<IActionResult> UploadFacebookImage([FromBody] UploadImage uploadImage)
         {
@@ -160,7 +159,6 @@ namespace F4ConversationCloud.WebUI.Controllers
 
             }
         }
-
 
     }
 }
