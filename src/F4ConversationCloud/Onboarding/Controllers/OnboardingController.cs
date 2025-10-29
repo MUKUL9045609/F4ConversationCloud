@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
@@ -221,13 +222,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     StateId= command.StateId,
                     ZipCode= command.ZipCode,
                     OptionalAddress = command.OptionalAddress,
-                    OrganizationsName = command.OrganizationsName
+                    OrganizationsName = command.OrganizationsName,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
                     Stage = command.Stage,
                     //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
                     Role = ClientRole.Admin,
-                    ClientId= CommonHelper.GenerateClientId(TotalRegisteredClient)
+                    RegistrationStatus = ClientRegistrationStatus.Pending,
+                    ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
                 };
                 
                 var isregister = await _onboardingService.RegisterUserAsync(registerRequest);
