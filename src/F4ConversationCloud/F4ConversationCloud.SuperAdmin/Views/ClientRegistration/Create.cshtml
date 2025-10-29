@@ -1,13 +1,13 @@
 ﻿@model F4ConversationCloud.SuperAdmin.Models.CreateUpdateClientRegistrationViewModel
 
 @{
-    ViewData["Title"] = "Register Client";
+    ViewData["Title"] = "Register User";
 }
 
 <div class="content">
     <div class="container-fluid">
-        <h3 class="sub-heading"><a href="@Url.Action("List", "ClientRegistration")" class="back"></a>Register Client </h3>
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <h3 class="sub-heading"><a href="@Url.Action("List", "ClientRegistration")" class="back"></a>Register User </h3>
+        <form asp-action="Create" method="post" enctype="multipart/form-data" class="form-wrapper">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-md-4">
