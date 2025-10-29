@@ -107,7 +107,7 @@
                                         @Html.DisplayFor(modelItem => item.UpdatedOn)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RegistrationStatusName)
+                                        <span class="badge @(item.RegistrationStatusName == "Active" ? "success" : "danger")">@Html.DisplayFor(modelItem => item.RegistrationStatusName)</span>
                                     </td>
                                     <td>
                                         @if (item.RegistrationStatusName == ClientRegistrationStatus.Pending.Get<DisplayAttribute>().Name)
