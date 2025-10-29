@@ -123,5 +123,10 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 await _logService.InsertLogAsync(model);
             }
         }
+
+        public async Task<bool> CheckEmailExist(string email)
+        {
+            return await _clientRegistrationRepository.CheckEmailExist(email);
+        }
     }
 }

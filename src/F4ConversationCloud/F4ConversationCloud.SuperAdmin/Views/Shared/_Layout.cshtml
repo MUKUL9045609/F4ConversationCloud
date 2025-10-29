@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="~/css/daterangepicker.css">
-    
+
 </head>
 <body>
     <div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
@@ -31,7 +31,7 @@
                                 <a asp-controller="Dashboard" asp-action="Index" class="home icon">Dashboard</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientRegistration" ? "active" : "")">
-                                <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Client Registration</a>
+                                <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Register</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" || ViewContext.RouteData.Values["Controller"]?.ToString() == "TemplateManagement" ? "active" : "")">
                                 <a asp-controller="ClientManagement" asp-action="List" class="users icon">Clients</a>
@@ -42,14 +42,14 @@
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientUserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="ClientUserManagement" asp-action="List" class="user icon">Client User Management</a>
                             </li>
-                            <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                            @* <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Usages" asp-action="List" class="usages icon">Usages</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Billing" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Billing" asp-action="List" class="billing icon">Billing</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ActivityLog" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
-                                <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a>
+                                <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a> *@
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterPrice" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="MasterPrice" asp-action="List" class="billing icon">Master Price</a>
@@ -57,9 +57,9 @@
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterTax" && ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")">
                                 <a asp-controller="MasterTax" asp-action="Create" class="tax icon">Master Tax</a>
                             </li>
-                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                            @* <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                                 <a asp-controller="Configuration" asp-action="Index" class="cofig icon">Configuration</a>
-                            </li>
+                            </li> *@
                         </ul>
                     </nav>
                 </div>
