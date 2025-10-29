@@ -132,17 +132,17 @@ namespace F4ConversationCloud.Application.Common.Services
                                             message = "Failed generate OTP"
                                         };
                                     }
-                          //var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
-                          //      if(string.IsNullOrEmpty( sendWhatsAppOTP.MessageId))
-                          //      {
-                          //          return new VarifyUserDetailsResponse
-                          //          {
-                          //              status = false,
-                          //              message = "Failed to send OTP via WhatsApp"
-                          //          };
-                          //      }
-                               
-                    return new VarifyUserDetailsResponse
+                                    var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                                    if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
+                                    {
+                                        return new VarifyUserDetailsResponse
+                                        {
+                                            status = false,
+                                            message = "Failed to send OTP via WhatsApp"
+                                        };
+                                    }
+
+                return new VarifyUserDetailsResponse
                         {
                             status = true,
                             message = "OTP sent successfully to your WhatsApp.!"
@@ -362,12 +362,12 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
 
-                var loginUrl = _urlHelper.Action(
-                        "Login",      
-                        "Onboarding",  
-                        null,          
-                        "https"        
-                    );
+                //var loginUrl = _urlHelper.Action(
+                //        "Login",      
+                //        "Onboarding",  
+                //        null,          
+                //        "https"        
+                //    );
 
 
 
@@ -378,8 +378,8 @@ namespace F4ConversationCloud.Application.Common.Services
                     Body = "<p>Dear Customer,</p><br />" +
                            "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
                            "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
-                           "To complete your Meta Registration, please use the link below:<br/><br/>" +
-                           $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
+                           //"To complete your Meta Registration, please use the link below:<br/><br/>" +
+                           //$"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
                            "Best regards,"
 
                 };
