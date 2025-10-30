@@ -77,7 +77,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     TimeZones = await _authRepository.GetTimeZonesAsync(),
                     Cities = await _authRepository.GetCitiesAsync(),
                     States = await _authRepository.GetStatesAsync(),
-                    FirstName = step1form.FirstName + step1form.LastName,               
+                    FirstName =step1form.FirstName +" "+ step1form.LastName,               
                     Email = step1form.Email,
                     PhoneNumber = step1form.PhoneNumber,
 
