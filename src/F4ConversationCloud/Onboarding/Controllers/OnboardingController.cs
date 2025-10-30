@@ -43,9 +43,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     LastName = clientdetails.LastName,
                     Email = clientdetails.Email,
                     PhoneNumber = clientdetails.PhoneNumber,
-                    //Address = clientdetails.Address,
-                  //  Country = clientdetails.Country,
-                    //Timezone = clientdetails.TimeZone,
                     Stage = clientdetails.Stage
                 };
 
@@ -80,8 +77,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     TimeZones = await _authRepository.GetTimeZonesAsync(),
                     Cities = await _authRepository.GetCitiesAsync(),
                     States = await _authRepository.GetStatesAsync(),
-                    FirstName = step1form.FirstName,
-                    LastName = step1form.LastName,
+                    FirstName =step1form.FirstName +" "+ step1form.LastName,               
                     Email = step1form.Email,
                     PhoneNumber = step1form.PhoneNumber,
 
@@ -103,20 +99,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetCitiesByStateId(int stateId)
-        {
-            try
-            {
-                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
-                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
-            }
-            catch (Exception)
-            {
-                return Json(new { message = "Technical Error!" });
-            }
-        }
-
+       
 
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
@@ -145,7 +128,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                 int TotalRegisteredClient = await _authRepository.GetRegisteredClientCountAsync();
 
-                command.Stage = ClientFormStage.draft;
+               
                 var registerRequest = new RegisterUserModel
                 {
                    
@@ -160,8 +143,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     OrganizationsName = command.OrganizationsName,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
-                    Stage = command.Stage,
-                    //FullPhoneNumber = $"{command.CountryCode}{command.PhoneNumber}",
+                    Stage = ClientFormStage.draft,
                     Role = ClientRole.Admin,
                     RegistrationStatus = ClientRegistrationStatus.Pending,
                     ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
@@ -172,12 +154,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     command.UserId = isregister.NewUserId;
 
-                    //TempData.Put("registrationform", command);
-                    //ViewBag.IsReadOnly = true;
-
-                    //await _onboardingService.SendRegistrationSuccessEmailAsync(registerRequest);
-
-                    TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
+                   // TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
                     string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
                     return Redirect(RedirecttoClientAppLoginPage);
@@ -185,6 +162,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
                 else
                 {
+
+                    command.FirstName = ClientTempData.FirstName;
+                    command.LastName = ClientTempData.LastName;
+                    command.Email = ClientTempData.Email;
+                    command.PhoneNumber = ClientTempData.PhoneNumber;
+                    command.TimeZones = await _authRepository.GetTimeZonesAsync();
+                    command.Cities = await _authRepository.GetCitiesAsync();
+                    command.States = await _authRepository.GetStatesAsync();
                     ViewBag.IsReadOnly = true;
                     TempData["ErrorMessage"] = "Registration failed. Please try again.";
                     return View(command);
@@ -197,6 +182,23 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 return View(command);
             }
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetCitiesByStateId(int stateId)
+        {
+            try
+            {
+                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
+                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
+            }
+            catch (Exception)
+            {
+                return Json(new { message = "Technical Error!" });
+            }
+        }
+
+
         [HttpGet("meta-onboarding")]
         public IActionResult BankVerification()
         {

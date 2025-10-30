@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.MetaModel.BussinessProfile;
+using F4ConversationCloud.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 
 using System;
@@ -79,44 +80,45 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
         {
             try
             {
-                var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
-                var accessToken = _configuration["WhatsAppAPISettings:AccessToken"];
+                var baseUrl = _configuration["WhatsAppBusinessCloudApiConfiguration:FacebookGraphMessageEndpoint"];
+                var accessToken = _configuration["WhatsAppBusinessCloudApiConfiguration:AccessToken"];
 
                 string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(request.PhoneNumberId)}/register?access_token={Uri.EscapeDataString(accessToken)}";
-                               
-                    var questPayload = new
-                            {
-                                messaging_product = "whatsapp",
-                                pin = "313466"
-                             };
 
-                    var jsonContent = System.Text.Json.JsonSerializer.Serialize(questPayload);
-                         using  var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                         using var client = new HttpClient();
-
-                        var response = await client.PostAsync(requestUrl, content);
-                              response.EnsureSuccessStatusCode();
-
-
-                //var handler = new HttpClientHandler();
-                if (!response.IsSuccessStatusCode)
+                var questPayload = new
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
+                    messaging_product = "whatsapp",
+                    pin = "313466"
+                };
 
-                }
-        
+                var jsonContent = System.Text.Json.JsonSerializer.Serialize(questPayload);
+                using var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                using var client = new HttpClient();
+
+                var response = await client.PostAsync(requestUrl, content);
                 var contents = await response.Content.ReadAsStringAsync();
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ActivateClientAccountResponse { status = false };
+                }
 
+                
+                var jsonDoc = System.Text.Json.JsonDocument.Parse(contents);
+                bool success = false;
 
-                ActivateClientAccountResponse activateClientAccountResponse = System.Text.Json.JsonSerializer.Deserialize<ActivateClientAccountResponse>(contents, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (jsonDoc.RootElement.TryGetProperty("success", out var successProp))
+                {
+                    success = successProp.GetBoolean();
+                }
 
-                return activateClientAccountResponse ?? new ActivateClientAccountResponse();
+                return new ActivateClientAccountResponse { status = success };
             }
             catch (Exception)
             {
-                return new ActivateClientAccountResponse();
+                return new ActivateClientAccountResponse { status = false };
             }
         }
+
     }
 }
