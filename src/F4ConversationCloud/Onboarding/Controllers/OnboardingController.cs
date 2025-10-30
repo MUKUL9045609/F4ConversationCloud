@@ -99,20 +99,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetCitiesByStateId(int stateId)
-        {
-            try
-            {
-                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
-                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
-            }
-            catch (Exception)
-            {
-                return Json(new { message = "Technical Error!" });
-            }
-        }
-
+       
 
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
@@ -141,7 +128,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                 int TotalRegisteredClient = await _authRepository.GetRegisteredClientCountAsync();
 
-                command.Stage = ClientFormStage.draft;
+               
                 var registerRequest = new RegisterUserModel
                 {
                    
@@ -156,7 +143,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     OrganizationsName = command.OrganizationsName,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
-                    Stage = command.Stage,
+                    Stage = ClientFormStage.draft,
                     Role = ClientRole.Admin,
                     RegistrationStatus = ClientRegistrationStatus.Pending,
                     ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
@@ -167,7 +154,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     command.UserId = isregister.NewUserId;
 
-                    TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
+                   // TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
 
                     string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
                     return Redirect(RedirecttoClientAppLoginPage);
@@ -195,6 +182,23 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 return View(command);
             }
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetCitiesByStateId(int stateId)
+        {
+            try
+            {
+                var cities = await _authRepository.GetCitiesByStatesIdAsync(stateId);
+                return Json(cities.Select(c => new { id = c.Id, name = c.Name }));
+            }
+            catch (Exception)
+            {
+                return Json(new { message = "Technical Error!" });
+            }
+        }
+
+
         [HttpGet("meta-onboarding")]
         public IActionResult BankVerification()
         {
