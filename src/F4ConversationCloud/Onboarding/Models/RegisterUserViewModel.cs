@@ -66,7 +66,7 @@ namespace Onboarding.Models
             public string ConfirmPassword { get; set; }
             public bool IsActive { get; set; } = true;
 
-            [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "This Field is Required.")]
+            [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "Please Accept Terms and Conditions.")]
             public bool TermsCondition { get; set; }
 
             //[Remote(action: "IsPhoneNumberOTPVerify", controller: "Validation", AdditionalFields = "PhoneNumber", ErrorMessage = "OTP must be verified.")]
