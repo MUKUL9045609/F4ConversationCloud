@@ -60,46 +60,41 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                 }
 
-                //if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
-                //{
+          
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
-                        var userClaims = new List<Claim>()
-                        {
-                            new Claim(ClaimTypes.Name, clientdetails.FirstName + " " + clientdetails.LastName),
-                            new Claim(ClaimTypes.Email, clientdetails.Email),
-                            new Claim(ClaimTypes.MobilePhone, clientdetails.PhoneNumber),
-                            new Claim(ClaimTypes.Role, clientdetails.Role),
-                            new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
-                        };
-                        var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
-                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    var userClaims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.Name, clientdetails.FirstName + " " + clientdetails.LastName),
+                        new Claim(ClaimTypes.Email, clientdetails.Email),
+                        new Claim(ClaimTypes.MobilePhone, clientdetails.PhoneNumber),
+                        new Claim(ClaimTypes.Role, clientdetails.ClientRoles),
+                        new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
+                    };
+                    var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     
 
-                        await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
+                    await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
                        
-                        HttpContext.Session.SetString("Username", clientdetails.Email);
-                        HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
-                        HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
-                        HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
+                    HttpContext.Session.SetString("Username", clientdetails.Email);
+                    HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
+                    HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
+                    HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
-                        TempData["WarningMessage"] = "Welcome";
-                         var stageValue = HttpContext.Session.GetInt32("StageId");
+                    TempData["WarningMessage"] = "Welcome";
+                    var stageValue = HttpContext.Session.GetInt32("StageId");
                          
-                        ClientFormStage stage = (ClientFormStage)stageValue.Value;
+                    ClientFormStage stage = (ClientFormStage)stageValue.Value;
 
-                        if (stage == ClientFormStage.draft)
-                        {
-                            return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
-                        }
-                        else {
-                            return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                    if (stage == ClientFormStage.ClientRegistered)
+                    {
+                        return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                    }
+                    else {
+                        return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
 
-                        }
-                    //}
-
-
-         
+                    }
             }
             catch (Exception)
             {

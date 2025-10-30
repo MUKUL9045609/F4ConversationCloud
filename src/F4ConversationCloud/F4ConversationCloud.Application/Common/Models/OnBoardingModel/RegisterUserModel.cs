@@ -28,6 +28,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public bool TermsCondition { get; set; }
         public bool EmailOtpVerified { get; set; } = false;
         public ClientRole Role { get; set; }
+        public string ClientRoles { get; set; }
         public string Timezone { get; set; }
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }
@@ -38,6 +39,8 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string OptionalAddress { get; set; }
         public string? OrganizationsName { get; set; }
         public ClientRegistrationStatus RegistrationStatus { get; set; }
+        public string CityName { get; set; }
+        public string StateName { get; set; }
 
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
