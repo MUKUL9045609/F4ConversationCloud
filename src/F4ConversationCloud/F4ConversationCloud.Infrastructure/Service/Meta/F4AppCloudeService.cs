@@ -80,8 +80,8 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
         {
             try
             {
-                var baseUrl = _configuration["WhatsAppBusinessCloudApiConfiguration:FacebookGraphMessageEndpoint"];
-                var accessToken = _configuration["WhatsAppBusinessCloudApiConfiguration:AccessToken"];
+                var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
+                var accessToken = _configuration["WhatsAppAPISettings:Token"];
 
                 string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(request.PhoneNumberId)}/register?access_token={Uri.EscapeDataString(accessToken)}";
 

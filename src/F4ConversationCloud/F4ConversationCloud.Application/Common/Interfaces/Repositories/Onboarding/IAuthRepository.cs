@@ -18,7 +18,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboard
         Task<int> IsMailExitAsync(VarifyMobileNumberModel command);
         Task<int> IsContactNoExitAsync(VarifyMobileNumberModel command);
         Task<int> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration command);
-        Task<UserDetailsViewModel> GetCustomerById(int userId);
+        Task<RegisterUserModel> GetCustomerById(int userId);
 
         Task<LoginViewModel> ValidateClientCreadiatial(string email);
         Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync();
