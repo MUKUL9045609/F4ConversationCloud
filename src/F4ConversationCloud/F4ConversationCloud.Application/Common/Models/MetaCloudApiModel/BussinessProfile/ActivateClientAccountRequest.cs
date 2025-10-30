@@ -15,6 +15,6 @@ namespace F4ConversationCloud.Application.Common.Meta.BussinessProfile
     }
     public class ActivateClientAccountResponse
     {
-        public string  status { get; set; }
+        public bool  status { get; set; }
     }
 }

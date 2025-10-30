@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Models.MetaModel.BussinessProfile;
+using F4ConversationCloud.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string Status { get; set; }
         public string PhoneNumber { get; set; }
 
-        public string ApprovalStatus { get; set; }
+        public ClientRegistrationStatus ApprovalStatus { get; set; }
 
         public string WebSite { get; set; }
         public string ClientEmail { get; set; }

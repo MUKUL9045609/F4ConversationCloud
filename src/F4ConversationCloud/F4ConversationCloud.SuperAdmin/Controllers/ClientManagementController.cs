@@ -48,13 +48,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     SrNo = x.SrNo,
                     ClientName = x.ClientName,
                     Status = x.Status,
-                    ApprovalStatus = x.ApprovalStatus,
+                    ApprovalStatus = ((ClientRegistrationStatus)Convert.ToInt32(x.ApprovalStatus)).GetDisplayName(),
                     IsActive = x.IsActive,
                     CreatedAt = x.CreatedAt,
                     UpdatedOn = x.UpdatedOn,
                     Category = x.Category,
                     ClientId = x.ClientId,
-                    RejectComment = x.RejectComment
+                    RejectComment = x.RejectComment,
                 });
 
                 return View(model);

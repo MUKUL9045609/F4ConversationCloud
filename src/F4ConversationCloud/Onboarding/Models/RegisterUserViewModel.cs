@@ -53,7 +53,7 @@ namespace Onboarding.Models
             public string? OrganizationsName { get; set; }
 
             [Required(ErrorMessage = "Password is required")]
-            [StringLength(16, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
+            [StringLength(30, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
             [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$",
             ErrorMessage = "Password should be at least 8 characters long and it should contain at least one Uppercase, one lowercase, one special character, and one number")]
             [DataType(DataType.Password)]
@@ -66,7 +66,7 @@ namespace Onboarding.Models
             public string ConfirmPassword { get; set; }
             public bool IsActive { get; set; } = true;
 
-            [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "This Field is Required.")]
+            [Remote(action: "IsValidTermsCondition", controller: "Validation", ErrorMessage = "Please Accept Terms and Conditions.")]
             public bool TermsCondition { get; set; }
 
             //[Remote(action: "IsPhoneNumberOTPVerify", controller: "Validation", AdditionalFields = "PhoneNumber", ErrorMessage = "OTP must be verified.")]
@@ -78,25 +78,12 @@ namespace Onboarding.Models
             public ClientFormStage Stage { get; set; }
             public int UserId { get; set; }
            
-        public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
-        public IEnumerable<Cities> Cities { get; set; } = new List<Cities>();
-        public IEnumerable<States> States { get; set; } = new List<States>();
+            public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
+            public IEnumerable<Cities> Cities { get; set; } = new List<Cities>();
+            public IEnumerable<States> States { get; set; } = new List<States>();
 
     }
-    public class PhoneNumberVerifiedAttribute : ValidationAttribute
-    {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            
-            if (value is bool verified && !verified)
-            {
-                return new ValidationResult("Please verify your Contact Number before proceeding.");
-            }
-
-           
-            return ValidationResult.Success;
-        }
-    }
+    
 
 }
 

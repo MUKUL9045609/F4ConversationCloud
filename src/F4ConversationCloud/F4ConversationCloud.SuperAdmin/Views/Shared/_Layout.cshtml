@@ -3,9 +3,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - F4ConversationCloud.SuperAdmin</title>
+    
+
     <script type="importmap"></script>
 
 
@@ -14,6 +17,7 @@
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="~/css/daterangepicker.css">
+    <link rel="icon" type="image/x-icon" href="/favicon-32x32.png">
 
 </head>
 <body>
@@ -31,10 +35,10 @@
                                 <a asp-controller="Dashboard" asp-action="Index" class="home icon">Dashboard</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientRegistration" ? "active" : "")">
-                                <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Register</a>
+                                <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Registration</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" || ViewContext.RouteData.Values["Controller"]?.ToString() == "TemplateManagement" ? "active" : "")">
-                                <a asp-controller="ClientManagement" asp-action="List" class="users icon">Clients</a>
+                                <a asp-controller="ClientManagement" asp-action="List" class="users icon">Business Account</a>
                             </li>
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "UserManagement" ? "active" : "")">
                                 <a asp-controller="UserManagement" asp-action="List" class="user icon">User Management</a>
