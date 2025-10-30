@@ -23,8 +23,8 @@
                                 @Html.DisplayNameFor(model => model.Columns.CreatedAt)
                                 <label class="datewrap" for="datepicker">
                                     <input type="date" asp-for="OnboardingOnFilter"
-                                           class="form-control search-form-control"
-                                           placeholder="Select Date" onchange="loadData()" />
+                                    class="form-control search-form-control"
+                                    placeholder="Select Date" onchange="loadData()" />
                                 </label>
                             </th>
                             <th>
@@ -74,7 +74,7 @@
                                     <td><span class="online">@Html.DisplayFor(modelItem => item.Status)</span></td>
                                     @if (item.RejectComment == null || item.RejectComment == "")
                                     {
-                                       <td>-</td>
+                                        <td>-</td>
                                     }
                                     else
                                     {
@@ -84,9 +84,7 @@
                                     }
                                     <td> 
                                         @{
-                                            var badgeClass = item.ApprovalStatus == "Approved" ? "success"
-                                            : item.ApprovalStatus == "Reject" ? "danger"
-                                            : "warning";
+                                            var badgeClass = item.ApprovalStatus == "Active" ? "success" : "warning";
                                         }
                                         <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.ApprovalStatus)</span>
                                     </td>

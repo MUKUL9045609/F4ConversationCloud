@@ -154,7 +154,7 @@
             location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
         });
     </script>
-  @*   <script>
+    <script>
         const fbLoginCallback = (response) => {
           if (response.authResponse) {
             const code = response.authResponse.code;
@@ -187,11 +187,11 @@
     </script>
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js">
-    </script> *@
+    </script>
 
 
 
-    <script>
+   @*  <script>
         const fbLoginCallback = (response) => {
           if (response.authResponse) {
             const code = response.authResponse.code;
@@ -223,5 +223,5 @@
     </script>
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js">
-    </script>
+    </script> *@
 }
