@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using System.Security.Claims;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
@@ -47,11 +48,21 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     Email = request.Email,
                     PassWord = request.Password
                 });
-                if (response.IsSuccess)
+                if (response.Message == "InvalidEmail" && !response.IsSuccess) {
+                    ModelState.AddModelError("Email", "This Email is not Registered.");
+                    return View(request);
+
+                }
+                if (response.Message == "InvalidPassword" && !response.IsSuccess)
                 {
-                    //if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
-                    //{
-                        var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
+                    ModelState.AddModelError("Password", "Please enter a valid password.");
+                    return View(request);
+
+                }
+
+                //if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
+                //{
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
                         var userClaims = new List<Claim>()
                         {
@@ -75,29 +86,20 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         TempData["WarningMessage"] = "Welcome";
                          var stageValue = HttpContext.Session.GetInt32("StageId");
                          
-                                ClientFormStage stage = (ClientFormStage)stageValue.Value;
+                        ClientFormStage stage = (ClientFormStage)stageValue.Value;
 
-                                if (stage == ClientFormStage.draft)
-                                {
-                                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
-                                }
-                                else {
-                                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                        if (stage == ClientFormStage.draft)
+                        {
+                            return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                        }
+                        else {
+                            return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
 
-                                }
-
-
-
+                        }
                     //}
 
 
-                }
-                else
-                {
-                    TempData["WarningMessage"] = "error";
-                    return View(request);
-                }
-                return View(request);
+         
             }
             catch (Exception)
             {
