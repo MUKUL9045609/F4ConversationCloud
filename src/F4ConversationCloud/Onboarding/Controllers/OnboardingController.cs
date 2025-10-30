@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
@@ -26,26 +27,42 @@ namespace F4ConversationCloud.Onboarding.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("Id={id}")]
-        public async Task<IActionResult>  Index([FromRoute] string id , string token)
+        [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] string id, [FromQuery] string token)
         {
-
-            string DecryptId = id.ToString().Decrypt();
-            int Userid = Convert.ToInt32(DecryptId);
-
-            var decrypted = token.Decrypt();
-            var parts = decrypted.Split('|');
-            if (parts.Length != 2) return false;
-
-            var idFromToken = int.Parse(parts[0]);
-            var expiry = DateTime.Parse(parts[1], null, System.Globalization.DateTimeStyles.RoundtripKind);
-
-            // Validate both ID and expiry
-            return idFromToken == idFromQuery && DateTime.UtcNow <= expiry;
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+            {
+                TempData["ErrorMessage"] = "Invalid or missing link parameters.";
+                return RedirectToAction("ThankYouPage");
+            }
+            
             try
             {
+                string DecryptId = id.ToString().Decrypt();
+                int Userid = Convert.ToInt32(DecryptId);
+                var decrypted = token.Decrypt();
+                string decryptedToken = token.Replace("thisisslash", "/")
+                                       .Replace("thisisbackslash", @"\")
+                                       .Replace("thisisplus", "+")
+                                       .Decrypt();
+                string[] tokenParts = decryptedToken.Split("|");
+                if (tokenParts.Length != 2)
+                {
+                    TempData["ErrorMessage"] = "Invalid token.";
+                    return RedirectToAction("ThankYouPage");
+                }
+                DateTime expiryTime = DateTime.Parse(tokenParts[1]);
+                if (expiryTime < DateTime.UtcNow)
+                {
+                    TempData["ErrorMessage"] = "Link has expired. Please request a new one.";
+                    return RedirectToAction("ThankYouPage");
+                }
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
-                
+                if (clientdetails == null)
+                {
+                    TempData["ErrorMessage"] = "Client not found.";
+                    return RedirectToAction("ThankYouPage");
+                }
                 var command = new RegisterUserViewModel
                 {
                     UserId = clientdetails.UserId,
@@ -59,13 +76,14 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 TempData.Put("registrationform", command);
               
 
-                return View();
+                return View(command);
 
             }
             catch (Exception)
             {
 
-                return View();
+                TempData["ErrorMessage"] = "Invalid or corrupted link.";
+                return RedirectToAction("ThankYouPage");
             }
             
            
@@ -433,7 +451,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
 
         }
-        [HttpGet("thank-you")]
+        [HttpGet("invalid-token")]
         public IActionResult ThankYouPage()
         {
             return View();
