@@ -19,9 +19,9 @@
         width: 100%;
         background-color: #fff;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 15px;
         overflow: hidden;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            box-shadow: rgba(149, 157, 165, 0.1) 0px 0px 15px;
         display: flex;
 
         .left-col {
@@ -30,7 +30,7 @@
             background-position: 80% 17%;
             background-repeat: no-repeat;
             height: auto;
-            width: 40%;
+            width: 50%;
             padding: 30px 50px 100px;
             position: relative;
             display: block;
@@ -47,7 +47,7 @@
             p {
                 font-size: 14px;
                 color: #fff;
-                max-width: 270px;
+                max-width: 370px;
                 margin-bottom: 0px;
                 line-height: 27px;
                 position: relative;
@@ -81,7 +81,7 @@
 
         .right-col {
             padding: 45px;
-            width: 60%;
+            width: 50%;
             position: relative;
             display: flex;
             align-items: center;
@@ -125,6 +125,7 @@
                     border-top: 1px solid #eee;
                     padding: 12px 0px 8px;
                 }
+                
             }
 
             .wrap_bx {
@@ -309,42 +310,7 @@
             margin-top: 20px;
         }
 
-        .or {
-            display: flex;
-            align-items: center;
-            color: #BABABA;
-            margin: 15px 0px;
-
-            span {
-                padding: 0px 34px;
-            }
-
-            &::before {
-                content: "";
-                background-color: #ddd;
-                height: 1px;
-                width: 100%;
-                display: flex;
-            }
-
-            &::after {
-                content: "";
-                background-color: #ddd;
-                height: 1px;
-                width: 100%;
-                display: flex;
-            }
-        }
-
-        .google-icon {
-            background-image: url("../images/login/google.svg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 25px;
-            width: 25px;
-            display: block;
-        }
+       
 
         .facebook-icon {
             background-image: url("../images/login/facebook.svg");
@@ -356,13 +322,7 @@
             display: block;
         }
 
-        .sign-google {
-            color: #333;
-            font-size: 15px;
-            justify-content: center;
-            font-weight: 500;
-            text-decoration: none;
-        }
+       
 
         .lock-text {
             font-size: 13px;
