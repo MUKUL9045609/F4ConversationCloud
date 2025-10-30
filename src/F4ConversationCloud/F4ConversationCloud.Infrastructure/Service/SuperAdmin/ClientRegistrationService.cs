@@ -119,7 +119,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             return response;
         }
 
-        public async Task SendRegistrationEmailAsync(string email, string name, int id)
+        public async Task SendRegistrationEmailAsync(string email, string name, int id, string contactNumber)
         {
             var model = new LogModel();
             model.Source = "ClientRegistration/SendRegistrationEmailAsync";
@@ -136,6 +136,8 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}";
                 string currentYear = DateTime.Now.Year.ToString();
                 htmlBody = htmlBody.Replace("{user_name}", name)
+                                   .Replace("{email}", email)
+                                   .Replace("{contact_number}", contactNumber)
                                    .Replace("{BaseUrl}", baseUrl)
                                    .Replace("{Link}", registrationLink)
                                    .Replace("{CurrentYear}", currentYear);

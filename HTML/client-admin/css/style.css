@@ -1887,7 +1887,9 @@ body {
   font-size: 18px;
 }
 .page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-menu {
-  padding: 14px 20px;
+  padding: 14px 12px;
+  min-width: 11rem;
+  left: -43% !important;
 }
 .page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-menu .name {
   font-size: 15px;
