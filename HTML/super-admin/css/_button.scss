@@ -9,7 +9,7 @@ button{
 .btn{
     font-size: 13px !important;
     font-weight: 400 !important;
-    border-radius: 4px !important;
+    border-radius: 6px !important;
     padding: 8px 20px!important;
     &.btn-facebook{
         background-color: #0866ff;
@@ -31,14 +31,14 @@ button{
 
 }
 .primary-btn {
-    border: 1px solid $tabs !important;
-    background-color: $tabs !important;
+    border: 1px solid $black !important;
+    background-color: $black !important;
     color: $white !important;
 
     &:hover {
-        color: $tabs !important;
-        background-color: $white !important;
-        border: 1px solid $tabs !important;
+        color: $white !important;
+        background-color: $black !important;
+        border: 1px solid $black !important;
     }
 
     &:focus {
@@ -52,13 +52,13 @@ button{
 }
 
 .secondary-btn {
-    border: 1px solid $tabs !important;
+    border: 1px solid $black !important;
     background-color: $white !important;
-    color: $tabs !important;
+    color: $black !important;
 
     &:hover {
         color: $white !important;
-        background-color: $tabs !important;
+        background-color: $black !important;
         
     }
 

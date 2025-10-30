@@ -14,17 +14,19 @@
     .accordion {
         position: relative;
         .accordion-item {
-            border-color: $accordion !important;
-            margin-bottom: 16px;
+            // border-color: $accordion !important;
+            margin-bottom: 10px!important;
             border-radius: 8px;
             overflow: hidden;
-            background-color: #f4f4f4;
+            background-color: #fff;
+            
             &:first-of-type {
                 border-radius: 8px !important;
 
                 .accordion-button {
                     border-radius: 0 !important;
                     padding: 14px 15px;
+                    
                 }
             }
 
@@ -35,16 +37,7 @@
                     border-radius: 0 !important;
                 }
             }
-            .accordion-header {
-                // margin: 0px 10px;
-               
-                .accordion-button {
-                    border-bottom: 1px solid #ddd;
-                    &.collapsed {
-                        border-bottom: 0px;
-                    }
-                }
-            }
+           
             .accordion-button {
                 background-color: transparent !important;
                 box-shadow: none !important;
@@ -52,10 +45,12 @@
                 color: $textColor;
                 font-weight: 500;
                 padding: 14px 15px;
+                 
                 &:focus {
                     box-shadow: none !important;
+                    
                 }
-
+                
                 &::after {
                     background-image: url("data:image/svg+xml,%3Csvg width='12' height='6' viewBox='0 0 12 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0.5L6 5.5L11 0.5' stroke='%23626262' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
                     width: 16px;
@@ -63,10 +58,13 @@
                     background-size: contain;
                 }
             }
-
+            .accordion-collapse{
+                border-top: 1px solid #E2E2E2;
+            }
             .accordion-body {
-                padding: 10px;
+                padding: 15px;
                 background-color: #fff;
+               
                 label {
                     font-size: 14px;
                     font-weight: 400;
@@ -113,7 +111,9 @@
                     padding-left: 26px;
                 }
             }
+            
         }
+        
     }
     &.template-accordion {
         position: relative;
@@ -155,4 +155,7 @@
         text-align: center;
         padding: 0.475rem 0.25rem !important;
     }
+}
+.accordion-item:not(:first-of-type) {
+    border-top: 1px solid #E2E2E2!important;
 }
