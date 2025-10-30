@@ -26,15 +26,15 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpGet("Id={id}")]
-        public async Task<IActionResult>  Index([FromRoute] int id)
+        public async Task<IActionResult>  Index([FromRoute] string id)
         {
 
-            //string DecryptId = id.ToString().Decrypt();
-            //int Userid = Convert.ToInt32(DecryptId);
+            string DecryptId = id.ToString().Decrypt();
+            int Userid = Convert.ToInt32(DecryptId);
 
             try
             {
-                var clientdetails = await _onboardingService.GetCustomerByIdAsync(id);
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
                 
                 var command = new RegisterUserViewModel
                 {
