@@ -133,9 +133,18 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 string baseUrl = $"{request.Scheme}://{request.Host}";
                 string encryptedId = id.ToString().Encrypt();
 
-                string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}";
+                // Generate token with expiry
+                var expiry = DateTime.UtcNow.AddHours(48);
+                var tokenData = $"{id}|{expiry:O}";
+                var encryptedToken = tokenData.Encrypt();
+
+                string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}&token={encryptedToken}";
+                string logo = $"{_configuration["MailerLogo"]}";
+                string registrationImage = $"{_configuration["MailerRegistrationImage"]}";
                 string currentYear = DateTime.Now.Year.ToString();
                 htmlBody = htmlBody.Replace("{user_name}", name)
+                                   .Replace("{Logo}", logo)
+                                   .Replace("{RegistrationImage}", registrationImage)
                                    .Replace("{email}", email)
                                    .Replace("{contact_number}", contactNumber)
                                    .Replace("{BaseUrl}", baseUrl)
