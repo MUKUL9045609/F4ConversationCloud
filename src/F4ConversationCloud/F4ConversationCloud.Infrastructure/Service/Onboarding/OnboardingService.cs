@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
@@ -10,6 +11,7 @@ using F4ConversationCloud.Domain.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Twilio.Types;
 
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -34,7 +36,7 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-                int ismailExit = await _authRepository.CheckMailOrPhoneNumberAsync(request);
+                int ismailExit = await _authRepository.IsMailExitAsync(request);
                 var CreateOTP = OtpGenerator.GenerateRandomOTP();
                 if (ismailExit != 1)
                 {
@@ -98,6 +100,69 @@ namespace F4ConversationCloud.Application.Common.Services
 
         }
 
+        public async Task<VarifyUserDetailsResponse> VarifyWhatsAppContactNoAsync(VarifyMobileNumberModel request)
+        {
+            try
+            {
+              //int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
+                            var CreateOTP = OtpGenerator.GenerateRandomOTP();
+                                    //if (ContactNoExit != 0)
+                                    //{
+                                    //    return new VarifyUserDetailsResponse
+                                    //    {
+                                    //        status = false,
+                                    //        message = "Already Registered With this Number!"
+
+                                    //    };
+
+                                    //}
+                                    var varificationRequest = new VarifyMobileNumberModel
+                                    {
+                                        UserEmailId = request.UserEmailId,
+                                        UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                                        OTP = CreateOTP,
+                                        OTP_Source = "WhatsApp"
+                                    };
+                        var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
+                                    if (insertOTPResponse != 1)
+                                    {
+                                        return new VarifyUserDetailsResponse
+                                        {
+                                            status = false,
+                                            message = "Failed generate OTP"
+                                        };
+                                    }
+                                    var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                                    if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
+                                    {
+                                        return new VarifyUserDetailsResponse
+                                        {
+                                            status = false,
+                                            message = "Failed to send OTP via WhatsApp"
+                                        };
+                                    }
+
+                return new VarifyUserDetailsResponse
+                        {
+                            status = true,
+                            message = "OTP sent successfully to your WhatsApp.!"
+                        };
+                    
+                
+            }
+            catch (Exception)
+            {
+                return new VarifyUserDetailsResponse
+                {
+                    status = false,
+                    message = "Technical Error!"
+                };
+            }
+
+        }
+
+
+
         public async Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request)
         {
             try
@@ -105,6 +170,8 @@ namespace F4ConversationCloud.Application.Common.Services
                 if (!string.IsNullOrEmpty(request.PhoneNumberId))
                 {
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
+                    var registerPhoneNumber = await _whatsAppCloude.RegisterClientAccountAsync( new ActivateClientAccountRequest { PhoneNumberId = request.PhoneNumberId });
+
 
 
                     string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
@@ -118,10 +185,10 @@ namespace F4ConversationCloud.Application.Common.Services
                         PhoneNumberId = request.PhoneNumberId,
                         BusinessId = request.BusinessId,
                         WhatsAppBotName = businessInfo.VerifiedName,
-                        Status = businessInfo.WhatsAppStatus,
+                        Status = registerPhoneNumber.status,
                         PhoneNumber = businessInfo.DisplayPhoneNumber,
                         AppVersion = request.AppVersion,
-                        ApprovalStatus = "Pending",
+                        //ApprovalStatus = "Pending",
                         ClientEmail = email,
                         WebSite = websites,
                         Category = category,
@@ -161,7 +228,7 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
                 
-                var register = await _authRepository.CreateUserAsync(request);
+                var register = await _authRepository.UpdateClientDetailsAsync(request);
 
                 if (register <= 0)
                 {
@@ -176,7 +243,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
                     return new RegisterUserResponse
                     {
-                        Message = "User created successfully",
+                        Message = "User Updated successfully",
                         IsSuccess = true,
                         NewUserId = register
                     };
@@ -194,32 +261,51 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         }
 
-        
+
 
         public async Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request)
         {
             try
             {
-                var checkOTP = await _authRepository.VerifyOTPAsync(request);
+                var verifyOtpRequest = new ValidateRegistrationOTPModel
+                {
+                    OTP = request.OTP,
+                    UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                };
+
+                var checkOTP = await _authRepository.VerifyOTPAsync(verifyOtpRequest);
 
                 if (checkOTP > 0)
                 {
-                    return new ValidateRegistrationOTPResponse { status = true };
+                    return new ValidateRegistrationOTPResponse
+                    {
+                        status = true,
+                        message = " OTP verified successfully!"
+                    };
                 }
                 else
                 {
-                    return new ValidateRegistrationOTPResponse { status = false };
+                    return new ValidateRegistrationOTPResponse
+                    {
+                        status = false,
+                        message = "OTP is Invalid or expired . Please check and Resend"
+                    };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return new ValidateRegistrationOTPResponse { status = false };
+               
+                return new ValidateRegistrationOTPResponse
+                {
+                    status = false,
+                    message = "Technical Error!"
+                };
             }
         }
 
 
-       public async Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId) {
+
+        public async Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId) {
             try
             {
                 var response = await _authRepository.GetCustomerById(UserId);
@@ -276,12 +362,12 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
 
-                var loginUrl = _urlHelper.Action(
-                        "Login",      
-                        "Onboarding",  
-                        null,          
-                        "https"        
-                    );
+                //var loginUrl = _urlHelper.Action(
+                //        "Login",      
+                //        "Onboarding",  
+                //        null,          
+                //        "https"        
+                //    );
 
 
 
@@ -292,8 +378,8 @@ namespace F4ConversationCloud.Application.Common.Services
                     Body = "<p>Dear Customer,</p><br />" +
                            "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
                            "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
-                           "To complete your Meta Registration, please use the link below:<br/><br/>" +
-                           $"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
+                           //"To complete your Meta Registration, please use the link below:<br/><br/>" +
+                           //$"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
                            "Best regards,"
 
                 };
@@ -315,23 +401,23 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
                
-                 var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
-                    if (ClientDetails is null)
+               var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
+                if (ClientDetails is null)
+                    return new LoginResponse
+                    {
+                        Message = "InvalidEmail",
+                        IsSuccess = false,
+
+                    };
+                var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
+                    if (!isPasswordValid)
+                    {
                         return new LoginResponse
                         {
-                            Message = "InvalidEmail",
+                            Message = "InvalidPassword",
                             IsSuccess = false,
-
                         };
-                    var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
-                        if (!isPasswordValid)
-                        {
-                            return new LoginResponse
-                            {
-                                Message = "InvalidPassword",
-                                IsSuccess = false,
-                            };
-                        }
+                    }
                 return new LoginResponse()
                 {
                     Message = "Login Success",

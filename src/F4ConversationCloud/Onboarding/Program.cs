@@ -1,7 +1,5 @@
-using F4ConversationCloud.Application;
+using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
-using F4ConversationCloud.Infrastructure.Service;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddHttpClient();
+WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
 
+
+whatsAppConfig.AccessToken = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["AccessToken"];
+whatsAppConfig.WhatsAppBusinessPhoneNumberId = builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["WhatsAppBusinessPhoneNumberId"];
+builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -2,65 +2,73 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Handler;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.DataClassification;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json;
+using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class TemplateManagementController : Controller
     {
         private readonly ITemplateManagementService _templateManagementService;
+        
         public TemplateManagementController(ITemplateManagementService templateManagementService)
         {
             _templateManagementService = templateManagementService;
+        
         }
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet("create-template")]
-        public IActionResult CreateTemplate()
-        {
-            return View();
-        }
+        //[HttpGet("create-template")]
+        //public IActionResult CreateTemplate()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost("create-template")]
-        public IActionResult CreateTemplate(CreateTemplateViewModel Request)
-        {
-            try
-            {
-                if(!ModelState.IsValid)
-                {
-                    return View(Request);
-                }
+        //[HttpPost("create-template")]
+        //public IActionResult CreateTemplate(CreateTemplateViewModel Request)
+        //{
+        //    try
+        //    {
+        //        if(!ModelState.IsValid)
+        //        {
+        //            return View(Request);
+        //        }
 
-                var templateRequest = new WhatsAppTemplateRequest
-                {
-                    Name = Request.TemplateName,
-                    Language = Request.Language,
-                    Category = Request.Category,
-                    Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
-                };
-                var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
-                var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
-
-                return View(Request);
-            }
-            catch (Exception)
-            {
-
-                return View(Request);
-            }
+        //        var templateRequest = new WhatsAppTemplateRequest
+        //        {
+        //            Name = Request.TemplateName,
+        //            Language = Request.Language,
+        //            Category = Request.Category,
+        //            Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
+        //        };
 
 
-        }
+        //        var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
+
+        //        var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
+
+        //        return View(Request);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        return View(Request);
+        //    }
+
+
+        //}
 
         [HttpGet("update-template/{Template_id}")]
         public async Task<IActionResult> UpdateTemplate(string Template_id)
@@ -122,7 +130,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateTemplate()
         {
             try
             {
@@ -145,7 +153,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TemplateViewModel model)
+        public async Task<IActionResult> CreateTemplate(TemplateViewModel model)
         {
             try
             {
@@ -206,37 +214,45 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
             if (model != null)
             {
-                var templateCategoryName = model.TemplateCategoryName;
-                var templateTypeName = model.TemplateTypeName;
+                var templateCategoryName = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
+                model.TemplateCategoryName = templateCategoryName;
 
                 if (templateCategoryName == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
                 {
-                    if (templateTypeName == MarketingTemplateType.Default.Get<DisplayAttribute>().Name)
+                    if (model.TemplateType == (int)MarketingTemplateType.Default)
                     {
                         viewName = "_MarketingDefaultTemplate";
                     }
-                    else if (templateTypeName == MarketingTemplateType.Catalogue.Get<DisplayAttribute>().Name)
+                    else if (model.TemplateType == (int)MarketingTemplateType.Catalogue)
                     {
 
                     }
-                    else if (templateTypeName == MarketingTemplateType.CallingPermissionsRequest.Get<DisplayAttribute>().Name)
+                    else if (model.TemplateType == (int)MarketingTemplateType.CallingPermissionsRequest)
                     {
 
+                    }
+                    else if (model.TemplateType == (int)MarketingTemplateType.Carousel)
+                    {
+                        viewName = "_MarketingCarouselTemplate";
                     }
                 }
                 else if (templateCategoryName == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
                 {
-                    if (templateTypeName == UtilityTemplateType.Default.Get<DisplayAttribute>().Name)
+                    if (model.TemplateType == (int)UtilityTemplateType.Default)
                     {
                         viewName = "_UtilityDefaultTemplate";
                     }
-                    else if (templateTypeName == UtilityTemplateType.CallingPermissionsRequest.Get<DisplayAttribute>().Name)
+                    else if (model.TemplateType == (int)UtilityTemplateType.CallingPermissionsRequest)
                     {
 
                     }
+                    else if (model.TemplateType == (int)UtilityTemplateType.Carousel)
+                    {
+                        viewName = "_UtilityCarouselTemplate";
+                    }
                 }
                 else if (templateCategoryName == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
-                && templateTypeName == AuthenticationTemplateType.OneTimePasscode.Get<DisplayAttribute>().Name)
+                && model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
                 {
                     viewName = "_AuthenticationOneTimeCodeTemplate";
                 }
@@ -250,8 +266,26 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
                 ModelState.Clear();
             }
-
+            ViewData["Index"] = 0;
             return PartialView(viewName, model);
+        }
+
+        public IActionResult AddMessageVariable(int index)
+        {
+            var model = new TemplateViewModel();
+
+            // Ensure the list is initialized
+            if (model.bodyVariables == null)
+                model.bodyVariables = new List<BodyVariable>();
+
+            // Add empty items until the list has the required index
+            while (model.bodyVariables.Count <= index)
+            {
+                model.bodyVariables.Add(new BodyVariable());
+            }
+
+            ViewData["Index"] = index;
+            return PartialView("_MessageVariableBody", model);
         }
     }
 }

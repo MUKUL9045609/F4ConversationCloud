@@ -31,8 +31,8 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
         {
             try
             {
-                var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
-                var accessToken = _configuration["WhatsAppAPISettings:AccessToken"];
+                var baseUrl = _configuration["WhatsAppBusinessCloudApiConfiguration:FacebookGraphMessageEndpoint"];
+                var accessToken = _configuration["WhatsAppBusinessCloudApiConfiguration:AccessToken"];
 
                 string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(phoneNumberId)}" +
                                     "?fields=id,display_phone_number,verified_name,whatsapp_business_profile{email,websites,vertical},status" +
@@ -86,9 +86,9 @@ namespace F4ConversationCloud.Infrastructure.Service.MetaServices
                                
                     var questPayload = new
                             {
-                                messaging_product = request.messaging_product,
-                                pin = request.Pin
-                            };
+                                messaging_product = "whatsapp",
+                                pin = "313466"
+                             };
 
                     var jsonContent = System.Text.Json.JsonSerializer.Serialize(questPayload);
                          using  var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");

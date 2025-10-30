@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Domain.Entities;
 
 namespace F4ConversationCloud.Application.Common.Services
@@ -42,5 +43,28 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             return await _campaign.DeactivateCampaign(id);
         }
+
+        public async Task<bool> DeactivateAudientMansterGroupAsync(int id)
+        {
+            return await _campaign.DeactivateAudientMansterGroup(id);
+        }
+        public async Task<int> UpdateAudientMansterGroupAsync(AudienceGroupMasterModel group)
+        {
+            return await _campaign.UpdateAudientMansterGroup(group);
+        }
+        public async Task<IEnumerable<AudienceGroupMasterModel>> GetAllAudientMansterGroupsAsync()
+        {
+            return await _campaign.GetAllAudientMansterGroups();
+        }
+        public async Task<AudienceGroupMasterModel> GetAudientMansterGroupByIdAsync(int Id)
+        {
+            return await _campaign.GetAudientMansterGroupById(Id);
+        }
+        public async Task<int> CreateAudientMansterGroupAsync(AudienceGroupMasterModel group)
+        {
+            return await _campaign.CreateAudientMansterGroup(group);
+        }
+        
+
     }
 }

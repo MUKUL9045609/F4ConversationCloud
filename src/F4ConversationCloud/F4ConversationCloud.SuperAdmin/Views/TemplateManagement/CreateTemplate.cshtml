@@ -1,540 +1,622 @@
-﻿@model CreateTemplateViewModel
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@using BuldanaUrban.Domain.Helpers
+@using F4ConversationCloud.Domain.Enum
+@using System.ComponentModel.DataAnnotations
+
 @{
-    ViewData["Title"] = "Create Template";
+    var categoryType = string.Empty;
+    categoryType = Model.TemplateCategoryList
+            .Where(x => x.Value == Model.TemplateCategory.ToString())
+            .Select(x => x.Text)
+            .FirstOrDefault();
+
+    var m = Model;
 }
 
-<div class="content">
-    <div class="main-content">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between headerWrap mb-3">
-                <div class="d-flex align-items-center gap-2">
-                    <h3 class="sub-heading mb-0">
-                        <a href="#" class="back"></a>Create Template
-                    </h3>
+<form asp-action="Create" method="post" enctype="multipart/form-data" id="mainForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="content bg-light">
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="template-content-wrap">
+                    <div class="template-creation-content" id="first-page">
+                        <div class="creation-card template-creation">
 
-                </div>
-                <!-- <div>
-                    <button type="button" class="btn primary-btn" data-bs-toggle="modal"
-                            data-bs-target="#createTemplate">
-                        View Sample Template
-                    </button>
-                </div> -->
-            </div>
-            <div class="row">
-                <form asp-action="CreateTemplate" asp-controller="TemplateManagement" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="col-md-8">
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Template name<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Give your message template a name.</label>
-                                <input asp-for="TemplateName"
-                                       type="text"
-                                       class="form-control"
-                                       id="exampleInputEmail1"
-                                       placeholder="Eg.fortune_sale"
-                                       aria-describedby="emailHelp" />
-                                <div id="emailHelp" class="form-text">
-                                    Template names can only contain small letters, numbers and
-                                    underscores.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Category<sup>*</sup></h3>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose what type of message template you want to
-                                    create.
-                                </label>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault1"
-                                                   value="UTILITY" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault1">
-                                                Utility
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault2"
-                                                   value="AUTHENTICATION" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault2">
-                                                Authentication
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check radio-btn mb-2">
-                                            <input asp-for="Category"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="flexRadioDefault3"
-                                                   value="MARKETING" />
-                                            <label class="form-check-label"
-                                                   for="flexRadioDefault3">
-                                                Marketing
-                                            </label>
-                                        </div>
-                                        <p>
-                                            Send promo offers, product offers and more to
-                                            increase awareness and engagement.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Language<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Choose which languages your message template will be sent
-                                    in.
-                                </label>
-                                <select asp-for="Language" class="form-select" aria-label="Default select example">
-                                    <option selected>select languages</option>
-                                    <option value="en_US">English (US)</option>
-
-                                    <option value="3">Hindi</option>
-                                    <option value="4">Marathi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Types Of Variables<sup>*</sup></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Name</option>
-                                    <option value="1">Number</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Media Samples<sup>*</sup> <span class="key">Optional</span></h3>
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-
-                                <select class="form-select" id="mySelect" aria-label="Default select example">
-                                    <option selected disabled>Select Media</option>
-                                    <option value="Text">Text</option>
-                                    <option value="Image">Image</option>
-                                    <option value="Video">Video</option>
-                                    <option value="Document">Document</option>
-                                    <option value="Location">Location</option>
-
-                                </select>
-                                <div class="drag-file-wrapper" id="attatchment" style="display: none;">
-                                    <label class="drag-file">
-                                        <input type="file" />
-                                        <span class="drag-title">Drag and drop to upload or <a href="#">choose files on your device</a></span>
-
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Header <span class="key">Optional</span></h3>
-                                <input type="hidden" asp-for="Components[0].Type" value="HEADER" />
-                                <input type="hidden" asp-for="Components[0].Format" value="TEXT" />
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Add a 60 character title to your message. Only one variable
-                                    is supported in the header.
-                                </label>
-                                <input type="text" id="Headerinput" asp-for="Components[0].Text" class="form-control">
-                                <input type="hidden" asp-for="Components[0].Example.HeaderText" id="Header_Text_value" value="" />
-
-                                <div class="d-flex justify-content-end">
-                                    <a class="add-variables" id="AddHeaderVariable">Add Variables</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding" style="display: none;">
-                            <h6>Variable samples</h6>
-                            <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
-                            <ul class="add-veriables" id="addHeader-veriables">
-                            </ul>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Body <span class="key">Required</span></h3>
-                                <input type="hidden" asp-for="Components[1].Type" value="BODY" />
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">
-                                    Enter the text for your message in the language you have
-                                    selected.
-                                </label>
-                                <div class="note d-flex align-items-center ">
-                                    <span class="exclamatory"></span>
-                                    <p>
-                                        The text limit in the body should be less than 550
-                                        characters and emojis should be less than 10 to avoid
-                                        any template rejection
-                                    </p>
-                                </div>
-                                <br />
-                                @* <div id="content" contenteditable="true" spellcheck="false">
-                                        
-                                    </div> *@
-                                <textarea id="body-text" asp-for="Components[1].Text" class="form-control" placeholder="Body Text"></textarea>
-                                <input type="hidden" asp-for="Components[1].Example.BodyText" id="Body_Text_value" value="" />
-
-                                <div class="toolbar">
-                                    <a class="add-variables" id="addBodyvariables">Add Variables</a>
-                                    @* <div class="btn-toolbar">
-
-                                            <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
-                                            <button onclick="formatDoc('underline')"><i class='bx bx-underline'></i></button>
-                                            <button onclick="formatDoc('italic')"><i class='bx bx-italic'></i></button>
-                                            <button onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough'></i></button>
-                                            <button onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol'></i></button>
-                                            <button onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul'></i></button>
-
-                                        </div> *@
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="card padding" style="display: none;">
-                            <h6>Variable samples</h6>
-                            <p>Include samples of all variables in your message to help Meta review your template. Remember not to include any customer information to protect your customer's privacy.</p>
-                            <ul class="add-veriables" id="AddVariableli">
-                            </ul>
-                        </div>
-
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Footer <span class="key">Optional</span></h3>
-                                <input type="hidden" asp-for="Components[2].Type" value="FOOTER" />
-
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Add a 60 character footer to your message. Variables are not supported in the footer.</label>
-                                <input class="form-control" asp-for="Components[2].Text" />
-                                <div class="d-flex justify-content-end">
-                                    <button class="add-variables">Add Variables</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card padding">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h3>Button <span class="key">Optional</span></h3>
-                                <input type="hidden" asp-for="Components[3].Type" value="BUTTONS" />
-                                <span class="question"></span>
-                            </div>
-                            <div class="template-question mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Please choose buttons to be added to the template. You can choose upto 10 buttons</label>
-                                <div class="dropdown add-btn-template">
-                                    <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Add button
+                            <h3 class="mb-2">Set Up Your Template</h3>
+                            <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
+                            <input asp-for="TemplateCategory" type="hidden" />
+                            <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
+                                        <span class="marketing-icon tab-icon"></span> Marketing
                                     </button>
-                                    <ul class="dropdown-menu" id="template-btn" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#" id="custom"><span class=""></span> Custom</a></li>
-                                        <li><a class="dropdown-item" href="#" id="visit-website">Visit Website</a></li>
-                                    </ul>
-
-                                </div>
-                                <ul class="add-template-button-list">
-                                    <li>
-                                        <div class="d-flex align-items-center form-wrapper gap-3">
-
-                                            <div>
-                                                <label>Type</label>
-                                                <input class="form-control" value="Custom" />
-                                            </div>
-                                            <div>
-                                                <label>Button Text</label>
-                                                <input class="form-control" value="Quick Reply" />
-                                            </div>
-                                        </div>
-                                        <div class="drag-close">
-
-                                            <button class="close"></button>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="d-flex align-items-center form-wrapper gap-3">
-
-                                            <div>
-                                                <label>Type</label>
-                                                <input class="form-control" value="Visit Website" />
-                                            </div>
-                                            <div>
-                                                <label>Button Text</label>
-                                                <input class="form-control" value="Visit Website" />
-                                            </div>
-                                        </div>
-                                        <div class="drag-close">
-
-                                            <button class="close"></button>
-                                        </div>
-                                    </li>
-                                </ul>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="utility-tab" data-bs-toggle="tab" data-bs-target="#utility" type="button" role="tab" aria-controls="utility" aria-selected="false">
+                                        <span class="utlity-icon tab-icon"></span> Utility
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="authentication-tab" data-bs-toggle="tab" data-bs-target="#authentication" type="button" role="tab" aria-controls="authentication" aria-selected="false">
+                                        <span class="authentication-icon tab-icon"></span> Authentication
+                                    </button>
+                                </li>
+                            </ul>
+                            <div class="tab-content pb-0" id="myTabContent">
+                                @if (Model.TemplateCategory == (int)TemplateModuleType.Marketing || Model.TemplateCategory == 0)
+                                {
+                                    <div class="tab-pane fade show active" id="marketing" role="tabpanel" aria-labelledby="marketing">
+                                        <partial name="_MarketingTemplateTypeOptions" model="@Model" />
+                                    </div>
+                                }
+                                else if (Model.TemplateCategory == (int)TemplateModuleType.Utility)
+                                {
+                                    <div class="tab-pane fade show active" id="utility" role="tabpanel" aria-labelledby="Utility">
+                                        <partial name="_UtilityTemplateTypeOptions" model="@Model" />
+                                    </div>
+                                }
+                                else if (Model.TemplateCategory == (int)TemplateModuleType.Authentication)
+                                {
+                                    <div class="tab-pane fade show active" id="authentication" role="tabpanel" aria-labelledby="Authentication">
+                                        <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
+                                    </div>
+                                }
                             </div>
-                            <!-- <div class="d-flex gap-3">
-                                <button class="btn secondary-btn add-btn d-flex">Quick Reply</button>
-                                <button class="btn secondary-btn add-btn d-flex">Add CTA</button>
-                            </div> -->
-                        </div>
-                        <div class="d-flex gap-2 mb-3">
-                            <button class="btn danger-btn">Clear All</button>
-                            <button class="btn primary-btn" type="submit">Submit</button>
                         </div>
                     </div>
-                </form>
+                    <div class="template-creation-content" id="partialForTemplateForm" style="display:none;">
+                        @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
+                        {
+                            if (Model.TemplateType == (int)MarketingTemplateType.Default)
+                            {
+                                <partial name="_MarketingDefaultTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)MarketingTemplateType.Catalogue)
+                            {
+                                <partial name="_MarketingCatalogueTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)MarketingTemplateType.CallingPermissionsRequest)
+                            {
+                                <partial name="_MarketingCallingPermissionsRequestTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)MarketingTemplateType.Carousel)
+                            {
+                                <partial name="_MarketingCarouselTemplate" model="@Model" />
+                            }
+                        }
+                        else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
+                        {
+                            if (Model.TemplateType == (int)UtilityTemplateType.Default)
+                            {
+                                <partial name="_UtilityDefaultTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)UtilityTemplateType.CallingPermissionsRequest)
+                            {
+                                <partial name="_UtilityCallingPermissionsRequestTemplate" model="@Model" />
+                            }
+                            else if (Model.TemplateType == (int)UtilityTemplateType.Carousel)
+                            {
+                                <partial name="_UtilityCarouselTemplate" model="@Model" />
+                            }
+                        }
+                        else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
+                        && Model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
+                        {
+                            <partial name="_AuthenticationOneTimePasscodeTemplate" model="@Model" />
+                        }
+                    </div>
+                    <div class="template-creation-preview">
+                        <div class="template-preview-card creation-card">
+                            <h4>Template Preview</h4>
 
-                <div class="col-md-4">
-                    <div class="template-preview">
-                        <h4>Preview</h4>
-                        <div class="template-white-card">
-                            <span><img src="images/card-img-03.webp"></span>
-                            <div class="description">
-                                <p>Dear {{1}}</p>
-                                <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                            <div class="template-preview" id="carousel-template-preview" style="display:none;">
+                                <div class="template-white-card">
+                                    <div class="swiper useCasesSwiper">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide swiper-card">
+                                                <div class="template-slide-card">
+                                                    @* <span><img src="images/card-img-03.png"></span> *@
+                                                    <div class="description">
+                                                        <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                        <p>Dear {{1}}</p>
+                                                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                    </div>
+                                                    <div class="time">1:59 PM</div>
+                                                </div>
+                                                <div class="buy-link">
+                                                    <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                    <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide swiper-card">
+                                                <div class="template-slide-card">
+                                                    @* <span><img src="images/card-img-03.png"></span> *@
+                                                    <div class="description">
+                                                        <p>Dear {{1}}</p>
+                                                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                    </div>
+                                                    <div class="time">1:59 PM</div>
+                                                </div>
+                                                <div class="buy-link">
+                                                    <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                    <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                    <!-- <a href="#"><i class="backward"></i> Yes </a>
+                                                    <a href="#"><i class="call"></i> Call Us </a> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
+                                </div>
                             </div>
-                            <div class="time">1:59 PM</div>
 
+                            <div class="template-preview" id="template-preview">
+                                <div class="message-chat d-none">
+                                    <p>Check out our exclusive festival offers below</p>
+                                    <div class="time">11:59</div>
+                                </div>
+                                <div class="swiper-card">
+                                    <div class="template-slide-card">
+                                        @* <span><img src="images/card-img-03.png"></span> *@
+                                        <div class="description">
+                                            <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
+                                            <p>Dear {{1}}</p>
+                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                        <a href="#"><i class="forward"></i> My Account Balance</a>
+                                        <a href="#"><i class="backward"></i> Yes </a>
+                                        <a href="#"><i class="call"></i> Call Us </a>
+                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+
+                                        <div class="description">
+                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                            <span class="description-small-text">Tap below to explore now</span>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"><i class="buy-icon"></i> Shop Now</a>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+                                        <span class="default-image image-smaple"></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+                                        <span class="default-image location"></span>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-card d-none">
+                                    <div class="template-slide-card">
+                                        <span class="default-image video"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="mt-3 guidline">
+                                <h4 class="mb-1">This template is good for</h4>
+                                <p>Welcome messages, promotions, offers, coupons, newsletters, announcements</p>
+                            </div>
+                            <div class="mt-3 guidline">
+                                <h4 class="mb-1">Template areas you can customize</h4>
+                                <p>Media, header, body, footer, button</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="bottom-strip">
+        <div class="bottom-container">
+            <button type="button" class="btn secondary-btn" id="discard-btn">Discard</button>
+            <button type="button" class="btn secondary-btn" id="previous-btn" style="display:none;">Previous</button>
+            <button type="button" class="btn primary-btn" id="next-btn">Next</button>
+            <button type="submit" class="btn primary-btn" id="submit-btn" style="display:none;">Submit for review</button>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
-    @{
-        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        <partial name="_ValidationScriptsPartial" />
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-        <partial name="_ValidationScriptsPartial" />
-    }
-
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js';
+    </script>
     <script>
         $(document).ready(function () {
-            let BodyvariableCount = 0;
-            let HeadervariableCount = 0;
-            var hiddenValue = $('#Body_Text_value').val();
+            $('#TemplateCategory').val(1);
+            $('.nav-link').on('click', function () {
+                var selectedTabId = $(this).attr('id');
+                var categoryValue;
+                var categoryName = "";
 
-
-            $('#addBodyvariables').click(function () {
-                BodyvariableCount++;
-                var inputevariable = $("#body-text");
-                if (BodyvariableCount === 1) {
-                    $('.card.padding').show();
+                switch (selectedTabId) {
+                    case 'marketing-tab':
+                        categoryValue = @((int)TemplateModuleType.Marketing);
+                        categoryName = "@(TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)";
+                        break;
+                    case 'utility-tab':
+                        categoryValue = @((int)TemplateModuleType.Utility);
+                        categoryName = "@(TemplateModuleType.Utility.Get<DisplayAttribute>().Name)";
+                        break;
+                    case 'authentication-tab':
+                        categoryValue = @((int)TemplateModuleType.Authentication);
+                        categoryName = "@(TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)";
+                        break;
                 }
 
-                const variable = `{{${BodyvariableCount}}}`;
+                $('#TemplateCategory').val(categoryValue);
 
+                $('#myTabContent').show();
 
+                var req = {
+                    TemplateCategory: parseInt(categoryValue),
+                    TemplateCategoryName: categoryName
+                };
 
-                 const newRow = $(`
-                        <li style="margin-top: 10px;" data-variable="${variable}">
-                            <div class="d-flex gap-3">
-                                <div>
-                                    <input type="text" class="form-control" value="${variable}" readonly>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <input type="text" class="form-control variable-value" id="Body_Var_value_${BodyvariableCount}">
-                                </div>
-                                <button type="button" id="add-variable" class="btn btn-primary">add</button>
-                                <button type="button" id="remove-variable" class="btn btn-danger">Remove</button>
-                            </div>
-                        </li>
-                    `);
+                var url = "/TemplateManagement/GetTemplateTypePartialView";
 
-
-                $('#AddVariableli').append(newRow);
-
-                updateTextarea(variable,inputevariable)
-
-                newRow.find(`#Body_Var_value_${BodyvariableCount}`).change(function () {
-                    //var inputVarValue = $(this).val();
-                    updateBodyTextValue();
-                });
-
-                newRow.find('#remove-variable').click(function () {
-                   removeFromTextarea(variable,inputevariable);
-                    newRow.remove();
-                    BodyvariableCount--;
-                    checkIfBodyEmpty();
-                });
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                    $('#myTabContent').html(response);
+                    commonHelper.showHideLoader(false);
+                }, null);
             });
+        });
 
-                             function updateBodyTextValue() {
-                                    let innerValues = [];
-
-                                    $(".variable-value").each(function () {
-                                        let val = $(this).val().trim();
-                                        if (val) {
-                                            innerValues.push(val);
-                                        }
-                                    });
-
-                                    //let bodyTextArray = [innerValues];
-
-                                    let jsonValue = JSON.stringify(innerValues);
-
-                                    debugger;
-
-                                    $('#Body_Text_value').val(jsonValue);
-                                }
-
-                    //  function updateBodyTextValue() {
-                    //     let values = [];
-
-                    //         $(".variable-value").each(function () {
-                    //             let val = $(this).val().trim();
-                    //             if (val) {
-                    //                 values.push(val);
-                    //             }
-                    //         });
-
-
-                    //     $('#Body_Text_value').val(JSON.stringify(values));
-                    // }
-
-
-
-             $('#AddHeaderVariable').click(function () {
-                 const addvarinInpute = $('#Headerinput');
-
-                 HeadervariableCount++;
-
-                if (HeadervariableCount === 1) {
-                    $('.card.padding').show();
-                }
-
-                const variable = `{{${HeadervariableCount}}}`;
-
-                const newRow = $(`
-                    <li style="margin-top: 10px;" data-variable="${variable}">
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input type="text" class="form-control" value="${variable}" readonly>
-                            </div>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control variable-value"  id="Header_Var_value_${HeadervariableCount}">
-                            </div>
-                            <button type="button" id="remove-Header-var"  class="btn btn-danger">Remove</button>
-                        </div>
-                    </li>
-                `);
-
-                $('#addHeader-veriables').append(newRow);
-
-               // updateTextarea(variable);
-
-
-                updateTextarea(variable,addvarinInpute)
-                    newRow.find(`#Header_Var_value_${HeadervariableCount}`).change(function () {
-                        var inputVarValue = $(this).val();
-                        updateHeaderTextvalue(inputVarValue);
-                    });
-                newRow.find('#remove-Header-var').click(function () {
-
-                    removeFromTextarea(variable,addvarinInpute);
-                    newRow.remove();
-                    HeadervariableCount--;
-                    checkIfHeaderEmpty();
-                });
-            });
-
-
-            function updateHeaderTextvalue(inputVarValue) {
-
-                    let existingValue = $('#Header_Text_value').val();
-                    let valueArray = existingValue ? existingValue.split(',') : [];
-
-                    if (inputVarValue.trim() !== "") {
-                        valueArray.push(inputVarValue);
-                    }
-
-                    $('#Header_Text_value').val(valueArray.map(i => `${i}` ).join(', '));
+        $(document).on('change', 'input[name="TemplateType"]', function () {
+            var templateCategory = $('[name="TemplateCategory"]').val();
+            var templateType = $('input[name="TemplateType"]:checked').val();
+            
+            if ((templateCategory == @((int)TemplateModuleType.Marketing) && templateType == @((int)MarketingTemplateType.Carousel))
+            || (templateCategory == @((int)TemplateModuleType.Utility) && templateType == @((int)UtilityTemplateType.Carousel))){
+                $('#carousel-template-preview').show();
+                $('#template-preview').hide();
             }
-
-
-             function updateTextarea(variable,addvarinInpute) {
-                let textarea =addvarinInpute;
-
-                let currentVal = textarea.val();
-
-                if (!currentVal.includes(variable)) {
-                    if (currentVal.length > 0) currentVal += ' ';
-
-                    textarea.val(currentVal+variable);
-                    //textarea.val(currentVal + variable);
-                }
-            }
-
-            function removeFromTextarea(variable,addvarinInpute) {
-
-               const textarea = addvarinInpute;
-                let currentVal =  addvarinInpute.val();
-                const regex = new RegExp(variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                textarea.val(currentVal.replace(regex, '').replace(/\s+/g, ' ').trim());
-
-            }
-            function checkIfHeaderEmpty() {
-                if ($('#addHeader-veriables li').length === 0) {
-                    $('.card.padding').hide();
-                    variableCount = 0;
-                }
-            }
-             function checkIfBodyEmpty() {
-                if ($('#AddVariableli li').length === 0) {
-
-                    $('.card.padding').hide();
-                    variableCount = 0;
-                }
+            else{
+                $('#carousel-template-preview').hide();
+                $('#template-preview').show();
             }
         });
-    </script>
 
+        $(document).on('click', '#marketing-tab, #utility-tab, #authentication-tab', function () {
+            var category = $(this).text().trim();
+
+            $('#carousel-template-preview').hide();
+            $('#template-preview').show();
+        });
+
+        $(document).on('click', '#next-btn', function () {
+            commonHelper.showHideLoader(true);
+            var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
+            var templateCategory = $('[name="TemplateCategory"]').val();
+            var templateTypeText = $('input[name="TemplateType"]:checked').next('label').text().trim();
+            var templateType = $('input[name="TemplateType"]:checked').val();
+
+            $('#partialForTemplateForm').show();
+            var req = {
+                TemplateCategory: parseInt(templateCategory),
+                TemplateCategoryName: templateCategoryText,
+                TemplateType: parseInt(templateType),
+                TemplateTypeName: templateTypeText
+            };
+
+            var url = "/TemplateManagement/GetTemplateFormPartialView";
+
+            ajaxHelper.ajaxPost(url, null, req, function (response) {
+                $('#partialForTemplateForm').html(response);
+                $('#first-page').hide();
+                $('#next-btn').hide();
+                $('#discard-btn').hide();
+                $('#submit-btn').show();
+                $('#previous-btn').show();
+                $('#title').text('untitled');
+                $('#language-title').text('English');
+
+                var $form = $("#mainForm");
+                $form.removeData("validator").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($form);
+                $('[name="MediaType"]').trigger('change');
+
+                var variableCounter = 1;
+                var selectedVariableType = null;
+
+                ClassicEditor
+                    .create(document.querySelector('#MessageBody'), {
+                        toolbar: [
+                            'bold', 'italic', 'underline', 'strikethrough',
+                            'numberedList', 'bulletedList',
+                            'link'
+                        ]
+                    })
+                    .then(editor => {
+                        editorInstance = editor;
+
+                        // Live validation on content change
+                        editor.model.document.on('change:data', () => {
+                            var content = editor.getData();
+                            validateWhatsAppVariables(content);
+                        });
+
+                        // Emoji picker
+                        var picker = document.getElementById('picker');
+                        picker.addEventListener('emoji-click', event => {
+                            editor.model.change(writer => {
+                                var insertPosition = editor.model.document.selection.getFirstPosition();
+                                writer.insertText(event.detail.unicode, insertPosition);
+                            });
+                        });
+
+                        // Variable insertion
+                        $(document).on("click", "#add-body-variable", function () {
+                            if (!selectedVariableType) {
+                                commonHelper.showError("Please select type of variable.");
+                                return;
+                            }
+
+                            var variableText = ` {{${variableCounter}}}`;
+                            editor.model.change(writer => {
+                                var insertPosition = editor.model.document.selection.getFirstPosition();
+                                writer.insertText(variableText, insertPosition);
+                            });
+
+                            variableCounter++;
+
+                            // Trigger validation after insertion
+                            var content = editor.getData();
+                            validateWhatsAppVariables(content);
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+                    document.addEventListener('click', function (event) {
+                        const emojiBtn = document.getElementById('emoji-btn');
+                        const emojiCard = document.getElementById('emoji-card');
+
+                        if (emojiBtn.contains(event.target)) {
+                            // Toggle emoji picker
+                            emojiCard.style.display = emojiCard.style.display === 'none' ? 'block' : 'none';
+                        } else if (!emojiCard.contains(event.target)) {
+                            // Clicked outside emoji picker
+                            emojiCard.style.display = 'none';
+                        }
+                    });
+
+                // Variable type selection
+                document.querySelectorAll('input[name="VariableType"]').forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        selectedVariableType = this.value;
+                    });
+                });
+
+                // WhatsApp variable validation logic
+                function validateWhatsAppVariables(content) {
+                    var regex = /{{\d+}}/g;
+                    var matches = [...content.matchAll(regex)];
+
+                    var numbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, '')));
+                    var uniqueNumbers = [...new Set(numbers)];
+
+                    var errorMessage = "";
+
+                    if (numbers.length !== uniqueNumbers.length) {
+                        errorMessage += "Duplicate variables found. "
+                    }
+
+                    uniqueNumbers.sort((a, b) => a - b);
+                    for (var i = 0; i < uniqueNumbers.length; i++) {
+                        if (uniqueNumbers[i] !== i + 1) {
+                            errorMessage += "Variables must be sequential starting from {{1}}. "
+                        }
+                    }
+
+                    var hasSurroundingWordError = false;
+
+                    for (var match of matches) {
+                        var index = match.index;
+                        var before = content.substring(0, index).trim();
+                        var after = content.substring(index + match[0].length).trim();
+
+                        var beforeWords = before.split(/\s+/).filter(w => w.length > 0);
+                        var afterWords = after.split(/\s+/).filter(w => w.length > 0);
+
+                        if ((beforeWords.length + afterWords.length) < 3) {
+                            hasSurroundingWordError = true;
+                            break;
+                        }
+                    }
+
+                    if (hasSurroundingWordError) {
+                        errorMessage += "Each variable must be surrounded by at least 3 words combined before and after.";
+                    }
+
+                    var errorSpan = document.getElementById("messageBodyError");
+                    console.log(errorMessage)
+                    if (errorMessage != '') {
+                        errorSpan.innerText = errorMessage.trim();
+                        errorSpan.style.display = "block";
+                    } else {
+                        errorSpan.innerText = "";
+                        errorSpan.style.display = "none";
+                    }
+
+                    return errorMessage;
+                }
+
+                commonHelper.showHideLoader(false);
+            }, null);
+        });
+
+        $(document).on('click', '#previous-btn', function () {
+            commonHelper.showHideLoader(true);
+            $('#partialForTemplateForm').hide();
+            $('#first-page').show();
+            $('#next-btn').show();
+            $('#discard-btn').show();
+            $('#submit-btn').hide();
+            $('#previous-btn').hide();
+            commonHelper.showHideLoader(false);
+        });
+
+        $(document).on('input', '[name="TemplateName"]', function () {
+            var nameVal = $(this).val().trim();
+
+            if (nameVal == ''){
+                $('#title').text('untitled');
+            }
+            else{
+                $('#title').text(nameVal);
+            }
+        });
+
+        $(document).on('change', '[name="Language"]', function () {
+            var languageVal = $('[name="Language"] option:selected').text();
+
+            if (languageVal == ''){
+                $('#language-title').text('');
+            }
+            else{
+                $('#language-title').text(languageVal);
+            }
+        });
+
+        $(document).on('change', '[name="MediaType"]', function () {
+            var selectedValue = $('input[name="MediaType"]:checked').val();
+            var selectedText = $('input[name="MediaType"]:checked').next('label').text().trim();
+            var $fileInput = $('#UploadedFile');
+            var $attachment = $('#attachment');
+            var $existingFileLink = $('#existingFileLink');
+            var $fileValidationMessage = $('[data-valmsg-for="File"]');
+
+            $fileInput.val('');
+            $existingFileLink.html('');
+            $fileInput.removeAttr('accept');
+
+            var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+
+            if (selectedValue > 0 && selectedText != 'Location') {
+                $attachment.show();
+
+                switch (selectedText) {
+                    case 'Image':
+                        $fileInput.attr('accept', '.jpg,.jpeg,.png');
+                        break;
+                    case 'Video':
+                        $fileInput.attr('accept', '.mp4,.avi,.mov,.wmv');
+                        break;
+                    case 'Document':
+                        $fileInput.attr('accept', '.pdf,.doc,.docx,.xls,.xlsx');
+                        break;
+                }
+            }else if (!hasValidationError) {
+                $attachment.hide();
+            }
+
+            if (selectedValue > 0){
+                $("#header-add-btn").attr("disabled", true);
+                $('#Header').attr('readonly', true);
+            }
+            else{
+                $("#header-add-btn").removeAttr("disabled");
+                $('#Header').removeAttr('readonly');
+            }
+        });
+
+        $(document).on('click', '#header-add-btn', function (e) {
+            e.preventDefault();
+
+            var headerInput = document.querySelector("input[name='Header']");
+            var variableTypeSelect = $('input[name="VariableType"]:checked').next('label').text().trim();
+            var variableToInsert = "";
+
+            if (variableTypeSelect == null || variableTypeSelect == ''){
+                commonHelper.showError("Please select type of variable.");
+                return;
+            } else if (variableTypeSelect === "Number") {
+                variableToInsert = "{{1}}";
+            } else if (variableTypeSelect === "Name") {
+                variableToInsert = "{{variable_name}}";
+            }
+            $('#variable-card').show();
+            $('#variable-card-header').show();
+            $('[name="HeaderVariableName"]').val(variableToInsert);
+
+            // Check if variable already exists
+            if (!headerInput.value.includes("{{")) {
+                headerInput.value += variableToInsert;
+                $('#header-add-btn').attr('disabled', true);
+            } else {
+                commonHelper.showError("Only one variable is supported in the header.");
+            }
+        });
+
+        $(document).on('input', '[name="Header"]', function () {
+            var headerVal = $(this).val().trim();
+
+            // Enable the button only if the input is empty
+            $('#header-add-btn').attr('disabled', headerVal !== '');
+
+            // Trigger validation and store result
+            var isValid = $(this).valid();
+
+            // Show/hide variable card based on validity
+            if (isValid && headerVal != '') {
+                $('#variable-card').show();
+                $('#variable-card-header').show();
+                // Update the readonly input with asp-for="HeaderVariableName"
+                $('[name="HeaderVariableName"]').val(headerVal);
+                $('#header-text-preview').show();
+                $('#header-text-preview').text(headerVal);
+            } else {
+                $('#variable-card').hide();
+                $('#variable-card-header').hide();
+                $('[name="HeaderVariableName"]').val('');
+                $('#header-text-preview').hide();
+            }
+        });
+
+        $(document).on('change', '[name="VariableType"]', function () {
+            $('#header-add-btn').attr('disabled', false);
+            var newMessage = "";
+            var variableTypeSelect = $('input[name="VariableType"]:checked').next('label').text().trim();
+
+            if (variableTypeSelect === "Number") {
+                newMessage = "Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).";
+            } else if (variableTypeSelect === "Name") {
+                newMessage = "Variable parameters must be lowercase characters, underscores and numbers with two sets of curly brackets (e.g., {{customer_name}}, {{order_id}}).";
+            }
+
+            var $headerInput = $('[name="Header"]');
+
+            // Update the data attribute (optional, for consistency)
+            $headerInput.attr('data-val-headervariableformat', newMessage);
+
+            // Update the validator's internal message directly
+            var validator = $headerInput.closest("form").validate();
+            validator.settings.messages.Header = validator.settings.messages.Header || {};
+            validator.settings.messages.Header.headervariableformat = newMessage;
+
+            $('#Header').valid();
+        });
+    </script>
 }

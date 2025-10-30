@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Domain.Entities;
+using System.Threading.Tasks;
 
 
 namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
@@ -11,6 +12,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
         Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request);
         
         Task<VarifyUserDetailsResponse> CheckIsMailExitsAsync(VarifyMobileNumberModel request);
+        Task<VarifyUserDetailsResponse> VarifyWhatsAppContactNoAsync(VarifyMobileNumberModel request);
         Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request);
 
         Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId);

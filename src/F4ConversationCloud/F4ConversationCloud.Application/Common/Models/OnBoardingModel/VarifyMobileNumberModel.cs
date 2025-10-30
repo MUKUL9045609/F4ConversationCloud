@@ -10,6 +10,7 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
     {
         public string UserEmailId { get; set; }
         public string UserPhoneNumber { get; set; }
+        public string CountryCode { get; set; }
         public string OTP { get; set; }
         public string OTP_Source { get; set; }
     }

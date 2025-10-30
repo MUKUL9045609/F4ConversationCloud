@@ -45,11 +45,19 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
         [Required(ErrorMessage = "Please enter a message.")]
         [StringLength(550, ErrorMessage = "Body should be less than 550 characters.")]
+        [MessageBodyValidation(ErrorMessage = "Invalid variable formatting.")]
         public string MessageBody { get; set; }
         [StringLength(60, ErrorMessage = "Footer should be less than 60 characters.")]
         public string Footer { get; set; }
         public string HeaderVariableName { get; set; }
         public string HeaderVariableValue { get; set; }
+        public List<BodyVariable> bodyVariables { get; set; } = new List<BodyVariable>();
+
+        public class BodyVariable()
+        {
+            public string BodyVariableName { get; set; }
+            public string BodyVariableValue { get; set; }
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
