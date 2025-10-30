@@ -165,13 +165,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
         }
 
 
-        public async Task<UserDetailsViewModel> GetCustomerById(int userId)
+        public async Task<RegisterUserModel> GetCustomerById(int userId)
         {
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("UserId", userId);
-                var response = await _repository.GetByValuesAsync<UserDetailsViewModel>("[sp_GetCustomerById]", parameters);
+                var response = await _repository.GetByValuesAsync<RegisterUserModel>("[sp_GetCustomerById]", parameters);
                 return response;
             }
             catch (Exception)
