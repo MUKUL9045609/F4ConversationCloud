@@ -11,6 +11,7 @@ using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
 using System;
+using Twilio.Jwt.AccessToken;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
     public class OnboardingController : Controller
@@ -26,12 +27,21 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpGet("Id={id}")]
-        public async Task<IActionResult>  Index([FromRoute] string id)
+        public async Task<IActionResult>  Index([FromRoute] string id , string token)
         {
 
             string DecryptId = id.ToString().Decrypt();
             int Userid = Convert.ToInt32(DecryptId);
 
+            var decrypted = token.Decrypt();
+            var parts = decrypted.Split('|');
+            if (parts.Length != 2) return false;
+
+            var idFromToken = int.Parse(parts[0]);
+            var expiry = DateTime.Parse(parts[1], null, System.Globalization.DateTimeStyles.RoundtripKind);
+
+            // Validate both ID and expiry
+            return idFromToken == idFromQuery && DateTime.UtcNow <= expiry;
             try
             {
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
