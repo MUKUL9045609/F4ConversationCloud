@@ -185,55 +185,114 @@
                                     <h3>Phone Numbers</h3>
                                     <button class="btn sync-btn"> Sync</button>
                                 </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Sr. No.</th>
-                                            <th>WABA ID</th>
-                                            <th>Business ID</th>
-                                            <th>Business Type</th>
-                                            <th>Whatsapp Display Name</th>
-                                            <th>Phone Number ID</th>
-                                            <th>Phone Number</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>01</td>
-                                            <td>878978465</td>
-                                            <td>878978465</td>
-                                            <td>
-                                                <span class="buisness-type">Transportation Services</span>
-                                            </td>
-                                            <td>Buldana Urban Coop.</td>
-                                            <td>8798465465464</td>
-                                            <td>+91 8268478568</td>
-                                            <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>02</td>
-                                            <td>878978465</td>
-                                            <td>878978465</td>
-                                            <td>
-                                                <span class="buisness-type"> Automobile Services </span></td>
-                                            <td>BrightLeaf Organics</td>
-                                            <td>8798465465464</td>
-                                            <td>+91 8268478360</td>
-                                            <td><a href="#" class="text-danger text-decoration-none fw-medium">Failed</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>03</td>
-                                            <td>878978465</td>
-                                            <td>878978465</td>
-                                            <td><span class="buisness-type">Finance</span></td>
-                                            <td>Okamura Corp.</td>
-                                            <td>8798465465464</td>
-                                            <td>+91 8268478360</td>
-                                            <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table user-table meta-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                <th>
+                                                    WABA ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Business ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Business Type
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Whatsapp Display Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Phone Number ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Phone Number
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Status
+                                                    <select class="form-select">
+                                                        <option selected>Select Status</option> 
+                                                        <option>Linked</option> 
+                                                        <option>Pending</option> 
+                                                    </select>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>01</td>
+                                                <td>878978465</td>
+                                                <td>878978465</td>
+                                                <td>
+                                                    <span class="buisness-type">Transportation Services</span>
+                                                </td>
+                                                <td>Buldana Urban Coop.</td>
+                                                <td>8798465465464</td>
+                                                <td>+91 8268478568</td>
+                                                <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>02</td>
+                                                <td>878978465</td>
+                                                <td>878978465</td>
+                                                <td>
+                                                    <span class="buisness-type"> Automobile Services </span></td>
+                                                <td>BrightLeaf Organics</td>
+                                                <td>8798465465464</td>
+                                                <td>+91 8268478360</td>
+                                                <td><a href="#" class="text-danger text-decoration-none fw-medium">Failed</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>03</td>
+                                                <td>878978465</td>
+                                                <td>878978465</td>
+                                                <td><span class="buisness-type">Finance</span></td>
+                                                <td>Okamura Corp.</td>
+                                                <td>8798465465464</td>
+                                                <td>+91 8268478360</td>
+                                                <td><a href="#" class="text-success text-decoration-none fw-medium">Linked</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav aria-label="navigation example">
+                            <ul class="pagination mt-4">
+                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                            </ul>
+                        </nav>
                             </div>
                             <!-- no found records -->
                             <div class="d-flex justify-content-center align-items-center no-record-found d-none">
