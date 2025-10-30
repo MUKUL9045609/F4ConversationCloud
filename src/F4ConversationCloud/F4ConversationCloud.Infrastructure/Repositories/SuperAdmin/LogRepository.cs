@@ -22,6 +22,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("userId", _context.SessionUserId);
+            parameters.Add("Source", log.Source);
             parameters.Add("LogDate", log.LogDate);
             parameters.Add("LogType", log.LogType);
             parameters.Add("Message", log.Message);

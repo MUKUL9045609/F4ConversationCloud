@@ -39,7 +39,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 parameters.Add("ZipCode", command.ZipCode);
                 parameters.Add("OptionalAddress", command.OptionalAddress);
                 parameters.Add("OrganizationsName", command.OrganizationsName);
-                parameters.Add("@RegistrationStatus", command.OrganizationsName);
+                parameters.Add("RegistrationStatus", command.RegistrationStatus);
                 var NewUserId =  await _repository.InsertUpdateAsync("[sp_UpdateClientDetails]", parameters);
 
                 return NewUserId;

@@ -25,10 +25,10 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Client Name")]
             public string ClientName { get; set; }
 
-            [Display(Name = "Status")]
+            [Display(Name = "Account Status")]
             public string Status { get; set; }
 
-            [Display(Name = "Approval Status")]
+            [Display(Name = "Registration Status")]
             public string ApprovalStatus { get; set; }
             public string Category { get; set; }
             public bool IsActive { get; set; }
