@@ -31,23 +31,22 @@ namespace F4ConversationCloud.Onboarding.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] string token)
         {
-            if ( string.IsNullOrEmpty(token))
-            {
-                TempData["ErrorMessage"] = "Invalid or missing link parameters.";
-                return RedirectToAction("ThankYouPage");
-            }
-            
+
             try
             {
-               // string DecryptId = id.ToString().Decrypt();
-                //int Userid = Convert.ToInt32(DecryptId);
+                if (string.IsNullOrEmpty(token))
+                {
+                    TempData["ErrorMessage"] = "Invalid or missing link parameters.";
+                    return RedirectToAction("ThankYouPage");
+                }
                 var decrypted = token.Decrypt();
-                string decryptedToken = token.Replace("thisisslash", "/")
-                                       .Replace("thisisbackslash", @"\")
-                                       .Replace("thisisplus", "+")
-                                       .Decrypt();
 
-                string[] tokenParts = decryptedToken.Split("|");
+                //string decryptedToken = token.Replace("thisisslash", "/")
+                //                       .Replace("thisisbackslash", @"\")
+                //                       .Replace("thisisplus", "+")
+                //                       .Decrypt();
+
+                string[] tokenParts = decrypted.Split("|");
                 string stringUserid = tokenParts[0];
                
                 
@@ -91,10 +90,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 TempData["ErrorMessage"] = "Invalid or corrupted link.";
                 return RedirectToAction("ThankYouPage");
             }
-            
-           
-           
-           
+
         }
 
         [HttpGet("register-Client-Info")]
@@ -125,7 +121,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 return View(clientinfo);
             }
             
-            //step1form = null;
+            
             if (step1form != null)
             {
                 var existingData = new RegisterUserViewModel
@@ -273,7 +269,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
         {
-            // var response = await Mediator.Send(command);
             if ( command.UserEmailId != null)
             {
                 ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
@@ -359,26 +354,12 @@ namespace F4ConversationCloud.Onboarding.Controllers
             return View(requst);
         }
 
-
-        //public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        ModelState.AddModelError(nameof(command.OTP));
-        //    }
-        //    if (string.IsNullOrWhiteSpace(command.OTP))
-        //    {
-        //        return Json(new { status = false, message = "Enter A Valid OTP" });
-        //    }
-        //    var response = await _onboardingService.VerifyOTPAsync(command);
-        //    return Json(new { response.status, response.message });
-        //}
+      
         public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
           
             if (!ModelState.IsValid)
             {
-                
                 var errors = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
@@ -390,25 +371,13 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     message = errors.Any() ? string.Join(", ", errors) : "Invalid input."
                 });
             }
-
-            
             if (string.IsNullOrWhiteSpace(command.OTP))
             {
-                return Json(new
-                {
-                    status = false,
-                    message = "Enter a valid OTP"
-                });
+                return Json(new{ status = false,    message = "Enter a valid OTP"});
             }
-
-            
             var response = await _onboardingService.VerifyOTPAsync(command);
 
-            return Json(new
-            {
-                status = response.status,
-                message = response.message
-            });
+            return Json(new{status = response.status,message = response.message});
         }
 
         [HttpPost]
