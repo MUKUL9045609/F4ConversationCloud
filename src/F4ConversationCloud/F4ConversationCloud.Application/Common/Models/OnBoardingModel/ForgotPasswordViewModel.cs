@@ -9,6 +9,8 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingModel
         public string Email { get; set; }
         public string Password  { get; set; }
         public string Stage { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
    
 }

@@ -37,14 +37,11 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 if (string.IsNullOrEmpty(token))
                 {
                     TempData["ErrorMessage"] = "Invalid or missing link parameters.";
-                    return RedirectToAction("ThankYouPage");
+                    return RedirectToAction("InvalidUrl");
                 }
                 var decrypted = token.Decrypt();
 
-                //string decryptedToken = token.Replace("thisisslash", "/")
-                //                       .Replace("thisisbackslash", @"\")
-                //                       .Replace("thisisplus", "+")
-                //                       .Decrypt();
+             
 
                 string[] tokenParts = decrypted.Split("|");
                 string stringUserid = tokenParts[0];
@@ -52,21 +49,21 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 
                 if (tokenParts.Length != 2)
                 {
-                    TempData["ErrorMessage"] = "Invalid token.";
-                    return RedirectToAction("ThankYouPage");
+                    TempData["ErrorMessage"] = "Invalid Link";
+                    return RedirectToAction("InvalidUrl");
                 }
                 DateTime expiryTime = DateTime.Parse(tokenParts[1]);
                 if (expiryTime < DateTime.UtcNow)
                 {
                     TempData["ErrorMessage"] = "Link has expired. Please request a new one.";
-                    return RedirectToAction("ThankYouPage");
+                    return RedirectToAction("InvalidUrl");
                 }
                 int UserId = Convert.ToInt32(stringUserid);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {
                     TempData["ErrorMessage"] = "Client not found.";
-                    return RedirectToAction("ThankYouPage");
+                    return RedirectToAction("InvalidUrl");
                 }
                 var command = new RegisterUserViewModel
                 {
@@ -88,7 +85,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             {
 
                 TempData["ErrorMessage"] = "Invalid or corrupted link.";
-                return RedirectToAction("ThankYouPage");
+                return RedirectToAction("InvalidUrl");
             }
 
         }
@@ -253,31 +250,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
         }
 
-
-        [HttpGet("meta-onboarding")]
-        public IActionResult BankVerification()
-        {
-            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
-            if (step1form is null)
-            {
-                TempData["WarningMessage"] = "Register details first!";
-                return RedirectToAction("RegisterIndividualAccount");
-            }
-            return View();
-        }
-
-
-        public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
-        {
-            if ( command.UserEmailId != null)
-            {
-                ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
-            }
-            var response = await _onboardingService.CheckIsMailExitsAsync(command);
-
-            return Json(new { response.status, response.message });
-        }
-
         public async Task<IActionResult> VarifyWhatsAppNumber( VarifyMobileNumberModel command)
         {
             if (string.IsNullOrWhiteSpace(command.UserPhoneNumber))
@@ -289,72 +261,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
             return Json(new { response.status, response.message });
         }
 
-
-
-        [HttpGet("Login")]
-        public async Task<IActionResult> Login()
-        {
-
-            return View();
-        }
-
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginRequestModel requst)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return View(requst);
-                }
-                var response = await _onboardingService.OnboardingLogin(new Loginrequest()
-                {
-                    Email = requst.Email,
-                    PassWord = requst.Password
-                });
-
-                if (response.IsSuccess)
-                {
-                    if (response.Data.Stage.Equals(ClientFormStage.ClientRegistered))
-                    {
-                        var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
-
-                        clientdetails.TermsCondition = true;
-                        TempData.Put("registrationform", clientdetails);
-                        TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
-                        return RedirectToAction("BankVerification");
-                    }
-                    else if (response.Data.Stage.Equals(ClientFormStage.MetaRegistered))
-                    {
-                        TempData["Info"] = "You have already registered please Wait For Admin Approval !";
-                        return View(requst);
-                    }
-
-                }
-                else
-                {
-                    if (response.Message.Equals("InvalidEmail"))
-                    {
-                        ModelState.AddModelError(nameof(requst.Email), "Invalid Email");
-                    }
-                    if (response.Message.Equals("InvalidPassword"))
-                    {
-                        ModelState.AddModelError(nameof(requst.Password), "Invalid Password");
-                    }
-
-                    return View(requst);
-
-                }
-            }
-            catch (Exception)
-            {
-
-                return View();
-            }
-            return View(requst);
-        }
-
-      
         public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
           
@@ -395,7 +301,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
 
-                        bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
+                           // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
                             int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
@@ -427,122 +333,35 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         }
         [HttpGet("invalid-token")]
-        public IActionResult ThankYouPage()
+        public IActionResult InvalidUrl()
         {
             return View();
         }
-        [HttpGet("forgot-password")]
-        public async Task<IActionResult> ForgotPassword()
+
+
+        [HttpGet("meta-onboarding")]
+        public IActionResult BankVerification()
         {
-            try
+            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
+            if (step1form is null)
             {
-                return View();
+                TempData["WarningMessage"] = "Register details first!";
+                return RedirectToAction("RegisterIndividualAccount");
             }
-            catch (Exception ex)
-            {
-                return View();
-            }
-        }
-        [HttpPost("Forgot-Password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return View(model);
-
-                bool success = await _onboardingService.ValidateClientEmailAsync(model.EmailId);
-
-                if (!success)
-                {
-                    ModelState.AddModelError("EmailId", "This Email is not Registered.");
-                    return View(model);
-                }
-
-                await _onboardingService.SendResetPasswordLink(model.EmailId);
-
-                TempData["SuccessMessage"] = "A reset link has been sent to your email address";
-
-                return RedirectToAction("Login");
-            }
-            catch (Exception ex)
-            {
-                return View(model);
-            }
-        }
-
-        [HttpGet("confirmpassword/{id}")]
-        public async Task<IActionResult> ConfirmPassword([FromRoute] string id)
-        {
-            int userId = 0;
-
-            try
-            {
-                id = id.Replace("thisisslash", "/").Replace("thisisbackslash", @"\").Replace("thisisplus", "+");
-                string decToken = id.Decrypt();
-
-                int.TryParse(decToken.Split("|")[0], out userId);
-
-                if (userId == 0)
-                {
-                    TempData["ErrorMessage"] = "Invalid Url";
-
-                    return RedirectToAction("Login");
-                }
-
-                DateTime expiryTime = DateTime.Parse(decToken.Split("|")[1]);
-
-                if (expiryTime < DateTime.UtcNow)
-                {
-                    TempData["ErrorMessage"] = "Link Has been expired";
-
-                    return RedirectToAction("Login");
-                }
-
-                return View(new ConfirmPasswordViewModel { UserId = userId });
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Invalid Url";
-
-                return RedirectToAction("Login");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SetPassword(ConfirmPasswordViewModel model)
-        {
-            try
-            {
-
-                if (!ModelState.IsValid)
-                    return View(model);
-
-                bool success = await _onboardingService.SetNewPassword(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password });
-
-                if (!success)
-                {
-                    TempData["ErrorMessage"] = "Something went wrong!";
-                    ModelState.AddModelError(string.Empty, "Something went wrong!");
-                    return View(model);
-                }
-
-                TempData["SuccessMessage"] = "Password reset successfull";
-
-                return RedirectToAction("Login");
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "technical error ";
-
-                return View(model);
-            }
+            return View();
         }
 
 
+        public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
+        {
+            if (command.UserEmailId != null)
+            {
+                ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
+            }
+            var response = await _onboardingService.CheckIsMailExitsAsync(command);
 
-
-
+            return Json(new { response.status, response.message });
+        }
 
 
     }
