@@ -26,6 +26,6 @@ namespace F4ConversationCloud.Application.Common.Models
 
     public class PhoneRegistrationOnMetaResponse
     {
-        public string status { get; set; }
+        public bool status { get; set; }
     }
 }

@@ -77,11 +77,12 @@ namespace Onboarding.Models
             public string Timezone { get; set; }
             public ClientFormStage Stage { get; set; }
             public int UserId { get; set; }
-           
-            public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
+     
+
+             public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
             public IEnumerable<Cities> Cities { get; set; } = new List<Cities>();
             public IEnumerable<States> States { get; set; } = new List<States>();
-
+            
     }
     
 
