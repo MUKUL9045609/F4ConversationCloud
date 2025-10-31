@@ -18,7 +18,7 @@
         <div class="main-side-navigation">
             <nav>
                 <ul>
-                    @if (stage.HasValue && stage.Value == ClientFormStage.draft || stage.Value == ClientFormStage.metaregistered)
+                    @if (stage.HasValue &&  stage.Value == ClientFormStage.ClientRegistered)
                     {
                         <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MetaOnboarding" ? "active" : "")">
                             <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="home icon">Meta Details</a>

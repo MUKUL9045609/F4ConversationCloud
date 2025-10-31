@@ -66,9 +66,31 @@ namespace F4ConversationCloud.Onboarding.Controllers
         [HttpGet("register-Client-Info")]
         public async Task<IActionResult> RegisterIndividualAccount()
         {
-
             var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
-            ViewBag.IsReadOnly = false;
+            var clientdetails = await _onboardingService.GetCustomerByIdAsync(step1form.UserId);
+            if (clientdetails.Stage == ClientFormStage.ClientRegistered)
+            {
+                var clientinfo = new RegisterUserViewModel
+                {
+                    FirstName = clientdetails.FirstName+" "+clientdetails.LastName,
+                    Email=clientdetails.Email,
+                    PhoneNumber= clientdetails.PhoneNumber,
+                    Address = clientdetails.Address,
+                    Country = clientdetails.Country,
+                    Timezone = clientdetails.Timezone,
+                    CityId = clientdetails.CityName,
+                    StateId = clientdetails.StateName,
+                    ZipCode = clientdetails.ZipCode,
+                    OptionalAddress = clientdetails.OptionalAddress,
+                    OrganizationsName = clientdetails.OrganizationsName,
+                    TermsCondition=true,
+                };
+                ViewBag.IsReadOnly = true;
+                ViewBag.DisableButtons = true;
+                TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                return View(clientinfo);
+            }
+            
             //step1form = null;
             if (step1form != null)
             {
@@ -83,7 +105,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                 };
                 ViewBag.IsReadOnly = true;
-                
+                ViewBag.DisableButtons = false;
                 return View(existingData);
             }
            
@@ -99,24 +121,24 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         }
 
-       
-
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
         {
             try
             {
+                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
+                
                 if (!command.PhoneNumberOtpVerified)
                 {
                     ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
                 }
-                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
+               
                 if (!ModelState.IsValid)
                 {
                     ViewBag.IsReadOnly = true;
-                    
-                        command.FirstName = ClientTempData.FirstName;
+                    ViewBag.DisableButtons = false;
+                    command.FirstName = ClientTempData.FirstName;
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
@@ -143,7 +165,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     OrganizationsName = command.OrganizationsName,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
-                    Stage = ClientFormStage.draft,
+                    Stage = ClientFormStage.ClientRegistered,
                     Role = ClientRole.Admin,
                     RegistrationStatus = ClientRegistrationStatus.Pending,
                     ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
@@ -171,6 +193,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     command.Cities = await _authRepository.GetCitiesAsync();
                     command.States = await _authRepository.GetStatesAsync();
                     ViewBag.IsReadOnly = true;
+                    ViewBag.DisableButtons = false;
                     TempData["ErrorMessage"] = "Registration failed. Please try again.";
                     return View(command);
                 }
@@ -178,7 +201,9 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
             catch (Exception)
             {
-
+                ViewBag.IsReadOnly = true;
+                ViewBag.DisableButtons = false;
+                TempData["ErrorMessage"] = "Technical Error";
                 return View(command);
             }
         }
@@ -261,7 +286,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                 if (response.IsSuccess)
                 {
-                    if (response.Data.Stage.Equals(ClientFormStage.draft))
+                    if (response.Data.Stage.Equals(ClientFormStage.ClientRegistered))
                     {
                         var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
@@ -270,7 +295,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
                         return RedirectToAction("BankVerification");
                     }
-                    else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
+                    else if (response.Data.Stage.Equals(ClientFormStage.MetaRegistered))
                     {
                         TempData["Info"] = "You have already registered please Wait For Admin Approval !";
                         return View(requst);
@@ -369,7 +394,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                         bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.metaregistered);
+                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
                         var message = "success";
                         TempData.Remove("registrationform");

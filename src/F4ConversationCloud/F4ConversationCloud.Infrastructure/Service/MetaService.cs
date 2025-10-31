@@ -24,7 +24,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             try
             {
                 var baseUrl = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"];
-                var accessToken = _configuration["WhatsAppAPISettings:AccessToken"];
+                var accessToken = _configuration["WhatsAppAPISettings:Token"];
 
                 string requestUrl = $"{baseUrl}/{Uri.EscapeDataString(request.PhoneNumberId)}/register?access_token={Uri.EscapeDataString(accessToken)}";
 
@@ -39,27 +39,27 @@ namespace F4ConversationCloud.Infrastructure.Service
                 using var client = new HttpClient();
 
                 var response = await client.PostAsync(requestUrl, content);
-                response.EnsureSuccessStatusCode();
-
-
-                //var handler = new HttpClientHandler();
-                if (!response.IsSuccessStatusCode)
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-
-                }
-
                 var contents = await response.Content.ReadAsStringAsync();
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new PhoneRegistrationOnMetaResponse { status = false };
+                }
 
 
-                PhoneRegistrationOnMetaResponse PhoneRegistrationOnMetaResponse = System.Text.Json.JsonSerializer.Deserialize<PhoneRegistrationOnMetaResponse>(contents, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var jsonDoc = System.Text.Json.JsonDocument.Parse(contents);
+                bool success = false;
 
-                return PhoneRegistrationOnMetaResponse ?? new PhoneRegistrationOnMetaResponse();
+                if (jsonDoc.RootElement.TryGetProperty("success", out var successProp))
+                {
+                    success = successProp.GetBoolean();
+                }
+
+                return new PhoneRegistrationOnMetaResponse { status = success };
             }
             catch (Exception)
             {
-                return new PhoneRegistrationOnMetaResponse();
+                return new PhoneRegistrationOnMetaResponse { status = false };
             }
         }
 

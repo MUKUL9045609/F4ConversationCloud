@@ -10,11 +10,13 @@ namespace F4ConversationCloud.Domain.Enum;
 public enum ClientFormStage
 {
     [Display(Name = "Draft")]
-    draft = 1,
+    Draft = 1,
 
-    [Display(Name = "Meta-registered")]
-    metaregistered = 2,
+    [Display(Name = "Client Registered")]
+    ClientRegistered = 2,
 
-    [Display(Name = "Admin-Approval")]
-     adminapproval = 3
+    [Display(Name = "Meta Registered")]
+    MetaRegistered = 3,
+
+    
 }

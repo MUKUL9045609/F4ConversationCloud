@@ -5,7 +5,6 @@ using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Web.Helpers;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -97,7 +96,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
 
-                if (emailExist) {
+                if (emailExist)
+                {
                     ModelState.AddModelError("Email", "This email is already registered.");
                     return View(model);
                 }
