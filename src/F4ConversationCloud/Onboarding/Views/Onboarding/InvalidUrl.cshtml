@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "_ThankYouPageLayout";
+    ViewData["Title"] = "Invalid Token ";
+}
+<div class="loginBox thank-you">
+    <span class="sucess-thanks">
+
+
+        <img src="~/images/login/thank-you 1.png" alt="Thank You" />
+
+
+    </span>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <h4>@TempData["ErrorMessage"]</h4>
+        }
+        else
+        {
+            <h4> Token Expired Please Contact To Admin !</h4>
+        }
+    @*  <p>
+        Thank you for completing your Meta Business Account onboarding process,
+        Your account setup has been successfully submitted and is now pending admin approval!
+    </p> *@
+</div>

@@ -26,9 +26,9 @@
 
         @Html.AntiForgeryToken()
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label asp-for="FirstName" class="form-label"> Full Name <sup>*</sup></label>
+        <div class="register-group-form">
+            <div class="group-form">
+                <label asp-for="FirstName" class="form-label"> Full Name <sup class="error">*</sup></label>
                 <input asp-for="FirstName" type="text"
                        class="form-control flex-grow-1"
                        placeholder="Enter Full Name"
@@ -39,8 +39,8 @@
             </div>
 
 
-            <div class="col-md-6">
-                <label asp-for="Email" class="form-label">Email address <sup>*</sup></label>
+            <div class="group-form">
+                <label asp-for="Email" class="form-label">Email address <sup class="error">*</sup></label>
                 <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid">
                 <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
                 @* <div class="verifyBtnLink" id="sendmail">
@@ -66,8 +66,8 @@
 
 
 
-            <div class="col-md-6">
-                <label class="form-label">Contact Number<sup>*</sup></label>
+            <div class="group-form">
+                <label class="form-label">Contact Number<sup class="error">*</sup></label>
                 @* <div class="verifyBtnLink" ><span>Verify</span></div> *@
                 <div class="verifyBtnLink" id="varifyPhoneNumberbtn">
                     <span class="verify-btn">Verify</span>
@@ -91,8 +91,8 @@
                 
             </div>
 
-            <div class="col-md-6" id="contactNoOtpDiv">
-                <div class="mb-3 otp-section" style="display: none;">
+            <div class="group-form" >
+                <div class="otp-section" id="contactNoOtpDiv" style="display: none;">
 
                     <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
                     <div class="d-flex gap-2">
@@ -112,7 +112,7 @@
                         <span class="otp-text d-none">
                             Valid till  <span class="fw-bold" id="timeRemaining">5:00</span>
                         </span>
-                        <a id="resendOtpBtn" class="verifyBtnLink">Resend OTP</a>
+                        <a id="resendOtpBtn" class="verifyBtnLink" style="display: none;">Resend OTP</a>
                     </div>
                     <span asp-validation-for="OTP" class="error-message text-danger small" id="contactNoOtpError"></span>
                 </div>
@@ -123,8 +123,8 @@
          
             @* <input type="hidden" asp-for="PhoneOtpVerified" id="PhoneOtpVerified" /> *@
 
-            <div class="col-md-6 mb-3">
-                <label asp-for="PassWord" class="form-label">Create Password <sup>*</sup></label>
+            <div class="group-form">
+                <label asp-for="PassWord" class="form-label">Create Password <sup class="error">*</sup></label>
 
 
                 @if (ViewBag.DisableButtons)
@@ -142,8 +142,8 @@
                 <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup>*</sup></label>
+            <div class="group-form">
+                <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup class="error">*</sup></label>
                 @if (ViewBag.DisableButtons)
                 {
                     <input type="text" class="form-control" value="**********" readonly />
@@ -157,15 +157,15 @@
                 }
                 <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="OrganizationsName" class="form-label">Organizations Name (Optional)</label>
+            <div class="group-form">
+                <label for="OrganizationsName" class="form-label">Organizations Name <sup class="error">*</sup></label>
                 <input asp-for="OrganizationsName" type="text" class="form-control" placeholder="Enter your organizations name"
                        id="email">
-                <div asp-validation-for="OrganizationsName" class="error-message text-danger small" id="emailError"></div>
+                <span asp-validation-for="OrganizationsName" class="error-message text-danger small"></span>
             </div>
            
-            <div class="col-md-6 mb-3">
-                <label for="emailCode" class="form-label">Select Current Time Zone</label>
+            <div class="group-form">
+                <label for="emailCode" class="form-label">Select Current Time Zone <sup class="error">*</sup></label>
                 <select class="form-control select2" asp-for="Timezone">
                     <option value="" selected disabled>Select Time Zone</option>
                     <option value="@Model.Timezone">@Model.Timezone</option>
@@ -188,30 +188,35 @@
             </div>
            
                 <h5>Address</h5>
-                <div class="col-md-12">
-                    <div class="mb-3">
+            <div class="group-form w-100">
+                    
                          <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
                         <textarea asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here" id="addreessline1"></textarea>
                         <span asp-validation-for="Address" class="error-message text-danger small"></span>
-                    </div>
+                   
                 </div>
-                <div class="col-md-12">
-                    <div class="mb-3">
+            <div class="group-form w-100">
+                    
                         <label class="form-label">Address Line 2 (Optional)</label>
                     <input asp-for="OptionalAddress" type="text" class="form-control"
                                placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
                                >
-                    </div>
+                    
                 </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
-                        <select id="countrySelect" name="Country" class="form-select select2"></select>
+
+            <div class="group-form">
+                    
+                    <label asp-for="Country" class="form-label">Country of residence <sup class="error">*</sup></label>
+                        <input type="hidden" name="Country" id="hiddenCountry" value="India" />
+                        <select id="countrySelect" class="form-select select2" disabled>
+                            <option value="India" selected>India</option>
+                        </select>
                         <span asp-validation-for="Country" class="error-message text-danger small"></span>
-                    </div>
+                    
                 </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
+
+            <div class="group-form">
+                    
                         <label for="state" class="form-label">State <sup class="error">*</sup></label>
                         
                         <select id="StateSelect" class="form-control select2" asp-for="StateId" >
@@ -236,11 +241,11 @@
                         }
 
                 
-                    </div>
+                    
                 </div>
 
-                <div class="col-md-6">
-                    <div class="mb-3">
+            <div class="group-form">
+                    <div>
                         <label for="CitySelect" class="form-label">City <sup class="error">*</sup></label>
                        
                             <select id="CitySelect" class="form-control select2" asp-for="CityId">
@@ -263,25 +268,25 @@
                     </div>
                 </div>
 
-           
-                <div class="col-md-6">
-                    <div class="mb-3">
+
+            <div class="group-form">
+                    
                         <label asp-for="ZipCode" class="form-label">
                             Postal / ZIP Code <sup class="error">*</sup>
                         </label>
                         <input asp-for ="ZipCode" type="text" class="form-control" id="postal_code" 
                                placeholder="Enter your postal or ZIP code" >
                     <span asp-validation-for="ZipCode" class="error-message text-danger small"></span>
-                    </div>
+                    
                 </div>
            
         
         </div>
-        <div class="form-check d-flex justify-content-end terms-check gap-2">
+        <div class="form-check d-flex justify-content-start  terms-check gap-2">
             <input asp-for="TermsCondition" class="input" id="agreeTerms" />
             <label class="form-check-label" for="agreeTerms" data-bs-toggle="modal" data-bs-target="#createTemplate">
                 By continuing, I agree to the <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                 data-bs-target="#createTemplate">Terms & Conditions</a>
+                                                 data-bs-target="#createTemplate" >Terms & Conditions</a>
             </label>
         </div>
         <div class="form-check d-flex justify-content-end terms-check gap-2">
@@ -294,18 +299,29 @@
 
 
 </div>
-@await Html.PartialAsync("_TermsConditionPartial")
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
-    @* @{
+    @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    } *@
+    }
     <script>
         $(document).ready(function () {
             $(".select2").select2();
+
+              $('#TermsConditionsverifyBtn').click(function () {
+               
+                if ($('#agreeTerms').is(':checked')) {
+                    $('#agreeTerms').val(true);
+                    agreeTerms
+                } else {
+                    $('#agreeTerms').val(false);
+
+                }
+            });
         });
+        
     </script>
 
     <script>
@@ -316,11 +332,11 @@
                  const fieldIds = [
                     'addreessline1',
                     'addresstwo',
-                    'countrySelect',
                     'StateSelect',
                     'CitySelect',
                     'postal_code',
-                    'agreeTerms'
+                    'agreeTerms',
+                    'TermsConditionsverifyBtn'
                     ];
 
                  fieldIds.forEach(id => {
@@ -441,7 +457,7 @@
                      req,
                      function (response) {
                          $("#loader").hide();
-                         debugger;
+                         
                          if (response.status === true) {
                             $('#PhoneNumberOtpVerifiedId').val(response.status);
                             showToast(response.message, "success");
@@ -474,10 +490,6 @@
                  );
              });
         });
-
-
-          
-     
 
     </script>
 
@@ -518,23 +530,27 @@
     </script>
 
     <script>
-        fetch("/data/countries.json")
-            .then(res => res.json())
-            .then(data => {
-                const select = document.getElementById("countrySelect");
+            fetch("/data/countries.json")
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById("countrySelect");
+            const hiddenInput = document.getElementById("hiddenCountry");
 
-                data.sort((a, b) => a.name.localeCompare(b.name));
+            
+            data.sort((a, b) => a.name.localeCompare(b.name));
 
-                data.forEach(country => {
-                const option = document.createElement("option");
-                option.value = country.name;
-                option.textContent = country.name;
-                select.appendChild(option);
-                });
+            select.innerHTML = "";
+            const option = document.createElement("option");
+            option.value = "India";
+            option.textContent = "India";
+            select.appendChild(option);
 
-                select.value = "India";
-            })
-            .catch(err => console.error("Error fetching countries:", err));
+            select.value = "India";
+            select.disabled = true;
+            hiddenInput.value = "India";
+        })
+        .catch(err => console.error("Error fetching countries:", err));
+
 
              $(document).ready(function () {
         $('#StateSelect').on('change', function () {

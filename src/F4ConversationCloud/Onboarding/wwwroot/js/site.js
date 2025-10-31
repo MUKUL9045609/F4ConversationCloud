@@ -65,6 +65,7 @@ window.onload = function () {
     $("#loader").fadeOut("slow");
 };
 
+
 /*document.addEventListener('DOMContentLoaded', function () {
     const togglePasswordIcons = document.querySelectorAll('.toggle-password');
 

@@ -176,7 +176,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 {
                     TempData["ErrorMessage"] = "Invalid Url";
 
-                    return RedirectToAction("Login");
+                    return RedirectToAction("InvalidUrl");
                 }
 
                 DateTime expiryTime = DateTime.Parse(decToken.Split("|")[1]);
@@ -185,7 +185,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 {
                     TempData["ErrorMessage"] = "Link Has been expired";
 
-                    return RedirectToAction("Login");
+                    return RedirectToAction("InvalidUrl");
                 }
 
                 return View(new ConfirmPasswordViewModel { UserId = userId });
@@ -194,7 +194,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             {
                 TempData["ErrorMessage"] = "Invalid Url";
 
-                return RedirectToAction("Login");
+                return RedirectToAction("InvalidUrl");
             }
         }
 
@@ -228,5 +228,10 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
         }
 
+        [HttpGet("invalid-token")]
+        public IActionResult InvalidUrl()
+        {
+            return View();
+        }
     }
 }
