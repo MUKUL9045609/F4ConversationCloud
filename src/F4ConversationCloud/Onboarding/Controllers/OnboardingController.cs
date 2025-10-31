@@ -41,10 +41,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 }
                 var decrypted = token.Decrypt();
 
-                //string decryptedToken = token.Replace("thisisslash", "/")
-                //                       .Replace("thisisbackslash", @"\")
-                //                       .Replace("thisisplus", "+")
-                //                       .Decrypt();
+               
 
                 string[] tokenParts = decrypted.Split("|");
                 string stringUserid = tokenParts[0];
