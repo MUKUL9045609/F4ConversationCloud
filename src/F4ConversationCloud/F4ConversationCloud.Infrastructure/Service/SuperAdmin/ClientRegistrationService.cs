@@ -137,7 +137,6 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 var tokenData = $"{id}|{expiry:O}";
                 var encryptedToken = tokenData.Encrypt();
 
-                //string registrationLink = $"{_configuration["OnboardingUrl"]}token={encryptedToken}";
                 string registrationLink = $"{_configuration["OnboardingUrl"]}?token={Uri.EscapeDataString(encryptedToken)}";
 
                 string logo = $"{_configuration["MailerLogo"]}";

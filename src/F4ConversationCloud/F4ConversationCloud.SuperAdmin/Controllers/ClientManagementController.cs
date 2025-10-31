@@ -30,7 +30,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     ClientNameSearch = model.ClientNameSearch ?? String.Empty,
                     StatusFilter = model.StatusFilter ?? String.Empty,
                     OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
-                    ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
+                    PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
                     PageNumber = model.PageNumber,
                     PageSize = model.PageSize,
                 });
@@ -48,13 +48,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     SrNo = x.SrNo,
                     ClientName = x.ClientName,
                     Status = x.Status,
-                    ApprovalStatus = ((ClientRegistrationStatus)Convert.ToInt32(x.ApprovalStatus)).GetDisplayName(),
                     IsActive = x.IsActive,
                     CreatedAt = x.CreatedAt,
                     UpdatedOn = x.UpdatedOn,
                     Category = x.Category,
                     ClientId = x.ClientId,
-                    RejectComment = x.RejectComment,
+                    PhoneNumber = x.PhoneNumber
                 });
 
                 return View(model);

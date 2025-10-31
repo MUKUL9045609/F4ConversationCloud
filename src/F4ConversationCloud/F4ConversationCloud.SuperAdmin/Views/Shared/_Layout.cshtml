@@ -38,7 +38,7 @@
                                 <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Registration</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" || ViewContext.RouteData.Values["Controller"]?.ToString() == "TemplateManagement" ? "active" : "")">
-                                <a asp-controller="ClientManagement" asp-action="List" class="users icon">Business Account</a>
+                                <a asp-controller="ClientManagement" asp-action="List" class="buisness icon">Business Account</a>
                             </li>
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "UserManagement" ? "active" : "")">
                                 <a asp-controller="UserManagement" asp-action="List" class="user icon">User Management</a>
