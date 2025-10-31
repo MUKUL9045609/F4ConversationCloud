@@ -50,7 +50,8 @@ namespace Onboarding.Models
 
             public string? OptionalAddress { get; set; }
 
-            public string? OrganizationsName { get; set; }
+            [Required(ErrorMessage = "Organization Name is required. ")]
+            public string OrganizationsName { get; set; }
 
             [Required(ErrorMessage = "Password is required")]
             [StringLength(30, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]

@@ -38,22 +38,22 @@
                     <h4>Create Your Business Account!</h4>
                     <p>For the purpose of industry regulation, your details are required. </p>
                     <form class="login-form mt-4" id="registrationForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                        <div class="register-group-form">
+                            <div class="group-form">
                                 <label for="fullName" class="form-label">Full Name <sup class="error">*</sup></label>
                                 <input type="text" class="form-control" placeholder="Enter Full Name" id="fullName">
                                 <div class="error-message text-danger small" id="fullNameError"></div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="group-form">
                                 <label for="email" class="form-label">Email address <sup class="error">*</sup></label>
                                 <input type="text" class="form-control" placeholder="Enter Email Address" id="email">
                                 <div class="error-message text-danger small" id="emailError"></div>
                             </div>
 
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                                <div>
                                     <label class="form-label">Phone number <sup class="error">*</sup></label>
                                     <div class="verifyBtnLink" id="sendmail">
                                         <span>Verify</span>
@@ -74,8 +74,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-3 otp-section" style="display: none;">
+                            <div class="group-form">
+                                <div class="otp-section" style="display: none;">
                                     <label class="form-label">OTP Verification</label>
                                     <div class="d-flex gap-2">
                                         <div class="otp-form d-flex" id="otp-form">
@@ -97,8 +97,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                                <div>
                                     <label for="password" class="form-label">Password <sup class="error">*</sup></label>
                                     <div class="d-flex password-wrap">
                                         <input type="password" class="form-control" placeholder="Create a Password"
@@ -109,8 +109,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                                <div>
                                     <label for="password" class="form-label">Confirm Password <sup
                                             class="error">*</sup></label>
                                     <div class="d-flex password-wrap">
@@ -121,14 +121,14 @@
                                     <div class="error-message text-danger small" id="passwordError"></div>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="group-form">
                                 <label for="email" class="form-label">Organizations Name (Optional)</label>
                                 <input type="text" class="form-control" placeholder="Enter your organizations name"
                                     id="email">
                                 <div class="error-message text-danger small" id="emailError"></div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                                <div>
                                     <label for="emailCode" class="form-label">Select Current Time Zone <sup
                                         class="error">*</sup></label>
                                     <select class="form-select">
@@ -1197,40 +1197,26 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Country of residence  <sup>*</sup></label>
-                                    <select class="form-select">
-                                        <option value="1">Iceland</option>
-                                        <option value="2">India</option>
-                                        <option value="3">Indonesia</option>
-                                        <option value="4">Iran, Islamic Republic Of</option>
-                                        <option value="5">Iraq</option>
-                                        <option value="6">Ireland</option>
-                                        <option value="7">Isle of Man</option>
-                                        <option value="8">Israel</option>
-                                    </select>
-                                </div>
-                            </div> -->
+                            
 
                             <h5>Address</h5>
-                            <div class="col-md-12">
-                                <div class="mb-3">
+                            <div class="group-form w-100">
+                                
                                     <label class="form-label">Address Line 1 <sup class="error">*</sup></label>
                                     <input type="text" class="form-control" placeholder="Enter your street address"
                                         id="addressOne" disabled>
-                                </div>
+                                
                             </div>
-                            <div class="col-md-12">
-                                <div class="mb-3">
+                            <div class="group-form w-100">
+                                
                                     <label class="form-label">Address Line 2 (Optional)</label>
                                     <input type="text" class="form-control"
                                         placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
                                         disabled>
-                                </div>
+                               
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                               
                                     <label class="form-label" for="country">Country <sup class="error">*</sup> </label>
                                     <select id="country" name="country" class="form-select" disabled>
                                         <option value="">--Select your country--</option>
@@ -1245,46 +1231,33 @@
                                         <option value="CN">China</option>
                                         <option value="BR">Brazil</option>
                                     </select>
-                                </div>
+                                
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                               
                                     <label for="city" class="form-label">City <sup class="error">*</sup></label>
                                     <input type="text" class="form-control" id="city" name="city"
                                         placeholder="Enter your city" disabled>
-                                </div>
+                                
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                               
                                     <label for="state" class="form-label">State <sup class="error">*</sup></label>
                                     <input type="text" class="form-control" id="state" name="state"
                                         placeholder="Enter your state" disabled>
-                                </div>
+                                
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="group-form">
+                                
                                     <label for="postal_code" class="form-label">Postal / ZIP Code <sup
                                             class="error">*</sup></label>
                                     <input type="text" class="form-control" id="postal_code" name="postal_code"
                                         placeholder="Enter your postal or ZIP code" disabled>
-                                </div>
+                                
                             </div>
                         </div>
-                        <!-- <div class="mb-3" id="codeSection">
-                            <label for="emailCode" class="form-label">Enter 6 Digit Verification Code</label>
-                            <div class="d-flex gap-2">
-                                <input type="text" class="form-control" placeholder="Enter Email Address" id="email">
-                                <button id="varifyOtp" type="button" class="btn verifyBtn" >Verify</button>
-                            </div>
-                            <span class="otp-text">Time remaining: <span class="fw-bold">1:28</span></span>
-                            <span asp-validation-for="OTP" class="error-message text-danger small" id="OtpError"></span>
-                        </div> -->
-
-
-
-
-
-                        <div class="form-check d-flex justify-content-start terms-check gap-2">
+                        
+                        <div class="form-check d-flex justify-content-start terms-check gap-2 mt-1">
                             <input type="checkbox" class="form-check-input" id="agreeTerms">
                             <label class="form-check-label" for="agreeTerms">By continuing, I agree to the <a
                                     href="javascript:void(0)" data-bs-toggle="modal"
@@ -1499,7 +1472,7 @@
     <script>
         $(document).ready(function () {
             $('#sendmail').click(function () {
-                $('.otp-section').show(300);
+                $('.otp-section').show();
             });
         });
     </script>
