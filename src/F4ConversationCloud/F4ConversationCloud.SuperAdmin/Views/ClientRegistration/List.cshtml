@@ -9,13 +9,13 @@
 
 <div class="content">
     <div class="container-fluid">
-        <div class="d-flex justify-content-between mb-3">
-            <h3 class="sub-heading mb-0">Registered Users </h3>
-            <div>
-                <a href="@Url.Action("Create", "ClientRegistration")" type="button" class="btn primary-btn add d-flex">Register User</a>
+        <div class="card">
+            <div class="header-content d-flex justify-content-between mb-3">
+                <h3 class="sub-heading mb-0">Registrations</h3>
+                <div>
+                    <a href="@Url.Action("Create", "ClientRegistration")" type="button" class="btn primary-btn add d-flex">Register User</a>
+                </div>
             </div>
-        </div>
-        <div class="card padding">
             <div class="table-responsive">
                 <table class="table user-table form-wrapper">
                     <thead>
@@ -89,7 +89,9 @@
                                         @Html.DisplayFor(modelItem => item.SrNo)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <form method="get" action="@Url.Action("RegisteredBusinessDetails", "ClientRegistration", new { id = item.Id })">
+                                            <a method="get" asp-controller="ClientRegistration" asp-action="RegisteredBusinessDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                                        </form>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Email)
@@ -101,13 +103,18 @@
                                         @Html.DisplayFor(modelItem => item.RoleName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                                        <span class="date">@item.CreatedOn.ToString("dd MMM yyyy")</span>
+                                        <span class="datetime">at @item.CreatedOn.ToString("hh:mm tt")</span>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.UpdatedOn)
+                                        @if (item.UpdatedOn is not null)
+                                        {
+                                            <span class="date">@item.UpdatedOn?.ToString("dd MMM yyyy")</span>
+                                            <span class="datetime">at @item.UpdatedOn?.ToString("hh:mm tt")</span>
+                                        }
                                     </td>
                                     <td>
-                                        <span class="badge @(item.RegistrationStatusName == "Active" ? "success" : "danger")">@Html.DisplayFor(modelItem => item.RegistrationStatusName)</span>
+                                        <span class="badge @(item.RegistrationStatusName == "Active" ? "success" : "warning")">@Html.DisplayFor(modelItem => item.RegistrationStatusName)</span>
                                     </td>
                                     <td>
                                         @if (item.RegistrationStatusName == ClientRegistrationStatus.Pending.Get<DisplayAttribute>().Name)
