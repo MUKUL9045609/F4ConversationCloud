@@ -9,9 +9,11 @@ using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 using Twilio.Types;
 
 
@@ -24,13 +26,20 @@ namespace F4ConversationCloud.Application.Common.Services
         private readonly IUrlHelper _urlHelper;
         private readonly IF4AppCloudeService _whatsAppCloude;
         private readonly IMetaService _metaService;
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IF4AppCloudeService whatsAppCloudeService, IMetaService metaService)
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
+        private readonly IEmailSenderService _emailService;
+
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IF4AppCloudeService whatsAppCloudeService, IMetaService metaService, IWebHostEnvironment env,IConfiguration configuration, IEmailSenderService emailService)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
             _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
             _whatsAppCloude = whatsAppCloudeService;
             _metaService = metaService;
+            _env = env;
+            _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<VarifyUserDetailsResponse> CheckIsMailExitsAsync(VarifyMobileNumberModel request)
@@ -39,56 +48,42 @@ namespace F4ConversationCloud.Application.Common.Services
             {
                 int ismailExit = await _authRepository.IsMailExitAsync(request);
                 var CreateOTP = OtpGenerator.GenerateRandomOTP();
-                if (ismailExit != 1)
+                if (ismailExit == 0)
                 {
-                    var InsertOTPCommand = new VarifyMobileNumberModel
+                    return new VarifyUserDetailsResponse
                     {
-                        UserEmailId = request.UserEmailId,
-                        UserPhoneNumber = request.UserPhoneNumber,
-                        OTP = CreateOTP,
-                        OTP_Source = request.OTP_Source
-                    };
+                        status = false,
+                        message = "Email already exists"
 
-                    var insertOTPResponse = await _authRepository.InsertOTPAsync(InsertOTPCommand);
-                    if (insertOTPResponse == 0)
+                    };
+                   
+                }
+                var InsertOTPCommand = new VarifyMobileNumberModel
+                {
+                    UserEmailId = request.UserEmailId,
+                    UserPhoneNumber = request.UserPhoneNumber,
+                    OTP = CreateOTP,
+                    OTP_Source = request.OTP_Source
+                };
+
+                var insertOTPResponse = await _authRepository.InsertOTPAsync(InsertOTPCommand);
+                if (insertOTPResponse == 0)
+                {
+                    return new VarifyUserDetailsResponse
                     {
-                        return new VarifyUserDetailsResponse
-                        {
-                            status = false,
-                            message = "Failed to generate OTP"
-                        };
-                    }
+                        status = false,
+                        message = "Failed to generate OTP"
+                    };
                 }
                 else
                 {
-                        return new VarifyUserDetailsResponse
-                        {
-                            status = false,
-                            message = "Email already exists"
+                    return new VarifyUserDetailsResponse
+                    {
+                        status = true,
+                        message = "OTP generated successfully"
+                    };
 
-                        };
                 }
-                
-                
-             
-                var emailRequest = new EmailRequest
-                {
-                    ToEmail = request.UserEmailId,
-                    Subject = "Your OTP Verification Code",
-                    Body= "<p>Dear Customer,</p><br />" +
-                            "Thank you for signing up with us. To verify your email, please enter the following <br/>" +
-                            "One Time Password (OTP): " + CreateOTP + " <br/>" +
-                            "This OTP is valid for 10 minutes from the receipt of this email.<br/>Best regards",
-                    // OTP = CreateOTP,
-                };
-                bool sendMail = await _messageService.SendEmail(emailRequest);
-                return new VarifyUserDetailsResponse
-                {
-                    status = sendMail? true:false,
-                    message = sendMail ? "Email sent successfully" : "Failed to send email"
-                };
-           
-                
             }
             catch (Exception)
             {
@@ -105,43 +100,43 @@ namespace F4ConversationCloud.Application.Common.Services
         {
             try
             {
-              //int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
-                            var CreateOTP = OtpGenerator.GenerateRandomOTP();
-                                    //if (ContactNoExit != 0)
-                                    //{
-                                    //    return new VarifyUserDetailsResponse
-                                    //    {
-                                    //        status = false,
-                                    //        message = "Already Registered With this Number!"
+            //int ContactNoExit = await _authRepository.IsContactNoExitAsync(request);
+                        var CreateOTP = OtpGenerator.GenerateRandomOTP();
+                                //if (ContactNoExit != 0)
+                                //{
+                                //    return new VarifyUserDetailsResponse
+                                //    {
+                                //        status = false,
+                                //        message = "Already Registered With this Number!"
 
-                                    //    };
+                                //    };
 
-                                    //}
-                                    var varificationRequest = new VarifyMobileNumberModel
+                                //}
+                                var varificationRequest = new VarifyMobileNumberModel
+                                {
+                                    UserEmailId = request.UserEmailId,
+                                    UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                                    OTP = CreateOTP,
+                                    OTP_Source = "WhatsApp"
+                                };
+                    var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
+                                if (insertOTPResponse != 1)
+                                {
+                                    return new VarifyUserDetailsResponse
                                     {
-                                        UserEmailId = request.UserEmailId,
-                                        UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
-                                        OTP = CreateOTP,
-                                        OTP_Source = "WhatsApp"
+                                        status = false,
+                                        message = "Failed generate OTP"
                                     };
-                        var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
-                                    if (insertOTPResponse != 1)
+                                }
+                                var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
+                                if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
+                                {
+                                    return new VarifyUserDetailsResponse
                                     {
-                                        return new VarifyUserDetailsResponse
-                                        {
-                                            status = false,
-                                            message = "Failed generate OTP"
-                                        };
-                                    }
-                                    var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
-                                    if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
-                                    {
-                                        return new VarifyUserDetailsResponse
-                                        {
-                                            status = false,
-                                            message = "Failed to send OTP via WhatsApp"
-                                        };
-                                    }
+                                        status = false,
+                                        message = "Failed to send OTP via WhatsApp"
+                                    };
+                                }
 
                 return new VarifyUserDetailsResponse
                         {
@@ -161,8 +156,6 @@ namespace F4ConversationCloud.Application.Common.Services
             }
 
         }
-
-
 
         public async Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request)
         {
@@ -261,8 +254,6 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         }
 
-
-
         public async Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request)
         {
             try
@@ -303,8 +294,6 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         }
 
-
-
         public async Task<RegisterUserModel> GetCustomerByIdAsync(int UserId) {
             try
             {
@@ -319,8 +308,6 @@ namespace F4ConversationCloud.Application.Common.Services
             }
         
         }
-
-
 
         public async Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request)
         {
@@ -347,7 +334,7 @@ namespace F4ConversationCloud.Application.Common.Services
                            "Best regards,"
 
                 };
-                bool sendMail = await _messageService.SendEmail(emailRequest);
+                bool sendMail = await _emailService.Send(emailRequest);
 
                 return sendMail;
             }
@@ -357,43 +344,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 return false;
             }
         }
-        public async Task SendRegistrationSuccessEmailAsync(RegisterUserModel Request)
-        {
-            try
-            {
-
-                //var loginUrl = _urlHelper.Action(
-                //        "Login",      
-                //        "Onboarding",  
-                //        null,          
-                //        "https"        
-                //    );
-
-
-
-                EmailRequest emailRequest = new EmailRequest()
-                {
-                    ToEmail = Request.Email,
-                    Subject = "Your Fortune4 Registrations Completed – Pending Meta Onboarding",
-                    Body = "<p>Dear Customer,</p><br />" +
-                           "Thank you for completing your Fortune4 Registrations onboarding process. 🎉 <br/>" +
-                           "Your account setup has been successfully submitted and is now pending Meta Registration.<br/>" +
-                           //"To complete your Meta Registration, please use the link below:<br/><br/>" +
-                           //$"<a href=\"{loginUrl}\">Onboarding Login</a><br/><br/>" +
-                           "Best regards,"
-
-                };
-                await _messageService.SendEmail(emailRequest);
-            }
-            catch (Exception)
-            {
-
-                
-            }
-            
-
-           
-        }
+        
 
         public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
         {
@@ -469,29 +420,32 @@ namespace F4ConversationCloud.Application.Common.Services
             try
             {
                 var ClientDetails = await _authRepository.ValidateEmailId(EmailId);
+                string templatePath = Path.Combine(_env.WebRootPath, "Html", "PasswordResetMailTemplate.html");
+                string htmlBody = await File.ReadAllTextAsync(templatePath);
+
+
                 string id = ClientDetails.Id.ToString();
                 string expiryTime = DateTime.UtcNow.AddMinutes(20).ToString();
                 string token = (id + "|" + expiryTime).Encrypt().Replace("/", "thisisslash").Replace("\\", "thisisbackslash").Replace("+", "thisisplus");
 
-                var resetUrl = _urlHelper.Action(
-                             "ConfirmPassword",      
-                             "Onboarding",           
-                             new { id = token },     
-                             "https"               
-                         );
+                var resetUrl = _urlHelper.Action( "ConfirmPassword", "Auth",  new { id = token },"https" );
+                string logo = $"{_configuration["MailerLogo"]}";
+                string lockImage = $"{_configuration["MailerLockImage"]}";
+                string currentYear = DateTime.Now.Year.ToString();
+                htmlBody = htmlBody.Replace("{user_name}", ClientDetails.FirstName + " " + ClientDetails.LastName)
+                                   .Replace("{Logo}", logo)
+                                   .Replace("{Lock_Image}", lockImage)
+                                   .Replace("{Link}", resetUrl)
+                                   .Replace("{CurrentYear}", currentYear);
 
-
-                EmailRequest email = new EmailRequest()
+                EmailRequest emailRequest = new EmailRequest()
                 {
                     ToEmail = ClientDetails.Email,
                     Subject = "Password Reset",
-                    Body = "<h3>You can reset your password using the below link.</h3><br/>" +
-                                $"<a href=\"{resetUrl}\">Click Here</a>" +
-                               "<br/>Please note: This link will expire in 20 minutes."
-
-
-                }; 
-                await _messageService.SendEmail(email);
+                    Body = htmlBody
+                };
+                await _emailService.Send(emailRequest);
+             
               
             }
             catch (Exception)
@@ -502,7 +456,6 @@ namespace F4ConversationCloud.Application.Common.Services
             
 
         }
-
 
         public async Task<bool> SetNewPassword(ConfirmPasswordModel model)
         {

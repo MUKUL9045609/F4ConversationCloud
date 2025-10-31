@@ -112,7 +112,7 @@
                         <span class="otp-text d-none">
                             Valid till  <span class="fw-bold" id="timeRemaining">5:00</span>
                         </span>
-                        <a id="resendOtpBtn" class="verifyBtnLink">Resend OTP</a>
+                        <a id="resendOtpBtn" class="verifyBtnLink" style="display: none;">Resend OTP</a>
                     </div>
                     <span asp-validation-for="OTP" class="error-message text-danger small" id="contactNoOtpError"></span>
                 </div>
@@ -203,13 +203,18 @@
                                >
                     </div>
                 </div>
+               
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
-                        <select id="countrySelect" name="Country" class="form-select select2"></select>
+                        <input type="hidden" name="Country" id="hiddenCountry" value="India" />
+                        <select id="countrySelect" class="form-select select2" disabled>
+                            <option value="India" selected>India</option>
+                        </select>
                         <span asp-validation-for="Country" class="error-message text-danger small"></span>
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="state" class="form-label">State <sup class="error">*</sup></label>
@@ -299,9 +304,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
-    @* @{
+    @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    } *@
+    }
     <script>
         $(document).ready(function () {
             $(".select2").select2();
@@ -316,7 +321,6 @@
                  const fieldIds = [
                     'addreessline1',
                     'addresstwo',
-                    'countrySelect',
                     'StateSelect',
                     'CitySelect',
                     'postal_code',
@@ -441,7 +445,7 @@
                      req,
                      function (response) {
                          $("#loader").hide();
-                         debugger;
+                         
                          if (response.status === true) {
                             $('#PhoneNumberOtpVerifiedId').val(response.status);
                             showToast(response.message, "success");
@@ -518,23 +522,27 @@
     </script>
 
     <script>
-        fetch("/data/countries.json")
-            .then(res => res.json())
-            .then(data => {
-                const select = document.getElementById("countrySelect");
+            fetch("/data/countries.json")
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById("countrySelect");
+            const hiddenInput = document.getElementById("hiddenCountry");
 
-                data.sort((a, b) => a.name.localeCompare(b.name));
+            
+            data.sort((a, b) => a.name.localeCompare(b.name));
 
-                data.forEach(country => {
-                const option = document.createElement("option");
-                option.value = country.name;
-                option.textContent = country.name;
-                select.appendChild(option);
-                });
+            select.innerHTML = "";
+            const option = document.createElement("option");
+            option.value = "India";
+            option.textContent = "India";
+            select.appendChild(option);
 
-                select.value = "India";
-            })
-            .catch(err => console.error("Error fetching countries:", err));
+            select.value = "India";
+            select.disabled = true;
+            hiddenInput.value = "India";
+        })
+        .catch(err => console.error("Error fetching countries:", err));
+
 
              $(document).ready(function () {
         $('#StateSelect').on('change', function () {
