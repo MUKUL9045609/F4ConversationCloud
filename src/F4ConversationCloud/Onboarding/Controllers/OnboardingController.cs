@@ -15,6 +15,7 @@ using System;
 using Twilio.Jwt.AccessToken;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
+   
     public class OnboardingController : Controller
     {
         private readonly IOnboardingService _onboardingService;
@@ -28,9 +29,9 @@ namespace F4ConversationCloud.Onboarding.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] string id, [FromQuery] string token)
+        public async Task<IActionResult> Index([FromQuery] string token)
         {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+            if ( string.IsNullOrEmpty(token))
             {
                 TempData["ErrorMessage"] = "Invalid or missing link parameters.";
                 return RedirectToAction("ThankYouPage");
@@ -38,14 +39,18 @@ namespace F4ConversationCloud.Onboarding.Controllers
             
             try
             {
-                string DecryptId = id.ToString().Decrypt();
-                int Userid = Convert.ToInt32(DecryptId);
+               // string DecryptId = id.ToString().Decrypt();
+                //int Userid = Convert.ToInt32(DecryptId);
                 var decrypted = token.Decrypt();
                 string decryptedToken = token.Replace("thisisslash", "/")
                                        .Replace("thisisbackslash", @"\")
                                        .Replace("thisisplus", "+")
                                        .Decrypt();
+
                 string[] tokenParts = decryptedToken.Split("|");
+                string stringUserid = tokenParts[0];
+               
+                
                 if (tokenParts.Length != 2)
                 {
                     TempData["ErrorMessage"] = "Invalid token.";
@@ -57,7 +62,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     TempData["ErrorMessage"] = "Link has expired. Please request a new one.";
                     return RedirectToAction("ThankYouPage");
                 }
-                var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
+                int UserId = Convert.ToInt32(stringUserid);
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {
                     TempData["ErrorMessage"] = "Client not found.";
