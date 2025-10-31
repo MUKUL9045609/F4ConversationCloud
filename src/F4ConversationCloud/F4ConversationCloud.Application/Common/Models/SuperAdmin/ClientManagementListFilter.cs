@@ -8,5 +8,6 @@
         public string PhoneNumberFilter { get; set; } = string.Empty;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
+        public int RegistrationId { get; set; } = 0;
     }
 }

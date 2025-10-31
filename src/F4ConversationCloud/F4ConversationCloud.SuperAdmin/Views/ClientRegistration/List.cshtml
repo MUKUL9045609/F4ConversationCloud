@@ -89,7 +89,9 @@
                                         @Html.DisplayFor(modelItem => item.SrNo)
                                     </td>
                                     <td>
-                                        <a href="buisness-waba-details.html">@Html.DisplayFor(modelItem => item.Name)</a>
+                                        <form method="get" action="@Url.Action("RegisteredBusinessDetails", "ClientRegistration", new { id = item.Id })">
+                                            <a method="get" asp-controller="ClientRegistration" asp-action="RegisteredBusinessDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                                        </form>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Email)

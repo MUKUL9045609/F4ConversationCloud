@@ -197,5 +197,28 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             return response;
         }
+
+        public async Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id)
+        {
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/GetRegisteredBusinessDetail";
+            logModel.AdditionalInfo = $"RegisteredId: {id}";
+            var response = new RegisteredBusinessDetail();
+            try
+            {
+                response = await _clientRegistrationRepository.GetRegisteredBusinessDetail(id);
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+            return response;
+        }
     }
 }

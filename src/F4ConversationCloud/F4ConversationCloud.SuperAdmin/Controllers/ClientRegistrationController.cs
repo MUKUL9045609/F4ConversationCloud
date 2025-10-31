@@ -5,15 +5,19 @@ using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class ClientRegistrationController : BaseController
     {
         private readonly IClientRegistrationService _clientRegistrationService;
-        public ClientRegistrationController(IClientRegistrationService clientRegistrationService)
+        private readonly IClientManagementService _clientManagement;
+        public ClientRegistrationController(IClientRegistrationService clientRegistrationService, IClientManagementService clientManagement)
         {
             _clientRegistrationService = clientRegistrationService;
+            _clientManagement = clientManagement;
         }
 
         public async Task<IActionResult> List(ClientRegistrationListViewModel model)
@@ -114,7 +118,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var name = model.FirstName + " " + model.LastName;
                 await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
-                
+
                 TempData["SuccessMessage"] = "Client pre-registered successfully";
 
                 return RedirectToAction("List");
@@ -191,6 +195,107 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
             }
+        }
+
+        public async Task<IActionResult> RegisteredBusinessDetails(int id)
+        {
+            try
+            {
+                var data = await _clientRegistrationService.GetRegisteredBusinessDetail(id);
+
+                var viewModel = new RegisteredBusinessDetailViewModel()
+                {
+                    RegistrationId = data.RegistrationId,
+                    OrganisationName = data.OrganisationName,
+                    FullName = data.FullName,
+                    Email = data.Email,
+                    ContactNumber = data.ContactNumber,
+                    AddressLine1 = data.AddressLine1,
+                    AddressLine2 = data.AddressLine2,
+                    Country = data.Country,
+                    State = data.State,
+                    City = data.City,
+                    ZipCode = data.ZipCode
+                };
+
+                var model = new ClientManagementViewModel();
+                var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+                {
+                    ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                    PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                    RegistrationId = id
+                });
+
+                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                {
+                    TempData["ErrorMessage"] = "Invalid Page";
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    ClientName = x.ClientName,
+                    Status = x.Status,
+                    IsActive = x.IsActive,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedOn = x.UpdatedOn,
+                    Category = x.Category,
+                    ClientId = x.ClientId,
+                    PhoneNumber = x.PhoneNumber
+                });
+                viewModel.clientManagementViewModel = model;
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return StatusCode(500, false);
+            }
+        }
+
+        public async Task<IActionResult> BusinessAccountList(ClientManagementViewModel model)
+        {
+            var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+            {
+                ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                StatusFilter = model.StatusFilter ?? String.Empty,
+                OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
+                PageNumber = model.PageNumber,
+                PageSize = model.PageSize,
+                RegistrationId = model.RegistrationId,
+            });
+
+            if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+            {
+                TempData["ErrorMessage"] = "Invalid Page";
+                return RedirectToAction("List");
+            }
+
+            model.TotalCount = response.Item2;
+            model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+            {
+                Id = x.Id,
+                SrNo = x.SrNo,
+                ClientName = x.ClientName,
+                Status = x.Status,
+                IsActive = x.IsActive,
+                CreatedAt = x.CreatedAt,
+                UpdatedOn = x.UpdatedOn,
+                Category = x.Category,
+                ClientId = x.ClientId,
+                PhoneNumber = x.PhoneNumber
+            });
+
+            return PartialView("_BusinessAccountsListPartial", model);
         }
     }
 }

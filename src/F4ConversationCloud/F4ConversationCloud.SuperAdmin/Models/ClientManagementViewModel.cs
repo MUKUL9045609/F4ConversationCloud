@@ -14,7 +14,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public int TotalCount { get; set; } = 0;
         public ClientManagementListViewItem Columns { get; set; } = new ClientManagementListViewItem();
         public IEnumerable<ClientManagementListViewItem> data { get; set; } = new List<ClientManagementListViewItem>();
-
+        public int RegistrationId { get; set; } = 0;
         public class ClientManagementListViewItem
         {
             public int Id { get; set; }
