@@ -85,7 +85,7 @@
         </div>
        
     </div>
-    @if (TempData["SuccessMessage"] != null)
+    @* @if (TempData["SuccessMessage"] != null)
     {
         <input type="hidden" class="temp-message" data-type="success" value="@TempData["SuccessMessage"]" />
     }
@@ -101,7 +101,9 @@
     @if (TempData["Info"] != null)
     {
         <input type="hidden" class="temp-message" data-type="info" value="@TempData["Info"]" />
-    }
+    } *@
+    <div class="toastWrap">
+    </div>
     <div class="loader-wrapper" id="loader">
         <div class="loader"></div>
     </div>
@@ -117,6 +119,21 @@
 
 
   <script>
+
+         $(document).ready(function () {
+              var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+             
+              if (toastMsg != null && toastMsg != undefined) {
+                  if (toastMsg.type === "Success")
+                      commonHelper.showSuccess(toastMsg.message);
+                  else if (toastMsg.type === "Error")
+                      commonHelper.showError(toastMsg.message);
+              }
+          });
+          $(window).on('load', function () {
+              $('.loader-wrapper').fadeOut('slow');
+          });
+
         document.addEventListener("DOMContentLoaded", function () {
             const emailInput = document.getElementById("email");
             const passwordInput = document.getElementById("password");
