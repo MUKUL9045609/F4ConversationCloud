@@ -206,7 +206,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label asp-for="Country" class="form-label">Country of residence <sup>*</sup></label>
-                        <select id="countrySelect" name="Country" class="form-select select2"></select>
+                        <select id="countrySelect" name="Country" class="form-select select2" disabled></select>
                         <span asp-validation-for="Country" class="error-message text-danger small"></span>
                     </div>
                 </div>
@@ -316,7 +316,6 @@
                  const fieldIds = [
                     'addreessline1',
                     'addresstwo',
-                    'countrySelect',
                     'StateSelect',
                     'CitySelect',
                     'postal_code',
@@ -533,6 +532,7 @@
                 });
 
                 select.value = "India";
+                select.disabled = true;
             })
             .catch(err => console.error("Error fetching countries:", err));
 
