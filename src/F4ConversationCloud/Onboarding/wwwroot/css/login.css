@@ -135,9 +135,9 @@
         width: 100%;
         background-color: #fff;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 15px;
         overflow: hidden;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        box-shadow: rgba(149, 157, 165, 0.1) 0px 0px 15px;
         display: flex;
     }
 
@@ -147,7 +147,7 @@
             background-position: 80% 17%;
             background-repeat: no-repeat;
             height: auto;
-            width: 40%;
+            width: 50%;
             padding: 30px 50px 100px;
             position: relative;
             display: block;
@@ -165,7 +165,7 @@
             .loginwrapper .loginBox .left-col p {
                 font-size: 14px;
                 color: #fff;
-                max-width: 270px;
+                max-width: 370px;
                 margin-bottom: 0px;
                 line-height: 27px;
                 position: relative;
@@ -197,8 +197,8 @@
                 }
 
         .loginwrapper .loginBox .right-col {
-            padding: 45px;
-            width: 60%;
+            padding: 30px 25px;
+            width: 50%;
             position: relative;
             display: flex;
             align-items: center;
@@ -222,6 +222,7 @@
                     font-size: 20px;
                     font-weight: 600;
                     text-transform: capitalize;
+                    margin-bottom: 2px;
                 }
 
                 .loginwrapper .loginBox .right-col .bx_wrap h5 {
@@ -388,6 +389,8 @@
             .loginwrapper .loginBox .right-col .terms-check {
                 font-size: 14px;
                 color: #696F79;
+                padding-left:0px;
+                margin-top:5px;
             }
 
                 .loginwrapper .loginBox .right-col .terms-check label {
@@ -424,43 +427,6 @@
             margin-top: 20px;
         }
 
-        .loginwrapper .loginBox .or {
-            display: flex;
-            align-items: center;
-            color: #BABABA;
-            margin: 15px 0px;
-        }
-
-            .loginwrapper .loginBox .or span {
-                padding: 0px 34px;
-            }
-
-            .loginwrapper .loginBox .or::before {
-                content: "";
-                background-color: #ddd;
-                height: 1px;
-                width: 100%;
-                display: flex;
-            }
-
-            .loginwrapper .loginBox .or::after {
-                content: "";
-                background-color: #ddd;
-                height: 1px;
-                width: 100%;
-                display: flex;
-            }
-
-        .loginwrapper .loginBox .google-icon {
-            background-image: url("../images/login/google.svg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 25px;
-            width: 25px;
-            display: block;
-        }
-
         .loginwrapper .loginBox .facebook-icon {
             background-image: url("../images/login/facebook.svg");
             background-size: cover;
@@ -469,14 +435,6 @@
             height: 25px;
             width: 25px;
             display: block;
-        }
-
-        .loginwrapper .loginBox .sign-google {
-            color: #333;
-            font-size: 15px;
-            justify-content: center;
-            font-weight: 500;
-            text-decoration: none;
         }
 
         .loginwrapper .loginBox .lock-text {
@@ -595,9 +553,9 @@
 }
 
 .phonewrap .form-control {
-    border-top-left-radius: 0px;
+/*    border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
-    border-left: 0px;
+    border-left: 0px;*/
 }
 
     .phonewrap .form-control:focus {
@@ -619,9 +577,10 @@
     }
 
 .verifyBtn {
-    background-color: #03A9F5 !important;
-    color: #fff !important;
+    background-color: #DDF4FF !important;
+    color: #03A9F5 !important;
     font-size: 14px !important;
+    padding: 3px 9px !important;
 }
 
 .otp-form {
@@ -631,13 +590,14 @@
 }
 
     .otp-form .otp-input {
-        padding: 10px;
+        padding: 3px;
         text-align: center;
+        color: #8692A6;
+        font-size: 13px;
         width: 100%;
         max-width: 40px;
         height: 34px;
         border: none;
-        font-weight: 500;
         border-right: 1px solid #ced4da;
     }
 
@@ -722,7 +682,21 @@
     font-size: 14px;
     cursor: pointer;
 }
-.no-backdrop .modal-backdrop {
-    display:none;
+
+.register-group-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+    .register-group-form .group-form {
+        width: 48.3%;
+    }
+
+.modal-content {
+    border-radius: 16px !important;
+}
+.iti--separate-dial-code .iti__selected-dial-code{
+    font-size:14px;
 }
 /*# sourceMappingURL=login.css.map */
