@@ -91,8 +91,8 @@
                 
             </div>
 
-            <div class="group-form" id="contactNoOtpDiv">
-                <div class="otp-section" style="display: none;">
+            <div class="group-form" >
+                <div class="otp-section" id="contactNoOtpDiv" style="display: none;">
 
                     <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
                     <div class="d-flex gap-2">
@@ -286,7 +286,7 @@
             <input asp-for="TermsCondition" class="input" id="agreeTerms" />
             <label class="form-check-label" for="agreeTerms" data-bs-toggle="modal" data-bs-target="#createTemplate">
                 By continuing, I agree to the <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                 data-bs-target="#createTemplate">Terms & Conditions</a>
+                                                 data-bs-target="#createTemplate" >Terms & Conditions</a>
             </label>
         </div>
         <div class="form-check d-flex justify-content-end terms-check gap-2">
@@ -309,7 +309,19 @@
     <script>
         $(document).ready(function () {
             $(".select2").select2();
+
+              $('#TermsConditionsverifyBtn').click(function () {
+               
+                if ($('#agreeTerms').is(':checked')) {
+                    $('#agreeTerms').val(true);
+                    agreeTerms
+                } else {
+                    $('#agreeTerms').val(false);
+
+                }
+            });
         });
+        
     </script>
 
     <script>
@@ -323,7 +335,8 @@
                     'StateSelect',
                     'CitySelect',
                     'postal_code',
-                    'agreeTerms'
+                    'agreeTerms',
+                    'TermsConditionsverifyBtn'
                     ];
 
                  fieldIds.forEach(id => {
@@ -477,10 +490,6 @@
                  );
              });
         });
-
-
-          
-     
 
     </script>
 
