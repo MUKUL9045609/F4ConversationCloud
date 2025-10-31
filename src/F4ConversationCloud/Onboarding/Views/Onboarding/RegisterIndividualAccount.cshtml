@@ -310,16 +310,20 @@
         $(document).ready(function () {
             $(".select2").select2();
 
-              $('#TermsConditionsverifyBtn').click(function () {
-               
-                if ($('#agreeTerms').is(':checked')) {
-                    $('#agreeTerms').val(true);
-                    agreeTerms
-                } else {
-                    $('#agreeTerms').val(false);
+        $('#TermsConditionsverifyBtn').click(function () {
+            $('#agreeTerms').prop('checked', true);   
+            $('#agreeTerms').val(true);               
+            $('#createTemplate').modal('hide');      
+        });
 
-                }
-            });
+     
+        $('#agreeTerms').change(function () {
+            if ($(this).is(':checked')) {
+                $(this).val(true);
+            } else {
+                $(this).val(false);
+            }
+        });
         });
         
     </script>
