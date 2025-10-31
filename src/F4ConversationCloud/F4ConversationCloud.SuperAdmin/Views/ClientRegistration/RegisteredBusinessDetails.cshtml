@@ -1,0 +1,126 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.RegisteredBusinessDetailViewModel
+
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="header-content d-flex justify-content-between">
+                <h3 class="sub-heading">
+                    <a href="buisness.html"> <span class="back"></span>@Model.OrganisationName</a>
+                </h3>
+            </div>
+            <div class="waba-wrap">
+                <h6 class="details-title">Contact Details</h6>
+                <ul class="user-list">
+                    <li>
+                        <span class="formkey">Full Name</span>
+                        <span class="formvalue">@Model.FullName</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Contact Number</span>
+                        <span class="formvalue">@Model.ContactNumber</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Email Address</span>
+                        <span class="formvalue">@Model.Email</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="waba-wrap">
+                <h6 class="details-title">Address</h6>
+                <ul class="user-list">
+                    <li>
+                        <span class="formkey">Address</span>
+                        <span class="formvalue">@Model.AddressLine1 @Model.AddressLine2</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Country </span>
+                        <span class="formvalue">@Model.Country</span>
+                    </li>
+                    <li>
+                        <span class="formkey">State</span>
+                        <span class="formvalue">@Model.State</span>
+                    </li>
+                    <li>
+                        <span class="formkey">City</span>
+                        <span class="formvalue">@Model.City</span>
+                    </li>
+                    <li>
+                        <span class="formkey">Zip/Postal Code </span>
+                        <span class="formvalue">@Model.ZipCode</span>
+                    </li>
+                </ul>
+            </div>
+
+            <h6 class="details-title">WhatsApp Business Account Details</h6>
+            <div id="partialForTemplateType">
+                <partial name="_BusinessAccountsListPartial" model="@Model.clientManagementViewModel" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var regId = @Html.Raw(Json.Serialize(Model.RegistrationId));
+        function loadData() {
+            commonHelper.showHideLoader(true);
+            var clientNameSearch = $("[name=ClientNameSearch]").val();
+            var onboardingFilter = $("[name=OnboardingOnFilter]").val();
+            var statusFilter = $("[name=StatusFilter]").val();
+            var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+            var pageNumber = 1;
+
+            var req = {
+                ClientNameSearch: clientNameSearch,
+                OnboardingOnFilter: onboardingFilter,
+                StatusFilter: statusFilter,
+                PhoneNumberFilter: PhoneNumberFilter,
+                PageNumber: pageNumber,
+                RegistrationId: regId
+            };
+
+            var url = "/ClientRegistration/BusinessAccountList";
+
+            ajaxHelper.ajaxPost(url, null, req, function (response) {
+                $('#partialForTemplateType').html(response);
+                commonHelper.showHideLoader(false);
+            }, null);
+        }
+
+        $(".page-link").click(function () {
+            commonHelper.showHideLoader(true);
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                var clientNameSearch = $("[name=ClientNameSearch]").val();
+                var onboardingFilter = $("[name=OnboardingOnFilter]").val();
+                var statusFilter = $("[name=StatusFilter]").val();
+                var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+
+                var req = {
+                    ClientNameSearch: clientNameSearch,
+                    OnboardingOnFilter: onboardingFilter,
+                    StatusFilter: statusFilter,
+                    PhoneNumberFilter: PhoneNumberFilter,
+                    PageNumber: pageNumber,
+                    RegistrationId: regId
+                };
+
+                var url = "/ClientRegistration/BusinessAccountList";
+
+                ajaxHelper.ajaxPost(url, null, req, function (response) {
+                    $('#partialForTemplateType').html(response);
+
+                    commonHelper.showHideLoader(false);
+                }, null);
+            }
+        });
+
+        $(document).on('keypress', '.srcIcon', function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+        
+    </script>
+}

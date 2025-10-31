@@ -27,7 +27,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Sr. No.")]
             public int SrNo { get; set; }
 
-            [Display(Name = "User Name")]
+            [Display(Name = "Name")]
             public string Name { get; set; }
 
             [Display(Name = "Email Address")]
@@ -46,10 +46,10 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Registration Status")]
             public string RegistrationStatusName { get; set; }
 
-            [Display(Name = "Created Date & Time")]
+            [Display(Name = "Created Date")]
             public DateTime CreatedOn { get; set; }
 
-            [Display(Name = "Last Updated")]
+            [Display(Name = "Last Update")]
             public DateTime? UpdatedOn { get; set; }
         }
     }
