@@ -4957,4 +4957,9 @@ body {
 }
 .waba-wrap hr {
   margin-bottom: 1rem !important;
+}
+
+.table.billing-table th,
+.table.billing-table td {
+  border: 1px solid #DBDBDB;
 }/*# sourceMappingURL=style.css.map */

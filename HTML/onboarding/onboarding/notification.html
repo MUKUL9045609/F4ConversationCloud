@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 
 <body>
@@ -1319,14 +1319,54 @@
         </div>
     </div>
 
+    <div class="toast toast--green"  id="success">
+        <div class="toast__icon">
+            
+        </div>
+        <div class="toast__content">
+            <h4 class="toast__type">Login Successful</h4>
+            <p class="toast__message">Welcome back to your account.</p>
+        </div>
+        
+    </div>
     
+    <div class="toast toast--blue add-margin" id="info">
+        <div class="toast__icon"></div>
+        <div class="toast__content">
+            <p class="toast__type">Info</p>
+            <p class="toast__message">Verifying your credentials...</p>
+        </div>
+        
+    </div>
+    
+    <div class="toast toast--yellow add-margin" id="warning">
+        <div class="toast__icon">
+        
+        </div>
+        <div class="toast__content">
+            <p class="toast__type">Warning</p>
+            <p class="toast__message">Please wait a moment while we process your request.</p>
+        </div>
+        
+    </div>
+
+    <div class="toast toast--danger add-margin" id="danger">
+        <div class="toast__icon">
+        
+        </div>
+        <div class="toast__content">
+            <p class="toast__type">Invalid OTP</p>
+            <p class="toast__message">Incorrect OTP entered. Please check your code and try again.</p>
+        </div>
+        
+    </div>
 
 
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         document.getElementById('registrationForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -1489,8 +1529,48 @@
             }
         });
     </script>
-   
+ <script>
+        $(document).ready(function () {
+        var toasterOne = document.getElementById("success")
+        var toasterTwo = document.getElementById("info")
+        var toasterThree = document.getElementById("warning")
+        var toasterFour = document.getElementById("danger")
+        //var toasterFive = document.getElementById("notify")
+            setTimeout(() => {
+            Toastify({
+                node: toasterTwo,
+                close:true,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+            }).showToast();
 
+            Toastify({
+                node: toasterThree,
+                close:true,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+            }).showToast();
+
+            Toastify({
+                node: toasterFour,
+                close:true,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+            }).showToast();
+            Toastify({
+                node: toasterOne,
+                close:true,
+                duration: 30000,
+                gravity: "top",
+                position: "right",
+            }).showToast();
+            
+            }, 1000);
+        });
+        </script>
 
 </body>
 

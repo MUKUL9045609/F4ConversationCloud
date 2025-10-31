@@ -1613,3 +1613,11 @@ padding-left: 61px !important;
         margin-bottom: 1rem!important;
     }
 }
+.table{
+    &.billing-table{
+        th,
+        td{
+            border:1px solid #DBDBDB;
+        }
+    }
+}
