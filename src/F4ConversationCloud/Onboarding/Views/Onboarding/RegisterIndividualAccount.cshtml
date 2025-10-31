@@ -27,46 +27,24 @@
         @Html.AntiForgeryToken()
 
         <div class="register-group-form">
-            <div class="group-form">
-                <label asp-for="FirstName" class="form-label"> Full Name <sup class="error">*</sup></label>
-                <input asp-for="FirstName" type="text"
-                       class="form-control flex-grow-1"
-                       placeholder="Enter Full Name"
-                       id="fullName"
-                       pattern="^[a-zA-Z\s'-]+$" />
+                <div class="group-form">
+                    <label asp-for="FirstName" class="form-label"> Full Name <sup class="error">*</sup></label>
+                    <input asp-for="FirstName" type="text"
+                           class="form-control flex-grow-1"
+                           placeholder="Enter Full Name"
+                           id="fullName"
+                           pattern="^[a-zA-Z\s'-]+$" />
 
-                <span asp-validation-for="FirstName" class="error-message text-danger small" id="fullNameError"></span>
-            </div>
-
-
-            <div class="group-form">
-                <label asp-for="Email" class="form-label">Email address <sup class="error">*</sup></label>
-                <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid">
-                <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
-                @* <div class="verifyBtnLink" id="sendmail">
-                    <span>Verify Email</span>
-                </div> *@
-
-            </div>
-
-            @* <div class="col-md-6 mb-3" id="codeSection" style="display: none;">
-                <label for="emailCode" class="form-label">Enter 6 Digit Verification Code</label>
-                <div class="d-flex gap-2">
-                    <input type="number" asp-for="OTP" class="form-control flex-grow-1" placeholder="Enter OTP" id="otp">
-                    <button id="varifyOtp" type="button" class="btn verifyBtn">Verify</button>
+                    <span asp-validation-for="FirstName" class="error-message text-danger small" id="fullNameError"></span>
                 </div>
-                <div class="otp-timer">
-                    <span class="otp-text d-none">
-                        Time remaining: <span class="fw-bold" id="timeRemaining">5:00</span>
-                    </span>
-                    <a id="resendotp" class="verifyBtnLink">Resend OTP</a>
+                <div class="group-form">
+                    <label asp-for="Email" class="form-label">Email address <sup class="error">*</sup></label>
+                    <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid">
+                    <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
+               
+
                 </div>
-                <span asp-validation-for="OTP" class="error-message text-danger small" id="OtpError"></span>
-            </div> *@
-
-
-
-            <div class="group-form">
+                <div class="group-form">
                 <label class="form-label">Contact Number<sup class="error">*</sup></label>
                 @* <div class="verifyBtnLink" ><span>Verify</span></div> *@
                 <div class="verifyBtnLink" id="varifyPhoneNumberbtn">
@@ -91,7 +69,7 @@
                 
             </div>
 
-            <div class="group-form" >
+                <div class="group-form" >
                 <div class="otp-section" id="contactNoOtpDiv" style="display: none;">
 
                     <label for="otpCode" class="form-label">Enter 6 Digit Verification Code</label>
@@ -119,11 +97,7 @@
                
             </div>
 
-
-         
-            @* <input type="hidden" asp-for="PhoneOtpVerified" id="PhoneOtpVerified" /> *@
-
-            <div class="group-form">
+                 <div class="group-form">
                 <label asp-for="PassWord" class="form-label">Create Password <sup class="error">*</sup></label>
 
 
@@ -142,80 +116,77 @@
                 <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
             </div>
 
-            <div class="group-form">
-                <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup class="error">*</sup></label>
-                @if (ViewBag.DisableButtons)
-                {
-                    <input type="text" class="form-control" value="**********" readonly />
-                } 
-                else
-                {
-                    <div class="d-flex password-wrap">
-                        <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
-                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-                    </div>
-                }
-                <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
-            </div>
-            <div class="group-form">
-                <label for="OrganizationsName" class="form-label">Organizations Name <sup class="error">*</sup></label>
-                <input asp-for="OrganizationsName" type="text" class="form-control" placeholder="Enter your organizations name"
-                       id="email">
-                <span asp-validation-for="OrganizationsName" class="error-message text-danger small"></span>
-            </div>
-           
-            <div class="group-form">
-                <label for="emailCode" class="form-label">Select Current Time Zone <sup class="error">*</sup></label>
-                <select class="form-control select2" asp-for="Timezone">
-                    <option value="" selected disabled>Select Time Zone</option>
-                    <option value="@Model.Timezone">@Model.Timezone</option>
-
-                    @foreach (var item in Model.TimeZones)
+                <div class="group-form">
+                    <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup class="error">*</sup></label>
+                    @if (ViewBag.DisableButtons)
                     {
-                        var settimean = item.name + item.current_utc_offset;
-                        if (Model.Timezone == settimean)
-                        {
-                            <option value="@settimean" selected>@settimean</option>
-                        }
-                        else
-                        {
-                            <option value="@settimean">@settimean</option>
-                        }
+                        <input type="text" class="form-control" value="**********" readonly />
+                    } 
+                    else
+                    {
+                        <div class="d-flex password-wrap">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                        </div>
                     }
+                    <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
+                </div>
+                <div class="group-form">
+                    <label for="OrganizationsName" class="form-label">Organizations Name <sup class="error">*</sup></label>
+                    <input asp-for="OrganizationsName" type="text" class="form-control" placeholder="Enter your organizations name"
+                           id="email">
+                    <span asp-validation-for="OrganizationsName" class="error-message text-danger small"></span>
+                </div>
+           
+                <div class="group-form">
+                    <label for="emailCode" class="form-label">Select Current Time Zone <sup class="error">*</sup></label>
+                    <select class="form-control select2" asp-for="Timezone">
+                        <option value="" selected disabled>Select Time Zone</option>
+                        <option value="@Model.Timezone">@Model.Timezone</option>
 
-                </select>
-                <span asp-validation-for="Timezone" class="error-message text-danger small"></span>
-            </div>
+                        @foreach (var item in Model.TimeZones)
+                        {
+                            var settimean = item.name + item.current_utc_offset;
+                            if (Model.Timezone == settimean)
+                            {
+                                <option value="@settimean" selected>@settimean</option>
+                            }
+                            else
+                            {
+                                <option value="@settimean">@settimean</option>
+                            }
+                        }
+
+                    </select>
+                    <span asp-validation-for="Timezone" class="error-message text-danger small"></span>
+                </div>
            
                 <h5>Address</h5>
-            <div class="group-form w-100">
+                <div class="group-form w-100">
                     
                          <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
                         <textarea asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here" id="addreessline1"></textarea>
                         <span asp-validation-for="Address" class="error-message text-danger small"></span>
                    
                 </div>
-            <div class="group-form w-100">
+                <div class="group-form w-100">
                     
                         <label class="form-label">Address Line 2 (Optional)</label>
                     <input asp-for="OptionalAddress" type="text" class="form-control"
                                placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
-                               >
-                    
+                               >       
                 </div>
 
-            <div class="group-form">
-                    
+                <div class="group-form">
                     <label asp-for="Country" class="form-label">Country of residence <sup class="error">*</sup></label>
                         <input type="hidden" name="Country" id="hiddenCountry" value="India" />
                         <select id="countrySelect" class="form-select select2" disabled>
                             <option value="India" selected>India</option>
                         </select>
                         <span asp-validation-for="Country" class="error-message text-danger small"></span>
-                    
                 </div>
 
-            <div class="group-form">
+                <div class="group-form">
                     
                         <label for="state" class="form-label">State <sup class="error">*</sup></label>
                         
@@ -235,16 +206,13 @@
                             }
                         </select>
 
-                    @if (!ViewBag.DisableButtons)
+                        @if (!ViewBag.DisableButtons)
                         {
                             <span asp-validation-for="StateId" class="error-message text-danger small"></span>
                         }
-
-                
-                    
                 </div>
 
-            <div class="group-form">
+                <div class="group-form">
                     <div>
                         <label for="CitySelect" class="form-label">City <sup class="error">*</sup></label>
                        
@@ -269,7 +237,7 @@
                 </div>
 
 
-            <div class="group-form">
+                <div class="group-form">
                     
                         <label asp-for="ZipCode" class="form-label">
                             Postal / ZIP Code <sup class="error">*</sup>
@@ -286,7 +254,7 @@
             <input asp-for="TermsCondition" class="input" id="agreeTerms" />
             <label class="form-check-label" for="agreeTerms" data-bs-toggle="modal" data-bs-target="#createTemplate">
                 By continuing, I agree to the <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                 data-bs-target="#createTemplate" >Terms & Conditions</a>
+                                                    data-bs-target="#createTemplate" >Terms & Conditions</a>
             </label>
         </div>
         <div class="form-check d-flex justify-content-end terms-check gap-2">
@@ -294,7 +262,7 @@
         </div>
 
         <button type="submit" class="btn login-btn">Register Account</button>
-        <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
+            <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
     </form>
 
 
@@ -556,7 +524,7 @@
         .catch(err => console.error("Error fetching countries:", err));
 
 
-             $(document).ready(function () {
+   $(document).ready(function () {
         $('#StateSelect').on('change', function () {
                 var SelectedState = $(this).val();
 
