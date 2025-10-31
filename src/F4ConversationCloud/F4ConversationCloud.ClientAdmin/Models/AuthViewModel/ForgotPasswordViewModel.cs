@@ -21,8 +21,7 @@ namespace F4ConversationCloud.ClientAdmin.Models.AuthViewModel
 
         [Display(Name = "Password")]
         [Required]
-        [Compare("ConfirmPassword", ErrorMessage = " ")]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[._@$!%*?&#])[A-Za-z\\d._@$!%*?&#]{8,}$", ErrorMessage = " ")]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[._@$!%*?&#])[A-Za-z\\d._@$!%*?&#]{8,}$", ErrorMessage = "Password should be atleast 8 Character long and it should contain atleast one Uppercase. one lowercase, one special charactor and one number ")]
         public string Password { get; set; }
 
         [Display(Name = "Confirm Password")]
