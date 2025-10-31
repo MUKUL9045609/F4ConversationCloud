@@ -23,14 +23,14 @@ namespace F4ConversationCloud.Application.Common.Services
         private readonly IMessageService _messageService;
         private readonly IUrlHelper _urlHelper;
         private readonly IF4AppCloudeService _whatsAppCloude;
-
-        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IF4AppCloudeService whatsAppCloudeService)
+        private readonly IMetaService _metaService;
+        public OnboardingService(IAuthRepository authRepository,IMessageService messageService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,IF4AppCloudeService whatsAppCloudeService, IMetaService metaService)
         {
             _authRepository = authRepository;  
             _messageService = messageService;
             _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
             _whatsAppCloude = whatsAppCloudeService;
-
+            _metaService = metaService;
         }
 
         public async Task<VarifyUserDetailsResponse> CheckIsMailExitsAsync(VarifyMobileNumberModel request)
@@ -170,10 +170,9 @@ namespace F4ConversationCloud.Application.Common.Services
             {
                 if (!string.IsNullOrEmpty(request.PhoneNumberId))
                 {
-                    var registerPhoneNumber = await _whatsAppCloude.RegisterClientAccountAsync( new ActivateClientAccountRequest { PhoneNumberId = request.PhoneNumberId });
+
+                    var registerPhoneNumber = await _metaService.RegisterPhone(new PhoneRegistrationOnMeta {PhoneNumberId = request.PhoneNumberId });
                     var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(request.PhoneNumberId);
-
-
 
                     string category = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Vertical;
                     string email = businessInfo?.WhatsAppBusinessProfile?.Data?.FirstOrDefault()?.Email;
@@ -289,7 +288,7 @@ namespace F4ConversationCloud.Application.Common.Services
                     return new ValidateRegistrationOTPResponse
                     {
                         status = false,
-                        message = "OTP is Invalid or expired . Please check and Resend"
+                        message = "OTP is Invalid or expired . Please check and Resend After 2 Min"
                     };
                 }
             }
@@ -306,7 +305,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
 
 
-        public async Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId) {
+        public async Task<RegisterUserModel> GetCustomerByIdAsync(int UserId) {
             try
             {
                 var response = await _authRepository.GetCustomerById(UserId);

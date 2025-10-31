@@ -55,9 +55,9 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                        // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = clientEmail });
 
-                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.metaregistered);
+                        int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
-                        HttpContext.Session.SetInt32("StageId", (int)ClientFormStage.metaregistered);
+                        HttpContext.Session.SetInt32("StageId", (int)ClientFormStage.MetaRegistered);
 
                         message = "success";
 

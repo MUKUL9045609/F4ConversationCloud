@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
@@ -11,8 +12,10 @@ using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
 using System;
+using Twilio.Jwt.AccessToken;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
+   
     public class OnboardingController : Controller
     {
         private readonly IOnboardingService _onboardingService;
@@ -25,17 +28,43 @@ namespace F4ConversationCloud.Onboarding.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("Id={id}")]
-        public async Task<IActionResult>  Index([FromRoute] string id)
+        [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] string token)
         {
-
-            string DecryptId = id.ToString().Decrypt();
-            int Userid = Convert.ToInt32(DecryptId);
 
             try
             {
-                var clientdetails = await _onboardingService.GetCustomerByIdAsync(Userid);
+                if (string.IsNullOrEmpty(token))
+                {
+                    TempData["ErrorMessage"] = "Invalid or missing link parameters.";
+                    return RedirectToAction("ThankYouPage");
+                }
+                var decrypted = token.Decrypt();
+
+               
+
+                string[] tokenParts = decrypted.Split("|");
+                string stringUserid = tokenParts[0];
+               
                 
+                if (tokenParts.Length != 2)
+                {
+                    TempData["ErrorMessage"] = "Invalid token.";
+                    return RedirectToAction("ThankYouPage");
+                }
+                DateTime expiryTime = DateTime.Parse(tokenParts[1]);
+                if (expiryTime < DateTime.UtcNow)
+                {
+                    TempData["ErrorMessage"] = "Link has expired. Please request a new one.";
+                    return RedirectToAction("ThankYouPage");
+                }
+                int UserId = Convert.ToInt32(stringUserid);
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
+                if (clientdetails == null)
+                {
+                    TempData["ErrorMessage"] = "Client not found.";
+                    return RedirectToAction("ThankYouPage");
+                }
                 var command = new RegisterUserViewModel
                 {
                     UserId = clientdetails.UserId,
@@ -49,27 +78,47 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 TempData.Put("registrationform", command);
               
 
-                return View();
+                return View(command);
 
             }
             catch (Exception)
             {
 
-                return View();
+                TempData["ErrorMessage"] = "Invalid or corrupted link.";
+                return RedirectToAction("ThankYouPage");
             }
-            
-           
-           
-           
+
         }
 
         [HttpGet("register-Client-Info")]
         public async Task<IActionResult> RegisterIndividualAccount()
         {
-
             var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
-            ViewBag.IsReadOnly = false;
-            //step1form = null;
+            var clientdetails = await _onboardingService.GetCustomerByIdAsync(step1form.UserId);
+            if (clientdetails.Stage == ClientFormStage.ClientRegistered)
+            {
+                var clientinfo = new RegisterUserViewModel
+                {
+                    FirstName = clientdetails.FirstName+" "+clientdetails.LastName,
+                    Email=clientdetails.Email,
+                    PhoneNumber= clientdetails.PhoneNumber,
+                    Address = clientdetails.Address,
+                    Country = clientdetails.Country,
+                    Timezone = clientdetails.Timezone,
+                    CityId = clientdetails.CityName,
+                    StateId = clientdetails.StateName,
+                    ZipCode = clientdetails.ZipCode,
+                    OptionalAddress = clientdetails.OptionalAddress,
+                    OrganizationsName = clientdetails.OrganizationsName,
+                    TermsCondition=true,
+                };
+                ViewBag.IsReadOnly = true;
+                ViewBag.DisableButtons = true;
+                TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                return View(clientinfo);
+            }
+            
+            
             if (step1form != null)
             {
                 var existingData = new RegisterUserViewModel
@@ -83,7 +132,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                 };
                 ViewBag.IsReadOnly = true;
-                
+                ViewBag.DisableButtons = false;
                 return View(existingData);
             }
            
@@ -99,24 +148,24 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         }
 
-       
-
         [HttpPost("Register-Client-Info")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterIndividualAccount(RegisterUserViewModel command)
         {
             try
             {
+                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
+                
                 if (!command.PhoneNumberOtpVerified)
                 {
                     ModelState.AddModelError(nameof(command.PhoneNumber), "Please verify your Contact Number before proceeding.");
                 }
-                var ClientTempData = TempData.Get<RegisterUserViewModel>("registrationform");
+               
                 if (!ModelState.IsValid)
                 {
                     ViewBag.IsReadOnly = true;
-                    
-                        command.FirstName = ClientTempData.FirstName;
+                    ViewBag.DisableButtons = false;
+                    command.FirstName = ClientTempData.FirstName;
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
@@ -143,7 +192,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     OrganizationsName = command.OrganizationsName,
                     PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
                     IsActive = command.IsActive,
-                    Stage = ClientFormStage.draft,
+                    Stage = ClientFormStage.ClientRegistered,
                     Role = ClientRole.Admin,
                     RegistrationStatus = ClientRegistrationStatus.Pending,
                     ClientId = CommonHelper.GenerateClientId(TotalRegisteredClient)
@@ -171,6 +220,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     command.Cities = await _authRepository.GetCitiesAsync();
                     command.States = await _authRepository.GetStatesAsync();
                     ViewBag.IsReadOnly = true;
+                    ViewBag.DisableButtons = false;
                     TempData["ErrorMessage"] = "Registration failed. Please try again.";
                     return View(command);
                 }
@@ -178,7 +228,9 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
             catch (Exception)
             {
-
+                ViewBag.IsReadOnly = true;
+                ViewBag.DisableButtons = false;
+                TempData["ErrorMessage"] = "Technical Error";
                 return View(command);
             }
         }
@@ -214,7 +266,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
         public async Task<IActionResult> VarifyMail([FromBody] VarifyMobileNumberModel command)
         {
-            // var response = await Mediator.Send(command);
             if ( command.UserEmailId != null)
             {
                 ModelState.AddModelError(nameof(command.UserEmailId), "Please verify your Email before proceeding.");
@@ -261,7 +312,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                 if (response.IsSuccess)
                 {
-                    if (response.Data.Stage.Equals(ClientFormStage.draft))
+                    if (response.Data.Stage.Equals(ClientFormStage.ClientRegistered))
                     {
                         var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
@@ -270,7 +321,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
                         return RedirectToAction("BankVerification");
                     }
-                    else if (response.Data.Stage.Equals(ClientFormStage.metaregistered))
+                    else if (response.Data.Stage.Equals(ClientFormStage.MetaRegistered))
                     {
                         TempData["Info"] = "You have already registered please Wait For Admin Approval !";
                         return View(requst);
@@ -300,26 +351,12 @@ namespace F4ConversationCloud.Onboarding.Controllers
             return View(requst);
         }
 
-
-        //public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        ModelState.AddModelError(nameof(command.OTP));
-        //    }
-        //    if (string.IsNullOrWhiteSpace(command.OTP))
-        //    {
-        //        return Json(new { status = false, message = "Enter A Valid OTP" });
-        //    }
-        //    var response = await _onboardingService.VerifyOTPAsync(command);
-        //    return Json(new { response.status, response.message });
-        //}
+      
         public async Task<IActionResult> VerifyOTP(ValidateRegistrationOTPModel command)
         {
           
             if (!ModelState.IsValid)
             {
-                
                 var errors = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
@@ -331,25 +368,13 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     message = errors.Any() ? string.Join(", ", errors) : "Invalid input."
                 });
             }
-
-            
             if (string.IsNullOrWhiteSpace(command.OTP))
             {
-                return Json(new
-                {
-                    status = false,
-                    message = "Enter a valid OTP"
-                });
+                return Json(new{ status = false,    message = "Enter a valid OTP"});
             }
-
-            
             var response = await _onboardingService.VerifyOTPAsync(command);
 
-            return Json(new
-            {
-                status = response.status,
-                message = response.message
-            });
+            return Json(new{status = response.status,message = response.message});
         }
 
         [HttpPost]
@@ -369,7 +394,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
                         bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
-                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.metaregistered);
+                            int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
                         var message = "success";
                         TempData.Remove("registrationform");
@@ -398,7 +423,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
 
         }
-        [HttpGet("thank-you")]
+        [HttpGet("invalid-token")]
         public IActionResult ThankYouPage()
         {
             return View();

@@ -5,9 +5,11 @@ using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -16,11 +18,16 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         private readonly ISuperAdminAuthRepository _superAdminAuthRepository;
         private readonly IEmailSenderService _emailService;
         private readonly IUrlHelper _urlHelper;
-        public SuperAdminAuthService(ISuperAdminAuthRepository superAdminAuthRepository, IEmailSenderService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
+        public SuperAdminAuthService(ISuperAdminAuthRepository superAdminAuthRepository, IEmailSenderService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,
+            IWebHostEnvironment env, IConfiguration configuration)
         {
             _superAdminAuthRepository = superAdminAuthRepository;
             _emailService = emailService;
             _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+            _env = env;
+            _configuration = configuration;
         }
 
         public async Task<Auth> CheckUserExists(string username)
@@ -42,22 +49,32 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             var userDetails = await _superAdminAuthRepository.CheckUserExists(userName);
 
+            string templatePath = Path.Combine(_env.WebRootPath, "Html", "PasswordResetEmailTemplate.html");
+            string htmlBody = await File.ReadAllTextAsync(templatePath);
+
             string id = userDetails.Id.ToString();
             string expiryTime = DateTime.UtcNow.AddMinutes(20).ToString();
             string token = (id + "|" + expiryTime).Encrypt().Replace("/", "thisisslash").Replace("\\", "thisisbackslash").Replace("+", "thisisplus");
 
             var resetUrl = _urlHelper.Action("ConfirmPassword", "Auth", new { id = token }, "https");
 
-            EmailRequest email = new EmailRequest()
+            string logo = $"{_configuration["MailerLogo"]}";
+            string lockImage = $"{_configuration["MailerLockImage"]}";
+            string currentYear = DateTime.Now.Year.ToString();
+            htmlBody = htmlBody.Replace("{user_name}", userDetails.FirstName + " " + userDetails.LastName)
+                               .Replace("{Logo}", logo)
+                               .Replace("{Lock_Image}", lockImage)
+                               .Replace("{Link}", resetUrl)
+                               .Replace("{CurrentYear}", currentYear);
+
+            var emailRequest = new EmailRequest
             {
                 ToEmail = userDetails.Email,
                 Subject = "Password Reset",
-                Body = "<h3>You can reset your password using the below link.</h3><br/>" +
-                            $"<a href=\"{resetUrl}\">Click Here</a>" +
-                           "<br/>Please note: This link will expire in 20 minutes."
+                Body = htmlBody
             };
 
-            await _emailService.Send(email);
+            await _emailService.Send(emailRequest);
         }
 
         public async Task<bool> ConfirmPassword(ConfirmPasswordModel model)

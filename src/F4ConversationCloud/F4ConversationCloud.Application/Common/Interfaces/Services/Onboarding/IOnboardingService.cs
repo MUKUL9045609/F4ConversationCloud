@@ -15,7 +15,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
         Task<VarifyUserDetailsResponse> VarifyWhatsAppContactNoAsync(VarifyMobileNumberModel request);
         Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request);
 
-        Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId);
+        Task<RegisterUserModel> GetCustomerByIdAsync(int UserId);
         Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request);
 
         Task<LoginResponse> OnboardingLogin(Loginrequest request);
