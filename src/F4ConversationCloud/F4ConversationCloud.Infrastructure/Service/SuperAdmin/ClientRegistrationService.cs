@@ -8,7 +8,6 @@ using F4ConversationCloud.Domain.Extension;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System.Reflection;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -34,7 +33,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
         {
             var logModel = new LogModel();
-            logModel.Source = "ClientRegistration/Create";
+            logModel.Source = "ClientRegistration/CreateUpdateAsync";
             logModel.AdditionalInfo = $"Model: {clientRegistration}";
             int response = 0;
             try
@@ -58,31 +57,72 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter)
         {
-            return Tuple.Create(await _clientRegistrationRepository.GetFilteredAsync(filter), await _clientRegistrationRepository.GetCountAsync(filter));
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/GetFilteredRegistrations";
+            logModel.AdditionalInfo = $"Model: {filter}";
+
+            Tuple<IEnumerable<ClientRegistrationListItemModel>, int> response = Tuple.Create(Enumerable.Empty<ClientRegistrationListItemModel>(), 0);
+            try
+            {
+                response = Tuple.Create(await _clientRegistrationRepository.GetFilteredAsync(filter), await _clientRegistrationRepository.GetCountAsync(filter));
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+            return response;
         }
 
         public async Task<ClientRegistration> GetByIdAsync(int id)
         {
-            ClientRegistration cr = await _clientRegistrationRepository.GetByIdAsync(id);
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/GetByIdAsync";
+            logModel.AdditionalInfo = $"Id: {id}";
 
-            if (cr is null) return null;
+            var response = new ClientRegistration();
 
-            return new ClientRegistration
+            try
             {
-                Id = cr.Id,
-                FirstName = cr.FirstName,
-                LastName = cr.LastName,
-                Email = cr.Email,
-                ContactNumber = cr.ContactNumber,
-                Role = cr.Role,
-                RegistrationStatus = cr.RegistrationStatus
-            };
+                var cr = await _clientRegistrationRepository.GetByIdAsync(id);
+
+                if (cr != null)
+                {
+                    response = new ClientRegistration
+                    {
+                        Id = cr.Id,
+                        FirstName = cr.FirstName,
+                        LastName = cr.LastName,
+                        Email = cr.Email,
+                        ContactNumber = cr.ContactNumber,
+                        Role = cr.Role,
+                        RegistrationStatus = cr.RegistrationStatus
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+
+            return response;
         }
 
         public async Task SendRegistrationEmailAsync(string email, string name, int id, string contactNumber)
         {
             var model = new LogModel();
-            model.Source = "SendRegistrationEmailAsync";
+            model.Source = "ClientRegistration/SendRegistrationEmailAsync";
             model.AdditionalInfo = $"Email: {email}, Name: {name}, ID: {id}";
             try
             {
@@ -93,9 +133,18 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 string baseUrl = $"{request.Scheme}://{request.Host}";
                 string encryptedId = id.ToString().Encrypt();
 
-                string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}";
+                // Generate token with expiry
+                var expiry = DateTime.UtcNow.AddHours(48);
+                var tokenData = $"{id}|{expiry:O}";
+                var encryptedToken = tokenData.Encrypt();
+
+                string registrationLink = $"{_configuration["OnboardingUrl"]}Id={encryptedId}&token={encryptedToken}";
+                string logo = $"{_configuration["MailerLogo"]}";
+                string registrationImage = $"{_configuration["MailerRegistrationImage"]}";
                 string currentYear = DateTime.Now.Year.ToString();
                 htmlBody = htmlBody.Replace("{user_name}", name)
+                                   .Replace("{Logo}", logo)
+                                   .Replace("{RegistrationImage}", registrationImage)
                                    .Replace("{email}", email)
                                    .Replace("{contact_number}", contactNumber)
                                    .Replace("{BaseUrl}", baseUrl)
@@ -128,7 +177,25 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<bool> CheckEmailExist(string email)
         {
-            return await _clientRegistrationRepository.CheckEmailExist(email);
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/CheckEmailExist";
+            logModel.AdditionalInfo = $"Email: {email}";
+            bool response = false;
+            try
+            {
+                response = await _clientRegistrationRepository.CheckEmailExist(email);
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+            return response;
         }
     }
 }
