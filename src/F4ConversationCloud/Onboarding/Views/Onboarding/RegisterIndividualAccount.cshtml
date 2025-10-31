@@ -112,7 +112,7 @@
                         <span class="otp-text d-none">
                             Valid till  <span class="fw-bold" id="timeRemaining">5:00</span>
                         </span>
-                        <a id="resendOtpBtn" class="verifyBtnLink">Resend OTP</a>
+                        <a id="resendOtpBtn" class="verifyBtnLink" style="display: none;">Resend OTP</a>
                     </div>
                     <span asp-validation-for="OTP" class="error-message text-danger small" id="contactNoOtpError"></span>
                 </div>
@@ -299,9 +299,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
-    @* @{
+    @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    } *@
+    }
     <script>
         $(document).ready(function () {
             $(".select2").select2();
@@ -441,7 +441,7 @@
                      req,
                      function (response) {
                          $("#loader").hide();
-                         debugger;
+                         
                          if (response.status === true) {
                             $('#PhoneNumberOtpVerifiedId').val(response.status);
                             showToast(response.message, "success");
