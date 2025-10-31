@@ -269,10 +269,8 @@
 </div>
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
-
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+     await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
         $(document).ready(function () {
@@ -666,6 +664,4 @@
         });
 
     </script>
-
-
 }
