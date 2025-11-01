@@ -26,11 +26,6 @@ namespace F4ConversationCloud.Infrastructure.Service
             _configuration = configuration;
             _metaCloudAPIService = metaCloudAPIService;
         }
-
-        
-
-
-
         public async Task<SendSmsResponse> SendVerificationSmsAsync(string mobileNo, string Text)
         {
             try 
@@ -74,7 +69,6 @@ namespace F4ConversationCloud.Infrastructure.Service
                
             }
         }
-
 
         public async Task<OnboardingContactNoVerificationResponse> SendOnboardingVerificationAsync(VarifyMobileNumberModel request)
         {
@@ -126,48 +120,6 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             }
         }
-
-        public async Task<bool> SendEmail(EmailRequest Request)
-        {
-            try
-            {
-                string host = _configuration["MailSettings:SmtpServer"];
-                int port = int.Parse(_configuration["MailSettings:SmtpPort"]);
-                string user = _configuration["MailSettings:Username"];
-                string password = _configuration["MailSettings:Password"];
-                string senderEmail = _configuration["MailSettings:SenderEmail"];
-
-
-                SmtpClient client = new SmtpClient(host, port)
-                {
-                    EnableSsl = true,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(user,password)
-                };
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(senderEmail),
-                    Subject = Request.Subject,
-                    IsBodyHtml = true,
-                    Body = Request.Body
-                };
-
-                mail.To.Add(Request.ToEmail);
-
-                await client.SendMailAsync(mail);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                //  Console.WriteLine($"Error sending email: {ex.Message}");
-                return false;
-            }
-        }
-
-
     }
 }
 

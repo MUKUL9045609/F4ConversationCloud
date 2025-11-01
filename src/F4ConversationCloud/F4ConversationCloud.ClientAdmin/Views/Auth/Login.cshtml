@@ -9,11 +9,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fortune4 Conversation Cloud</title>
-    <link rel="stylesheet" href="~/css/gupshuplogin.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
 </head>
 
 <body>
+    <div class="loginwrapper">
+        <div class="loginBox">
+            <div class="left-col">
+                <a href="#" class="logo">
+                    <img src="images/logo.svg" />
+                </a>
+
+                <p>
+                    Your Journey Begins Here Step into a seamless experience where you're guided, supported, and equipped
+                    with everything you need to thrive. From understanding our culture to connecting with your team, we
+                    make sure your first steps are confident and meaningful.
+                </p>
+
+
+            </div>
+            <div class="right-col">
+
+                <div class="bx_wrap">
+                    <h4 class="text-center">Sign In</h4>
+                    <p class="text-center">Log in to access your account</p>
+                    <form class="login-form mt-4" asp-action="Login" asp-controller="Auth">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="email" class="form-label">Email address <sup class="error">*</sup></label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="Enter Email Address" id="email">
+                                <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label for="password" class="form-label">Password <sup class="error">*</sup></label>
+                                        <a href="@Url.Action("forgotpassword", "Auth")" class="forgot-password">Forgot password?</a>
+                                    </div>
+                                    <div class="d-flex password-wrap">
+                                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password to continue" id="password">
+                                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                                    </div>
+                                    <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check d-flex justify-content-start terms-check gap-2">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember Me</label>
+                        </div>
+
+                        <button type="submit" class="btn login-btn">Login</button>
+                    </form>
+
+                    <div class="bottom-content">
+                        <p>Need help logging in?</p>
+                        <p>Contact us at supports@fortune4.in</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="login-page">
         <div class="left-section">
 
@@ -23,32 +83,9 @@
                 </div>
             </span>
         </div>
-        <div class="right-section">
-            <div class="login-bx">
-                <h5 class="mb-4">Log in to your Account</h5>
-                <form asp-action="Login" asp-controller="Auth">
-                    <div class="form-group">
-                        <input asp-for="Email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email Address">
-                        <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <div class="d-flex password-wrap">
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" id="exampleInputPassword1">
-                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-                        </div>
-                        <span asp-validation-for="Password" class="error-message text-danger small" id="passwordError"></span>
-                    </div>
-
-                    <a href="@Url.Action("forgotpassword", "Auth")" class="forgot">Forgot password?</a>
-
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                @* <div class="or"><span>or</span></div> *@
-            </div>
-        </div>
+       
     </div>
-    @if (TempData["SuccessMessage"] != null)
+    @* @if (TempData["SuccessMessage"] != null)
     {
         <input type="hidden" class="temp-message" data-type="success" value="@TempData["SuccessMessage"]" />
     }
@@ -64,7 +101,9 @@
     @if (TempData["Info"] != null)
     {
         <input type="hidden" class="temp-message" data-type="info" value="@TempData["Info"]" />
-    }
+    } *@
+    <div class="toastWrap">
+    </div>
     <div class="loader-wrapper" id="loader">
         <div class="loader"></div>
     </div>
@@ -77,6 +116,52 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/unobtrusiveHelper.js"></script>
+
+
+  <script>
+
+         $(document).ready(function () {
+              var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+             
+              if (toastMsg != null && toastMsg != undefined) {
+                  if (toastMsg.type === "Success")
+                      commonHelper.showSuccess(toastMsg.message);
+                  else if (toastMsg.type === "Error")
+                      commonHelper.showError(toastMsg.message);
+              }
+          });
+          $(window).on('load', function () {
+              $('.loader-wrapper').fadeOut('slow');
+          });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const rememberMe = document.getElementById("rememberMe");
+
+            const savedEmail = localStorage.getItem("savedEmail");
+            const savedPassword = localStorage.getItem("savedPassword");
+            const rememberChecked = localStorage.getItem("rememberMeChecked");
+
+            if (rememberChecked === "true") {
+                emailInput.value = savedEmail || "";
+                passwordInput.value = savedPassword || "";
+                rememberMe.checked = true;
+            }
+
+            document.querySelector("form").addEventListener("submit", function () {
+                if (rememberMe.checked) {
+                    localStorage.setItem("savedEmail", emailInput.value);
+                    localStorage.setItem("savedPassword", passwordInput.value);
+                    localStorage.setItem("rememberMeChecked", "true");
+                } else {
+                    localStorage.removeItem("savedEmail");
+                    localStorage.removeItem("savedPassword");
+                    localStorage.removeItem("rememberMeChecked");
+                }
+            });
+        });
+  </script>
 
 
 </body>

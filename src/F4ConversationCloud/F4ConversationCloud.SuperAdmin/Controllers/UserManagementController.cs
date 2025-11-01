@@ -69,7 +69,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new UserListViewModel());
             }
         }
 
@@ -84,7 +84,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -117,14 +117,21 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Designation = model.Designation
                 });
 
-                TempData["SuccessMessage"] = "User created successfully";
+                if (id > 0)
+                {
+                    TempData["SuccessMessage"] = "User created successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while creating user";
+                }
 
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -161,7 +168,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -193,15 +200,21 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Role = model.Role,
                     Designation = model.Designation
                 });
-
-                TempData["SuccessMessage"] = "User updated successfully";
+                if (id > 0)
+                {
+                    TempData["SuccessMessage"] = "User updated successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while updating user";
+                }
 
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -225,8 +238,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return StatusCode(500, new { message = "Something went wrong. Please contact your administrator." });
             }
         }
 
@@ -250,8 +262,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return StatusCode(500, new { message = "Something went wrong. Please contact your administrator." });
             }
         }
     }

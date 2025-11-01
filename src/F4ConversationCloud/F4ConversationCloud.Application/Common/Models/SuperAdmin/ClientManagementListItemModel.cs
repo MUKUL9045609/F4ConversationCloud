@@ -12,12 +12,11 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public int SrNo { get; set; }
         public string ClientName { get; set; }
         public string Status { get; set; }
-        public string ApprovalStatus { get; set; }
         public string Category { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public string? ClientId { get; set; }
-        public string? RejectComment { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

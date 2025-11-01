@@ -5,101 +5,16 @@
 
 <div class="content">
     <div class="container-fluid">
-        <h3 class="sub-heading">Client List</h3>
-        <div class="card padding">
-            <div class="table-responsive">
-                <table class="table user-table form-wrapper">
-                    <thead>
-                        <tr>
-                            <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.ClientName)
-                                <div class="input-group">
-                                    <input type="text" asp-for="ClientNameSearch" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.CreatedAt)
-                                <label class="datewrap" for="datepicker">
-                                    <input type="date" asp-for="OnboardingOnFilter"
-                                    class="form-control search-form-control"
-                                    placeholder="Select Date" onchange="loadData()" />
-                                </label>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.Status)
-                                <select asp-for="StatusFilter" class="form-select" onchange="loadData()">
-                                    <option value="" selected>Select Status</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Connected">Connected</option>
-                                    <option value="Offline">Offline</option>
-                                </select>
-                            </th>
-                            <th>Reject Comments</th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.ApprovalStatus)
-                                <select asp-for="ApprovalStatusFilter" class="form-select" onchange="loadData()">
-                                    <option value="" selected>Select Status</option>
-                                    <option value="Approve">Approve</option>
-                                    <option value="Reject">Reject</option>
-                                    <option value="Pending">Pending</option>
-                                </select>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!Model.data.Any())
-                        {
-                            <tr>
-                                <td colspan="6" class="text-center">No Records Found</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            @foreach (var item in Model.data)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
-                                    <td>
-                                        <form method="get" action="@Url.Action("ClientDetails", "ClientManagement", new { id = item.Id })">
-                                            <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ClientName)</a>
-                                        </form>
-                                        <span class="buisness-category"><span class="fw-medium">Category :</span> @Html.DisplayFor(modelItem => item.Category)</span>
-                                        <span class="buisness-category"><span class="fw-medium">Client Id :</span> @Html.DisplayFor(modelItem => item.ClientId)</span>
-                                    </td>
-                                    <td>
-                                        <span>@Html.DisplayFor(modelItem => item.CreatedAt)</span>
-                                    </td>
-                                    <td><span class="online">@Html.DisplayFor(modelItem => item.Status)</span></td>
-                                    @if (item.RejectComment == null || item.RejectComment == "")
-                                    {
-                                        <td>-</td>
-                                    }
-                                    else
-                                    {
-                                        <td>
-                                            <a href="#" onclick="addRejectComment('@item.RejectComment')">View</a>
-                                        </td>
-                                    }
-                                    <td> 
-                                        @{
-                                            var badgeClass = item.ApprovalStatus == "Active" ? "success" : "warning";
-                                        }
-                                        <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.ApprovalStatus)</span>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
+        <div class="card">
+            <div class="header-content">
+                <h3 class="sub-heading">Business Accounts</h3>
             </div>
-            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+            <partial name="_BusinessAccountsListPartial" model="@Model" />
         </div>
     </div>
 </div>
 <!-- Reject comment Modal -->
-<div class="modal fade comment-modal" id="reject-comment-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@* <div class="modal fade comment-modal" id="reject-comment-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
@@ -109,21 +24,22 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 <!--end Reject comment Modal -->
+
 @section Scripts {
-    <script>
+    <script>  
         function loadData() {
             var clientNameSearch = $("[name=ClientNameSearch]").val();
             var onboardingFilter = $("[name=OnboardingOnFilter]").val();
             var statusFilter = $("[name=StatusFilter]").val();
-            var approvalStatusFilter = $("[name=ApprovalStatusFilter]").val();
+            var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
             var pageNumber = 1;
             location.href = '@Url.Action("List", "ClientManagement")' +
                 '?clientNameSearch=' + clientNameSearch +
                 '&onboardingOnFilter=' + encodeURIComponent(onboardingFilter) +
                 '&statusFilter=' + encodeURIComponent(statusFilter) +
-                '&approvalStatusFilter=' + encodeURIComponent(approvalStatusFilter) +
+                '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
                 '&PageNumber=' + pageNumber;
         }
 
@@ -133,28 +49,28 @@
                 var clientNameSearch = $("[name=ClientNameSearch]").val();
                 var onboardingFilter = $("[name=OnboardingOnFilter]").val();
                 var statusFilter = $("[name=StatusFilter]").val();
-                var approvalStatusFilter = $("[name=ApprovalStatusFilter]").val();
+                var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
 
                 location.href = '@Url.Action("List", "ClientManagement")' +
                     '?clientNameSearch=' + clientNameSearch +
                     '&onboardingOnFilter=' + encodeURIComponent(onboardingFilter) +
                     '&statusFilter=' + encodeURIComponent(statusFilter) +
-                    '&approvalStatusFilter=' + encodeURIComponent(approvalStatusFilter) +
+                    '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
                     '&PageNumber=' + pageNumber;
             }
         });
 
-        $("#searchInput").on("keypress", function (e) {
+        $(".srcIcon").on("keypress", function (e) {
             if (e.which === 13) {
                 loadData();
             }
         });
 
-        function addRejectComment(comment){
-            var modal = new bootstrap.Modal(document.getElementById('reject-comment-modal'));
-            modal.show();
+        // function addRejectComment(comment){
+        //     var modal = new bootstrap.Modal(document.getElementById('reject-comment-modal'));
+        //     modal.show();
 
-            $('#reject-comment-text').text(comment);
-        }
+        //     $('#reject-comment-text').text(comment);
+        // }
     </script>
 }

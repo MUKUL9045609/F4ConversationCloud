@@ -1,6 +1,9 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -14,9 +17,11 @@ namespace F4ConversationCloud.Infrastructure.Service
     public class MetaService : IMetaService
     {
         private IConfiguration _configuration;
+        private ITemplateService _templateService;
 
-        public MetaService(IConfiguration configuration) { 
+        public MetaService(IConfiguration configuration , ITemplateService templateService) { 
             _configuration = configuration;
+            _templateService = templateService;
         }
 
         public async Task<PhoneRegistrationOnMetaResponse> RegisterPhone(PhoneRegistrationOnMeta request)
@@ -102,6 +107,54 @@ namespace F4ConversationCloud.Infrastructure.Service
             catch (Exception)
             {
                 return new PhoneRegistrationOnMetaResponse();
+            }
+        }
+
+
+        public async Task<IActionResult> Updatewhatsappbusinessprofile(IFormFile file)
+        {
+            try
+            {
+
+                if (file == null || file.Length == 0)
+                    return null;
+
+                if (!file.ContentType.StartsWith("image/"))
+                    return null;
+
+                using var memoryStream = new MemoryStream();
+                await file.CopyToAsync(memoryStream);
+                byte[] fileBytes = memoryStream.ToArray();
+
+                string base64 = Convert.ToBase64String(fileBytes);
+                string dataUri = $"data:{file.ContentType};base64,{base64}";
+
+                string headerFileJsonString = await _templateService.UploadMetaImage(dataUri);
+                using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
+                JsonElement root = doc.RootElement;
+                string hValue = "";
+                string PhoneNumberId = "";
+
+
+                if (root.TryGetProperty("h", out JsonElement hProperty))
+                {
+                    hValue = hProperty.GetString();
+                }
+
+                var phone = await _templateService.Whatsappbusinessprofile(hValue, PhoneNumberId);
+
+                //return Ok(new
+                //{
+                //    file.FileName,
+                //    file.ContentType,
+                //    hValue = hValue
+                //});
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                //return Ok();
             }
         }
 
