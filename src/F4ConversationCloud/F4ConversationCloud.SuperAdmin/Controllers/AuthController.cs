@@ -126,7 +126,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Error occured while sending reset link to your email address"
+                    TempData["ErrorMessage"] = "Error occured while sending reset link to your email address";
                 }
 
                 return RedirectToAction("Login");
