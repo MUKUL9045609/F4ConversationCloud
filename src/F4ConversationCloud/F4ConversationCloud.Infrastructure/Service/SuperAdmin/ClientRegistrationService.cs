@@ -57,10 +57,6 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<Tuple<IEnumerable<ClientRegistrationListItemModel>, int>> GetFilteredRegistrations(ClientRegistrationListFilter filter)
         {
-            var logModel = new LogModel();
-            logModel.Source = "ClientRegistration/GetFilteredRegistrations";
-            logModel.AdditionalInfo = $"Model: {filter}";
-
             Tuple<IEnumerable<ClientRegistrationListItemModel>, int> response = Tuple.Create(Enumerable.Empty<ClientRegistrationListItemModel>(), 0);
             try
             {
@@ -68,54 +64,42 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             catch (Exception ex)
             {
+                var logModel = new LogModel();
+                logModel.Source = "ClientRegistration/GetFilteredRegistrations";
+                logModel.AdditionalInfo = $"Model: {filter}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
             }
             finally
             {
-                await _logService.InsertLogAsync(logModel);
+
             }
             return response;
         }
 
         public async Task<ClientRegistration> GetByIdAsync(int id)
         {
-            var logModel = new LogModel();
-            logModel.Source = "ClientRegistration/GetByIdAsync";
-            logModel.AdditionalInfo = $"Id: {id}";
-
             var response = new ClientRegistration();
-
             try
             {
-                var cr = await _clientRegistrationRepository.GetByIdAsync(id);
-
-                if (cr != null)
-                {
-                    response = new ClientRegistration
-                    {
-                        Id = cr.Id,
-                        FirstName = cr.FirstName,
-                        LastName = cr.LastName,
-                        Email = cr.Email,
-                        ContactNumber = cr.ContactNumber,
-                        Role = cr.Role,
-                        RegistrationStatus = cr.RegistrationStatus
-                    };
-                }
+                response = await _clientRegistrationRepository.GetByIdAsync(id);
             }
             catch (Exception ex)
             {
+                var logModel = new LogModel();
+                logModel.Source = "ClientRegistration/GetByIdAsync";
+                logModel.AdditionalInfo = $"Id: {id}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
             }
             finally
             {
-                await _logService.InsertLogAsync(logModel);
+                
             }
-
             return response;
         }
 
@@ -177,9 +161,6 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
         public async Task<bool> CheckEmailExist(string email)
         {
-            var logModel = new LogModel();
-            logModel.Source = "ClientRegistration/CheckEmailExist";
-            logModel.AdditionalInfo = $"Email: {email}";
             bool response = false;
             try
             {
@@ -187,22 +168,24 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             catch (Exception ex)
             {
+                response = true;
+                var logModel = new LogModel();
+                logModel.Source = "ClientRegistration/CheckEmailExist";
+                logModel.AdditionalInfo = $"Email: {email}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
             }
             finally
             {
-                await _logService.InsertLogAsync(logModel);
+                
             }
             return response;
         }
 
         public async Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id)
         {
-            var logModel = new LogModel();
-            logModel.Source = "ClientRegistration/GetRegisteredBusinessDetail";
-            logModel.AdditionalInfo = $"RegisteredId: {id}";
             var response = new RegisteredBusinessDetail();
             try
             {
@@ -210,13 +193,17 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             catch (Exception ex)
             {
+                var logModel = new LogModel();
+                logModel.Source = "ClientRegistration/GetRegisteredBusinessDetail";
+                logModel.AdditionalInfo = $"RegisteredId: {id}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
             }
             finally
             {
-                await _logService.InsertLogAsync(logModel);
+                
             }
             return response;
         }

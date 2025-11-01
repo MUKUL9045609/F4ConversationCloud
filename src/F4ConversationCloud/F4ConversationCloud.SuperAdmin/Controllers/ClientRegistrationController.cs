@@ -5,7 +5,6 @@ using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Web.Mvc;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -70,7 +69,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new ClientRegistrationListViewModel());
             }
         }
 
@@ -85,7 +84,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -116,29 +115,34 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
-                var name = model.FirstName + " " + model.LastName;
-                await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
+                if (id > 0)
+                {
+                    var name = model.FirstName + " " + model.LastName;
+                    await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
 
-                TempData["SuccessMessage"] = "Client pre-registered successfully";
-
-                return RedirectToAction("List");
+                    TempData["SuccessMessage"] = "Client pre-registered successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while pre-registation";
+                }
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
             }
+            return RedirectToAction("List");
         }
 
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
             try
             {
-                ClientRegistration cr = await _clientRegistrationService.GetByIdAsync(id);
+                var cr = await _clientRegistrationService.GetByIdAsync(id);
 
                 if (cr is null)
                 {
-                    TempData["ErrorMessage"] = "Details not found";
+                    TempData["ErrorMessage"] = "Error occured while fetching record";
 
                     return RedirectToAction("List");
                 }
@@ -160,7 +164,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -183,18 +187,23 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
-                var name = model.FirstName + " " + model.LastName;
-                await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
+                if (id > 0)
+                {
+                    var name = model.FirstName + " " + model.LastName;
+                    await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
 
-                TempData["SuccessMessage"] = "Client Registration updated successfully";
-
-                return RedirectToAction("List");
+                    TempData["SuccessMessage"] = "Client Registration updated successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while updating record";
+                }
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
             }
+            return RedirectToAction("List");
         }
 
         public async Task<IActionResult> RegisteredBusinessDetails(int id)
@@ -203,61 +212,69 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             {
                 var data = await _clientRegistrationService.GetRegisteredBusinessDetail(id);
 
-                var viewModel = new RegisteredBusinessDetailViewModel()
+                if (data is not null)
                 {
-                    RegistrationId = data.RegistrationId,
-                    OrganisationName = data.OrganisationName,
-                    FullName = data.FullName,
-                    Email = data.Email,
-                    ContactNumber = data.ContactNumber,
-                    AddressLine1 = data.AddressLine1,
-                    AddressLine2 = data.AddressLine2,
-                    Country = data.Country,
-                    State = data.State,
-                    City = data.City,
-                    ZipCode = data.ZipCode
-                };
+                    var viewModel = new RegisteredBusinessDetailViewModel()
+                    {
+                        RegistrationId = data.RegistrationId,
+                        OrganisationName = data.OrganisationName,
+                        FullName = data.FullName,
+                        Email = data.Email,
+                        ContactNumber = data.ContactNumber,
+                        AddressLine1 = data.AddressLine1,
+                        AddressLine2 = data.AddressLine2,
+                        Country = data.Country,
+                        State = data.State,
+                        City = data.City,
+                        ZipCode = data.ZipCode
+                    };
 
-                var model = new ClientManagementViewModel();
-                var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
-                {
-                    ClientNameSearch = model.ClientNameSearch ?? String.Empty,
-                    StatusFilter = model.StatusFilter ?? String.Empty,
-                    OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
-                    PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
-                    PageNumber = model.PageNumber,
-                    PageSize = model.PageSize,
-                    RegistrationId = id
-                });
+                    var model = new ClientManagementViewModel();
+                    var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+                    {
+                        ClientNameSearch = model.ClientNameSearch ?? String.Empty,
+                        StatusFilter = model.StatusFilter ?? String.Empty,
+                        OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
+                        PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
+                        PageNumber = model.PageNumber,
+                        PageSize = model.PageSize,
+                        RegistrationId = id
+                    });
 
-                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                    if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                    {
+                        TempData["ErrorMessage"] = "Invalid Page";
+                        return RedirectToAction("List");
+                    }
+
+                    model.TotalCount = response.Item2;
+                    model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+                    {
+                        Id = x.Id,
+                        SrNo = x.SrNo,
+                        ClientName = x.ClientName,
+                        Status = x.Status,
+                        IsActive = x.IsActive,
+                        CreatedAt = x.CreatedAt,
+                        UpdatedOn = x.UpdatedOn,
+                        Category = x.Category,
+                        ClientId = x.ClientId,
+                        PhoneNumber = x.PhoneNumber
+                    });
+                    viewModel.clientManagementViewModel = model;
+
+                    return View(viewModel);
+                }
+                else
                 {
-                    TempData["ErrorMessage"] = "Invalid Page";
+                    TempData["ErrorMessage"] = "Error occured while fetching record";
                     return RedirectToAction("List");
                 }
-
-                model.TotalCount = response.Item2;
-                model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
-                {
-                    Id = x.Id,
-                    SrNo = x.SrNo,
-                    ClientName = x.ClientName,
-                    Status = x.Status,
-                    IsActive = x.IsActive,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedOn = x.UpdatedOn,
-                    Category = x.Category,
-                    ClientId = x.ClientId,
-                    PhoneNumber = x.PhoneNumber
-                });
-                viewModel.clientManagementViewModel = model;
-
-                return View(viewModel);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 

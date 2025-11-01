@@ -29,7 +29,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(new LoginViewModel());
             }
         }
 
@@ -82,7 +83,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new LoginViewModel());
             }
         }
 
@@ -96,7 +97,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View();
             }
         }
 
@@ -117,16 +118,23 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     return View(model);
                 }
 
-                await _superAdminAuthService.SendPasswordResetLink(model.UserName);
+                bool response = await _superAdminAuthService.SendPasswordResetLink(model.UserName);
 
-                TempData["SuccessMessage"] = "A reset link has been sent to your email address";
+                if (response)
+                {
+                    TempData["SuccessMessage"] = "A reset link has been sent to your email address";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while sending reset link to your email address";
+                }
 
                 return RedirectToAction("Login");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("Login");
             }
         }
 
@@ -144,7 +152,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 if (userId == 0)
                 {
-                    TempData["ErrorMessage"] = "Invalid Url";
+                    TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
 
                     return RedirectToAction("Login");
                 }
@@ -162,7 +170,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Invalid Url";
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
 
                 return RedirectToAction("Login");
             }
@@ -197,7 +205,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("Login");
             }
         }
 
@@ -211,7 +219,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("Index", "Dashboard");
             }
         }
 
@@ -224,7 +232,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("Login");
             }
         }
     }

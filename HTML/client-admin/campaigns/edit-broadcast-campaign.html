@@ -55,9 +55,9 @@
                                     <li><a href="../campaigns/guide.html">Guide</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="#" class="template icon">Templates</a>
-                            </li>
+                            </li> -->
                             <!-- <li>
                                 <a href="#" class="bot icon carret">Bot Studio</a>
                                 <ul class="submenu">
@@ -327,7 +327,7 @@
                                                 
                                                 <div class="manage-section">
                                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn" id="selectTemplate">Select</button>
+                                                    <button class="btn secondary-btn selectTemplate" id="">Select</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -347,7 +347,7 @@
                                                 </div>
                                                 <div class="manage-section">
                                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn">Select</button>
+                                                    <button class="btn secondary-btn selectTemplate">Select</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -376,7 +376,7 @@
                                                 </div>
                                                 <div class="manage-section">
                                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn">Select</button>
+                                                    <button class="btn secondary-btn selectTemplate">Select</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -396,7 +396,7 @@
                                                 </div>
                                                 <div class="manage-section">
                                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn">Select</button>
+                                                    <button class="btn secondary-btn selectTemplate">Select</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -416,7 +416,7 @@
                                                 </div>
                                                 <div class="manage-section">
                                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn">Select</button>
+                                                    <button class="btn secondary-btn selectTemplate">Select</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -445,7 +445,7 @@
                                                 </div>
                                                 <div class="manage-section">
                                                     <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn">Select</button>
+                                                    <button class="btn secondary-btn selectTemplate">Select</button>
                                                 </div>
                                             </div>
                                         </li>
@@ -488,7 +488,7 @@
                                                         </li>
                                                     </ul>
                                                     <div class="d-flex justify-content-end">
-                                                        <button class="btn secondary-btn">Change Template</button>
+                                                        <button class="btn secondary-btn" id="change-template">Change Template</button>
                                                     </div>
                                                 </div>
 
@@ -510,7 +510,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="upload-container">
+                                                    <div class="upload-container" style="display:none;">
                                                         <div class="input-box">
                                                             <label for="fileUpload">
                                                                 <i class="upload-icon"></i>
@@ -520,9 +520,18 @@
                                                                     onchange="loadFile(event)" type="file" />
                                                             </label>
                                                         </div>
-                                                        <div class="image-preview">
-                                                            <img id="output" />
-                                                            <button class="delImage">Delete</button>
+                                                      
+                                                                <div class="image-preview">
+                                                                    <div class="imgwp">
+                                                                        <img id="output" />
+                                                                        <button class="delImage"></button>
+                                                                    </div>
+                                                                </div>
+                                                           
+                                                    </div>
+                                                    <div class="form-wrapper chooseurl" style="display:none;">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter URL here">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -871,10 +880,17 @@
         $('li').has('ul').find('a').not('ul ul a').addClass('caret');
 
         $(document).ready(function () {
-            $('#selectTemplate').click(function () {
+            $('.selectTemplate').click(function () {
                 $('.edit-template').show();
 
                 $('.template-wrapper.full-template-wrapper').hide();
+            });
+        });
+        $(document).ready(function () {
+            $('#change-template').click(function () {
+                $('.template-wrapper.full-template-wrapper').show();
+
+                $('.edit-template ').hide();
             });
         });
 
@@ -927,6 +943,29 @@
             });
         });
     </script>
+    <script>
+  // Get elements
+  const chooseImage = document.getElementById("chooseImage");
+  const chooseUrl = document.getElementById("chooseUrl");
+  const uploadContainer = document.querySelector(".upload-container");
+  const formWrapper = document.querySelector(".chooseurl");
+
+  // When "Choose image" is clicked
+  chooseImage.addEventListener("change", function() {
+    if (this.checked) {
+      uploadContainer.style.display = "block";
+      formWrapper.style.display = "none";
+    }
+  });
+
+  // When "Choose URL" is clicked
+  chooseUrl.addEventListener("change", function() {
+    if (this.checked) {
+      formWrapper.style.display = "block";
+      uploadContainer.style.display = "none";
+    }
+  });
+</script>
 </body>
 
 </html>
