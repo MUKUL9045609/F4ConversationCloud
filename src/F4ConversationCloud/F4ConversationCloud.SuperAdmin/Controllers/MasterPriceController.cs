@@ -52,7 +52,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new MasterPriceFilterModel());
             }
         }
 
@@ -75,13 +75,21 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     ToDate = model.ToDate
                 });
 
-                TempData["SuccessMessage"] = "Master price created successfully";
+                if (id > 0)
+                {
+                    TempData["SuccessMessage"] = "Record created successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while creating record";
+                }
+
                 return RedirectToAction("List");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
     }

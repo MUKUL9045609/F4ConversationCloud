@@ -47,6 +47,6 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public string ClientTimeZone { get; set; }
         public string Stage { get; set; }
         public string Role { get; set; }
-
+        public string OrganizationName { get; set; }
     }
 }

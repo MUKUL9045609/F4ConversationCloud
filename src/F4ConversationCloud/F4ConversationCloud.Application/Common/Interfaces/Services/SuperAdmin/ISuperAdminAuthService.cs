@@ -13,7 +13,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
         Task<Auth> CheckUserExists(string email);
         Task<bool> ValidateUserName(string userName);
         Task<bool> ConfirmPassword(ConfirmPasswordModel model);
-        Task SendPasswordResetLink(string userName);
+        Task<bool> SendPasswordResetLink(string userName);
         Task<bool> CheckValidRole(IEnumerable<string> roles, string email);
     }
 }
