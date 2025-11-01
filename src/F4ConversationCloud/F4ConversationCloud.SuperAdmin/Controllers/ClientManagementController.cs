@@ -99,7 +99,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegisteredAddress = response.RegisteredAddress,
                     RegisteredCountry = response.RegisteredCountry,
                     RegisteredTimeZone = response.RegisteredTimeZone,
-                    TemplatesList = templates.Data
+                    TemplatesList = templates.Data,
+                    OrganizationName = response.OrganizationName
                 };
 
                 var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();
