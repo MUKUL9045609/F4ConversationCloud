@@ -3761,7 +3761,7 @@ body {
 
 .toastWrap {
   position: fixed;
-  top: 80px;
+  top: 15px;
   right: 0;
   z-index: 1056;
 }
@@ -4372,6 +4372,7 @@ body {
 
 .toastify {
   background: #fff !important;
+  position:relative;
 }
 
 .toast {
@@ -4540,7 +4541,7 @@ body {
 
 .toast-close {
   color: #000 !important;
-  position: absolute;
+  position: absolute; 
   right: 20px;
   top: 36%;
 }
