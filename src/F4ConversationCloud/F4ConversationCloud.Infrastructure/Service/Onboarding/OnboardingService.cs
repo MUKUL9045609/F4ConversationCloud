@@ -90,7 +90,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 return new VarifyUserDetailsResponse
                 {
                     status = false,
-                    message = "An error occurred while sending the email"
+                    message = "Technical Error!"
                 };
             }
 
@@ -214,7 +214,6 @@ namespace F4ConversationCloud.Application.Common.Services
                 };
             }
         }
-
 
         public async Task<RegisterUserResponse> RegisterUserAsync(RegisterUserModel request )
         {
@@ -344,7 +343,6 @@ namespace F4ConversationCloud.Application.Common.Services
                 return false;
             }
         }
-        
 
         public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
         {
@@ -482,7 +480,5 @@ namespace F4ConversationCloud.Application.Common.Services
            
         }
 
-
-       
     }
 }
