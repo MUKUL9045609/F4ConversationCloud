@@ -137,7 +137,6 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                 var tokenData = $"{id}|{expiry:O}";
                 var encryptedToken = tokenData.Encrypt();
 
-                //string registrationLink = $"{_configuration["OnboardingUrl"]}token={encryptedToken}";
                 string registrationLink = $"{_configuration["OnboardingUrl"]}?token={Uri.EscapeDataString(encryptedToken)}";
 
                 string logo = $"{_configuration["MailerLogo"]}";
@@ -185,6 +184,29 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             try
             {
                 response = await _clientRegistrationRepository.CheckEmailExist(email);
+            }
+            catch (Exception ex)
+            {
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(logModel);
+            }
+            return response;
+        }
+
+        public async Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id)
+        {
+            var logModel = new LogModel();
+            logModel.Source = "ClientRegistration/GetRegisteredBusinessDetail";
+            logModel.AdditionalInfo = $"RegisteredId: {id}";
+            var response = new RegisteredBusinessDetail();
+            try
+            {
+                response = await _clientRegistrationRepository.GetRegisteredBusinessDetail(id);
             }
             catch (Exception ex)
             {

@@ -35,7 +35,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("clientNameSearch", filter.ClientNameSearch);
             parameters.Add("statusFilter", filter.StatusFilter);
             parameters.Add("onboardingOnFilter", filter.OnboardingOnFilter);
-            parameters.Add("approvalStatusFilter", filter.ApprovalStatusFilter);
+            parameters.Add("phoneNumberFilter", filter.PhoneNumberFilter);
+            parameters.Add("registrationId", filter.RegistrationId);
 
             return await _repository.GetCountAsync("sp_GetClientsCount", parameters);
         }
@@ -47,9 +48,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("clientNameSearch", filter.ClientNameSearch);
             parameters.Add("statusFilter", filter.StatusFilter);
             parameters.Add("onboardingOnFilter", filter.OnboardingOnFilter);
-            parameters.Add("approvalStatusFilter", filter.ApprovalStatusFilter);
+            parameters.Add("phoneNumberFilter", filter.PhoneNumberFilter);
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
+            parameters.Add("registrationId", filter.RegistrationId);
 
             return await _repository.GetListByValuesAsync<ClientManagementListItemModel>("sp_GetFilteredClients", parameters);
         }

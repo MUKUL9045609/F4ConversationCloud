@@ -10,11 +10,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
     public class ClientRegistrationRepository : IClientRegistrationRepository
     {
         private readonly IGenericRepository<ClientRegistration> _repository;
+        private readonly IGenericRepository<RegisteredBusinessDetail> _registeredBusinessDetailRepository;
         private readonly DbContext _context;
-        public ClientRegistrationRepository(IGenericRepository<ClientRegistration> repository, DbContext context)
+        public ClientRegistrationRepository(IGenericRepository<ClientRegistration> repository, DbContext context, IGenericRepository<RegisteredBusinessDetail> registeredBusinessDetailRepository)
         {
             _repository = repository;
             _context = context;
+            _registeredBusinessDetailRepository = registeredBusinessDetailRepository;
         }
 
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
@@ -81,6 +83,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("email", email);
 
             return await _repository.CheckExistAsync("sp_CheckRegisterEmailExist", parameters);
+        }
+
+        public async Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("id", id);
+
+            return await _registeredBusinessDetailRepository.GetByIdAsync("sp_GetRegisteredBusinessDetails", parameters);
         }
     }
 }

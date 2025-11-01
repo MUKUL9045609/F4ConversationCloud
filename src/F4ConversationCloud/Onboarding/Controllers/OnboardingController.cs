@@ -1,10 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
-using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Domain.Entities;
-using F4ConversationCloud.Domain.Entities.SuperAdmin;
+
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
