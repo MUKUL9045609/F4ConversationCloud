@@ -61,7 +61,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new ClientManagementViewModel());
             }
         }
 
@@ -70,6 +70,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 var response = await _clientManagement.GetClientDetailsById(Id);
+
+                if (response is null)
+                {
+                    TempData["ErrorMessage"] = "Error occured while fetching record";
+                    return RedirectToAction("List");
+                }
+
                 var filter = new TemplatesListFilter
                 {
                     ClientInfoId = Id
@@ -124,7 +131,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return RedirectToAction("List");
             }
         }
 
@@ -133,9 +140,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
+                if (model == null)
+                    return BadRequest(new { message = "Invalid request data." });
+
+                var permissionsList = new List<ClientDetails>();
+
                 if (model.IsMarketing)
                 {
-                    var marketingPermissions = new ClientDetails
+                    permissionsList.Add(new ClientDetails
                     {
                         Id = model.Id,
                         TemplateType = (int)TemplateModuleType.Marketing,
@@ -145,14 +157,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         Delete = model.MarketingDelete,
                         All = model.MarketingAll,
                         AllowUserManagement = model.AllowUserManagement
-                    };
-
-                    await _clientManagement.SaveClientPermission(marketingPermissions);
+                    });
                 }
 
                 if (model.IsAuthentication)
                 {
-                    var authPermissions = new ClientDetails
+                    permissionsList.Add(new ClientDetails
                     {
                         Id = model.Id,
                         TemplateType = (int)TemplateModuleType.Authentication,
@@ -162,14 +172,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         Delete = model.AuthenticationDelete,
                         All = model.AuthenticationAll,
                         AllowUserManagement = model.AllowUserManagement
-                    };
-
-                    await _clientManagement.SaveClientPermission(authPermissions);
+                    });
                 }
 
                 if (model.IsUtility)
                 {
-                    var utilityPermissions = new ClientDetails
+                    permissionsList.Add(new ClientDetails
                     {
                         Id = model.Id,
                         TemplateType = (int)TemplateModuleType.Utility,
@@ -179,17 +187,21 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         Delete = model.UtilityDelete,
                         All = model.UtilityAll,
                         AllowUserManagement = model.AllowUserManagement
-                    };
+                    });
+                }
 
-                    await _clientManagement.SaveClientPermission(utilityPermissions);
+                foreach (var permission in permissionsList)
+                {
+                    var id = await _clientManagement.SaveClientPermission(permission);
+                    if (id == 0)
+                        return BadRequest(new { message = "Error occurred while setting permissions." });
                 }
 
                 return Ok(new { message = "Approved successfully!" });
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return StatusCode(500, new { message = "Something went wrong. Please contact your administrator." });
             }
         }
 
