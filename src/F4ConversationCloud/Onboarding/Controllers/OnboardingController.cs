@@ -56,6 +56,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     return RedirectToAction("InvalidUrl");
                 }
                 int UserId = Convert.ToInt32(stringUserid);
+                HttpContext.Session.SetInt32("UserId", UserId);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {

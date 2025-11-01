@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+﻿using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
 {
     public interface ILogRepository
     {
-        Task<int> InsertLogAsync(LogModel log);
+        Task<int> InsertLogAsync(LogModel log); 
+        Task<int> InsertOnboardingLogs(OnBoardingLogsModel onBoardingLogs);
     }
 }
