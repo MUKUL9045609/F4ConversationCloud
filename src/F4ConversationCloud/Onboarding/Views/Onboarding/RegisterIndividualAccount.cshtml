@@ -320,7 +320,7 @@
 
                  let remaining = timerDuration;
 
-                  $("#resendOtpBtn").addClass("d-none");
+                  $("#resendOtpBtn").hide();
                  $(".otp-text").removeClass("d-none");
                  $("#timeRemaining").text(formatTime(remaining));
 
@@ -334,7 +334,7 @@
                      if (remaining < 0) {
                          clearInterval(interval);
                          $(".otp-text").addClass("d-none");
-                                  $("#resendOtpBtn").removeClass("d-none");
+                         $("#resendOtpBtn").show();
                      }
                  }, 1000);
              }
@@ -392,7 +392,8 @@
                 $('.otp-input').val('');
                 $('#contactNoOtpinput').val('');
                 $('#contactNoOtpError').val('');
-                
+                $('#contactNoOtpError').text('');
+
                 $('.otp-input').first().focus();
                  sendOTP();
              });

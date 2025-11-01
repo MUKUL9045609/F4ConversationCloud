@@ -163,7 +163,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     ViewBag.IsReadOnly = true;
                     ViewBag.DisableButtons = false;
-                    command.FirstName = ClientTempData.FirstName;
+                        command.FirstName = ClientTempData.FirstName + " " + ClientTempData.LastName;
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
