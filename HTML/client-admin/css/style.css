@@ -1902,7 +1902,22 @@ body {
   border-left: 1px solid #ddd;
   padding-left: 13px;
 }
-.page .app-header .appheader-wrap .profile-dropdown .profile .profile-name {
+.page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-wrap {
+  display: flex;
+  gap: 10px;
+  text-decoration: none;
+  align-items: center;
+}
+.page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-wrap p {
+  margin-bottom: 0px;
+  font-size: 15px;
+  color: #000;
+}
+.page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-wrap .profile-role {
+  font-size: 12px;
+  color: #727374;
+}
+.page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-wrap .profile-name {
   height: 35px;
   width: 35px;
   background-color: #03a9f5;
@@ -1917,7 +1932,7 @@ body {
 .page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-menu {
   padding: 14px 12px;
   min-width: 11rem;
-  left: -43% !important;
+  left: 0% !important;
 }
 .page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-menu .name {
   font-size: 15px;
