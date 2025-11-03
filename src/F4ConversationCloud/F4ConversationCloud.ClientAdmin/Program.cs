@@ -1,21 +1,17 @@
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.Options;
-using System.Security.Claims;
-using Twilio.TwiML.Voice;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-                builder.Services.AddSession(options =>
-                {
-                    options.IdleTimeout = TimeSpan.FromMinutes(20);
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.IsEssential = true;
-                    options.Cookie.Name = "SessionCookie";
-                });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = "SessionCookie";
+});
 
 builder.Services.AddAuthentication("CookieAuthentication")
                  .AddCookie("CookieAuthentication", config =>
