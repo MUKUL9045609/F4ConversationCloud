@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div class="content">
 <div class="container-fluid">
     @{
         var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value;
@@ -230,4 +231,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

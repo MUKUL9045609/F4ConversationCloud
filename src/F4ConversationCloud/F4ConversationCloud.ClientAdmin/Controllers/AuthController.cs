@@ -43,24 +43,25 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 {
                     return View(request);
                 }
+
                 var response = await _onboardingService.OnboardingLogin(new Loginrequest()
                 {
                     Email = request.Email,
                     PassWord = request.Password
                 });
-                if (response.Message == "InvalidEmail" && !response.IsSuccess) {
+
+                if (response.Data is null && !response.IsSuccess )
+                {
                     ModelState.AddModelError("Email", "This Email is not Registered.");
                     return View(request);
-
                 }
-                if (response.Message == "InvalidPassword" && !response.IsSuccess)
+                if (response.Data.Password.Decrypt() != request.Password)
                 {
+                    
                     ModelState.AddModelError("Password", "Please enter a valid password.");
                     return View(request);
-
                 }
 
-          
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
                     var userClaims = new List<Claim>()
