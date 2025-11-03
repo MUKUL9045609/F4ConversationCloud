@@ -387,24 +387,17 @@ namespace F4ConversationCloud.Application.Common.Services
            
             try
             {
-               
-               var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
+
+                var ClientDetails = await _authRepository.ValidateClientCreadiatial(request.Email);
                 if (ClientDetails is null)
+                {
                     return new LoginResponse
                     {
-                        Message = "InvalidEmail",
+                        Message = "InValid Credential",
                         IsSuccess = false,
-
+                        Data = null
                     };
-                var isPasswordValid = PasswordHasherHelper.VerifyPassword(request.PassWord, ClientDetails.Password);
-                    if (!isPasswordValid)
-                    {
-                        return new LoginResponse
-                        {
-                            Message = "InvalidPassword",
-                            IsSuccess = false,
-                        };
-                    }
+                }
                 return new LoginResponse()
                 {
                     Message = "Login Success",
@@ -414,8 +407,10 @@ namespace F4ConversationCloud.Application.Common.Services
                         UserId = ClientDetails.UserId,
                         Email = ClientDetails.Email,
                         Stage = ClientDetails.Stage,
+                        Password= ClientDetails.Password,
                     }
                 };
+
 
             }
             catch (Exception ex)
