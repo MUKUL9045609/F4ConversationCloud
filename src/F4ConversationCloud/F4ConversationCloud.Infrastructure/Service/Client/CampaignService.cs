@@ -3,7 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Domain.Entities;
 
-namespace F4ConversationCloud.Application.Common.Services
+namespace F4ConversationCloud.Infrastructure.Service.Client
 {
     public class CampaignService : ICampaignService
     {

@@ -56,6 +56,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     return RedirectToAction("InvalidUrl");
                 }
                 int UserId = Convert.ToInt32(stringUserid);
+                HttpContext.Session.SetInt32("UserId", UserId);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {
@@ -162,7 +163,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     ViewBag.IsReadOnly = true;
                     ViewBag.DisableButtons = false;
-                    command.FirstName = ClientTempData.FirstName;
+                        command.FirstName = ClientTempData.FirstName + " " + ClientTempData.LastName;
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;

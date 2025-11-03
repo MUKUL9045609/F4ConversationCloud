@@ -18,13 +18,13 @@
         <div class="main-side-navigation">
             <nav>
                 <ul>
-                    @if (stage.HasValue &&  stage.Value == ClientFormStage.ClientRegistered)
+                    @if (stage.HasValue && stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered)
                     {
                         <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MetaOnboarding" ? "active" : "")">
                             <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="home icon">Meta Details</a>
                         </li>
                     }
-                    @* @if (stage.Value == ClientFormStage.metaregistered)
+                    @if (stage.Value == ClientFormStage.MetaRegistered)
                     {
                         <li class="active">
                             <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
@@ -49,11 +49,11 @@
                                 <li><a href="#">Link</a></li>
                             </ul>
                         </li>
-                    } *@
+                    }
                 </ul>
             </nav>
         </div>
-        @* @if (stage.HasValue && stage.Value == ClientFormStage.metaregistered)
+        @if (stage.HasValue && stage.Value == ClientFormStage.MetaRegistered)
         {
             <div class="bottom-navigation">
                 <nav>
@@ -70,7 +70,7 @@
                     </ul>
                 </nav>
             </div>
-        } *@
+        }
 
     </div>
 </aside>
