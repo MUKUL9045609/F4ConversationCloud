@@ -25,96 +25,98 @@
                     <h3>Phone Numbers</h3>
                     <button type="button" class="btn sync-btn" id="sync-btn"> Sync</button>
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.WABAId)
-                                <div class="input-group">
-                                    <input asp-for="WABAIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.BusinessId)
-                                <div class="input-group">
-                                    <input asp-for="BusinessIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.BusinessCategory)
-                                <div class="input-group">
-                                    <input asp-for="BusinessCategoryFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.WhatsAppDisplayName)
-                                <div class="input-group">
-                                    <input asp-for="WhatsappDisplayNameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.PhoneNumberId)
-                                <div class="input-group">
-                                    <input asp-for="PhoneNumberIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.PhoneNumber)
-                                <div class="input-group">
-                                    <input asp-for="PhoneNumberFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Columns.Status)
-                                <select class="form-select" asp-for="StatusFilter" onchange="loadData()">
-                                    <option selected value="">Select Status</option>
-                                    <option value="PENDING">PENDING</option>
-                                    <option value="CONNECTED">CONNECTED</option>
-                                    <option value="OFFLINE">OFFLINE</option>
-                                </select>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!Model.data.Any())
-                        {
+                <div class="table-responsive">
+                    <table class="table user-table meta-table">
+                        <thead>
                             <tr>
-                                <td colspan="8" class="text-center">No Records Found</td>
+                                <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.WABAId)
+                                    <div class="input-group">
+                                        <input asp-for="WABAIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.BusinessId)
+                                    <div class="input-group">
+                                        <input asp-for="BusinessIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.BusinessCategory)
+                                    <div class="input-group">
+                                        <input asp-for="BusinessCategoryFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.WhatsAppDisplayName)
+                                    <div class="input-group">
+                                        <input asp-for="WhatsappDisplayNameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.PhoneNumberId)
+                                    <div class="input-group">
+                                        <input asp-for="PhoneNumberIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.PhoneNumber)
+                                    <div class="input-group">
+                                        <input asp-for="PhoneNumberFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.Status)
+                                    <select class="form-select" asp-for="StatusFilter" onchange="loadData()">
+                                        <option selected value="">Select Status</option>
+                                        <option value="PENDING">PENDING</option>
+                                        <option value="CONNECTED">CONNECTED</option>
+                                        <option value="OFFLINE">OFFLINE</option>
+                                    </select>
+                                </th>
                             </tr>
-                        }
-                        else
-                        {
-                            @foreach (var item in Model.data)
+                        </thead>
+                        <tbody>
+                            @if (!Model.data.Any())
                             {
                                 <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.WABAId)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.BusinessId)</td>
-                                    <td>
-                                        <span class="buisness-type">
-                                            @Html.DisplayFor(modelItem => item.BusinessCategory)
-                                        </span>
-                                    </td>
-                                    <td>@Html.DisplayFor(modelItem => item.WhatsAppDisplayName)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.PhoneNumberId)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                                    <td>
-                                        <a href="#" class="@(item.Status == "CONNECTED" ? "text-success" : "text-danger") text-decoration-none fw-medium">
-                                            @Html.DisplayFor(modelItem => item.Status)
-                                        </a>
-                                    </td>
+                                    <td colspan="8" class="text-center">No Records Found</td>
                                 </tr>
                             }
-                        }
-                    </tbody>
-                </table>
+                            else
+                            {
+                                @foreach (var item in Model.data)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.WABAId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.BusinessId)</td>
+                                        <td>
+                                            <span class="buisness-type">
+                                                @Html.DisplayFor(modelItem => item.BusinessCategory)
+                                            </span>
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.WhatsAppDisplayName)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PhoneNumberId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                        <td>
+                                            <a href="#" class="@(item.Status == "CONNECTED" ? "text-success" : "text-danger") text-decoration-none fw-medium">
+                                                @Html.DisplayFor(modelItem => item.Status)
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
         </div>
