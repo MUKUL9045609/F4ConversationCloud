@@ -52,10 +52,11 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 DateTime expiryTime = DateTime.Parse(tokenParts[1]);
                 if (expiryTime < DateTime.UtcNow)
                 {
-                    TempData["ErrorMessage"] = "Link has expired. Please request a new one.";
+                    TempData["ErrorMessage"] = "Link has expired";
                     return RedirectToAction("InvalidUrl");
                 }
                 int UserId = Convert.ToInt32(stringUserid);
+                HttpContext.Session.SetInt32("UserId", UserId);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {
@@ -162,7 +163,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 {
                     ViewBag.IsReadOnly = true;
                     ViewBag.DisableButtons = false;
-                    command.FirstName = ClientTempData.FirstName;
+                        command.FirstName = ClientTempData.FirstName + " " + ClientTempData.LastName;
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
@@ -187,7 +188,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     ZipCode= command.ZipCode,
                     OptionalAddress = command.OptionalAddress,
                     OrganizationsName = command.OrganizationsName,
-                    PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
+                    PassWord = command.PassWord.Encrypt(),
                     IsActive = command.IsActive,
                     Stage = ClientFormStage.ClientRegistered,
                     Role = ClientRole.Admin,

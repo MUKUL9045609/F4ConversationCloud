@@ -16,7 +16,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
         Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request);
 
         Task<RegisterUserModel> GetCustomerByIdAsync(int UserId);
-        Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request);
 
         Task<LoginResponse> OnboardingLogin(Loginrequest request);
 

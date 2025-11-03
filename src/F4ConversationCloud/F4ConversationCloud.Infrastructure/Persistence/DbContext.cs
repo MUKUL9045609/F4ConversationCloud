@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -25,5 +26,6 @@ public class DbContext
     }
     public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
     public int SessionUserId => Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+  
 }
 

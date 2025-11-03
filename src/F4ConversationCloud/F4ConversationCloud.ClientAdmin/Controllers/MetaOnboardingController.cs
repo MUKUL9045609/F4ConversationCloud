@@ -1,11 +1,11 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.ClientAdmin.Models;
 using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
@@ -22,18 +22,48 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
         }
 
         [HttpGet("client-onboarding-list")]
-        public async Task<IActionResult> ClientOnboardingList()
+        public async Task<IActionResult> ClientOnboardingList(PhoneNumberListViewModel model) 
         {
-            var viewModel = new PhoneNumberListViewModel();
             try
             {
-                viewModel.addPhoneNumberModels = await _addPhoneNumberService.GetWhatsAppProfilesByUserId();
-                return View(viewModel);
+                var response = await _addPhoneNumberService.GetFilteredWhatsAppProfilesByUserId(new AddPhoneNumberListFilter
+                {
+                    WABAIdFilter = model.WABAIdFilter ?? String.Empty,
+                    BusinessIdFilter = model.BusinessIdFilter ?? String.Empty,
+                    BusinessCategoryFilter = model.BusinessCategoryFilter ?? String.Empty,
+                    WhatsappDisplayNameFilter = model.WhatsappDisplayNameFilter ?? String.Empty,
+                    PhoneNumberIdFilter = model.PhoneNumberIdFilter ?? String.Empty,
+                    PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
+                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    PageNumber = model.PageNumber,
+                    PageSize = model.PageSize,
+                });
+
+                if (model.PageNumber > 1 && model.PageNumber > Math.Ceiling((decimal)response.Item2 / model.PageSize))
+                {
+                    TempData["ErrorMessage"] = "Invalid Page";
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new PhoneNumberListViewModel.PhoneNumberListViewItem()
+                {
+                    SrNo = x.SrNo,
+                    WABAId = x.WABAId,
+                    BusinessId = x.BusinessId,
+                    BusinessCategory = x.BusinessCategory,
+                    WhatsAppDisplayName = x.WhatsAppDisplayName,
+                    PhoneNumberId = x.PhoneNumberId,
+                    PhoneNumber = x.PhoneNumber,
+                    Status = x.Status,
+                });
+
+                return View(model);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return View(viewModel);
+                return View(new PhoneNumberListViewModel());
             }
         }
 
@@ -53,7 +83,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
-                       // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = clientEmail });
+                        // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = clientEmail });
 
                         int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
