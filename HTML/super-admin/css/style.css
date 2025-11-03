@@ -4962,4 +4962,22 @@ body {
 .table.billing-table th,
 .table.billing-table td {
   border: 1px solid #DBDBDB;
+}
+
+.invalid-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+.invalid-wrap h5 {
+  font-size: 19px;
+  margin: 12px auto 4px;
+}
+.invalid-wrap p {
+  color: #6C6C6C;
+  max-width: 300px;
+  text-align: center;
+  font-size: 15px;
 }/*# sourceMappingURL=style.css.map */
