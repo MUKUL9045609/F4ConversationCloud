@@ -82,7 +82,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
                     HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
-                    TempData["WarningMessage"] = "Welcome";
+                    TempData["WarningMessage"] = $"Welcome Back {clientdetails.FirstName} {clientdetails.LastName}";
                     var stageValue = HttpContext.Session.GetInt32("StageId");
                          
                     ClientFormStage stage = (ClientFormStage)stageValue.Value;
