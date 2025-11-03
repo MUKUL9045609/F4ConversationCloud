@@ -13,99 +13,110 @@
                 <div class="right-col">
                     <div class="text-center">
                         <a href="#" class="btn btn-facebook" onclick="launchWhatsAppSignup()"><span class="facebook-icon"></span> Continue With Facebook</a>
-                        
+
 
                         <span class="small-text">We'll request your phone number from Facebook and verify automatically.</span>
                     </div>
                 </div>
             </div>
             <hr />
-            @if (Model.addPhoneNumberModels.Any())
-            {
-                <div class="">
-                    <div class="facebook-header">
-                        <h3>Phone Numbers</h3>
-                        <button type="button" class="btn sync-btn" id="sync-btn"> Sync</button>
-                    </div>
-                    <table class="table">
-                        <thead>
+            <div class="">
+                <div class="facebook-header">
+                    <h3>Phone Numbers</h3>
+                    <button type="button" class="btn sync-btn" id="sync-btn"> Sync</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.WABAId)
+                                <div class="input-group">
+                                    <input asp-for="WABAIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.BusinessId)
+                                <div class="input-group">
+                                    <input asp-for="BusinessIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.BusinessCategory)
+                                <div class="input-group">
+                                    <input asp-for="BusinessCategoryFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.WhatsAppDisplayName)
+                                <div class="input-group">
+                                    <input asp-for="WhatsappDisplayNameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.PhoneNumberId)
+                                <div class="input-group">
+                                    <input asp-for="PhoneNumberIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.PhoneNumber)
+                                <div class="input-group">
+                                    <input asp-for="PhoneNumberFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Status)
+                                <select class="form-select" asp-for="StatusFilter" onchange="loadData()">
+                                    <option selected value="">Select Status</option>
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="CONNECTED">CONNECTED</option>
+                                    <option value="OFFLINE">OFFLINE</option>
+                                </select>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.data.Any())
+                        {
                             <tr>
-                                <th>Sr. No.</th>
-                                <th>WABA ID
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                        <span class="searchIcon"></span>
-                                    </div>
-                                </th>
-                                <th>Business ID
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                        <span class="searchIcon"></span>
-                                    </div>
-                                </th>
-                                <th>Business Category
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                        <span class="searchIcon"></span>
-                                    </div>
-                                </th>
-                                <th>Whatsapp Display Name
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                        <span class="searchIcon"></span>
-                                    </div>
-                                </th>
-                                <th>Phone Number ID
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                        <span class="searchIcon"></span>
-                                    </div>
-                                </th>
-                                <th>Phone Number
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                        <span class="searchIcon"></span>
-                                    </div>
-                                </th>
-                                <th>Status
-                                    <select class="form-select">
-                                        <option selected>Select Status</option>
-                                        <option>Linked</option>
-                                        <option>Pending</option>
-                                    </select>
-                                </th>
+                                <td colspan="8" class="text-center">No Records Found</td>
                             </tr>
-                        </thead>
-                        @{
-                            int srNoCount = 1;
                         }
-                        <tbody>
-                            @foreach (var m in Model.addPhoneNumberModels)
+                        else
+                        {
+                            @foreach (var item in Model.data)
                             {
                                 <tr>
-                                    <td>@srNoCount</td>
-                                    <td>@m.WABAId</td>
-                                    <td>@m.BusinessId</td>
+                                    <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.WABAId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.BusinessId)</td>
                                     <td>
-                                        <span class="buisness-type">@m.BusinessCategory</span>
+                                        <span class="buisness-type">
+                                            @Html.DisplayFor(modelItem => item.BusinessCategory)
+                                        </span>
                                     </td>
-                                    <td>@m.WhatsAppDisplayName</td>
-                                    <td>@m.PhoneNumberId</td>
-                                    <td>@m.PhoneNumber</td>
-                                    <td><a href="#" class="@(m.Status == "Connected" ? "text-success" : "text-danger") text-decoration-none fw-medium">@m.Status</a></td>
+                                    <td>@Html.DisplayFor(modelItem => item.WhatsAppDisplayName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PhoneNumberId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                    <td>
+                                        <a href="#" class="@(item.Status == "CONNECTED" ? "text-success" : "text-danger") text-decoration-none fw-medium">
+                                            @Html.DisplayFor(modelItem => item.Status)
+                                        </a>
+                                    </td>
                                 </tr>
-                                { srNoCount++; }
                             }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else
-            {
-                <div class="d-flex justify-content-center align-items-center no-record-found">
-                    <small class="text-danger">No Records Found</small>
-                </div>
-            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
         </div>
     </div>
 </div>
@@ -190,6 +201,55 @@
         $("#sync-btn").click(function(){
             location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
         });
+
+        function loadData() {
+            let WABAIdFilter = $("[name=WABAIdFilter]").val();
+            let BusinessIdFilter = $("[name=BusinessIdFilter]").val();
+            let BusinessCategoryFilter = $("[name=BusinessCategoryFilter]").val();
+            let WhatsappDisplayNameFilter = $("[name=WhatsappDisplayNameFilter]").val();
+            let PhoneNumberIdFilter = $("[name=PhoneNumberIdFilter]").val();
+            let PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+            let StatusFilter = $("[name=StatusFilter]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")' +
+                '?WABAIdFilter=' + WABAIdFilter +
+                '&BusinessIdFilter=' + encodeURIComponent(BusinessIdFilter) +
+                '&BusinessCategoryFilter=' + encodeURIComponent(BusinessCategoryFilter) +
+                '&WhatsappDisplayNameFilter=' + encodeURIComponent(WhatsappDisplayNameFilter) +
+                '&PhoneNumberIdFilter=' + encodeURIComponent(PhoneNumberIdFilter) +
+                '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
+                '&StatusFilter=' + encodeURIComponent(StatusFilter) +
+                '&PageNumber=' + pageNumber;
+        }
+
+        $(".srcIcon").on("keypress", function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                let WABAIdFilter = $("[name=WABAIdFilter]").val();
+            let BusinessIdFilter = $("[name=BusinessIdFilter]").val();
+            let BusinessCategoryFilter = $("[name=BusinessCategoryFilter]").val();
+            let WhatsappDisplayNameFilter = $("[name=WhatsappDisplayNameFilter]").val();
+            let PhoneNumberIdFilter = $("[name=PhoneNumberIdFilter]").val();
+            let PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+            let StatusFilter = $("[name=StatusFilter]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")' +
+                '?WABAIdFilter=' + WABAIdFilter +
+                '&BusinessIdFilter=' + encodeURIComponent(BusinessIdFilter) +
+                '&BusinessCategoryFilter=' + encodeURIComponent(BusinessCategoryFilter) +
+                '&WhatsappDisplayNameFilter=' + encodeURIComponent(WhatsappDisplayNameFilter) +
+                '&PhoneNumberIdFilter=' + encodeURIComponent(PhoneNumberIdFilter) +
+                '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
+                '&StatusFilter=' + encodeURIComponent(StatusFilter) +
+                '&PageNumber=' + pageNumber;
+            }
+        });
     </script>
     <script>
         const fbLoginCallback = (response) => {
@@ -228,7 +288,7 @@
 
 
 
-   @*  <script>
+    @*  <script>
         const fbLoginCallback = (response) => {
           if (response.authResponse) {
             const code = response.authResponse.code;
