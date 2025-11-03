@@ -1,6 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
-using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;

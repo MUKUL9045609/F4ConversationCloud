@@ -864,7 +864,7 @@ input[type="time" i] {
     text-align:left;
       padding: 12px 0!important;
       background-color:#fff!important;
-      border-radius:4px!important;    
+      border-radius:10px!important;    
       box-shadow: 1px 7px 14px -5px rgba(0,0,0,0.2)!important;
       position: relative;
       border:0px!important
@@ -1051,4 +1051,21 @@ padding-left: 61px !important;
     background-size: 37% !important;
     opacity: 1 !important;
     border: 1px solid #ddd !important;
+}
+.invalid-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    h5{
+        font-size: 19px;
+        margin: 12px auto 4px;
+    }
+    p{
+        color: #6C6C6C;
+        max-width: 300px;
+        text-align: center;
+        font-size: 15px;
+    }
 }

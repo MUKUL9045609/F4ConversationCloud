@@ -1,12 +1,11 @@
 ﻿using Dapper;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
 
-namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
+namespace F4ConversationCloud.Infrastructure.Repositories.Common
 {
     public class LogRepository : ILogRepository
     {
