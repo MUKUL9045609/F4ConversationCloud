@@ -22,7 +22,7 @@
                     @if (stage.HasValue && (stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered))
                     {
                         <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MetaOnboarding" ? "active" : "")">
-                            <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="home icon">Meta Details</a>
+                            <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="meta icon">Meta Details</a>
                         </li>
                     }
 

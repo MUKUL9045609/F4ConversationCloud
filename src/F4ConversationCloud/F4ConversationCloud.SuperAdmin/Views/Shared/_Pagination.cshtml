@@ -2,7 +2,7 @@
 @if (Model.TotalCount > 0)
 {
     <div class="paginationWrapper">
-        <ul class="pagination">
+        <ul class="pagination mt-4">
             <li class="page-item @(Model.PageNumber == 1 ? "disabled" : string.Empty )"><button class="page-link prev" data-page-number="@(Model.PageNumber - 1)">Previous</button></li>
             @{
                 var totalPages = (int)Math.Ceiling((decimal)Model.TotalCount / Model.PageSize);
