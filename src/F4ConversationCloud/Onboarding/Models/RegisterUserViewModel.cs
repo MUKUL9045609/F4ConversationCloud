@@ -51,8 +51,6 @@ namespace Onboarding.Models
             public string? OptionalAddress { get; set; }
 
             [Required(ErrorMessage = "Organization Name is required. ")]
-            [RegularExpression(@"^[a-zA-Z\s']+$", ErrorMessage = "Organization Name can only contain letters And spaces")]
-            [Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
             public string OrganizationsName { get; set; }
 
             [Required(ErrorMessage = "Password is required")]
