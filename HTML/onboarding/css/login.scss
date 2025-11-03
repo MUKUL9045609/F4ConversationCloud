@@ -681,6 +681,7 @@ padding-left: 61px !important;
     box-shadow: none!important;
     padding: 0px!important;
     .toast{
+        border-radius:10px!important; 
          .toast__message{
             color: #606060;            
         }
@@ -784,6 +785,7 @@ padding-left: 61px !important;
     position: absolute;
     right: 20px;
     top:36%;
+    font-family: auto!important;
 }
 .toastify.on .toast:not(.showing):not(.show) {
     opacity: 1;

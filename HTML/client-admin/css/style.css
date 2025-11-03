@@ -4422,7 +4422,7 @@ input[type=time i] {
   text-align: left;
   padding: 12px 0 !important;
   background-color: #fff !important;
-  border-radius: 4px !important;
+  border-radius: 10px !important;
   box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.2) !important;
   position: relative;
   border: 0px !important;
