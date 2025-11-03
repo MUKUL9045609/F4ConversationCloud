@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
+using Newtonsoft.Json;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -20,7 +21,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             var logModel = new LogModel();
             logModel.Source = "MasterTax/CreateUpdateAsync";
-            logModel.AdditionalInfo = $"Model: {masterTax}";
+            logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(masterTax)}";
             int response = 0;
             try
             {
