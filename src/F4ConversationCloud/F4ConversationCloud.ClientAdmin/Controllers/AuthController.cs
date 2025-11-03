@@ -93,7 +93,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
                     }
                     else {
-                        return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                        return RedirectToAction("Index", "Home");
 
                     }
             }
