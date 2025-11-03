@@ -331,7 +331,7 @@
                          $("#timeRemaining").text(formatTime(remaining));
                      }
 
-                     if (remaining < 0) {
+                     if (remaining === 0) {
                          clearInterval(interval);
                          $(".otp-text").addClass("d-none");
                          $("#resendOtpBtn").show();
