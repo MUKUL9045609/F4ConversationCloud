@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
@@ -8,6 +9,7 @@ using F4ConversationCloud.Domain.Extension;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -34,7 +36,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             var logModel = new LogModel();
             logModel.Source = "ClientRegistration/CreateUpdateAsync";
-            logModel.AdditionalInfo = $"Model: {clientRegistration}";
+            logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(clientRegistration)}";
             int response = 0;
             try
             {
@@ -66,7 +68,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             {
                 var logModel = new LogModel();
                 logModel.Source = "ClientRegistration/GetFilteredRegistrations";
-                logModel.AdditionalInfo = $"Model: {filter}";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(filter)}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;

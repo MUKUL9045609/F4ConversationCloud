@@ -53,7 +53,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
            
 
         }
-
         public async Task<int> UpdateClientFormStageAsync(int UserId, ClientFormStage Stageid)
         {
 
@@ -71,7 +70,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
-
         public async Task<int> InsertOTPAsync(VarifyMobileNumberModel command)
         {
             try
@@ -90,8 +88,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
-
-
         public async Task<int> VerifyOTPAsync(ValidateRegistrationOTPModel oTPCommand)
         {
             try
@@ -163,8 +159,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
-
-
         public async Task<RegisterUserModel> GetCustomerById(int userId)
         {
             try
@@ -179,7 +173,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return null;
             }
         }
-
         public async Task<LoginViewModel> ValidateClientCreadiatial(string Email)
         {
             try
@@ -195,13 +188,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             }
            
         }
-
         public async Task<IEnumerable<TimeZoneResponse>> GetTimeZonesAsync()
         {
             DynamicParameters dp = new DynamicParameters();
             return await _repository.GetListByValuesAsync<TimeZoneResponse>("[sp_GetTimeZones]", dp);
         }
-
         public async Task<IEnumerable<Cities>> GetCitiesAsync()
         {
             DynamicParameters dp = new DynamicParameters();
@@ -218,7 +209,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             DynamicParameters dp = new DynamicParameters();
             return await _repository.GetListByValuesAsync<States>("[sp_GetStates]", dp);
         }
-       
         public async Task<int> UpdatePasswordAsync(ConfirmPasswordModel model)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -228,7 +218,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
 
             return await _repository.UpdateValuesAsync("sp_UpdateClientPassword", parameters);
         }
-
         public Task<ResetPasswordResponseViewModel> ValidateEmailId(string ClientEmailId)
         {
             try
@@ -244,7 +233,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
             }
 
         }
-
         public async Task<int> GetRegisteredClientCountAsync()
         {
             try
@@ -258,8 +246,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Onboarding
                 return 0;
             }
         }
-
-
         public async Task<ClientDetails> GetClientInfoByEmailId(UserDetailsDTO userDetailsDTO)
         {
             try

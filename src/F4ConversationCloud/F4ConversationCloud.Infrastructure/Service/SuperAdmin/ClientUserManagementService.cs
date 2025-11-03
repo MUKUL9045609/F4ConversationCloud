@@ -1,8 +1,10 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             {
                 var logModel = new LogModel();
                 logModel.Source = "ClientUserManagement/GetFilteredUsers";
-                logModel.AdditionalInfo = $"Model: {filter}";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(filter)}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;

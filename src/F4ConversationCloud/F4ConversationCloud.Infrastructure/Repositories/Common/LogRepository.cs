@@ -1,11 +1,11 @@
 ﻿using Dapper;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
 
-namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
+namespace F4ConversationCloud.Infrastructure.Repositories.Common
 {
     public class LogRepository : ILogRepository
     {
@@ -30,6 +30,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("AdditionalInfo", log.AdditionalInfo);
 
             return await _repository.InsertUpdateAsync("sp_InsertSuperAdminLog", parameters);
+        }
+
+        public async Task<int> InsertOnboardingLogs(OnBoardingLogsModel onBoardingLogs)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("userId", onBoardingLogs.SessionUserId);
+            parameters.Add("Source", onBoardingLogs.Source);
+            parameters.Add("LogDate", onBoardingLogs.LogDate);
+            parameters.Add("LogType", onBoardingLogs.LogType);
+            parameters.Add("Message", onBoardingLogs.Message);
+            parameters.Add("StackTrace", onBoardingLogs.StackTrace);
+            parameters.Add("AdditionalInfo", onBoardingLogs.AdditionalInfo);
+            return await _repository.InsertUpdateAsync("sp_InsertOnboardingLog", parameters);
         }
     }
 }
