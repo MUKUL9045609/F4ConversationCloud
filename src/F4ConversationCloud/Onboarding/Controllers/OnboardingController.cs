@@ -188,7 +188,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     ZipCode= command.ZipCode,
                     OptionalAddress = command.OptionalAddress,
                     OrganizationsName = command.OrganizationsName,
-                    PassWord = PasswordHasherHelper.HashPassword(command.PassWord),
+                    PassWord = command.PassWord.Encrypt(),
                     IsActive = command.IsActive,
                     Stage = ClientFormStage.ClientRegistered,
                     Role = ClientRole.Admin,
