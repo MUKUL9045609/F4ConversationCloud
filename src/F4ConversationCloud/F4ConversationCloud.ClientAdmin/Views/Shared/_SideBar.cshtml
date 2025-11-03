@@ -10,6 +10,7 @@
         stage = (ClientFormStage)stageValue.Value;
     }
 }
+<!-- side Bar -->
 <aside class="app-sidebar">
     <div class="sidenav-content">
         <a href="#" class="main-sidebar-header">
@@ -18,59 +19,37 @@
         <div class="main-side-navigation">
             <nav>
                 <ul>
-                    @if (stage.HasValue && stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered)
+                    @if (stage.HasValue && (stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered))
                     {
                         <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MetaOnboarding" ? "active" : "")">
                             <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="home icon">Meta Details</a>
                         </li>
                     }
-                    @if (stage.Value == ClientFormStage.MetaRegistered)
+
+                    
+                    @if (stage.HasValue && stage.Value == ClientFormStage.MetaRegistered)
                     {
-                        <li class="active">
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
                             <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
                         </li>
 
-
-                        <li>
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Campaigns" ? "active" : "")">
                             <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
                             <ul class="submenu">
-                                <li><a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a></li>
-                                <li><a asp-controller="Campaigns" asp-action="Guide">Guide</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#" class="template icon">Templates</a>
-                        </li>
-                        <li>
-                            <ul class="submenu">
-                                <li><a href="#">Link</a></li>
-                                <li><a href="#">Link</a></li>
-                                <li><a href="#">Link</a></li>
-                                <li><a href="#">Link</a></li>
+                                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "CampaignList" ? "active" : "")">
+                                    <a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a>
+                                </li>
+                                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Guide" ? "active" : "")">
+                                    <a asp-controller="Campaigns" asp-action="Guide">Guide</a>
+                                </li>
                             </ul>
                         </li>
                     }
                 </ul>
             </nav>
         </div>
-        @if (stage.HasValue && stage.Value == ClientFormStage.MetaRegistered)
-        {
-            <div class="bottom-navigation">
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="#" class="org-analytics icon">Org Analytics</a>
-                        </li>
-                        <li>
-                            <a href="#" class="billing icon">Billing</a>
-                        </li>
-                        <li>
-                            <a href="#" class="project icon">Manage Project</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        }
 
+       
     </div>
 </aside>
+

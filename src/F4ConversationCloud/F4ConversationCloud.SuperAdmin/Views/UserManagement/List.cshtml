@@ -12,34 +12,6 @@
             </div>
         </div>
         <div class="card padding">
-            @* <div class="filterWrapper form-wrapper">
-                <div class="filterwrap">
-                    <ul class="filter-list">
-                        <li>
-                            <div>
-                                <label>Search</label>
-                                <div class="input-group">
-                                    <input type="text" asp-for="SearchString" class="form-control srcIcon" placeholder="Search" id="searchInput" />
-                                    <span class="searchIcon" onclick="loadData()"></span>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <label>Filter By</label>
-                                <select asp-for="Status" class="form-select" onchange="loadData()">
-                                    <option value="true">Active</option>
-                                    <option value="false">In Active</option>
-                                </select>
-                            </div>
-                        </li>
-                    </ul>
-                    <button class="btn secondary-btn" id="reset-filters"><i class="reset"></i></button>
-                </div>
-                <div>
-                    <a href="@Url.Action("Create", "UserManagement")" type="button" class="btn primary-btn add d-flex">Add New User</a>
-                </div>
-            </div> *@
             <div class="table-responsive">
                 <table class="table user-table form-wrapper">
                     <thead>
@@ -220,7 +192,7 @@
                 '&PageNumber=' + pageNumber;
         }
 
-        $("#searchInput").on("keypress", function (e) {
+        $(".srcIcon").on("keypress", function (e) {
             if (e.which === 13) {
                 loadData();
             }

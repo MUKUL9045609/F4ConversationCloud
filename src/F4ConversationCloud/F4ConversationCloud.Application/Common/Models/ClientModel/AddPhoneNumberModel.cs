@@ -3,6 +3,7 @@
     public class AddPhoneNumberModel
     {
         public int Id { get; set; }
+        public int SrNo { get; set; }
         public string WABAId { get; set; }
         public string BusinessId { get; set; }
         public string BusinessCategory { get; set; }

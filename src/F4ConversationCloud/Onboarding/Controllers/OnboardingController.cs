@@ -52,7 +52,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 DateTime expiryTime = DateTime.Parse(tokenParts[1]);
                 if (expiryTime < DateTime.UtcNow)
                 {
-                    TempData["ErrorMessage"] = "Link has expired. Please request a new one.";
+                    TempData["ErrorMessage"] = "Link has expired";
                     return RedirectToAction("InvalidUrl");
                 }
                 int UserId = Convert.ToInt32(stringUserid);
