@@ -33,7 +33,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             {
                 if (string.IsNullOrEmpty(token))
                 {
-                    TempData["ErrorMessage"] = "Invalid or missing link parameters.";
+                    TempData["ErrorMessage"] = "This link is no longer active for security reasons .";
                     return RedirectToAction("InvalidUrl");
                 }
                 var decrypted = token.Decrypt();
@@ -46,13 +46,13 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 
                 if (tokenParts.Length != 2)
                 {
-                    TempData["ErrorMessage"] = "Invalid Link";
+                    TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
                 DateTime expiryTime = DateTime.Parse(tokenParts[1]);
                 if (expiryTime < DateTime.UtcNow)
                 {
-                    TempData["ErrorMessage"] = "Link has expired";
+                    TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
                 int UserId = Convert.ToInt32(stringUserid);
@@ -60,7 +60,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {
-                    TempData["ErrorMessage"] = "Client not found.";
+                    TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
                 var command = new RegisterUserViewModel
@@ -82,7 +82,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             catch (Exception)
             {
 
-                TempData["ErrorMessage"] = "Invalid or corrupted link.";
+                TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                 return RedirectToAction("InvalidUrl");
             }
 
