@@ -2,7 +2,7 @@
     var that = {};
     that.ToasterSeconds = 3;
 
-    var loaderHtml = '<div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060; background-color: rgba(33, 37, 41, 0.6)!important;backdrop-filter: blur(0px);"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    var loaderHtml = '<div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
     //usage commonHelper.showSuccess('Success Message');
     that.showHideLoader = function (toBeShown) {
@@ -24,60 +24,83 @@
         }
     }
     that.showSuccess = function (Message) {
-        var id = that.generateGUID();
         
+        var id = that.generateGUID();
         var html = that.getToasterHTML();
-        html = html.replace('{class}', 'bg-success');
+        html = html.replace('{class}', 'toast--green'); // Keep Toastify green class
         html = html.replace('{Id}', id);
         html = html.replace('{message}', Message);
 
         $('.toastWrap').append(html);
-
-        var toastElement = document.getElementById(id);
-        var toast = new bootstrap.Toast(toastElement, {
-            autohide: true, // Automatically hide after a delay
-            delay: that.ToasterSeconds * 1000    // Delay in milliseconds before auto-hide
-        });
-        toast.show();
-
+       
+        // Auto-hide after delay
         setTimeout(function () {
-            $('#' + id).remove();
-        }, that.ToasterSeconds * 1100); // 3000 milliseconds (3 seconds) delay
-    }
+            $('#' + id).closest('.toastify').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, that.ToasterSeconds * 1000000);
+    };
 
-    //usage commonHelper.showError('Error Message');
     that.showError = function (Message) {
         var id = that.generateGUID();
-
         var html = that.getToasterHTML();
-        html = html.replace('{class}', 'bg-danger');
+        html = html.replace('{class}', 'toast--danger');
         html = html.replace('{Id}', id);
         html = html.replace('{message}', Message);
 
         $('.toastWrap').append(html);
 
-        var toastElement = document.getElementById(id);
-        var toast = new bootstrap.Toast(toastElement, {
-            autohide: true, // Automatically hide after a delay
-            delay: that.ToasterSeconds * 1000    // Delay in milliseconds before auto-hide
-        });
-        toast.show();
+        setTimeout(function () {
+            $('#' + id).closest('.toastify').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, that.ToasterSeconds * 100000);
+    };
+
+    that.showInfo = function (Message) {
+        var id = that.generateGUID();
+        var html = that.getToasterHTML();
+        html = html.replace('{class}', 'toast--blue');
+        html = html.replace('{Id}', id);
+        html = html.replace('{message}', Message);
+
+        $('.toastWrap').append(html);
 
         setTimeout(function () {
-            $('#' + id).remove();
-        }, that.ToasterSeconds * 1100); // 3000 milliseconds (3 seconds) delay
-    }
+            $('#' + id).closest('.toastify').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, that.ToasterSeconds * 100000);
+    };
+
+    that.showWarning = function (Message) {
+        var id = that.generateGUID();
+        var html = that.getToasterHTML();
+        html = html.replace('{class}', 'toast--yellow');
+        html = html.replace('{Id}', id);
+        html = html.replace('{message}', Message);
+
+        $('.toastWrap').append(html);
+
+        setTimeout(function () {
+            $('#' + id).closest('.toastify').fadeOut(400, function () {
+                $(this).remove();
+            });
+        }, that.ToasterSeconds * 100000);
+    };
 
     that.getToasterHTML = function () {
-        var html = '<div class="toast align-items-center {class} alert-toast" role="alert" aria-live="assertive" aria-atomic="true" id="{Id}">';
-        html += '<div class="d-flex align-items-center">'
-        html += '<div></div>'
-        html += '<div class="toast-body"><h6></h6><p>{message}</p></div>'
-        html += '</div>'
-        html += '</div>'
+        var html = '<div class="toastify on toastify-right toastify-top" aria-live="polite">';
+        html += '<div class="toast {class}" id="{Id}">';
+        html += '<div class="toast__icon"></div>';
+        html += '<div class="toast__content"><p class="toast__message">{message}</p></div>';
+        html += '</div>';
+        html += '<button type="button" aria-label="Close" class="toast-close">✖</button>';
+        html += '</div>';
+
 
         return html;
-    }
+    };
 
     that.generateGUID = function () {
         // Create a GUID using a combination of numbers and letters
