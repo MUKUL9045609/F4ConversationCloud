@@ -22,7 +22,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
         }
 
         [HttpGet("client-onboarding-list")]
-        public async Task<IActionResult> ClientOnboardingList(PhoneNumberListViewModel model)
+        public async Task<IActionResult> ClientOnboardingList(PhoneNumberListViewModel model) 
         {
             try
             {
