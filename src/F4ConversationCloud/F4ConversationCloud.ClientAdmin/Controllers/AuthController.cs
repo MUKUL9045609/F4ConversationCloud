@@ -3,19 +3,17 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.ClientAdmin.Models.AuthViewModel;
 using F4ConversationCloud.Domain.Entities;
-using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
+using System.Data;
 using System.Security.Claims;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
-    public class AuthController :Controller
+    public class AuthController : Controller
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
@@ -29,7 +27,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-          
+
             return View();
         }
 
@@ -50,60 +48,63 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     PassWord = request.Password
                 });
 
-                if (response.Data is null && !response.IsSuccess )
+                if (response.Data is null && !response.IsSuccess)
                 {
                     ModelState.AddModelError("Email", "This Email is not Registered.");
                     return View(request);
                 }
                 if (response.Data.Password.Decrypt() != request.Password)
                 {
-                    
+
                     ModelState.AddModelError("Password", "Please enter a valid password.");
                     return View(request);
                 }
 
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(response.Data.UserId);
 
-                    var userClaims = new List<Claim>()
+                var RoleName = Enum.GetName(typeof(ClientRole), Convert.ToInt32(clientdetails.ClientRoles));
+
+                var userClaims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, clientdetails.FirstName + " " + clientdetails.LastName),
                         new Claim(ClaimTypes.Email, clientdetails.Email),
                         new Claim(ClaimTypes.MobilePhone, clientdetails.PhoneNumber),
-                        new Claim(ClaimTypes.Role, clientdetails.ClientRoles),
+                        new Claim(ClaimTypes.Role, RoleName),
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
                     };
-                    var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                    
+                var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                    await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
-                       
-                    HttpContext.Session.SetString("Username", clientdetails.Email);
-                    HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
-                    HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
-                    HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
-                    TempData["WarningMessage"] = $"Welcome Back {clientdetails.FirstName} {clientdetails.LastName}";
-                    var stageValue = HttpContext.Session.GetInt32("StageId");
-                         
-                    ClientFormStage stage = (ClientFormStage)stageValue.Value;
+                await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
 
-                    if (stage == ClientFormStage.ClientRegistered)
-                    {
-                        return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
-                    }
-                    else {
-                        return RedirectToAction("Index", "Home");
+                HttpContext.Session.SetString("Username", clientdetails.Email);
+                HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
+                HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
+                HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
-                    }
+                TempData["WarningMessage"] = $"Welcome Back {clientdetails.FirstName} {clientdetails.LastName}";
+                var stageValue = HttpContext.Session.GetInt32("StageId");
+
+                ClientFormStage stage = (ClientFormStage)stageValue.Value;
+
+                if (stage == ClientFormStage.ClientRegistered)
+                {
+                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                }
+                else
+                {
+                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+
+                }
             }
             catch (Exception)
             {
                 TempData["WarningMessage"] = "Error";
                 return View(request);
             }
-           
-           
+
+
         }
 
         public async Task<IActionResult> Logout()

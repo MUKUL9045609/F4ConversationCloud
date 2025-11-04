@@ -1,9 +1,11 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;
+using Newtonsoft.Json;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -40,7 +42,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             {
                 var logModel = new LogModel();
                 logModel.Source = "UserManagement/CreateUpdateAsync";
-                logModel.AdditionalInfo = $"User: {user}";
+                logModel.AdditionalInfo = $"User: {JsonConvert.SerializeObject(user)}";
                 logModel.LogType = "Error";
                 logModel.Message = ex.Message;
                 logModel.StackTrace = ex.StackTrace;

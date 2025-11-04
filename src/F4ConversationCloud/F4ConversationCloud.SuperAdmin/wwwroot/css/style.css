@@ -833,7 +833,6 @@
 .user-table .form-control,
 .user-table .form-select {
   font-size: 13px;
-  margin-top: 3px;
   padding: 0.375rem !important;
   max-width: 100%;
   width: 100% !important;
@@ -3761,7 +3760,7 @@ body {
 
 .toastWrap {
   position: fixed;
-  top: 15px;
+  top: 80px;
   right: 0;
   z-index: 1056;
 }
@@ -4372,14 +4371,13 @@ body {
 
 .toastify {
   background: #fff !important;
-  position:relative;
 }
 
 .toast {
   text-align: left;
   padding: 12px 0 !important;
   background-color: #fff !important;
-  border-radius: 4px !important;
+  border-radius: 10px !important;
   box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.2) !important;
   position: relative;
   border: 0px !important;
@@ -4541,7 +4539,7 @@ body {
 
 .toast-close {
   color: #000 !important;
-  position: absolute; 
+  position: absolute;
   right: 20px;
   top: 36%;
 }
@@ -4963,4 +4961,22 @@ body {
 .table.billing-table th,
 .table.billing-table td {
   border: 1px solid #DBDBDB;
+}
+
+.invalid-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+.invalid-wrap h5 {
+  font-size: 19px;
+  margin: 12px auto 4px;
+}
+.invalid-wrap p {
+  color: #6C6C6C;
+  max-width: 300px;
+  text-align: center;
+  font-size: 15px;
 }/*# sourceMappingURL=style.css.map */

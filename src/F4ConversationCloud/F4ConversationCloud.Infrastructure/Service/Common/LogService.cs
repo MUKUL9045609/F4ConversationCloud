@@ -1,10 +1,10 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
-using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using Microsoft.AspNetCore.Http;
 
-namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
+namespace F4ConversationCloud.Infrastructure.Service.Common
 {
     public class LogService : ILogService
     {

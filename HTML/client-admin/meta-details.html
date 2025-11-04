@@ -45,7 +45,7 @@
                     <nav>
                         <ul>
                             <li class="active">
-                                <a href="index.html" class="meta icon">Meta Details</a>
+                                <a href="#" class="meta icon">Meta Details</a>
                             </li>
                             <!-- <li class="active">
                                 <a href="index.html" class="home icon">Home</a>
@@ -149,18 +149,24 @@
                         <div class="ask-ai">
                             <a href="#">Ask AI Assistant <span class="question"></span></a>
                         </div>
-                        <div class="profile">
-                            <div class="dropdown">
-                                <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    D
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <span class="name">Dinesh Sharma</span>
-                                    <li><a class="dropdown-item user" href="#">Profile</a></li>
-                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                        <div class="profile-dropdown ms-auto">
+                            <div class="profile">
+                                <div class="dropdown">
+                                    <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <span class="profile-name">D</span> 
+                                        <div>
+                                            <p>Dinesh Sharma</p>
+                                            <span class="profile-role">Admin</span>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <span class="name">Dinesh Sharma</span>
+                                        <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                        <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
 
-                                </ul>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -239,8 +245,78 @@
                                 </table>
                             </div>
                             <!-- no found records -->
-                            <div class="d-flex justify-content-center align-items-center no-record-found">
-                                <small class="text-danger">No Records Found</small>
+                            <!-- <div class="d-flex justify-content-center align-items-center no-record-found">
+                                
+                                 <table>
+                                    <tr>
+                                        <td class="text-danger">No Records Found</td>
+                                    </tr>
+                                 </table>
+                            </div> -->
+                            <div class="table-responsive">
+                                <table class="table user-table meta-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                <th>
+                                                    WABA ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Business ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Business Type
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Whatsapp Display Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Phone Number ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Phone Number
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Status
+                                                    <select class="form-select">
+                                                        <option selected>Select Status</option> 
+                                                        <option>Linked</option> 
+                                                        <option>Pending</option> 
+                                                    </select>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                               <td class="text-danger" colspan="8" align="center">No Records Found</td>  
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
                             </div>
                             <!-- no found records -->
                         </div>

@@ -1,8 +1,10 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using Newtonsoft.Json;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -20,7 +22,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             var logModel = new LogModel();
             logModel.Source = "MasterPrice/CreateAsync";
-            logModel.AdditionalInfo = $"Model: {masterPrice}";
+            logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(masterPrice)}";
             int response = 0;
             try
             {

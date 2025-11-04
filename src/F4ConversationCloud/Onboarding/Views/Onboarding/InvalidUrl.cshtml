@@ -1,54 +1,39 @@
 ﻿@{
-    Layout = "_ThankYouPageLayout";
-    ViewData["Title"] = "Invalid Token ";
+    Layout = null;
 }
-<div class="toastWrap">
-</div>
-<div class="loginBox thank-you">
-    <span class="sucess-thanks">
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - F4ConversationCloud.Onboarding</title>
+    <link rel="icon" type="image/x-icon" href="/favicon-32x32.png">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    @* <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet" /> *@
+</head>
+<body>
+    <div class="invalid-wrap">
         <img src="~/images/login/invalid.png" alt="Invalid" />
-
-
-    </span>
-
+       
+      
         @if (TempData["ErrorMessage"] != null)
         {
-            <h4>@TempData["ErrorMessage"]</h4>
+            <h5>Link Expired</h5>
+            <p>@TempData["ErrorMessage"]</p>
         }
         else
         {
-            <h4> Token Expired Please Contact To Admin !</h4>
+            <h5>Link Expired</h5>    
+            <p>This link is no longer active for security reasons.</p>
         }
-    
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/js/unobtrusiveHelper.js"></script>
-<script src="~/js/AjaxHelper.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/commonHelper.js" asp-append-version="true"></script>
+    </div>
 
-<script>
-       $(document).ready(function () {
-        var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
-        debugger;
-        if (toastMsg != null && toastMsg != undefined) {
-            debugger;
-            if (toastMsg.type === "Success") {
-                commonHelper.showSuccess(toastMsg.message);
-            }
-            else if (toastMsg.type === "Error") {
-                commonHelper.showError(toastMsg.message);
-            }
-        }
-    });
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
 
-</script>
+
+

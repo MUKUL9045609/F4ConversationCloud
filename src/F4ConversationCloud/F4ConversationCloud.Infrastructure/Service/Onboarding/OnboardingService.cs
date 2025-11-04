@@ -1,8 +1,8 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
-using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
