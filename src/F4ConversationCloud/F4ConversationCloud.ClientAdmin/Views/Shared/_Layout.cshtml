@@ -33,6 +33,8 @@
 
 
     </div>
+    <div class="toastWrap">
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
@@ -45,7 +47,27 @@
     <script src="~/js/ajaxhelper.js" asp-append-version="true"></script>
     <script src="~/js/unobtrusiveHelper.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            commonHelper.showHideLoader(true);
 
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+
+            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+          
+            if (toastMsg != null && toastMsg != undefined) {
+                debugger;
+                if (toastMsg.type === "Success")
+                    commonHelper.showSuccess(toastMsg.message);
+                else if (toastMsg.type === "Error")
+                    commonHelper.showError(toastMsg.message);
+            }
+            commonHelper.showHideLoader(false);
+        });
+
+    </script>
     <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
