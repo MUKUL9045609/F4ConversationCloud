@@ -27,7 +27,7 @@
     that.showSuccess = function (Message) {
         var id = that.generateGUID();
         var html = that.getToasterHTML();
-        html = html.replace('{class}', 'toast--green'); // Keep Toastify green class
+        html = html.replace('{class}', 'toast--green');
         html = html.replace('{Id}', id);
         html = html.replace('{message}', Message);
 
@@ -38,7 +38,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000000);
+        }, that.ToasterSeconds * 1000);
     };
 
     that.showError = function (Message) {
@@ -54,7 +54,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 100000);
+        }, that.ToasterSeconds * 1000);
     };
 
     that.showInfo = function (Message) {
@@ -70,7 +70,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 100000);
+        }, that.ToasterSeconds * 1000);
     };
 
     that.showWarning = function (Message) {
@@ -86,7 +86,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 100000);
+        }, that.ToasterSeconds * 1000);
     };
 
     that.getToasterHTML = function () {
