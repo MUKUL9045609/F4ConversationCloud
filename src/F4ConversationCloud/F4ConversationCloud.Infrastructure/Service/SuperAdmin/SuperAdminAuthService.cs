@@ -65,8 +65,8 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             try
             {
                 var userDetails = await _superAdminAuthRepository.CheckUserExists(userName);
-                if (userDetails is null)
-                    response = false;
+                if (userDetails is not null)
+                    response = true;
             }
             catch (Exception ex)
             {
