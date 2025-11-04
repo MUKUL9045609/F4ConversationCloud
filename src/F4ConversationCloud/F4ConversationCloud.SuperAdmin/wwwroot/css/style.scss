@@ -1226,11 +1226,21 @@ padding-left: 61px !important;
     fill: #fff;
 }
 .toast-close{
-    color: #000!important;
+    color: #000 !important;
     position: absolute;
     right: 20px;
-    top:36%;
+    top: 27%;
+    font-family: inherit;
+    font-size: 1em;
+    opacity: .4;
+    padding: 0 5px;
+    background: 0 0;
+    border: 0;
 }
+.toastify-right {
+    right: 15px;
+}
+
 .toastify.on .toast:not(.showing):not(.show) {
     opacity: 1;
 }
@@ -1629,11 +1639,11 @@ padding-left: 61px !important;
     height: 100vh;
     h5{
         font-size: 19px;
-        margin: 12px auto 4px;
+        margin: 17px auto 4px;
     }
     p{
         color: #6C6C6C;
-        max-width: 300px;
+        max-width: 240px;
         text-align: center;
         font-size: 15px;
     }
