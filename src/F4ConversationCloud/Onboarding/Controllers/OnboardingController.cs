@@ -330,7 +330,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
 
         }
-        [HttpGet("invalid-token")]
+        [HttpGet("Invalid-Link")]
         public IActionResult InvalidUrl()
         {
             return View();
