@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Register Form";
 }
-@functions {
+@* @functions {
     string ReadonlyOrEmpty(bool isReadOnly)
     {
         return isReadOnly ? "readonly" : "";
@@ -14,7 +14,7 @@
     }
     
    
-}
+} *@
 
 <div class="bx_wrap">
     <h4>Create Your Business Account!</h4>
@@ -269,9 +269,7 @@
 
 </div>
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="~/js/commonHelper.js" asp-append-version="true"></script>
-
+ 
     @{
      await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

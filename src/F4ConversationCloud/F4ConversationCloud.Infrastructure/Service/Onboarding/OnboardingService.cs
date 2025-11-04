@@ -394,8 +394,6 @@ namespace F4ConversationCloud.Application.Common.Services
         
         }
 
-        
-
         public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
         {
             var log = new OnBoardingLogsModel

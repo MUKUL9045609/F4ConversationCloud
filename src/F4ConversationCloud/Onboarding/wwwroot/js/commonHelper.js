@@ -24,6 +24,7 @@
         }
     }
     that.showSuccess = function (Message) {
+       
         var id = that.generateGUID();
         var html = that.getToasterHTML();
         html = html.replace('{class}', 'toast--green'); // Keep Toastify green class
@@ -37,7 +38,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 1000000);
     };
 
     that.showError = function (Message) {
@@ -53,7 +54,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 100000);
     };
 
     that.showInfo = function (Message) {
@@ -69,7 +70,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 100000);
     };
 
     that.showWarning = function (Message) {
@@ -85,7 +86,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 100000);
     };
 
     that.getToasterHTML = function () {
@@ -96,6 +97,8 @@
         html += '</div>';
         html += '<button type="button" aria-label="Close" class="toast-close">✖</button>';
         html += '</div>';
+
+       
         return html;
     };
 
@@ -112,6 +115,7 @@
             setTimeout(resolve, timeOutSec * 1000);
         });
     }
+
     that.handleFileUpload = function (fileInputId, fileLinkContainerId, validationFieldName, fileNameInput) {
         const fileInput = document.getElementById(fileInputId);
         const file = fileInput.files[0];

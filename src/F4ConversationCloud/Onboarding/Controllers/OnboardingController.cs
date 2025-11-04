@@ -13,7 +13,7 @@ using Twilio.Jwt.AccessToken;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
    
-    public class OnboardingController : Controller
+    public class OnboardingController : BaseController
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
