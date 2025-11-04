@@ -250,17 +250,17 @@
            
         
         </div>
-        <div class="form-check d-flex justify-content-start  terms-check gap-2">
-            <input asp-for="TermsCondition" class="input" id="agreeTerms" />
+        <div class="form-check d-flex justify-content-start terms-check gap-2 mt-1">
+            <input asp-for="TermsCondition" class="form-check-input" id="agreeTerms" />
             <label class="form-check-label" for="agreeTerms" data-bs-toggle="modal" data-bs-target="#createTemplate">
                 By continuing, I agree to the <a href="javascript:void(0)" data-bs-toggle="modal"
                                                     data-bs-target="#createTemplate" >Terms & Conditions</a>
-            </label>
+                <span asp-validation-for="TermsCondition" class="error-message text-danger small d-block"></span>
+
+              </label>
+
         </div>
-        <div class="form-check d-flex justify-content-end terms-check gap-2">
            
-            <span asp-validation-for="TermsCondition" class="error-message text-danger small d-block"></span>
-        </div>
 
         <button type="submit" class="btn login-btn">Register Account</button>
             <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
