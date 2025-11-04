@@ -1261,9 +1261,12 @@
                             <input type="checkbox" class="form-check-input" id="agreeTerms">
                             <label class="form-check-label" for="agreeTerms">By continuing, I agree to the <a
                                     href="javascript:void(0)" data-bs-toggle="modal"
-                                    data-bs-target="#createTemplate">Terms & Conditions</a></label>
+                                    data-bs-target="#createTemplate">Terms & Conditions</a>
+                                    <div class="error-message text-danger small d-block" id="fullNameError">You must accept the Terms</div>
+                            </label>
+                            
                         </div>
-                        <div class="error-message text-danger small text-start" id="termsError"></div>
+                        
 
                         <button type="submit" class="btn login-btn">Register Account</button>
                     </form>
