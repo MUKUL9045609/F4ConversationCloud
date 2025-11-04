@@ -39,7 +39,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 1000000);
     };
 
     that.showError = function (Message) {
@@ -55,7 +55,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 100000);
     };
 
     that.showInfo = function (Message) {
@@ -71,7 +71,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 100000);
     };
 
     that.showWarning = function (Message) {
@@ -87,7 +87,7 @@
             $('#' + id).closest('.toastify').fadeOut(400, function () {
                 $(this).remove();
             });
-        }, that.ToasterSeconds * 1000);
+        }, that.ToasterSeconds * 100000);
     };
 
     that.getToasterHTML = function () {
