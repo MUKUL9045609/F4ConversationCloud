@@ -17,7 +17,11 @@
                         <input placeholder="name@example.com" type="email" class="form-control" value="">
                     </div>
                     <div class="from-group">
-                        <label class="form-label">Password</label>
+                       
+                        <div class="d-flex justify-content-between mb-1">
+                            <label class="form-label mb-0">Password</label>
+                            <a asp-action="ForgotPassword" class="forgot-password text-muted text-right d-block mt-0">Forgot Password?</a>
+                        </div>
                         <div class="d-flex password-wrap">
                             <input type="password" id="password" class="form-control" value="admin@1234">
                             <i class="toggle-password fa fa-fw fa-eye-slash"></i>
