@@ -4501,6 +4501,9 @@ input[type=time i] {
   background-color: transparent !important;
   box-shadow: none !important;
   padding: 0px !important;
+  position: fixed;
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 2147483647;
 }
 .toastify .toast .toast__message {
   color: #606060;
@@ -4599,6 +4602,9 @@ input[type=time i] {
   position: absolute;
   right: 20px;
   top: 36%;
+  background: 0 0;
+  border: 0;
+  opacity: 0.4;
 }
 
 .toastify.on .toast:not(.showing):not(.show) {
@@ -4616,6 +4622,10 @@ input[type=time i] {
   background-size: 37% !important;
   opacity: 1 !important;
   border: 1px solid #ddd !important;
+}
+
+.toastify-right {
+  right: 15px;
 }
 
 .invalid-wrap {
