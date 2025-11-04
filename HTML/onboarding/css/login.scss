@@ -802,3 +802,20 @@ padding-left: 61px !important;
     opacity: 1 !important;
     border: 1px solid #ddd !important;
 }
+.invalid-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    h5{
+        font-size: 19px;
+        margin: 17px auto 4px;
+    }
+    p{
+        color: #6C6C6C;
+        max-width: 240px;
+        text-align: center;
+        font-size: 15px;
+    }
+}
