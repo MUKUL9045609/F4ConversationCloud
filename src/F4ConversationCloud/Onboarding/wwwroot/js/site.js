@@ -5,48 +5,48 @@
 
 
 
-//function showToast(message, type = "info", duration = 3000) {
-//    const toastEl = document.createElement("div");
-//    toastEl.className = "toast align-items-center border-0 show";
-//    toastEl.setAttribute("role", "alert");
-//    toastEl.setAttribute("aria-live", "assertive");
-//    toastEl.setAttribute("aria-atomic", "true");
-//    toastEl.style.position = "fixed";
-//    toastEl.style.top = "20px";
-//    toastEl.style.right = "20px";
-//    toastEl.style.zIndex = "9999";
+function showToast(message, type = "info", duration = 3000) {
+    const toastEl = document.createElement("div");
+    toastEl.className = "toast align-items-center border-0 show";
+    toastEl.setAttribute("role", "alert");
+    toastEl.setAttribute("aria-live", "assertive");
+    toastEl.setAttribute("aria-atomic", "true");
+    toastEl.style.position = "fixed";
+    toastEl.style.top = "20px";
+    toastEl.style.right = "20px";
+    toastEl.style.zIndex = "9999";
 
-//    let bgClass = "bg-secondary text-white";
-//    switch (type) {
-//        case "success":
-//            bgClass = "bg-success text-white";
-//            break;
-//        case "danger":
-//            bgClass = "bg-danger text-white";
-//            break;
-//        case "warning":
-//            bgClass = "bg-warning text-dark";
-//            break;
-//        case "info":
-//            bgClass = "bg-info text-dark";
-//            break;
-//    }
+    let bgClass = "bg-secondary text-white";
+    switch (type) {
+        case "success":
+            bgClass = "bg-success text-white";
+            break;
+        case "danger":
+            bgClass = "bg-danger text-white";
+            break;
+        case "warning":
+            bgClass = "bg-warning text-dark";
+            break;
+        case "info":
+            bgClass = "bg-info text-dark";
+            break;
+    }
 
-//    toastEl.innerHTML = `
-//        <div class="d-flex ${bgClass}">
-//            <div class="toast-body">${message}</div>
-//            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-//                data-bs-dismiss="toast" aria-label="Close"></button>
-//        </div>`;
+    toastEl.innerHTML = `
+        <div class="d-flex ${bgClass}">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>`;
 
-//    document.body.appendChild(toastEl);
+    document.body.appendChild(toastEl);
 
-//    const bsToast = new bootstrap.Toast(toastEl, { delay: duration });
-//    bsToast.show();
+    const bsToast = new bootstrap.Toast(toastEl, { delay: duration });
+    bsToast.show();
 
 
-//    setTimeout(() => toastEl.remove(), duration + 500);
-//}
+    setTimeout(() => toastEl.remove(), duration + 500);
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -96,8 +96,3 @@ $(".toggle-password").click(function () {
     }
 });
 
-//$('#toggleButton').on('click', function () {
-//    $('body').toggleClass('sidemenutoggle');
-//});
-
-//commonHelper.showHideLoader(true);

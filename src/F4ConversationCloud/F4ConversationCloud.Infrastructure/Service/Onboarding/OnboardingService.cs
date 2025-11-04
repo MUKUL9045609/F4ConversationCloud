@@ -185,7 +185,7 @@ namespace F4ConversationCloud.Application.Common.Services
             var model = new OnBoardingLogsModel
             {
                 Source = "Onboarding/InsertMetaUsersConfigurationAsync",
-                AdditionalInfo = $"Model: {JsonConvert.SerializeObject(request)}"
+                AdditionalInfo = $"Data: {JsonConvert.SerializeObject(request)}"
             };
             try
             {
@@ -227,7 +227,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
                     if (response > 0)
                     {
-                        model.AdditionalInfo = $"Insert Config Request: {JsonConvert.SerializeObject(insertConfig)}";
+                        model.AdditionalInfo = $"Data: {JsonConvert.SerializeObject(insertConfig)}";
                         model.LogType = "Success";
                         model.Message = "Meta User Configuration Inserted Successfully";
                         return new MetaUsersConfigurationResponse
@@ -236,7 +236,7 @@ namespace F4ConversationCloud.Application.Common.Services
                             Message = "Meta User Configuration Inserted Successfully"
                         };
                     }
-              
+                model.AdditionalInfo = $"Data: {JsonConvert.SerializeObject(insertConfig)}";
                 model.LogType = "Failure";
                 model.Message = "Meta User Configuration Insertion Failed";
 
