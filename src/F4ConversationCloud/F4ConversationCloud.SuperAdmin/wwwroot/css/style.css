@@ -4371,6 +4371,7 @@ body {
 
 .toastify {
   background: #fff !important;
+  position:relative;
 }
 
 .toast {
@@ -4538,10 +4539,19 @@ body {
 }
 
 .toast-close {
-  color: #000 !important;
-  position: absolute;
-  right: 20px;
-  top: 36%;
+    color: #000 !important;
+    position: absolute;
+    right: 20px;
+    top: 27%;
+    font-family: inherit;
+    font-size: 1em;
+    opacity: .4;
+    padding: 0 5px;
+    background: 0 0;
+    border: 0;
+}
+.toastify-right {
+    right: 15px;
 }
 
 .toastify.on .toast:not(.showing):not(.show) {

@@ -20,33 +20,44 @@
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 .loginWrapper .loginBox .template_login_title {
-  font-size: 24px;
+  font-size: 20px;
 }
 .loginWrapper .loginBox .forgot-password {
   color: #878a99;
   font-weight: 400;
+  font-size:14px;
 }
 .loginWrapper .loginBox p {
-  text-align: center;
-  font-size: 16px;
-  color: #878282;
+    text-align: center;
+    font-size: 15px;
+    color: #878282;
+    max-width: 350px;
+    margin: 0 auto 16px;
 }
 .loginWrapper .loginBox .from-group {
   margin-bottom: 15px;
 }
 .loginWrapper .loginBox .from-group .form-label {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 3px;
-  display: flex;
-  justify-content: space-between;
+  
+}
+.field-validation-error span{
+    font-size:13px;
+}
+.loginBox .form-text {
+    color: #03A9F5;
+}
+.loginBox .from-group sup {
+    color: #f00;
 }
 .loginWrapper .loginBox .from-group .form-control {
-  padding: 0.5rem 0.5rem;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid #D4D4D4;
-  font-size: 14px;
+    padding: 0.5rem 0.5rem;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #D4D4D4;
+    font-size: 14px;
 }
 .loginWrapper .loginBox .from-group .form-control:focus {
   box-shadow: none;
@@ -54,11 +65,11 @@
 .loginWrapper .loginBox .btn-sign {
   background-color: #03A9F5;
   color: #fff;
-  font-size: 14px;
+  font-size: 14px!important;
   width: 100%;
   text-transform: uppercase;
   margin-top: 27px;
-  padding: 10px 20px;
+  padding: 10px 20px!important;
 }
 
 .register-account {

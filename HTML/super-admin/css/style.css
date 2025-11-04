@@ -4541,7 +4541,17 @@ body {
   color: #000 !important;
   position: absolute;
   right: 20px;
-  top: 36%;
+  top: 27%;
+  font-family: inherit;
+  font-size: 1em;
+  opacity: 0.4;
+  padding: 0 5px;
+  background: 0 0;
+  border: 0;
+}
+
+.toastify-right {
+  right: 15px;
 }
 
 .toastify.on .toast:not(.showing):not(.show) {
