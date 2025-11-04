@@ -31,7 +31,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             try
             {
-                TempData["ErrorMessage"] = "Invalid or missing link parameters.";
 
                 if (string.IsNullOrEmpty(token))
                 {
@@ -53,7 +52,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
-                TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
+                TempData["InfoMessage"] = "Registration successful! Please complete Meta Onboarding !";
                 int UserId = Convert.ToInt32(stringUserid);
                 HttpContext.Session.SetInt32("UserId", UserId);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
@@ -111,7 +110,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 };
                 ViewBag.IsReadOnly = true;
                 ViewBag.DisableButtons = true;
-                TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                TempData["InfoMessage"] = "You have already registered Please Complete Meta Onboarding !";
                 return View(clientinfo);
             }
             
@@ -298,11 +297,11 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
 
-                           // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
+                          //bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
                             int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
-                        var message = "success";
+                        var message = "Your Meta registration has been completed successfully!";
                         TempData.Remove("registrationform");
                         return Json(new { result = true, message });
                     }

@@ -374,10 +374,12 @@
                              startTimer();
                          } else {
                              $('#phoneError').text(response.message);
+
                          }
                      },
                      function (xhr) {
-                         showToast("Technical Error. Please try again.", "danger");
+                         commonHelper.showError("Technical Error.!")
+                         // showToast("Technical Error. Please try again.", "danger");
                      },
                      function () {
                          $("#loader").hide();
@@ -433,7 +435,8 @@
                          
                          if (response.status === true) {
                             $('#PhoneNumberOtpVerifiedId').val(response.status);
-                            showToast(response.message, "success");
+                            //showToast(response.message, "success");
+                            commonHelper.showSuccess(response.message)
                             $('#contactNoOtpDiv,#phoneError').hide();
                             $('#varifyPhoneNumberbtn').addClass('disabled-btn');
                             $('#varifyPhoneNumberbtn span').text('');
@@ -557,7 +560,9 @@
                        
                     },
                     error: function () {
-                        showToast("Technical Error!", "danger");
+                        //showToast("Technical Error!", "danger");
+                        commonHelper.showError("Technical Error.!")
+
                     }
                 });
             });

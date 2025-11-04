@@ -6,10 +6,12 @@
     <title>Fortune4 Conversation Cloud</title>
    
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link href="~/css/swiper-bundle.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/style.css" />
+
     <link rel="icon" type="image/x-icon" href="/favicon-32x32.png">
+
 </head>
 <body>
     <div class="page">
@@ -42,33 +44,40 @@
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/moment.min.js"></script>
     <script src="~/lib/swiper-bundle.min.js"></script>
+    <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
+
     <script src="~/js/daterangepicker.min.js"></script>
     <script src="~/js/commonHelper.js" asp-append-version="true"></script>
     <script src="~/js/ajaxhelper.js" asp-append-version="true"></script>
     <script src="~/js/unobtrusiveHelper.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        $(document).ready(function () {
-            commonHelper.showHideLoader(true);
+    $(document).ready(function () {
+        commonHelper.showHideLoader(true);
 
-            $('#toggleButton').on('click', function() {
-                $('body').toggleClass('sidemenutoggle');
-            });
+        var toastMsg = JSON.parse('@Html.Raw(Json.Serialize(ViewData["ToastMsg"]))' || '{}');
 
-            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
-          
-            if (toastMsg != null && toastMsg != undefined) {
-                debugger;
-                if (toastMsg.type === "Success")
+        if (toastMsg && toastMsg.type) {
+            switch (toastMsg.type) {
+                case "Success":
                     commonHelper.showSuccess(toastMsg.message);
-                else if (toastMsg.type === "Error")
+                    break;
+                case "Error":
                     commonHelper.showError(toastMsg.message);
+                    break;
+                case "Info":
+                    commonHelper.showInfo(toastMsg.message);
+                    break;
+                case "Warning":
+                    commonHelper.showWarning(toastMsg.message);
+                    break;
             }
-            commonHelper.showHideLoader(false);
-        });
+        }
 
-    </script>
-    <script src="https://connect.facebook.net/en_US/sdk.js?hash=f3442150fc3a1fd1d966c3a0152b6916" async="" crossorigin="anonymous"></script>
+        commonHelper.showHideLoader(false);
+    });
+</script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
