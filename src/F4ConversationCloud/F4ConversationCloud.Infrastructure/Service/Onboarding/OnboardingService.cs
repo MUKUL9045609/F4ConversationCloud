@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Reflection;
 using Twilio.Types;
 
@@ -107,69 +108,77 @@ namespace F4ConversationCloud.Application.Common.Services
             var model = new OnBoardingLogsModel
             {
                 Source = "Onboarding/VarifyWhatsAppContactNoAsync",
-                AdditionalInfo = $"Model: {JsonConvert.SerializeObject(request)}"
+                AdditionalInfo = $"Request: {JsonConvert.SerializeObject(request)}"
             };
+
             try
             {
                 var CreateOTP = OtpGenerator.GenerateRandomOTP();
-                    var varificationRequest = new VarifyMobileNumberModel
+
+                var varificationRequest = new VarifyMobileNumberModel
+                {
+                    UserEmailId = request.UserEmailId,
+                    UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
+                    OTP = CreateOTP,
+                    OTP_Source = "WhatsApp"
+                };
+
+                var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
+
+                if (insertOTPResponse != 1)
+                {
+                    model.LogType = "Failure";
+                    model.Message = "Failed to generate OTP.";
+                    model.AdditionalInfo = $"InsertOTPResponse: {JsonConvert.SerializeObject(varificationRequest)}";
+                    return new VarifyUserDetailsResponse
                     {
-                        UserEmailId = request.UserEmailId,
-                        UserPhoneNumber = $"{request.CountryCode}{request.UserPhoneNumber}",
-                        OTP = CreateOTP,
-                        OTP_Source = "WhatsApp"
+                        status = false,
+                        message = "Failed to generate OTP"
                     };
+                }
 
-                    var insertOTPResponse = await _authRepository.InsertOTPAsync(varificationRequest);
+                var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
 
-                    if (insertOTPResponse != 1)
+                if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
+                {
+                    model.LogType = "Failure";
+                    model.Message = "Failed to send OTP On WhatsApp.";
+                    model.AdditionalInfo = $"SendWhatsAppResponse: {JsonConvert.SerializeObject(sendWhatsAppOTP)}";
+                    return new VarifyUserDetailsResponse
                     {
-                        return new VarifyUserDetailsResponse
-                        {
-                            status = false,
-                            message = "Failed generate OTP"
-                        };
-                    }
-
-                    var sendWhatsAppOTP = await _messageService.SendOnboardingVerificationAsync(varificationRequest);
-
-                    if (string.IsNullOrEmpty(sendWhatsAppOTP.MessageId))
-                    {
-                        model.LogType = "Failure";
-                        model.Message = "MessageId is Missing.";
-                        
-                        return new VarifyUserDetailsResponse
-                        {
-                            status = false,
-                            message = "Failed to send OTP via WhatsApp"
-                        };
-                    }
-                   
-                  return new VarifyUserDetailsResponse
-                    {
-                        status = true,
-                        message = "OTP sent successfully to your WhatsApp.!"
+                        status = false,
+                        message = "Failed to send OTP via WhatsApp"
                     };
-                    
-                
+                }
+
+                model.LogType = "Success";
+                model.Message = "OTP sent successfully.";
+                model.AdditionalInfo = $"OTPRequest: {JsonConvert.SerializeObject(varificationRequest)}";
+
+                return new VarifyUserDetailsResponse
+                {
+                    status = true,
+                    message = "OTP sent successfully to your WhatsApp.!"
+                };
             }
             catch (Exception ex)
             {
                 model.LogType = "Error";
                 model.Message = ex.Message;
                 model.StackTrace = ex.StackTrace;
+
                 return new VarifyUserDetailsResponse
                 {
-                   
                     status = false,
                     message = "Technical Error!"
                 };
             }
-            finally {
+            finally
+            {
                 await _logService.InsertOnboardingLogs(model);
             }
-
         }
+
 
         public async Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request)
         {
@@ -218,6 +227,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
                     if (response > 0)
                     {
+                        model.AdditionalInfo = $"Insert Config Request: {JsonConvert.SerializeObject(insertConfig)}";
                         model.LogType = "Success";
                         model.Message = "Meta User Configuration Inserted Successfully";
                         return new MetaUsersConfigurationResponse
@@ -334,7 +344,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 }
                 else
                 {
-                   
+
                     return new ValidateRegistrationOTPResponse
                     {
                         status = false,
@@ -347,12 +357,16 @@ namespace F4ConversationCloud.Application.Common.Services
                 model.LogType = "Error";
                 model.Message = ex.Message;
                 model.StackTrace = ex.StackTrace;
-                await _logService.InsertOnboardingLogs(model);
+               
                 return new ValidateRegistrationOTPResponse
                 {
                     status = false,
                     message = "Technical Error!"
                 };
+            }
+            finally {
+
+                await _logService.InsertOnboardingLogs(model);
             }
             
         }
@@ -384,7 +398,12 @@ namespace F4ConversationCloud.Application.Common.Services
 
         public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
         {
-           
+            var log = new OnBoardingLogsModel
+            {
+                Source = "Onboarding/OnboardingLogin",
+                AdditionalInfo = $"Model: {JsonConvert.SerializeObject(request)}",
+            };
+
             try
             {
 
@@ -407,7 +426,7 @@ namespace F4ConversationCloud.Application.Common.Services
                         UserId = ClientDetails.UserId,
                         Email = ClientDetails.Email,
                         Stage = ClientDetails.Stage,
-                        Password= ClientDetails.Password,
+                        Password = ClientDetails.Password,
                     }
                 };
 
@@ -415,22 +434,17 @@ namespace F4ConversationCloud.Application.Common.Services
             }
             catch (Exception ex)
             {
-                var log = new OnBoardingLogsModel
-                {
-                    Source = "Onboarding/OnboardingLogin",
-                    AdditionalInfo = $"Model: {JsonConvert.SerializeObject(request)}",
-                    LogType = "Error",
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                };
-              
-                await _logService.InsertOnboardingLogs(log);
+                log.LogType = "Error";
+                log.Message = ex.Message;
+                log.StackTrace = ex.StackTrace;
                 return new LoginResponse
                 {
                     Message = "Technical Error",
                     IsSuccess = false,
                 };
-
+            }
+            finally {
+                await _logService.InsertOnboardingLogs(log);
             }
 
 
@@ -438,7 +452,13 @@ namespace F4ConversationCloud.Application.Common.Services
 
         public async Task<bool> ValidateClientEmailAsync(string EmailId)
         {
-            
+            var Log = new OnBoardingLogsModel
+            {
+                Source = "Onboarding/ValidateClientEmailAsync",
+                AdditionalInfo = $"EmailId: {EmailId}",
+               
+            };
+
             try
             {
                 var userDetails = await _authRepository.ValidateEmailId(EmailId);
@@ -449,20 +469,19 @@ namespace F4ConversationCloud.Application.Common.Services
                 return true;
 
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
-                var Log = new OnBoardingLogsModel
-                {
-                    Source = "Onboarding/ValidateClientEmailAsync",
-                    AdditionalInfo = $"EmailId: {EmailId}",
-                    LogType = "Error",
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                };
-                await _logService.InsertOnboardingLogs(Log);
+                Log.LogType = "Error";
+                Log.Message = ex.Message;
+                Log.StackTrace = ex.StackTrace;
+
                 return false;
             }
+            finally {
+                await _logService.InsertOnboardingLogs(Log);
+            }
            
+
         }
 
         public async Task SendResetPasswordLink(string EmailId)
@@ -501,6 +520,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 };
 
                 await _emailService.Send(emailRequest);
+                Log.AdditionalInfo = $"EmailSendRequest: {emailRequest}";
                 Log.LogType = "Success";
                 Log.Message = "Password Reset email sent successfully";
 
@@ -535,6 +555,9 @@ namespace F4ConversationCloud.Application.Common.Services
 
                 };
                 int result = await _authRepository.UpdatePasswordAsync(UpdateRequest);
+                Log.AdditionalInfo = $"EmailSendRequest: {UpdateRequest}";
+                Log.LogType = "Success";
+                Log.Message = "Password Reset email sent successfully";
                 return result is not 0;
             }
             catch (Exception ex)
