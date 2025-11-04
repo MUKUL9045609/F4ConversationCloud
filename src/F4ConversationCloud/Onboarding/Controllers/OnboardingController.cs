@@ -31,30 +31,29 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             try
             {
+                TempData["ErrorMessage"] = "Invalid or missing link parameters.";
+
                 if (string.IsNullOrEmpty(token))
                 {
                     TempData["ErrorMessage"] = "Invalid or missing link parameters.";
                     return RedirectToAction("InvalidUrl");
                 }
                 var decrypted = token.Decrypt();
-
-             
-
                 string[] tokenParts = decrypted.Split("|");
                 string stringUserid = tokenParts[0];
-               
-                
                 if (tokenParts.Length != 2)
                 {
                     TempData["ErrorMessage"] = "Invalid Link";
                     return RedirectToAction("InvalidUrl");
                 }
+
                 DateTime expiryTime = DateTime.Parse(tokenParts[1]);
                 if (expiryTime < DateTime.UtcNow)
                 {
                     TempData["ErrorMessage"] = "Link has expired";
                     return RedirectToAction("InvalidUrl");
                 }
+                TempData["SuccessMessage"] = "Registration successful! Please complete Meta Onboarding !";
                 int UserId = Convert.ToInt32(stringUserid);
                 HttpContext.Session.SetInt32("UserId", UserId);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);

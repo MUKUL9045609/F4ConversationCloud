@@ -134,11 +134,12 @@
             var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
 
             if (toastMsg != null && toastMsg != undefined) {
+                debugger;
                 if (toastMsg.type === "Success")
                     commonHelper.showSuccess(toastMsg.message);
                 else if (toastMsg.type === "Error")
                     commonHelper.showError(toastMsg.message);
-            }
+            }ErrorMessage
             commonHelper.showHideLoader(false);
         });
 

@@ -269,6 +269,8 @@
 </div>
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="~/js/commonHelper.js" asp-append-version="true"></script>
+
     @{
      await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -366,7 +368,8 @@
                      function (response) {
                             $("#loader").hide();
                          if (response.status === true) {
-                             showToast(response.message, "success");
+                             commonHelper.showSuccess(response.message)
+                            // showToast(response.message, "success");
                              $('#contactNoOtpDiv').show();
                                 $('#varifyPhoneNumberbtn').hide();
                              startTimer();

@@ -12,7 +12,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>
 <body class="no-backdrop">
+    
     <div class="loginwrapper">
+       
         <div class="loginBox">
 
             <div class="left-col">
@@ -31,7 +33,7 @@
                 <div class="loader-wrapper" id="loader">
                     <div class="loader"></div>
                 </div>
-                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+                @* <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
                     <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="d-flex">
                             <div id="toastMessage" class="toast-body">
@@ -51,16 +53,29 @@
                 @if (TempData["ErrorMessage"] != null)
                 {
                     <input type="hidden" class="temp-message" data-type="danger" value="@TempData["ErrorMessage"]" />
-                }
+                } *@
                 @RenderBody()
             </div>
         </div>
     </div>
-
-
+    <div class="toastWrap">
+    </div>
+    
     @await Html.PartialAsync("_TermsConditionPartial")
     <script>
-       
+        $(document).ready(function () {
+
+
+            var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+            debugger;
+            if (toastMsg != null && toastMsg != undefined) {
+                if (toastMsg.type === "Success")
+                    debugger;
+                    commonHelper.showSuccess(toastMsg.message);
+                else if (toastMsg.type === "Error")
+                    commonHelper.showError(toastMsg.message);
+            }
+        });
     </script>
  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -68,12 +83,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/unobtrusiveHelper.js"></script>
     <script src="~/js/AjaxHelper.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

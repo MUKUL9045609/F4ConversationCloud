@@ -25,6 +25,7 @@
     }
 
     that.showSuccess = function (Message) {
+        debugger;
         var id = that.generateGUID();
         var html = that.getToasterHTML();
         html = html.replace('{class}', 'toast--green'); // Keep Toastify green class

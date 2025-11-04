@@ -2,6 +2,8 @@
     Layout = "_ThankYouPageLayout";
     ViewData["Title"] = "Invalid Token ";
 }
+<div class="toastWrap">
+</div>
 <div class="loginBox thank-you">
     <span class="sucess-thanks">
 
@@ -21,3 +23,32 @@
         }
     
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/unobtrusiveHelper.js"></script>
+<script src="~/js/AjaxHelper.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/commonHelper.js" asp-append-version="true"></script>
+
+<script>
+       $(document).ready(function () {
+        var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+        debugger;
+        if (toastMsg != null && toastMsg != undefined) {
+            debugger;
+            if (toastMsg.type === "Success") {
+                commonHelper.showSuccess(toastMsg.message);
+            }
+            else if (toastMsg.type === "Error") {
+                commonHelper.showError(toastMsg.message);
+            }
+        }
+    });
+
+</script>
