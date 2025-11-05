@@ -20,17 +20,25 @@
         overflow: hidden;
         padding: 30px 40px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-        .template_login_title{font-size: 24px;}
-        .forgot-password{color: #878a99;font-weight: 400;}
-        p{text-align: center;font-size: 16px;color: #878282;}
+        .template_login_title{font-size: 20px;}
+        .forgot-password{color: #878a99;font-weight: 400;font-size: 14px;}
+        .form-text {
+            color: #03A9F5;
+        }
+        p{
+            text-align: center;
+            font-size: 15px;
+            color: #878282;
+            max-width: 350px;
+            margin: 0 auto 16px;
+        }
         .from-group{
             margin-bottom: 15px;
             .form-label{
                 font-weight: 500;
-                font-size: 15px;
+                font-size: 14px;
                 margin-bottom: 3px;
-                display: flex;
-                justify-content: space-between;
+                
             }
             .form-control{
                 padding: 0.5rem 0.5rem;
@@ -43,15 +51,18 @@
                     box-shadow: none;
                 }
             }
+            sup{
+                color: #f00;
+            }
         }
         .btn-sign{
             background-color: $tabs;
             color: #fff;
-            font-size: 14px;
+            font-size: 14px!important;
             width: 100%;
             text-transform: uppercase;
             margin-top: 27px;
-            padding: 10px 20px;
+            padding: 10px 20px!important;
         }
     }
 }
@@ -91,4 +102,7 @@
             }
         }
     }
+}
+.field-validation-error span{
+    font-size:13px;
 }

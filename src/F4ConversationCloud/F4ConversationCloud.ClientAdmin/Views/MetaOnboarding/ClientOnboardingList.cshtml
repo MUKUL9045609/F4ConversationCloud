@@ -168,28 +168,28 @@
                 .then(responseData => {
                   if (responseData.result) {
                       window.location.href = '@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
-
+                      commonHelper.showSuccess(responseData.message)
                   } else {
-                       showToast("Failed Account linked", "danger");
+                       commonHelper.showError("Failed Account linked");
 
                         console.log('Failed: ' + responseData.message);
                       }
                     })
                     .catch(error => {
                       console.error("Error saving Meta config:", error);
-                       showToast("Something went wrong while saving WhatsApp configuration.", "danger");
+                        commonHelper.showError("Something went wrong while saving WhatsApp configuration.");
                     });
 
                   } else if (data.event === 'CANCEL') {
                     const { current_step } = data.data;
                     console.warn("User cancelled at step:", current_step);
-                     showToast(current_step ,"danger");
+                     commonHelper.showError(current_step);
                   }
                   else if (data.event === 'ERROR') {
                     const { error_message } = data.data;
                     console.error("Meta error:", error_message);
 
-                    showToast("Meta error: "+error_message ,"danger");
+                    commonHelper.showError("Meta error: "+error_message);
                   }
                 }
 

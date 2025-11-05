@@ -12,5 +12,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
     {
         Task<PhoneRegistrationOnMetaResponse> RegisterPhone(PhoneRegistrationOnMeta request);
         Task<PhoneRegistrationOnMetaResponse> DeregisterPhone(PhoneRegistrationOnMeta request);
+        Task<dynamic> GetBusinessUsersWithWhatsappAccounts();
     }
 }

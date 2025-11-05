@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace F4ConversationCloud.ClientAdmin.Controllers
+namespace F4ConversationCloud.Onboarding.Controllers
 {
-    public class BaseController : Controller
+    public class BaseController: Controller
     {
         public BaseController()
         {
@@ -39,24 +39,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     TempData.Remove("WarningMessage");
                 }
 
-                var controllerName = context.RouteData.Values["controller"]?.ToString();
-                var actionName = context.RouteData.Values["action"]?.ToString();
-
-
-                if (controllerName == "Auth" && (actionName == "Login" || actionName == "Logout" || actionName == "ForgotPassword" || actionName == "InvalidUrl"))
-                {
-                    base.OnActionExecuting(context);
-                    return;
-                }
-
-                var username = context.HttpContext.Session.GetString("Username");
-
-                if (string.IsNullOrEmpty(username))
-                {
-                    context.Result = new RedirectToActionResult("Login", "Auth", null);
-                    return;
-                }
-
                 base.OnActionExecuting(context);
             }
             catch (Exception ex)
@@ -64,5 +46,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
     }
 }

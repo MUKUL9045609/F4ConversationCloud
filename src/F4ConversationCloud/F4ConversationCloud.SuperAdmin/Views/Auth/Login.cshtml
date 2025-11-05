@@ -27,10 +27,12 @@
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div class="from-group">
-                    <label class="form-label">Password</label>
+                    <div class="d-flex justify-content-between mb-1">
+                        <label class="form-label mb-0">Password</label>
+                        <a asp-action="ForgotPassword" class="forgot-password text-muted text-right d-block mt-0">Forgot Password?</a>
+                    </div>
                     <input type="password" asp-for="Password" class="form-control" placeholder="Password" autocomplete="off">
                     <span asp-validation-for="Password" class="text-danger"></span>
-                    <a asp-action="ForgotPassword" class="form-text text-muted text-right d-block">Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn btn-sign">Sign In</button>
             </form>

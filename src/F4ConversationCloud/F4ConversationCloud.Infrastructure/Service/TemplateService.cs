@@ -509,13 +509,10 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             try
             {
-               
-
                 string requestJson = JsonConvert.SerializeObject(requestBody);
-
-
+                
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-
+                
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
                 var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + WhatsAppBusinessRequestEndpoint.Whatsappbusinessprofile.Replace("{{Phone-Number-ID}}", PhoneNumberId) + "whatsapp_business_profile?fields=profile_picture_url";
@@ -527,7 +524,6 @@ namespace F4ConversationCloud.Infrastructure.Service
                                                                     "Get Meta Whatsapp business profile",
                                                                     null,
                                                                     true);
-
                 return new
                 {
                     Success = true,
@@ -546,6 +542,9 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
+
+
+
     }
 
 

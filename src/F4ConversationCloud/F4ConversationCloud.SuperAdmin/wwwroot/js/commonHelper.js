@@ -27,7 +27,7 @@
     that.showSuccess = function (Message) {
         var id = that.generateGUID();
         var html = that.getToasterHTML();
-        html = html.replace('{class}', 'toast--green'); // Keep Toastify green class
+        html = html.replace('{class}', 'toast--green');
         html = html.replace('{Id}', id);
         html = html.replace('{message}', Message);
 

@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
-    public class AuthController : Controller
+    public class AuthController:BaseController
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
@@ -33,6 +33,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(ClientLoginViewModel request)
         {
             try
@@ -83,7 +84,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
                 HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
-                TempData["WarningMessage"] = $"Welcome Back {clientdetails.FirstName} {clientdetails.LastName}";
                 var stageValue = HttpContext.Session.GetInt32("StageId");
 
                 ClientFormStage stage = (ClientFormStage)stageValue.Value;
@@ -121,7 +121,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return StatusCode(500, false);
             }
         }
-
+        [AllowAnonymous]
         [HttpGet("forgot-password")]
         public async Task<IActionResult> ForgotPassword()
         {
@@ -134,6 +134,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return View();
             }
         }
+        [AllowAnonymous]
         [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -162,6 +163,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("confirmpassword/{id}")]
         public async Task<IActionResult> ConfirmPassword([FromRoute] string id)
         {
@@ -229,7 +231,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return View(model);
             }
         }
-
+        
+        [AllowAnonymous]
         [HttpGet("invalid-token")]
         public IActionResult InvalidUrl()
         {

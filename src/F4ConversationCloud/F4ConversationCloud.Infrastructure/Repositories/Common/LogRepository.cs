@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Interfaces;
@@ -43,6 +44,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             parameters.Add("StackTrace", onBoardingLogs.StackTrace);
             parameters.Add("AdditionalInfo", onBoardingLogs.AdditionalInfo);
             return await _repository.InsertUpdateAsync("sp_InsertOnboardingLog", parameters);
+        }
+
+        public async Task<int> InsertClientAdminLogsAsync(ClientAdminLogsModel clientAdminLogs)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("userId", clientAdminLogs.SessionUserId);
+            parameters.Add("Source", clientAdminLogs.Source);
+            parameters.Add("LogDate", clientAdminLogs.LogDate);
+            parameters.Add("LogType", clientAdminLogs.LogType);
+            parameters.Add("Message", clientAdminLogs.Message);
+            parameters.Add("StackTrace", clientAdminLogs.StackTrace);
+            parameters.Add("AdditionalInfo", clientAdminLogs.Data);
+            return await _repository.InsertUpdateAsync("sp_InsertClientAdminLogs", parameters);
         }
     }
 }

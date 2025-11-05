@@ -158,7 +158,18 @@ button{
         }
     }
 }
-
+.resend{
+    align-items: center;
+    &::before{
+            content:"";
+            background-image: url("data:image/svg+xml,%3Csvg width='13' height='12' viewBox='0 0 13 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 1.10983V4.77746M0.5 4.77746H3.77273M0.5 4.77746L3.03091 2.11231C3.61714 1.45502 4.34239 0.974861 5.13899 0.71664C5.93559 0.458418 6.77758 0.430551 7.58639 0.635637C8.3952 0.840722 9.14447 1.27208 9.76429 1.88945C10.3841 2.50683 10.8543 3.2901 11.1309 4.16618M12.5 10.8902V7.22254M12.5 7.22254H9.22727M12.5 7.22254L9.96909 9.88769C9.38287 10.545 8.65761 11.0251 7.86101 11.2834C7.06441 11.5416 6.22242 11.5694 5.41361 11.3644C4.6048 11.1593 3.85553 10.7279 3.23571 10.1105C2.61589 9.49317 2.14573 8.7099 1.86909 7.83381' stroke='%23E3E3E3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+            background-size: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 16px;width:16px;display: inline-block;
+            margin-right: 7px;
+    }
+}
 
 
 

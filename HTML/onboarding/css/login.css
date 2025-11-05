@@ -143,6 +143,7 @@
 }
 .loginwrapper .loginBox .left-col .logo img {
   margin-bottom: 0px;
+  height: 41px;
 }
 .loginwrapper .loginBox .left-col p {
   font-size: 14px;
@@ -695,6 +696,9 @@
   background-color: transparent !important;
   box-shadow: none !important;
   padding: 0px !important;
+  position: fixed;
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 2147483647;
 }
 .toastify .toast {
   border-radius: 10px !important;
@@ -795,8 +799,13 @@
   color: #000 !important;
   position: absolute;
   right: 20px;
-  top: 36%;
+  top: 27%;
   font-family: auto !important;
+  font-size: 1em;
+  opacity: 0.4;
+  padding: 0 5px;
+  background: 0 0;
+  border: 0;
 }
 
 .toastify.on .toast:not(.showing):not(.show) {
@@ -832,4 +841,9 @@
   max-width: 240px;
   text-align: center;
   font-size: 15px;
+}
+
+.toastify-right {
+  right: 15px;
+  top: 15px;
 }/*# sourceMappingURL=login.css.map */
