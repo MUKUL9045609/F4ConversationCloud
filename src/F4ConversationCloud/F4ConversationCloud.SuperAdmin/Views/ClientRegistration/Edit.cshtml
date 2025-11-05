@@ -6,62 +6,69 @@
 
 <div class="content">
     <div class="container-fluid">
-        <h3 class="sub-heading"><a href="@Url.Action("List", "ClientRegistration")" class="back"></a>Register User </h3>
-        <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-wrapper">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="mb-2">
-                        <label>First Name <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter user name" />
-                        </div>
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-2">
-                        <label>Last Name <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input asp-for="LastName" type="text" class="form-control" placeholder="Enter Last name" />
-                        </div>
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-2">
-                        <label>Email Address <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input asp-for="Email" type="text" class="form-control" placeholder="Enter email address" />
-                        </div>
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-2">
-                        <label>Contact Number <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input asp-for="ContactNumber" type="text" class="form-control" placeholder="Enter Contact Number" />
-                        </div>
-                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-2">
-                        <label>Role <span class="text-danger">*</span></label>
-                        <select asp-for="Role" asp-items="(IEnumerable<SelectListItem>)ViewBag.Roles" class="form-control">
-                            <option value="" disabled selected>Select Role</option>
-                        </select>
-                    </div>
-                    <span asp-validation-for="Role" class="text-danger"></span>
+        <div class="card">
+            <div class="header-content">
+                <h3 class="sub-heading"><a href="@Url.Action("List", "ClientRegistration")" class="back"></a>Register User </h3>
+                <div>
+                    <a href="register.html" class="btn primary-btn resend d-flex"> Re-send</a>
                 </div>
             </div>
-            <div class="d-flex justify-content-start gap-2 mt-3">
-                <button class="btn primary-btn" type="submit" value="Edit">Save</button>
-                <button type="button" class="btn danger-btn" id="cancel-button">Cancel</button>
-            </div>
-        </form>
+            <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-wrapper">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label>First Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter user name" />
+                            </div>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label>Last Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input asp-for="LastName" type="text" class="form-control" placeholder="Enter Last name" />
+                            </div>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label>Email Address <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input asp-for="Email" type="text" class="form-control" placeholder="Enter email address" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label>Contact Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input asp-for="ContactNumber" type="text" class="form-control" placeholder="Enter Contact Number" />
+                            </div>
+                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label>Role <span class="text-danger">*</span></label>
+                            <select asp-for="Role" asp-items="(IEnumerable<SelectListItem>)ViewBag.Roles" class="form-control">
+                                <option value="" disabled selected>Select Role</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="Role" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-start gap-2 mt-3">
+                    <button class="btn primary-btn" type="submit" value="Edit">Save</button>
+                    <button type="button" class="btn danger-btn" id="cancel-button">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
