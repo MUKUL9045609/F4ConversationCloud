@@ -73,5 +73,13 @@
         $("#cancel-button").click(function(){
             location.href = '@Url.Action("List", "ClientRegistration")';
         });
+
+        $(document).on('submit', 'form', function (e) {
+            if (this.checkValidity()) {
+                commonHelper.showHideLoader(true);
+            } else {
+                commonHelper.showHideLoader(false);
+            }
+        });
     </script>
 }

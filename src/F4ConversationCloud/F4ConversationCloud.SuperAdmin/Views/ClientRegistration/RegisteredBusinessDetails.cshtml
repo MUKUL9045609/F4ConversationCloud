@@ -6,7 +6,7 @@
         <div class="card">
             <div class="header-content d-flex justify-content-between">
                 <h3 class="sub-heading">
-                    <a href="@Url.Action("Create", "ClientRegistration")"> <span class="back"></span>@Model.OrganisationName</a>
+                    <a href="@Url.Action("List", "ClientRegistration")"> <span class="back"></span>@Model.OrganisationName</a>
                 </h3>
             </div>
             <div class="waba-wrap">
@@ -52,7 +52,7 @@
                 </ul>
             </div>
 
-            <h6 class="details-title">WhatsApp Business Account Details</h6>
+            <h6 class="details-title">WhatsApp Business Account Details <span class="light-text ms-1">(@Model.clientManagementViewModel.TotalCount)</span> </h6>
             <div id="partialForTemplateType">
                 <partial name="_BusinessAccountsListPartial" model="@Model.clientManagementViewModel" />
             </div>
@@ -121,6 +121,13 @@
                 loadData();
             }
         });
-        
+
+        $(document).on('click', '#name-link', function () {
+            commonHelper.showHideLoader(true);
+        });
+
+        $(document).on('click', '.back', function () {
+            commonHelper.showHideLoader(true);
+        });
     </script>
 }
