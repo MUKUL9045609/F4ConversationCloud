@@ -210,9 +210,16 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             {
 
                 if (!ModelState.IsValid)
+                {
                     return View(model);
+                }
+                var UpdateRequest = new ConfirmPasswordModel
+                {
+                    UserId = model.UserId,
+                    Password = model.Password.Encrypt(),
 
-                bool success = await _onboardingService.SetNewPassword(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password });
+                };
+                bool success = await _onboardingService.SetNewPassword(UpdateRequest);
 
                 if (!success)
                 {

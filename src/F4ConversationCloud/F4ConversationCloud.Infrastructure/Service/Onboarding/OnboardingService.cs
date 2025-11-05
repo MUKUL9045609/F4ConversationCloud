@@ -546,14 +546,10 @@ namespace F4ConversationCloud.Application.Common.Services
             };
             try
             {
-                var UpdateRequest = new ConfirmPasswordModel
-                {
-                    UserId = model.UserId,
-                    Password =model.Password.Encrypt(),
+               
+                int result = await _authRepository.UpdatePasswordAsync(model);
 
-                };
-                int result = await _authRepository.UpdatePasswordAsync(UpdateRequest);
-                Log.AdditionalInfo = $"EmailSendRequest: {UpdateRequest}";
+                Log.AdditionalInfo = $"EmailSendRequest:{JsonConvert.SerializeObject(model)}";
                 Log.LogType = "Success";
                 Log.Message = "Password Reset email sent successfully";
                 return result is not 0;
