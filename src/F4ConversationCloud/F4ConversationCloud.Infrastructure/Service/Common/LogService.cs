@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,18 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
                 return   0;
             }
           
+        }
+        public async Task<int> InsertClientAdminLogsAsync(ClientAdminLogsModel clientAdminLogs)
+        {
+            try
+            {
+                return await _logRepository.InsertClientAdminLogsAsync(clientAdminLogs);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
         }
     }
 }

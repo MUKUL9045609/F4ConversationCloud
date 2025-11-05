@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Register Form";
 }
-@functions {
+@* @functions {
     string ReadonlyOrEmpty(bool isReadOnly)
     {
         return isReadOnly ? "readonly" : "";
@@ -14,7 +14,7 @@
     }
     
    
-}
+} *@
 
 <div class="bx_wrap">
     <h4>Create Your Business Account!</h4>
@@ -250,16 +250,17 @@
            
         
         </div>
-        <div class="form-check d-flex justify-content-start  terms-check gap-2">
-            <input asp-for="TermsCondition" class="input" id="agreeTerms" />
+        <div class="form-check d-flex justify-content-start terms-check gap-2 mt-1">
+            <input asp-for="TermsCondition" class="form-check-input" id="agreeTerms" />
             <label class="form-check-label" for="agreeTerms" data-bs-toggle="modal" data-bs-target="#createTemplate">
                 By continuing, I agree to the <a href="javascript:void(0)" data-bs-toggle="modal"
                                                     data-bs-target="#createTemplate" >Terms & Conditions</a>
-            </label>
+                <span asp-validation-for="TermsCondition" class="error-message text-danger small d-block"></span>
+
+              </label>
+
         </div>
-        <div class="form-check d-flex justify-content-end terms-check gap-2">
-            <span asp-validation-for="TermsCondition" class="error-message text-danger small text-end"></span>
-        </div>
+           
 
         <button type="submit" class="btn login-btn">Register Account</button>
             <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
@@ -268,7 +269,7 @@
 
 </div>
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+ 
     @{
      await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -366,16 +367,19 @@
                      function (response) {
                             $("#loader").hide();
                          if (response.status === true) {
-                             showToast(response.message, "success");
+                             commonHelper.showSuccess(response.message)
+                            // showToast(response.message, "success");
                              $('#contactNoOtpDiv').show();
                                 $('#varifyPhoneNumberbtn').hide();
                              startTimer();
                          } else {
                              $('#phoneError').text(response.message);
+
                          }
                      },
                      function (xhr) {
-                         showToast("Technical Error. Please try again.", "danger");
+                         commonHelper.showError("Technical Error.!")
+                         // showToast("Technical Error. Please try again.", "danger");
                      },
                      function () {
                          $("#loader").hide();
@@ -431,7 +435,8 @@
                          
                          if (response.status === true) {
                             $('#PhoneNumberOtpVerifiedId').val(response.status);
-                            showToast(response.message, "success");
+                            //showToast(response.message, "success");
+                            commonHelper.showSuccess(response.message)
                             $('#contactNoOtpDiv,#phoneError').hide();
                             $('#varifyPhoneNumberbtn').addClass('disabled-btn');
                             $('#varifyPhoneNumberbtn span').text('');
@@ -555,7 +560,9 @@
                        
                     },
                     error: function () {
-                        showToast("Technical Error!", "danger");
+                        //showToast("Technical Error!", "danger");
+                        commonHelper.showError("Technical Error.!")
+
                     }
                 });
             });

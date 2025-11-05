@@ -11,10 +11,20 @@
     <title>Fortune4 Conversation Cloud</title>
     <link rel="stylesheet" href="~/css/login.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    @* <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"> *@
+
 </head>
 
 <body>
+    <div class="toastWrap">
+    </div>
+        <div class="loader-wrapper" id="loader">
+            <div class="loader"></div>
+        </div>
+    
     <div class="loginwrapper">
+       
         <div class="loginBox">
             <div class="left-col">
                 <a href="#" class="logo">
@@ -85,54 +95,46 @@
         </div>
        
     </div>
-    @* @if (TempData["SuccessMessage"] != null)
-    {
-        <input type="hidden" class="temp-message" data-type="success" value="@TempData["SuccessMessage"]" />
-    }
-
-    @if (TempData["WarningMessage"] != null)
-    {
-        <input type="hidden" class="temp-message" data-type="warning" value="@TempData["WarningMessage"]" />
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <input type="hidden" class="temp-message" data-type="danger" value="@TempData["ErrorMessage"]" />
-    }
-    @if (TempData["Info"] != null)
-    {
-        <input type="hidden" class="temp-message" data-type="info" value="@TempData["Info"]" />
-    } *@
-    <div class="toastWrap">
-    </div>
-    <div class="loader-wrapper" id="loader">
-        <div class="loader"></div>
-    </div>
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    
     <script src="~/js/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/unobtrusiveHelper.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
+    <script src="~/js/unobtrusiveHelper.js"></script>
+    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
   <script>
 
          $(document).ready(function () {
-              var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
-             
-              if (toastMsg != null && toastMsg != undefined) {
-                  if (toastMsg.type === "Success")
-                      commonHelper.showSuccess(toastMsg.message);
-                  else if (toastMsg.type === "Error")
-                      commonHelper.showError(toastMsg.message);
-              }
-          });
-          $(window).on('load', function () {
+               var toastMsg = @Html.Raw(Json.Serialize(ViewData["ToastMsg"]));
+
+                if (toastMsg != null && toastMsg != undefined) {
+                    switch (toastMsg.type) {
+                        case "Success":
+                            commonHelper.showSuccess(toastMsg.message);
+                            break;
+                        case "Error":
+                            commonHelper.showError(toastMsg.message);
+                            break;
+                        case "Info":
+                            commonHelper.showInfo(toastMsg.message);
+                            break;
+                        case "Warning":
+                            commonHelper.showWarning(toastMsg.message);
+                            break;
+                    }
+                }
+                 $(window).on('load', function () {
               $('.loader-wrapper').fadeOut('slow');
+             });
           });
+         
 
         document.addEventListener("DOMContentLoaded", function () {
             const emailInput = document.getElementById("email");

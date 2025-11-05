@@ -13,7 +13,7 @@ using Twilio.Jwt.AccessToken;
 namespace F4ConversationCloud.Onboarding.Controllers
 {
    
-    public class OnboardingController : Controller
+    public class OnboardingController : BaseController
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
@@ -31,30 +31,28 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             try
             {
+
                 if (string.IsNullOrEmpty(token))
                 {
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons .";
                     return RedirectToAction("InvalidUrl");
                 }
                 var decrypted = token.Decrypt();
-
-             
-
                 string[] tokenParts = decrypted.Split("|");
                 string stringUserid = tokenParts[0];
-               
-                
                 if (tokenParts.Length != 2)
                 {
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
+
                 DateTime expiryTime = DateTime.Parse(tokenParts[1]);
                 if (expiryTime < DateTime.UtcNow)
                 {
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
+                TempData["InfoMessage"] = "Registration successful! Please complete Meta Onboarding !";
                 int UserId = Convert.ToInt32(stringUserid);
                 HttpContext.Session.SetInt32("UserId", UserId);
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
@@ -112,7 +110,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 };
                 ViewBag.IsReadOnly = true;
                 ViewBag.DisableButtons = true;
-                TempData["WarningMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                TempData["InfoMessage"] = "You have already registered Please Complete Meta Onboarding !";
                 return View(clientinfo);
             }
             
@@ -299,11 +297,11 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 
 
-                           // bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
+                          //bool ConfirmationEmail = await _onboardingService.SendOnboardingConfirmationEmail(new VarifyMobileNumberModel { UserEmailId = registertemp.Email });
 
                             int UpdateDraft = await _authRepository.UpdateClientFormStageAsync(command.ClientInfoId, ClientFormStage.MetaRegistered);
 
-                        var message = "success";
+                        var message = "Your Meta registration has been completed successfully!";
                         TempData.Remove("registrationform");
                         return Json(new { result = true, message });
                     }
