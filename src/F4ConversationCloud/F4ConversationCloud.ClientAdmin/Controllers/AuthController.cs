@@ -94,13 +94,13 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                    return RedirectToAction("Index", "Home");
 
                 }
             }
             catch (Exception)
             {
-                TempData["WarningMessage"] = "Error";
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return View(request);
             }
 
@@ -117,7 +117,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return StatusCode(500, false);
             }
         }
@@ -159,6 +159,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
             catch (Exception ex)
             {
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return View(model);
             }
         }
@@ -226,7 +227,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "technical error ";
+                TempData["ErrorMessage"] = "Technical Error! ";
 
                 return View(model);
             }
