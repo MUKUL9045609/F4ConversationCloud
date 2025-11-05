@@ -106,6 +106,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     return View(model);
                 }
 
+                var contactExist = await _clientRegistrationService.CheckContactNumberExist(model.ContactNumber);
+
+                if (contactExist)
+                {
+                    ModelState.AddModelError("ContactNumber", "This contact number is already registered.");
+                    return View(model);
+                }
+
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {
                     FirstName = model.FirstName,

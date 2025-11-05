@@ -142,6 +142,10 @@
             commonHelper.showHideLoader(false);
         });
 
+        $(document).on('click', '.signout', function () {
+            commonHelper.showHideLoader(true);
+        });
+
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
