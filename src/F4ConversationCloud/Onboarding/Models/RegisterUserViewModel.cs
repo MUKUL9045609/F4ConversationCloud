@@ -31,7 +31,6 @@ namespace Onboarding.Models
             public string CountryCode { get; set; }
 
             [Required(ErrorMessage = "Address is required ")]
-            [Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
             public string Address { get; set; }
 
             [Required(ErrorMessage = "Country is required")]
@@ -53,7 +52,6 @@ namespace Onboarding.Models
             public string? OptionalAddress { get; set; }
 
             [Required(ErrorMessage = "Organization Name is required. ")]
-            [Remote(action: "IsValidNoWhitespace", controller: "Validation", ErrorMessage = "Name Cannot contain Empty Spaces.")]
             public string OrganizationsName { get; set; }
 
             [Required(ErrorMessage = "Password is required")]
