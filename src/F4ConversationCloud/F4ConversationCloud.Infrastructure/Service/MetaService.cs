@@ -18,10 +18,13 @@ namespace F4ConversationCloud.Infrastructure.Service
     {
         private IConfiguration _configuration;
         private ITemplateService _templateService;
+        private readonly IAPILogService _logService;
 
-        public MetaService(IConfiguration configuration , ITemplateService templateService) { 
+        public MetaService(IConfiguration configuration, ITemplateService templateService, IAPILogService logService)
+        {
             _configuration = configuration;
             _templateService = templateService;
+            _logService = logService;
         }
 
         public async Task<PhoneRegistrationOnMetaResponse> RegisterPhone(PhoneRegistrationOnMeta request)
@@ -110,7 +113,6 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
-
         public async Task<IActionResult> Updatewhatsappbusinessprofile(IFormFile file)
         {
             try
@@ -157,6 +159,54 @@ namespace F4ConversationCloud.Infrastructure.Service
                 //return Ok();
             }
         }
+
+        public async Task<dynamic> GetBusinessUsersWithWhatsappAccounts()
+        {
+            string apiUrl = string.Empty;
+            string methodType = "GET";
+            var headers = new Dictionary<string, string>();
+            var requestBody = string.Empty;
+
+            try
+            {
+                string token = "EAAfQDEk90fkBP4m33jjZAz6NZCKTd07HgHAev7J1ZB9Ea3SMmHRCZB3ZAt2KxGnRKP04Upv3j2RIqYewn5T644mgIHrNxtBBmQ7GeQtCUoqivEeZC0ffuibKOtwpGz1vwXkcOkVEVe3QrIMtThgQZAAcyGLDkChrwrZB0VbrTZAQB4ynM4rDl2MHmPi4OfWblZCZCpl4JPkikjZCN9ILwYfZCTAosRJkyAOpZB9n2LFudZBrQZDZD"; // <-- Replace with your valid Meta Access Token
+
+                apiUrl = "https://graph.facebook.com/v24.0/me" +
+                         "?fields=business_users{id,name,assigned_whatsapp_business_accounts{name,phone_numbers{display_phone_number,verified_name,name_status,code_verification_status,whatsapp_commerce_settings,whatsapp_business_profile}}}";
+                headers = new Dictionary<string, string>
+                {
+                    { "Authorization", $"Bearer {token}" }
+                };
+
+                var result = await _logService.CallExternalAPI<dynamic>(
+                    apiUrl,
+                    methodType,
+                    requestBody,
+                    headers,
+                    "Get Business Users with WhatsApp Accounts",
+                    null,
+                    true
+                );
+
+                return new
+                {
+                    Success = true,
+                    Message = "Fetched business users and WhatsApp account details successfully.",
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Success = false,
+                    Message = "Failed to fetch WhatsApp account details.",
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
+
 
     }
 }

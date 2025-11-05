@@ -699,4 +699,24 @@
 .iti--separate-dial-code .iti__selected-dial-code{
     font-size:14px;
 }
+
+.invalid-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+    .invalid-wrap h5 {
+        font-size: 19px;
+        margin: 17px auto 4px;
+    }
+
+    .invalid-wrap p {
+        color: #6C6C6C;
+        max-width: 240px;
+        text-align: center;
+        font-size: 15px;
+    }
 /*# sourceMappingURL=login.css.map */

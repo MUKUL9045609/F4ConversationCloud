@@ -1,9 +1,12 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +19,13 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
     {
         private readonly IAddPhoneNumberRepository _repository;
         private readonly ILogService _logService;
+        private readonly IMetaService _metaService;
+
         public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService)
         {
             _repository = repository;
             _logService = logService;
+        
         }
 
         public async Task<IEnumerable<AddPhoneNumberModel>> GetWhatsAppProfilesByUserId()
@@ -49,6 +55,62 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
 
             }
             return response;
+        }
+
+        public async Task SyncWhatsAppAccountsAsync()
+        {
+            try
+            {
+
+                var response = await _metaService.GetBusinessUsersWithWhatsappAccounts();
+                var json = await response.Content.ReadAsStringAsync();
+
+                var metaData = JsonConvert.DeserializeObject<MetaResponse>(json);
+
+                if (metaData?.BusinessUsers == null)
+                    return;
+
+                foreach (var business in metaData.BusinessUsers)
+                {
+                    string businessId = business.Id;
+
+                    foreach (var waba in business.AssignedWhatsAppBusinessAccounts)
+                    {
+                        string wabaId = waba.Id;
+
+                        foreach (var phone in waba.PhoneNumbers)
+                        {
+                            var record = new WhatsAppAccountTableModel
+                            {
+                                BusinessId = businessId,
+                                WABAId = wabaId,
+                                WhatsAppDisplayName = phone.VerifiedName,
+                                PhoneNumberId = phone.Id,
+                                PhoneNumber = phone.DisplayPhoneNumber,
+                                Status = phone.NameStatus,
+                                BusinessCategory = phone.WhatsappBusinessProfile?.BusinessCategory
+                            };
+
+                            //await _repository.UpdateOrInsertAsync(record);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "AddPhoneNumber/GetFilteredWhatsAppProfilesByUserId";
+                logModel.AdditionalInfo = $"Model: {null}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
+
+            }
+            //return response;
         }
     }
 }

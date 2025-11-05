@@ -531,7 +531,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 var UpdateRequest = new ConfirmPasswordModel
                 {
                     UserId = model.UserId,
-                    Password = PasswordHasherHelper.HashPassword(model.Password),
+                    Password =model.Password.Encrypt(),
 
                 };
                 int result = await _authRepository.UpdatePasswordAsync(UpdateRequest);
