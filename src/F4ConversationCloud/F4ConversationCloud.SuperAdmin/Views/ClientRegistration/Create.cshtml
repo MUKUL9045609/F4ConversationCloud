@@ -71,6 +71,7 @@
 
     <script>
         $("#cancel-button").click(function(){
+            commonHelper.showHideLoader(true);
             location.href = '@Url.Action("List", "ClientRegistration")';
         });
 
@@ -80,6 +81,10 @@
             } else {
                 commonHelper.showHideLoader(false);
             }
+        });
+
+        $(document).on('click', '.back', function () {
+            commonHelper.showHideLoader(true);
         });
     </script>
 }
