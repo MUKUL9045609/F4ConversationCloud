@@ -60,38 +60,62 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
             {
 
                 var response = await _metaService.GetBusinessUsersWithWhatsappAccounts();
-                var json = await response.Content.ReadAsStringAsync();
+                //var json = await response.Content.ReadAsStringAsync();
 
-                var metaData = JsonConvert.DeserializeObject<MetaResponse>(json);
-
-                if (metaData?.BusinessUsers == null)
-                    return;
-
-                foreach (var business in metaData.BusinessUsers)
+                if (response.Success)
                 {
-                    string businessId = business.Id;
+                    var _metaData = response.Data;
+                    Root result = JsonConvert.DeserializeObject<Root>(_metaData?.ToString()?? throw new ArgumentNullException("JSON is null"));
 
-                    foreach (var waba in business.AssignedWhatsAppBusinessAccounts)
+                    //var metaDataresponse = JsonConvert.DeserializeObject<dynamic>(_metaData);
+                    var businessUsers = _metaData.business_users.data;
+                    var list = _metaData.business_users.data;
+
+                    foreach (var user in list)
                     {
-                        string wabaId = waba.Id;
+                        string businessId = user.id;
 
-                        foreach (var phone in waba.PhoneNumbers)
+                        foreach (var waba in user.assigned_whatsapp_business_accounts.data)
                         {
-                            var record = new WhatsAppAccountTableModel
-                            {
-                                BusinessId = businessId,
-                                WABAId = wabaId,
-                                WhatsAppDisplayName = phone.VerifiedName,
-                                PhoneNumberId = phone.Id,
-                                PhoneNumber = phone.DisplayPhoneNumber,
-                                Status = phone.NameStatus,
-                                BusinessCategory = phone.WhatsappBusinessProfile?.BusinessCategory
-                            };
+                            string wabaId = waba.id;
 
-                            await _metaRepositories.UpdateMetaUsersConfigurationDetails(record);
+                            if (waba.phone_numbers?.data == null) continue;
+
+                            foreach (var phone in waba.phone_numbers.data)
+                            {
+                                var record = new WhatsAppAccountTableModel
+                                {
+                                    BusinessId = businessId,
+                                    WABAId = wabaId,
+                                    WhatsAppDisplayName = phone.verified_name,
+                                    PhoneNumberId = phone.id,
+                                    PhoneNumber = phone.display_phone_number,
+                                    Status = phone.name_status
+                                };
+
+                                // await _metaRepositories.UpdateMetaUsersConfigurationDetails(record);
+                            }
+                        }
+                    }
+
+
+
+                    // Now access it safely
+                    //var businessUsers = _metaData.business_users.data;
+                    foreach (var user in businessUsers)
+                    {
+                        Console.WriteLine(user.name);
+                        foreach (var wa in user.assigned_whatsapp_business_accounts.data)
+                        {
+                            Console.WriteLine($"- {wa.name} ({wa.id})");
                         }
                     }
                 }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var metaData = JsonConvert.DeserializeObject<MetaResponse>(json);
+
+                
             }
             catch (Exception ex)
             {

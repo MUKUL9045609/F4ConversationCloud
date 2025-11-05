@@ -169,10 +169,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             try
             {
-                //string token = "EAAfQDEk90fkBP4m33jjZAz6NZCKTd07HgHAev7J1ZB9Ea3SMmHRCZB3ZAt2KxGnRKP04Upv3j2RIqYewn5T644mgIHrNxtBBmQ7GeQtCUoqivEeZC0ffuibKOtwpGz1vwXkcOkVEVe3QrIMtThgQZAAcyGLDkChrwrZB0VbrTZAQB4ynM4rDl2MHmPi4OfWblZCZCpl4JPkikjZCN9ILwYfZCTAosRJkyAOpZB9n2LFudZBrQZDZD"; // <-- Replace with your valid Meta Access Token
-                //var accessToken = _configuration["WhatsAppAPISettings:AccessToken"];
-                //var accessToken = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                var accessToken = "EAAfQDEk90fkBPwDzY11uKhrxbkvrWmfqR46e8cZAu9eB9dulEJkZADgCtMFKhVVwe5HHE5exTjSH2tZA2I8xyZCjZBpt3anHAojI7EZB8UZBgncMezguSTZAZCjAg49wpECauAl5CHb8AMAwCvxaQsVmHQZAZAlZC91s3lLtCugyU9vUOR1cKYftV8QUH4nF1cffwrv0jJa4Er2pJXQtYKw4w68cmBScTrjmLpu9MbaVNdNfg9gjOZAxZAQrJNvIqrdZC884PuuaEt4OqKRQ27wZBvJevZA9KbPcFbwZDZD";
+                var accessToken = "EAAfQDEk90fkBPwhC6Dths4M53um8rHPraOqb8KxSnXdGxJOBjqPQdo5kf14RsOOdQx1PxvyFcCZApV9Evn9fn2VN02kPCMybh0P5WIYYkWNsZAutr7J0qitlmkJY6QSWTqlyCh04JyuAvOZBZBcSAdbyQlSyeeSErIOX9KdOew4z5ckpvUdxEstzA37IKS5dB0PDnMf81jEzBwJRYKAsP7oZBikqUKgjkQzhu56nb8t2qm7YlFYwB6zZAEM9dthSJrdtEeuar7BTg5EMMZD";
                 apiUrl = "https://graph.facebook.com/v24.0/me" +
                          "?fields=business_users{id,name,assigned_whatsapp_business_accounts{name,phone_numbers{display_phone_number,verified_name,name_status,code_verification_status,whatsapp_commerce_settings,whatsapp_business_profile}}}";
                 headers = new Dictionary<string, string>
