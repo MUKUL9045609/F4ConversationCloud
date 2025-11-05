@@ -190,8 +190,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 if (id > 0)
                 {
-                    var name = model.FirstName + " " + model.LastName;
-                    await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
+                    //var name = model.FirstName + " " + model.LastName;
+                    //await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
 
                     TempData["SuccessMessage"] = "Client Registration updated successfully";
                 }

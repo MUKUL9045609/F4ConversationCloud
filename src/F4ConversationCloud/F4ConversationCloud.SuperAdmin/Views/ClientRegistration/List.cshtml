@@ -90,7 +90,7 @@
                                     </td>
                                     <td>
                                         <form method="get" action="@Url.Action("RegisteredBusinessDetails", "ClientRegistration", new { id = item.Id })">
-                                            <a method="get" asp-controller="ClientRegistration" asp-action="RegisteredBusinessDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                                            <a method="get" asp-controller="ClientRegistration" asp-action="RegisteredBusinessDetails" asp-route-id="@item.Id" id="name-link">@Html.DisplayFor(modelItem => item.Name)</a>
                                         </form>
                                     </td>
                                     <td>
@@ -187,6 +187,10 @@
                     '&RegistrationStatusFilter=' + encodeURIComponent(registrationStatusFilter) +
                     '&PageNumber=' + pageNumber;
             }
+        });
+
+        $(document).on('click', '#name-link', function () {
+            commonHelper.showHideLoader(true);
         });
     </script>
 }
