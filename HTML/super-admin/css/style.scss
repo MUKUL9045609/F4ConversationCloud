@@ -1648,3 +1648,100 @@ padding-left: 61px !important;
         font-size: 15px;
     }
 }
+.whatsapp-display-image{
+    display: flex;
+    margin-bottom: 20px;
+    gap: 40px;
+    h6{font-size: 15px;}
+    .display-image{
+        width: 56%;
+        
+        .upload-image{
+            padding: 40px 20px;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+                input{
+                    opacity: 0;
+                    visibility: hidden;
+                    position: absolute;
+                }
+            .upload-text{
+                display: block;
+                font-size: 15px;
+                margin-top: 12px;
+                font-weight: 500;
+            }
+            .upload-note{
+                font-size: 13px;
+                color: #686868;
+            }
+        }
+        p{
+            font-size: 12px;
+            color: #686868;
+            margin: 4px 0px 0px;
+        }
+    }
+    .whatapp-preview{
+        width: 40%;
+        .preview-wrap{
+            background-color: #F3F3F3;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;align-items:center;
+            justify-content: center;
+            flex-direction: column;
+            .previewImage{
+                display: block;
+                background-color: #fff;
+                height: 97px;
+                width: 97px;
+                border-radius: 100px;
+                position: relative;
+                img{
+                     height: 97px;
+                    width: 97px;
+                    border-radius: 100px;
+                    object-fit: contain;
+                }
+                .deleteIcon{
+                    background-color: #FF4B4B;
+                    height: 26px;
+                    width: 26px;
+                    border-radius: 50px;
+                    position: absolute;
+                    right: 0px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    top: 0;
+                    &::after{
+                        content:"";
+                        background-image: url("data:image/svg+xml,%3Csvg width='11' height='13' viewBox='0 0 11 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 2.9H1.61111M1.61111 2.9H10.5M1.61111 2.9V11.3C1.61111 11.6183 1.72817 11.9235 1.93655 12.1485C2.14492 12.3736 2.42754 12.5 2.72222 12.5H8.27778C8.57246 12.5 8.85508 12.3736 9.06345 12.1485C9.27183 11.9235 9.38889 11.6183 9.38889 11.3V2.9M3.27778 2.9V1.7C3.27778 1.38174 3.39484 1.07652 3.60322 0.851472C3.81159 0.626428 4.0942 0.5 4.38889 0.5H6.61111C6.9058 0.5 7.18841 0.626428 7.39679 0.851472C7.60516 1.07652 7.72222 1.38174 7.72222 1.7V2.9' stroke='%23FFEDED' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        height:14px;width:12px;display: inline-block;
+                    }
+                }
+            }
+            .buisness-check{
+                background-image: url("data:image/svg+xml,%3Csvg width='17' height='16' viewBox='0 0 17 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12.5417 6.47114L7.58349 11.1371C7.51784 11.1989 7.4399 11.248 7.35409 11.2815C7.26829 11.3149 7.17631 11.3321 7.08342 11.3321C6.99054 11.3321 6.89856 11.3149 6.81276 11.2815C6.72695 11.248 6.64901 11.1989 6.58336 11.1371L4.45841 9.13741C4.39067 9.07601 4.33659 9.00249 4.29935 8.92121C4.26211 8.83994 4.24246 8.75251 4.24151 8.66401C4.24056 8.57551 4.25835 8.48771 4.29384 8.40575C4.32933 8.32378 4.38181 8.24929 4.44822 8.18662C4.51463 8.12395 4.59363 8.07436 4.68063 8.04073C4.76763 8.0071 4.86087 7.99013 4.95492 7.99077C5.04896 7.99141 5.14194 8.00966 5.2284 8.04447C5.31487 8.07928 5.3931 8.12997 5.45854 8.19354L7.08342 9.72269L11.5416 5.52727C11.607 5.4637 11.6852 5.41302 11.7717 5.3782C11.8582 5.34339 11.9512 5.32514 12.0452 5.3245C12.1392 5.32386 12.2325 5.34083 12.3195 5.37446C12.4065 5.40809 12.4855 5.45768 12.5519 5.52035C12.6183 5.58302 12.6708 5.65751 12.7063 5.73948C12.7418 5.82144 12.7596 5.90924 12.7586 5.99774C12.7577 6.08624 12.738 6.17367 12.7008 6.25494C12.6635 6.33622 12.6095 6.40974 12.5417 6.47114ZM16.9021 9.53066L16.0677 7.9989L16.9007 6.46577C17.0021 6.27975 17.0264 6.06503 16.9691 5.86307C16.9118 5.66111 16.7769 5.48636 16.5905 5.37267L15.0534 4.43946L14.9613 2.72373C14.953 2.51372 14.8609 2.31436 14.7034 2.16538C14.5458 2.01641 14.3345 1.92872 14.1113 1.91981L12.2839 1.83185L11.288 0.382689C11.1661 0.208423 10.9802 0.0825984 10.7659 0.0292256C10.5516 -0.0241472 10.3239 -0.00129453 10.1264 0.093425L8.50006 0.877325L6.87093 0.093425C6.67323 -0.00243829 6.44466 -0.0254958 6.22986 0.0287374C6.01505 0.0829706 5.82945 0.21056 5.70929 0.386676L4.71623 1.83316L2.89019 1.91981C2.66766 1.92834 2.45669 2.01531 2.29921 2.16351C2.14173 2.31171 2.04927 2.51025 2.04021 2.71966L1.94671 4.43946L0.405414 5.37527C0.219982 5.48978 0.0861234 5.66482 0.029628 5.86665C-0.0268673 6.06849 -0.00200889 6.28284 0.0994157 6.46845L0.932393 8.00021L0.0994157 9.53334C-0.00184797 9.71916 -0.0261819 9.93373 0.0311412 10.1355C0.0884643 10.3372 0.223362 10.5117 0.409661 10.6251L1.94671 11.5597L2.03879 13.2741C2.05863 13.714 2.42695 14.0606 2.88877 14.0793L4.71623 14.166L5.71212 15.6164C5.96286 15.9764 6.46293 16.099 6.87376 15.9044L8.50006 15.1205L10.1292 15.9058C10.3268 16.0022 10.5555 16.0256 10.7705 15.9713C10.9855 15.9171 11.1711 15.789 11.2908 15.6124L12.2839 14.166L14.1057 14.0807C14.3293 14.0731 14.5417 13.9864 14.7003 13.8379C14.859 13.6893 14.9522 13.4899 14.9613 13.2794L15.0534 11.5597L16.5947 10.6225C16.78 10.5083 16.9138 10.3335 16.9703 10.1319C17.0269 9.93028 17.0035 9.71607 16.9021 9.53066Z' fill='%23009168'/%3E%3C/svg%3E%0A");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height:16px;width:16px;display: inline-block;
+            }
+        }
+        p{
+            color: #6C6C6C;
+            font-size: 12px;
+            
+        }
+    }
+}
