@@ -5,6 +5,7 @@ using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -313,6 +314,27 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             });
 
             return PartialView("_BusinessAccountsListPartial", model);
+        }
+
+        public async Task<IActionResult> ResendEmail(int id)
+        {
+            try
+            {
+                var cr = await _clientRegistrationService.GetByIdAsync(id);
+
+                if (cr is null)
+                {
+                    return Ok(false);
+                }
+
+                await _clientRegistrationService.SendRegistrationEmailAsync(cr.Email, cr.FirstName + " " + cr.LastName, id, cr.ContactNumber);
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return Ok(false);
+            }
         }
     }
 }
