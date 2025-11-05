@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
@@ -20,12 +21,13 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
         private readonly IAddPhoneNumberRepository _repository;
         private readonly ILogService _logService;
         private readonly IMetaService _metaService;
+        private readonly IMetaRepositories _metaRepositories;
 
-        public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService)
+        public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService , IMetaRepositories metaRepositories)
         {
             _repository = repository;
             _logService = logService;
-        
+            _metaRepositories = metaRepositories;
         }
 
         public async Task<IEnumerable<AddPhoneNumberModel>> GetWhatsAppProfilesByUserId()
@@ -91,7 +93,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
                                 BusinessCategory = phone.WhatsappBusinessProfile?.BusinessCategory
                             };
 
-                            //await _repository.UpdateOrInsertAsync(record);
+                            await _metaRepositories.UpdateMetaUsersConfigurationDetails(record);
                         }
                     }
                 }
