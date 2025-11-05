@@ -17,11 +17,12 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
         private readonly IMetaService _metaService;
         private readonly IMetaRepositories _metaRepositories;
 
-        public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService, IMetaRepositories metaRepositories)
+        public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService, IMetaRepositories metaRepositories , IMetaService metaService)
         {
             _repository = repository;
             _logService = logService;
             _metaRepositories = metaRepositories;
+            _metaService = metaService;
         }
 
         public async Task<IEnumerable<AddPhoneNumberModel>> GetWhatsAppProfilesByUserId()
