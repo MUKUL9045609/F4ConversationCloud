@@ -53,7 +53,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
             return response;
         }
 
-        public async Task SyncWhatsAppAccountsAsync()
+        public async Task SyncWhatsAppAccountsAsync(string BusinessId)
         {
             try
             {

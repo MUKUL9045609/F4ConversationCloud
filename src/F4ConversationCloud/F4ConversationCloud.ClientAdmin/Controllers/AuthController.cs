@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
-    public class AuthController:BaseController
+    public class AuthController : BaseController
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
@@ -72,6 +72,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         new Claim(ClaimTypes.MobilePhone, clientdetails.PhoneNumber),
                         new Claim(ClaimTypes.Role, RoleName),
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
+                        new Claim("BusinessId", clientdetails.BusinessId.ToString()),
+                        new Claim("ClientInfoId", clientdetails.ClientInfoId.ToString())
                     };
                 var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -239,7 +241,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return View(model);
             }
         }
-        
+
         [AllowAnonymous]
         [HttpGet("invalid-token")]
         public IActionResult InvalidUrl()

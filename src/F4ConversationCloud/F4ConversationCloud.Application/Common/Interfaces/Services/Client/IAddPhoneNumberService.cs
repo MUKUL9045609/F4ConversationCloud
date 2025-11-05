@@ -13,5 +13,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Client
     {
         Task<IEnumerable<AddPhoneNumberModel>> GetWhatsAppProfilesByUserId();
         Task<Tuple<IEnumerable<AddPhoneNumberModel>, int>> GetFilteredWhatsAppProfilesByUserId(AddPhoneNumberListFilter filter);
+        Task SyncWhatsAppAccountsAsync(string BusinessId);
     }
 }
