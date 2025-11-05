@@ -40,6 +40,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 var decrypted = token.Decrypt();
                 string[] tokenParts = decrypted.Split("|");
                 string stringUserid = tokenParts[0];
+
                 if (tokenParts.Length != 2)
                 {
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
@@ -52,15 +53,28 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
-                TempData["InfoMessage"] = "Registration successful! Please complete Meta Onboarding !";
+
+
                 int UserId = Convert.ToInt32(stringUserid);
-                HttpContext.Session.SetInt32("UserId", UserId);
+                    HttpContext.Session.SetInt32("UserId", UserId);
+
                 var clientdetails = await _onboardingService.GetCustomerByIdAsync(UserId);
                 if (clientdetails == null)
                 {
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
                     return RedirectToAction("InvalidUrl");
                 }
+
+                if (clientdetails.Stage == ClientFormStage.ClientRegistered)
+                {
+                    TempData["InfoMessage"] = "Registration successful! Please complete Meta Onboarding !";
+                }
+               else if (clientdetails.Stage == ClientFormStage.MetaRegistered)
+                {
+                    string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
+                    return Redirect(RedirecttoClientAppLoginPage);
+                }
+
                 var command = new RegisterUserViewModel
                 {
                     UserId = clientdetails.UserId,
@@ -80,7 +94,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
             catch (Exception)
             {
 
-                TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return RedirectToAction("InvalidUrl");
             }
 
@@ -91,7 +105,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
         {
             var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
             var clientdetails = await _onboardingService.GetCustomerByIdAsync(step1form.UserId);
-            if (clientdetails.Stage == ClientFormStage.ClientRegistered)
+            if (clientdetails.Stage == ClientFormStage.ClientRegistered || clientdetails.Stage == ClientFormStage.MetaRegistered)
             {
                 var clientinfo = new RegisterUserViewModel
                 {
