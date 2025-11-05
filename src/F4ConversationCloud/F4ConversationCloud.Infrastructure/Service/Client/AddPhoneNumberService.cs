@@ -6,13 +6,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.SuperAdmin.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Service.Client
 {
@@ -23,7 +17,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Client
         private readonly IMetaService _metaService;
         private readonly IMetaRepositories _metaRepositories;
 
-        public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService , IMetaRepositories metaRepositories)
+        public AddPhoneNumberService(IAddPhoneNumberRepository repository, ILogService logService, IMetaRepositories metaRepositories)
         {
             _repository = repository;
             _logService = logService;

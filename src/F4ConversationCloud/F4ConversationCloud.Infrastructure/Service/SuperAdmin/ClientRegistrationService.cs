@@ -209,5 +209,30 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             return response;
         }
+
+        public async Task<bool> CheckContactNumberExist(string contactNumber)
+        {
+            bool response = false;
+            try
+            {
+                response = await _clientRegistrationRepository.CheckContactNumberExist(contactNumber);
+            }
+            catch (Exception ex)
+            {
+                response = true;
+                var logModel = new LogModel();
+                logModel.Source = "ClientRegistration/CheckContactNumberExist";
+                logModel.AdditionalInfo = $"ContactNumber: {contactNumber}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
+
+            }
+            return response;
+        }
     }
 }
