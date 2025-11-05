@@ -38,12 +38,15 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     ViewData["ToastMsg"] = new { Type = "Warning", Message = warningMsg };
                     TempData.Remove("WarningMessage");
                 }
-                var path = context.HttpContext.Request.Path.Value?.ToLower() ?? "";
 
-                if (path.StartsWith("/auth/login"))
+                var controllerName = context.RouteData.Values["controller"]?.ToString();
+                var actionName = context.RouteData.Values["action"]?.ToString();
+
+
+                if (controllerName == "Auth" && (actionName == "Login" || actionName == "Logout" || actionName == "ForgotPassword" || actionName == "InvalidUrl"))
                 {
                     base.OnActionExecuting(context);
-                    return; 
+                    return;
                 }
 
                 var username = context.HttpContext.Session.GetString("Username");
