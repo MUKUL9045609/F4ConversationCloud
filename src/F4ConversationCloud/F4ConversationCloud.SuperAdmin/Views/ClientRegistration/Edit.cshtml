@@ -10,7 +10,7 @@
             <div class="header-content">
                 <h3 class="sub-heading"><a href="@Url.Action("List", "ClientRegistration")" class="back"></a>Register User </h3>
                 <div>
-                    <a href="register.html" class="btn primary-btn resend d-flex"> Re-send</a>
+                    <button class="btn primary-btn resend d-flex" id="resend-btn"> Re-send</button>
                 </div>
             </div>
             <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-wrapper">
@@ -79,5 +79,31 @@
         $("#cancel-button").click(function(){
             location.href = '@Url.Action("List", "ClientRegistration")';
         });
+
+        $(document).on('click', '#resend-btn', function () {
+            commonHelper.showHideLoader(true);
+            var id = @Html.Raw(Json.Serialize(Model.Id));
+            var url = '@Url.Action("ResendEmail", "ClientRegistration")/' + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: successCallback,
+                error: errorCallback
+            });
+        });
+
+        function successCallback(data) {
+            if (data) {
+                commonHelper.showSuccess('Email sent successfully.');
+            } else {
+                commonHelper.showError('Failed to send an email.');
+            }
+            commonHelper.showHideLoader(false);
+        }
+
+        function errorCallback(xhr, errorType, error) {
+            commonHelper.showSuccess('Failed to an send an email.');
+            commonHelper.showHideLoader(false);
+        }
     </script>
 }
