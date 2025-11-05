@@ -37,16 +37,16 @@
                 <div class="bx_wrap">
                     <h4>Create Your Business Account!</h4>
                     <p>For the purpose of industry regulation, your details are required. </p>
-                    <form class="login-form mt-4" id="registrationForm">
+                    <form class="login-form" id="registrationForm">
                         <div class="register-group-form">
                             <div class="group-form">
-                                <label for="fullName" class="form-label">Full Name <sup class="error">*</sup></label>
+                                <label for="fullName" class="form-label">Full Name<sup class="error">*</sup></label>
                                 <input type="text" class="form-control" placeholder="Enter Full Name" id="fullName">
-                                <div class="error-message text-danger small" id="fullNameError"></div>
+                                <div class="error-message" id="fullNameError">Please Enter your full name</div>
                             </div>
 
                             <div class="group-form">
-                                <label for="email" class="form-label">Email address <sup class="error">*</sup></label>
+                                <label for="email" class="form-label">Email address<sup class="error">*</sup></label>
                                 <input type="text" class="form-control" placeholder="Enter Email Address" id="email">
                                 <div class="error-message text-danger small" id="emailError"></div>
                             </div>
@@ -54,15 +54,15 @@
 
                             <div class="group-form">
                                 <div>
-                                    <label class="form-label">Phone number <sup class="error">*</sup></label>
-                                    <div class="verifyBtnLink" id="sendmail">
-                                        <span>Verify</span>
-                                        <span class="verified d-none">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.85297 4.82147L5.35305 8.29796C5.30671 8.34403 5.25169 8.38057 5.19112 8.40551C5.13055 8.43045 5.06563 8.44328 5.00006 8.44328C4.9345 8.44328 4.86957 8.43045 4.80901 8.40551C4.74844 8.38057 4.69342 8.34403 4.64708 8.29796L3.14711 6.80804C3.09929 6.76229 3.06112 6.70751 3.03484 6.64696C3.00855 6.5864 2.99468 6.52126 2.99401 6.45532C2.99334 6.38938 3.00589 6.32396 3.03095 6.2629C3.056 6.20183 3.09305 6.14633 3.13992 6.09963C3.1868 6.05294 3.24257 6.01599 3.30397 5.99093C3.36538 5.96587 3.4312 5.95323 3.49759 5.95371C3.56397 5.95418 3.6296 5.96778 3.69064 5.99372C3.75167 6.01966 3.8069 6.05742 3.85309 6.10478L5.00006 7.24411L8.147 4.11822C8.19319 4.07085 8.24841 4.03309 8.30945 4.00715C8.37048 3.98121 8.43611 3.96762 8.50249 3.96714C8.56888 3.96666 8.6347 3.97931 8.69611 4.00436C8.75752 4.02942 8.81328 4.06637 8.86016 4.11307C8.90704 4.15976 8.94408 4.21526 8.96914 4.27633C8.99419 4.3374 9.00675 4.40281 9.00608 4.46875C9.00541 4.53469 8.99153 4.59984 8.96525 4.66039C8.93896 4.72094 8.90079 4.77572 8.85297 4.82147ZM11.9309 7.10104L11.3419 5.95977L11.9299 4.81747C12.0014 4.67888 12.0187 4.51889 11.9782 4.36842C11.9377 4.21794 11.8425 4.08774 11.7109 4.00303L10.6259 3.30772L10.5609 2.02938C10.555 1.8729 10.49 1.72437 10.3788 1.61337C10.2677 1.50237 10.1184 1.43703 9.96095 1.4304L8.67098 1.36487L7.968 0.285131C7.88196 0.15529 7.75075 0.0615418 7.59946 0.0217752C7.44818 -0.0179914 7.28745 -0.000964519 7.14802 0.0696085L6.00004 0.653672L4.85007 0.0696085C4.71052 -0.00181671 4.54917 -0.0189963 4.39755 0.0214115C4.24592 0.0618192 4.1149 0.156883 4.03009 0.288102L3.3291 1.36584L2.04013 1.4304C1.88306 1.43676 1.73414 1.50156 1.62297 1.61197C1.51181 1.72239 1.44655 1.87032 1.44015 2.02635L1.37415 3.30772L0.286174 4.00497C0.155281 4.09029 0.060793 4.22071 0.0209139 4.37109C-0.0189652 4.52147 -0.00141804 4.68117 0.0701758 4.81947L0.65816 5.96074L0.0701758 7.10304C-0.00130445 7.24148 -0.0184814 7.40136 0.021982 7.55167C0.0624454 7.70197 0.157667 7.83198 0.289173 7.91651L1.37415 8.61285L1.43915 9.89016C1.45315 10.2179 1.71314 10.4762 2.03913 10.4901L3.3291 10.5547L4.03208 11.6354C4.20908 11.9036 4.56207 11.9949 4.85207 11.8499L6.00004 11.2659L7.15002 11.851C7.28948 11.9228 7.45097 11.9403 7.60272 11.8998C7.75447 11.8594 7.88549 11.764 7.97 11.6324L8.67098 10.5547L9.95695 10.4911C10.1148 10.4855 10.2647 10.4209 10.3767 10.3102C10.4887 10.1996 10.5545 10.0509 10.5609 9.89416L10.6259 8.61285L11.7139 7.91457C11.8447 7.82943 11.9392 7.69921 11.9791 7.549C12.019 7.39879 12.0024 7.23919 11.9309 7.10104Z" fill="#009168"/>
-                                            </svg>
-                                            Verified
-                                        </span>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <label class="form-label">Phone number <sup class="error">*</sup></label>
+                                        <div class="verifyBtnLink d-flex" id="sendmail">
+                                            <span>Verify</span>
+                                            <span class="verified d-none">
+                                                
+                                                Verified
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="d-flex phonewrap">
                                         <select class="form-control country-option">
@@ -76,30 +76,33 @@
 
                             <div class="group-form">
                                 <div class="otp-section" style="display: none;">
-                                    <label class="form-label">OTP Verification</label>
-                                    <div class="d-flex gap-2">
-                                        <div class="otp-form d-flex" id="otp-form">
-                                            <input type="text" class="otp-input" maxlength="1">
-                                            <input type="text" class="otp-input" maxlength="1">
-                                            <input type="text" class="otp-input" maxlength="1">
-                                            <input type="text" class="otp-input" maxlength="1">
-                                            <input type="text" class="otp-input" maxlength="1">
-                                            <input type="text" class="otp-input" maxlength="1">
+                                    <label class="form-label lh-1">OTP Verification</label>
+                                    <div class="d-flex gap-2 align-items-start">
+                                        <div>
+                                            <div class="otp-form d-flex" id="otp-form">
+                                                <input type="text" class="otp-input" maxlength="1">
+                                                <input type="text" class="otp-input" maxlength="1">
+                                                <input type="text" class="otp-input" maxlength="1">
+                                                <input type="text" class="otp-input" maxlength="1">
+                                                <input type="text" class="otp-input" maxlength="1">
+                                                <input type="text" class="otp-input" maxlength="1">
+                                            </div>
+                                            <div class="otp-timer d-flex justify-content-between">
+                                                <span class="otp-text">
+                                                    Valid till :<span id="timeRemaining"> 4:41</span>
+                                                </span>
+                                                <a id="resendotp" class="verifyBtnLink">Resend OTP</a>
+                                            </div>
                                         </div>
                                         <button class="btn verifyBtn">Verify</button>
                                     </div>
-                                    <div class="otp-timer d-flex justify-content-between">
-                                        <span class="otp-text">
-                                            Valid till <span class="fw-bold" id="timeRemaining">4:41</span>
-                                        </span>
-                                        <a id="resendotp" class="verifyBtnLink">Resend OTP</a>
-                                    </div>
+                                    
                                 </div>
                             </div>
 
                             <div class="group-form">
                                 <div>
-                                    <label for="password" class="form-label">Password <sup class="error">*</sup></label>
+                                    <label for="password" class="form-label">Password<sup class="error">*</sup></label>
                                     <div class="d-flex password-wrap">
                                         <input type="password" class="form-control" placeholder="Create a Password"
                                             id="password">
@@ -111,8 +114,7 @@
 
                             <div class="group-form">
                                 <div>
-                                    <label for="password" class="form-label">Confirm Password <sup
-                                            class="error">*</sup></label>
+                                    <label for="password" class="form-label">Confirm Password<sup class="error">*</sup></label>
                                     <div class="d-flex password-wrap">
                                         <input type="password" class="form-control" placeholder="Confirm your Password"
                                             id="password">
@@ -122,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="group-form">
-                                <label for="email" class="form-label">Organizations Name (Optional)</label>
+                                <label for="email" class="form-label">Organizations Name<span class="lighttext ms-1">(Optional)</span></label>
                                 <input type="text" class="form-control" placeholder="Enter your organizations name"
                                     id="email">
                                 <div class="error-message text-danger small" id="emailError"></div>
@@ -1202,14 +1204,14 @@
                             <h5>Address</h5>
                             <div class="group-form w-100">
                                 
-                                    <label class="form-label">Address Line 1 <sup class="error">*</sup></label>
+                                    <label class="form-label">Address Line 1<sup class="error">*</sup></label>
                                     <input type="text" class="form-control" placeholder="Enter your street address"
                                         id="addressOne" disabled>
                                 
                             </div>
                             <div class="group-form w-100">
                                 
-                                    <label class="form-label">Address Line 2 (Optional)</label>
+                                    <label class="form-label">Address Line 2<span class="lighttext ms-1">(Optional)</span></label>
                                     <input type="text" class="form-control"
                                         placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
                                         disabled>
@@ -1253,7 +1255,7 @@
                                             class="error">*</sup></label>
                                     <input type="text" class="form-control" id="postal_code" name="postal_code"
                                         placeholder="Enter your postal or ZIP code" disabled>
-                                
+                                    
                             </div>
                         </div>
                         
@@ -1262,7 +1264,7 @@
                             <label class="form-check-label" for="agreeTerms">By continuing, I agree to the <a
                                     href="javascript:void(0)" data-bs-toggle="modal"
                                     data-bs-target="#createTemplate">Terms & Conditions</a>
-                                    <div class="error-message text-danger small d-block" id="fullNameError">You must accept the Terms</div>
+                                    <div class="error-message d-none" id="fullNameError">You must accept the Terms</div>
                             </label>
                             
                         </div>
