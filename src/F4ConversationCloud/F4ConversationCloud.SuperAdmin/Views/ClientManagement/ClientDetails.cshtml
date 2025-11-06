@@ -341,6 +341,34 @@
                             <h3>@Model.BusinessName <span class="badge @(Model.Status == "CONNECTED" ? "success" : "warning")">@Model.Status</span></h3>
                             <small class="lighttext">WABA ID : @Model.WABAId</small>
                         </div>
+                        <div class="whatsapp-display-image">
+                            <div class="display-image">
+                                <h6>WhatsApp Display Image</h6>
+
+                                <label class="upload-image">
+                                    <input type="file" />
+                                    <span><img src="/images/upload.png" /></span>
+                                    <span class="upload-text">Click to browse files</span>
+                                    <span class="upload-note">Supported formats: JPG, JPEG, PNG (Max size: 5MB)</span>
+                                </label>
+                                <p>This image represents your business on WhatsApp and appears in customer chat headers.</p>
+                            </div>
+                            <div class="whatapp-preview">
+                                <h6>Preview on WhatsApp</h6>
+                                <div class="preview-wrap">
+                                    <span class="previewImage">
+                                        <img src="images/card-image.png" />
+                                        <span class="deleteIcon"></span>
+                                    </span>
+                                    <h6 class="d-flex align-items-center gap-1 mb-0 mt-2">Microsoft INC <span class="buisness-check"></span></h6>
+                                </div>
+                                <div class="d-flex align-items-start mt-2 gap-1">
+                                    <img src="~/images/icon.png" />
+                                    <p>Tips : Use a square (1:1) image without borders or text-heavy logos, ensuring clear visibility in both light and dark modes.</p>
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="accordion-guide client-accordion">
                             <div class="accordion" id="accordionWrap">
                                 <div class="accordion-item">
@@ -389,7 +417,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="accordion-item">
+                                @* <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingTwo">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -490,7 +518,7 @@
                                             </nav>
                                         </div>
                                     </div>
-                                </div>
+                                </div> *@
 
                                 <div class="accordion-item">
                                     <partial name="_TemplateList" model="new TemplatesListViewModel { data = Model.TemplatesList }" />
@@ -500,7 +528,7 @@
                                     <h2 class="accordion-header" id="headingFourth">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseFourth" aria-expanded="false" aria-controls="collapseFourth">
-                                            Campaigns & Offers
+                                            Campaigns
                                         </button>
                                     </h2>
                                     <div id="collapseFourth" class="accordion-collapse collapse" aria-labelledby="headingFourth"
@@ -602,37 +630,6 @@
                                                     <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
                                                 </ul>
                                             </nav>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingSeven">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                                            Client Logo
-                                        </button>
-                                    </h2>
-                                    <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
-                                         data-bs-parent="#accordionWrap">
-
-                                        <div class="accordion-body">
-                                            <ul class="logo-list">
-                                                <li>
-                                                    <label class="choose-picture">
-                                                        <span class="plus-logo"></span>
-                                                        <span class="choose-title">Choose Image</span>
-                                                        <input type="file" class="form-control" disabled />
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <label class="choose-picture">
-                                                        @* <img src="images/logo.png" /> *@
-                                                        <span class="existing">Existing</span>
-                                                    </label>
-                                                </li>
-                                            </ul>
                                         </div>
 
                                     </div>

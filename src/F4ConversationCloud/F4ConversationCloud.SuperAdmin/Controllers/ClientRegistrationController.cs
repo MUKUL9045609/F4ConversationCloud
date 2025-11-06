@@ -182,9 +182,36 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
+                ViewBag.Roles = EnumExtensions.ToSelectList<ClientRole>();
                 if (!ModelState.IsValid)
                     return View(model);
 
+                var cr = await _clientRegistrationService.GetByIdAsync(model.Id);
+
+                if (cr.FirstName == model.FirstName && cr.LastName == model.LastName 
+                    && cr.ContactNumber == model.ContactNumber && cr.Role == model.Role)
+                {
+                    var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
+
+                    if (emailExist)
+                    {
+                        ModelState.AddModelError("Email", "This email is already registered.");
+                        return View(model);
+                    }
+                }
+
+                if (cr.FirstName == model.FirstName && cr.LastName == model.LastName
+                    && cr.Email == model.Email && cr.Role == model.Role)
+                {
+                    var contactExist = await _clientRegistrationService.CheckContactNumberExist(model.ContactNumber);
+
+                    if (contactExist)
+                    {
+                        ModelState.AddModelError("ContactNumber", "This contact number is already registered.");
+                        return View(model);
+                    }
+                }
+                    
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {
                     Id = model.Id,
