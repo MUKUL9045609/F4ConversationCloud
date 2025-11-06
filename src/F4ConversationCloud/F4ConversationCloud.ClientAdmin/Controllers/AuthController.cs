@@ -94,10 +94,14 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 {
                     return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
                 }
-                else
+                else if (stage == ClientFormStage.MetaRegistered)
                 {
                     return RedirectToAction("Index", "Home");
 
+                }
+                else {
+                    TempData["InfoMessage"] = "You have not registered yet, Please complete your registration.!";
+                    return RedirectToAction("Login", "Auth");
                 }
             }
             catch (Exception)
@@ -105,8 +109,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 TempData["ErrorMessage"] = "Technical Error.!";
                 return View(request);
             }
-
-
         }
 
         public async Task<IActionResult> Logout()
