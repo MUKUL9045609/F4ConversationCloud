@@ -3729,8 +3729,10 @@ body {
   width: 60%;
 }
 
-.sidemenutoggle {
-  overflow: hidden;
+@media (max-width: 480px) {
+  .sidemenutoggle {
+    overflow: hidden;
+  }
 }
 .sidemenutoggle .app-sidebar {
   margin-left: -260px;
