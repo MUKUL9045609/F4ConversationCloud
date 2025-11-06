@@ -138,6 +138,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return View();
             }
         }
+
         [AllowAnonymous]
         [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
