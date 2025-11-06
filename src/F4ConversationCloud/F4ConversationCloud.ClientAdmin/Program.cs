@@ -18,7 +18,7 @@ builder.Services.AddAuthentication("CookieAuthentication")
                  {
                      config.Cookie.Name = "UserLoginCookie";
                      config.LoginPath = "/Auth/Login";
-                     config.AccessDeniedPath = "/Auth/AccessDenied";
+                     config.AccessDeniedPath = "/Auth/InvalidUrl";
                      config.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                      config.SlidingExpiration = true;
                  });
@@ -36,7 +36,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Auth/InvalidUrl");
     app.UseHsts();
 }
 

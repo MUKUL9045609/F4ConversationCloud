@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="header-content">
-                <h3 class="sub-heading">Business Accounts</h3>
+                <h3 class="sub-heading">Business Accounts <span class="light-text ms-1">(@Model.TotalCount)</span> </h3>
             </div>
             <partial name="_BusinessAccountsListPartial" model="@Model" />
         </div>
@@ -72,5 +72,9 @@
 
         //     $('#reject-comment-text').text(comment);
         // }
+
+        $(document).on('click', '#name-link', function () {
+            commonHelper.showHideLoader(true);
+        });
     </script>
 }

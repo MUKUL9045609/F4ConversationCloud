@@ -26,49 +26,49 @@ namespace F4ConversationCloud.Infrastructure.Service
             _configuration = configuration;
             _metaCloudAPIService = metaCloudAPIService;
         }
-        public async Task<SendSmsResponse> SendVerificationSmsAsync(string mobileNo, string Text)
-        {
-            try 
-            {
-                string accountSid = _configuration["Twilio:AccountSid"];
-                string authToken = _configuration["Twilio:AuthToken"];
-                string verifyServiceSid = _configuration["Twilio:VerifyServiceSid"];
-                string from = _configuration["Twilio:From"];
-                TwilioClient.Init(accountSid, authToken);
+        //public async Task<SendSmsResponse> SendVerificationSmsAsync(string mobileNo, string Text)
+        //{
+        //    try 
+        //    {
+        //        string accountSid = _configuration["Twilio:AccountSid"];
+        //        string authToken = _configuration["Twilio:AuthToken"];
+        //        string verifyServiceSid = _configuration["Twilio:VerifyServiceSid"];
+        //        string from = _configuration["Twilio:From"];
+        //        TwilioClient.Init(accountSid, authToken);
 
-                var messageOptions = new CreateMessageOptions(
-                         new PhoneNumber(mobileNo)   
-                     );
-                messageOptions.Body = Text;
-                messageOptions.From = new PhoneNumber(from);
+        //        var messageOptions = new CreateMessageOptions(
+        //                 new PhoneNumber(mobileNo)
+        //             );
+        //        messageOptions.Body = Text;
+        //        messageOptions.From = new PhoneNumber(from);
 
 
 
-                var message = await MessageResource.CreateAsync(messageOptions);
+        //        var message = await MessageResource.CreateAsync(messageOptions);
 
-                var verification = await VerificationResource.CreateAsync(
-                    to: mobileNo,
-                    channel: "sms",
-                    pathServiceSid: verifyServiceSid
-                );
+        //        var verification = await VerificationResource.CreateAsync(
+        //            to: mobileNo,
+        //            channel: "sms",
+        //            pathServiceSid: verifyServiceSid
+        //        );
 
-                return new SendSmsResponse
-                {
-                    Sid = verification.Sid,
-                    Status = verification.Status
-                };
+        //        return new SendSmsResponse
+        //        {
+        //            Sid = verification.Sid,
+        //            Status = verification.Status
+        //        };
 
-            }
-            catch (Exception ex)
-            {
-                return
-                    new SendSmsResponse {
-                        Sid = "",
-                        Status = "Failed"
-                    };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return
+        //            new SendSmsResponse {
+        //                Sid = "",
+        //                Status = "Failed"
+        //            };
                
-            }
-        }
+        //    }
+        //}
 
         public async Task<OnboardingContactNoVerificationResponse> SendOnboardingVerificationAsync(VarifyMobileNumberModel request)
         {

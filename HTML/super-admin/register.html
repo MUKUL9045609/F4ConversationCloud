@@ -104,6 +104,9 @@
                      <div class="card">
                         <div class="header-content">
                             <h3 class="sub-heading"><a href="client-registration.html"> <span class="back"></span> Register Users </a></h3>
+                            <div>
+                                <a href="register.html" class="btn primary-btn resend d-flex" data-bs-toggle="modal" data-bs-target="#exampleModal"> Re-send</a>
+                            </div>
                         </div>
                         <form class="form-wrapper">
                             <div class="row">
@@ -181,6 +184,29 @@
         </div>
 
     </div>
+
+    <!-- Message Modal -->
+        <div class="modal fade template-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog confirm-model modal-dialog-centered">
+                <div class="modal-content text-center">
+                    <div class="modal-header border-0">
+                        
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <span class="refresh-icon"></span>
+                        <h6>Re-send Onboarding Link</h6>
+                        <p>Are you sure you want to re-send a new onboarding link to this user.</p>
+                        <div class="d-flex justify-content-center gap-2 mt-3">
+                            <a href="#" class="btn btn-secondary">Cancel</a>
+                            <a href="#" class="btn primary-btn">Yes, Re-send</a>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+        <!--end message modal -->
 
     <div class="backdrop"></div>
 

@@ -5,6 +5,7 @@ using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -105,6 +106,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     return View(model);
                 }
 
+                var contactExist = await _clientRegistrationService.CheckContactNumberExist(model.ContactNumber);
+
+                if (contactExist)
+                {
+                    ModelState.AddModelError("ContactNumber", "This contact number is already registered.");
+                    return View(model);
+                }
+
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {
                     FirstName = model.FirstName,
@@ -189,8 +198,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 if (id > 0)
                 {
-                    var name = model.FirstName + " " + model.LastName;
-                    await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
+                    //var name = model.FirstName + " " + model.LastName;
+                    //await _clientRegistrationService.SendRegistrationEmailAsync(model.Email, name, id, model.ContactNumber);
 
                     TempData["SuccessMessage"] = "Client Registration updated successfully";
                 }
@@ -313,6 +322,27 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             });
 
             return PartialView("_BusinessAccountsListPartial", model);
+        }
+
+        public async Task<IActionResult> ResendEmail(int id)
+        {
+            try
+            {
+                var cr = await _clientRegistrationService.GetByIdAsync(id);
+
+                if (cr is null)
+                {
+                    return Ok(false);
+                }
+
+                await _clientRegistrationService.SendRegistrationEmailAsync(cr.Email, cr.FirstName + " " + cr.LastName, id, cr.ContactNumber);
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return Ok(false);
+            }
         }
     }
 }

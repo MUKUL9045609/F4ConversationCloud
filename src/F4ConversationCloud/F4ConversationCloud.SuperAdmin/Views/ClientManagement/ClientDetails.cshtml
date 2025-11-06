@@ -21,7 +21,7 @@
                 <a asp-controller="ClientRegistration"
                    asp-action="RegisteredBusinessDetails"
                    asp-route-id="@Model.ClientInfoId"
-                   class="btn primary-btn">
+                   class="btn primary-btn" id="view-info-btn">
                     View Information
                 </a>
             </div>
@@ -916,6 +916,14 @@
         //     commentBox.classList.remove("is-valid");
         //     commentBox.classList.remove("is-invalid");
         // });
+
+        $(document).on('click', '#view-info-btn', function () {
+            commonHelper.showHideLoader(true);
+        });
+
+        $(document).on('click', '.back', function () {
+            commonHelper.showHideLoader(true);
+        });
 
     </script>
 }

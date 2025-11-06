@@ -14,5 +14,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
         Task SendRegistrationEmailAsync(string email, string name, int id, string contactNumber);
         Task<bool> CheckEmailExist(string email);
         Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id);
+        Task<bool> CheckContactNumberExist(string contactNumber);
     }
 }

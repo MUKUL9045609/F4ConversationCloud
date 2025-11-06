@@ -93,5 +93,14 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
             return await _registeredBusinessDetailRepository.GetByIdAsync("sp_GetRegisteredBusinessDetails", parameters);
         }
+
+        public async Task<bool> CheckContactNumberExist(string contactNumber)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("contactNumber", contactNumber);
+
+            return await _repository.CheckExistAsync("sp_CheckRegisterContactNumberExist", parameters);
+        }
     }
 }
