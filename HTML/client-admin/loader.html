@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/swiper-bundle.min.css" />
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"> -->
 </head>
 
 <body>
@@ -164,18 +163,24 @@
                         <div class="ask-ai">
                             <a href="#">Ask AI Assistant <span class="question"></span></a>
                         </div>
-                        <div class="profile">
-                            <div class="dropdown">
-                                <a class="profile-name" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    D
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <span class="name">Dinesh Sharma</span>
-                                    <li><a class="dropdown-item user" href="#">Profile</a></li>
-                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                        <div class="profile-dropdown ms-auto">
+                            <div class="profile">
+                                <div class="dropdown">
+                                    <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <span class="profile-name">D</span> 
+                                        <div>
+                                            <p>Dinesh Sharma</p>
+                                            <span class="profile-role">Admin</span>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <span class="name">Dinesh Sharma</span>
+                                        <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                        <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
 
-                                </ul>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -255,7 +260,7 @@
                                                 aria-labelledby="sendCampaign">
                                                 <div class="accordion-wrapper">
                                                     <div class="accordion" id="accordionExample">
-                                                        <div class="accordion-item">
+                                                        <!-- <div class="accordion-item">
                                                             <h2 class="accordion-header" id="headingOne">
                                                                 <button class="accordion-button" type="button"
                                                                     data-bs-toggle="collapse"
@@ -273,7 +278,7 @@
                                                                     <a href="#" class="btn primary-btn">Create Template</a>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="accordion-item">
                                                             <h2 class="accordion-header" id="headingTwo">
                                                                 <button class="accordion-button collapsed" type="button"
@@ -282,13 +287,13 @@
                                                                     aria-controls="createCampaign"><span
                                                                         class="circle"></span>Create a campaign</button>
                                                             </h2>
-                                                            <div id="createCampaign" class="accordion-collapse collapse"
+                                                            <div id="createCampaign" class="accordion-collapse collapse show"
                                                                 aria-labelledby="headingTwo"
                                                                 data-bs-parent="#accordionExample">
                                                                 <div class="accordion-body">
                                                                     <p>To launch your campaign, please create a template and
                                                                         submit to WhatsApp for approval.</p>
-                                                                    <a href="#" class="btn primary-btn">Create Campaign</a>
+                                                                    <a href="campaigns/broadcast.html" class="btn primary-btn">Create Campaign</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -392,55 +397,17 @@
         </footer>
         </div>
 
-        <div class="toast toast--green"  id="success">
-        <div class="toast__icon">
-            
-        </div>
-        <div class="toast__content">
-            <h4 class="toast__type">Login Successful</h4>
-            <p class="toast__message">Welcome back to your account.</p>
-        </div>
+        
         
     </div>
-    
-    <div class="toast toast--blue add-margin" id="info">
-        <div class="toast__icon"></div>
-        <div class="toast__content">
-            <p class="toast__type">Info</p>
-            <p class="toast__message">Verifying your credentials...</p>
-        </div>
-        
-    </div>
-    
-    <div class="toast toast--yellow add-margin" id="warning">
-        <div class="toast__icon">
-        
-        </div>
-        <div class="toast__content">
-            <p class="toast__type">Warning</p>
-            <p class="toast__message">Please wait a moment while we process your request.</p>
-        </div>
-        
-    </div>
-
-    <div class="toast toast--danger add-margin" id="danger">
-        <div class="toast__icon">
-        
-        </div>
-        <div class="toast__content">
-            <p class="toast__type">Invalid OTP</p>
-            <p class="toast__message">Incorrect OTP entered. Please check your code and try again.</p>
-        </div>
-        
-    </div>
-        
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
     </div>
     <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-        crossorigin="anonymous"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/swiper-bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
     <script>
         $('nav ul ul').hide();
         $('nav > ul > li > a').on('click', function (e) {
@@ -471,48 +438,6 @@
             });
         });
     </script>
-    <script>
-            $(document).ready(function () {
-            var toasterOne = document.getElementById("success")
-            var toasterTwo = document.getElementById("info")
-            var toasterThree = document.getElementById("warning")
-            var toasterFour = document.getElementById("danger")
-            //var toasterFive = document.getElementById("notify")
-              setTimeout(() => {
-                Toastify({
-                    node: toasterTwo,
-                    close:true,
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                }).showToast();
-
-                Toastify({
-                    node: toasterThree,
-                    close:true,
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                }).showToast();
-
-                Toastify({
-                    node: toasterFour,
-                    close:true,
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                }).showToast();
-                Toastify({
-                  node: toasterOne,
-                  close:true,
-                  duration: 30000,
-                  gravity: "top",
-                  position: "right",
-                }).showToast();
-                
-              }, 1000);
-            });
-          </script>
 </body>
 
 </html>
