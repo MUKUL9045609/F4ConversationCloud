@@ -72,8 +72,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         new Claim(ClaimTypes.MobilePhone, clientdetails.PhoneNumber),
                         new Claim(ClaimTypes.Role, RoleName),
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
-                        new Claim("BusinessId", clientdetails.BusinessId.ToString()),
-                        new Claim("ClientInfoId", clientdetails.ClientInfoId.ToString())
+                        new Claim("BusinessId", clientdetails.BusinessId),
+                        new Claim("ClientInfoId", clientdetails.ClientInfoId)
                     };
                 var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

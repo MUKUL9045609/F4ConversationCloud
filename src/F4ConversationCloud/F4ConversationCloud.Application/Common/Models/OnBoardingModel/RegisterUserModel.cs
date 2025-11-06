@@ -41,8 +41,8 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public ClientRegistrationStatus RegistrationStatus { get; set; }
         public string CityName { get; set; }
         public string StateName { get; set; }
-        public string BusinessId { get; set; }
-        public string ClientInfoId { get; set; }
+        public string BusinessId { get; set; } = string.Empty;
+        public string ClientInfoId { get; set; } = string.Empty;
 
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 

@@ -12,8 +12,8 @@
     {
         return isReadOnly ? "disabled" : "";
     }
-    
-   
+
+
 } *@
 
 <div class="bx_wrap">
@@ -63,7 +63,7 @@
                 <input type="hidden" asp-for="CountryCode" id="CountryCodeid" />
                 <input type="hidden" asp-for="PhoneNumberOtpVerified" id="PhoneNumberOtpVerifiedId">
                 <span asp-validation-for="CountryCode" class="error-message text-danger small" id="phoneError"></span>
-                
+
             </div>
 
                 <div class="group-form" >
@@ -78,7 +78,7 @@
                                 <input  type="text" class="otp-input" maxlength="1">
                                 <input type="text" class="otp-input" maxlength="1">
                                 <input  type="text" class="otp-input" maxlength="1">
-                                @* <input asp-for="OTP" type="number" class="form-control flex-grow-1" placeholder="Enter OTP" > *@
+                            @* <input asp-for="OTP" type="number" class="form-control flex-grow-1" placeholder="Enter OTP" > *@
                             <input type="hidden" asp-for="OTP" id="contactNoOtpinput" />
                             </div>
                             <button type="button" id="varifycontactNoOtpbtn" class="btn verifyBtn">Verify</button>
@@ -91,7 +91,7 @@
                     </div>
                     <span asp-validation-for="OTP" class="error-message text-danger small" id="contactNoOtpError"></span>
                 </div>
-               
+
             </div>
 
                  <div class="group-form">
@@ -100,32 +100,32 @@
 
                 @if (ViewBag.DisableButtons)
                 {
-                    <input type="text" class="form-control" value="**********" readonly />
+                            <input type="text" class="form-control" value="**********" readonly />
                 }
                 else
                 {
 
-                    <div class="d-flex password-wrap">
-                        <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
-                        <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-                    </div>
+                            <div class="d-flex password-wrap">
+                                <input asp-for="PassWord" type="password" class="form-control" placeholder="Enter Password" id="password" />
+                                <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                            </div>
                 }
                 <span asp-validation-for="PassWord" class="error-message text-danger small" id="passwordError"></span>
             </div>
 
                 <div class="group-form">
                     <label asp-for="ConfirmPassword" class="form-label">Confirm Password <sup class="error">*</sup></label>
-                    @if (ViewBag.DisableButtons)
-                    {
-                        <input type="text" class="form-control" value="**********" readonly />
-                    } 
-                    else
-                    {
-                        <div class="d-flex password-wrap">
-                            <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
-                            <i class="toggle-password fa fa-fw fa-eye-slash"></i>
-                        </div>
-                    }
+                @if (ViewBag.DisableButtons)
+                {
+                                <input type="text" class="form-control" value="**********" readonly />
+                }
+                else
+                {
+                                <div class="d-flex password-wrap">
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control flex-grow-1" placeholder="Re-enter Password" id="confirmPassword" />
+                                    <i class="toggle-password fa fa-fw fa-eye-slash"></i>
+                                </div>
+                }
                     <span asp-validation-for="ConfirmPassword" class="error-message text-danger small" id="confirmPasswordError"></span>
                 </div>
                 <div class="group-form">
@@ -134,30 +134,30 @@
                            id="email">
                     <span asp-validation-for="OrganizationsName" class="error-message text-danger small"></span>
                 </div>
-           
+
                 <div class="group-form">
                     <label for="emailCode" class="form-label">Select Current Time Zone <sup class="error">*</sup></label>
                     <select class="form-control select2" asp-for="Timezone">
                         <option value="" selected disabled>Select Time Zone</option>
                         <option value="@Model.Timezone">@Model.Timezone</option>
 
-                        @foreach (var item in Model.TimeZones)
+                    @foreach (var item in Model.TimeZones)
+                    {
+                        var settimean = item.name + item.current_utc_offset;
+                        if (Model.Timezone == settimean)
                         {
-                            var settimean = item.name + item.current_utc_offset;
-                            if (Model.Timezone == settimean)
-                            {
-                                <option value="@settimean" selected>@settimean</option>
-                            }
-                            else
-                            {
-                                <option value="@settimean">@settimean</option>
-                            }
+                                                <option value="@settimean" selected>@settimean</option>
                         }
+                        else
+                        {
+                                                <option value="@settimean">@settimean</option>
+                        }
+                    }
 
                     </select>
                     <span asp-validation-for="Timezone" class="error-message text-danger small"></span>
                 </div>
-           
+
                 <h5>Address</h5>
                 <div class="group-form w-100">
                         <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
@@ -166,7 +166,7 @@
                 </div>
                 <div class="group-form w-100">
                         <label class="form-label">Address Line 2 (Optional)</label>
-                        <input asp-for="OptionalAddress" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc." "id="addresstwo">       
+                        <input asp-for="OptionalAddress" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo" />       
                 </div>
                 <div class="group-form">
                     <label asp-for="Country" class="form-label">Country of residence <sup class="error">*</sup></label>
@@ -178,62 +178,62 @@
                 </div>
                 <div class="group-form">
                         <label for="state" class="form-label">State <sup class="error">*</sup></label>
-                        
+
                         <select id="StateSelect" class="form-control select2" asp-for="StateId" >
-                        @if (ViewBag.DisableButtons)
-                            {
-                                <option value="@Model.StateId" selected>@Model.StateId</option>
-                            }
-                            else
-                            {
-                                <option value="" selected disabled>Select State</option>
-                                @foreach (var item in Model.States)
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
-                            }
+                    @if (ViewBag.DisableButtons)
+                    {
+                                        <option value="@Model.StateId" selected>@Model.StateId</option>
+                    }
+                    else
+                    {
+                                        <option value="" selected disabled>Select State</option>
+                        @foreach (var item in Model.States)
+                        {
+                                                    <option value="@item.Id">@item.Name</option>
+                        }
+                    }
                         </select>
 
-                        @if (!ViewBag.DisableButtons)
-                        {
-                            <span asp-validation-for="StateId" class="error-message text-danger small"></span>
-                        }
+                @if (!ViewBag.DisableButtons)
+                {
+                                    <span asp-validation-for="StateId" class="error-message text-danger small"></span>
+                }
                 </div>
 
                 <div class="group-form">
                     <div>
                         <label for="CitySelect" class="form-label">City <sup class="error">*</sup></label>
                             <select id="CitySelect" class="form-control select2" asp-for="CityId">
-                                @if (ViewBag.DisableButtons)
-                                {
-                                    <option value="@Model.CityId" selected>@Model.CityId</option>
-                                }
-                                else
-                                {
-                                    <option value="" selected disabled>Select City</option>
-                                }
+                        @if (ViewBag.DisableButtons)
+                        {
+                                            <option value="@Model.CityId" selected>@Model.CityId</option>
+                        }
+                        else
+                        {
+                                            <option value="" selected disabled>Select City</option>
+                        }
                             </select>
-                            @if (!ViewBag.DisableButtons)
-                            {
-                                <span asp-validation-for="CityId" class="error-message text-danger small"></span>
-                            }
+                    @if (!ViewBag.DisableButtons)
+                    {
+                                        <span asp-validation-for="CityId" class="error-message text-danger small"></span>
+                    }
 
                     </div>
                 </div>
 
 
                 <div class="group-form">
-                    
+
                         <label asp-for="ZipCode" class="form-label">
                             Postal / ZIP Code <sup class="error">*</sup>
                         </label>
                         <input asp-for ="ZipCode" type="text" class="form-control" id="postal_code" 
                                placeholder="Enter your postal or ZIP code" >
                     <span asp-validation-for="ZipCode" class="error-message text-danger small"></span>
-                    
+
                 </div>
-           
-        
+
+
         </div>
         <div class="form-check d-flex justify-content-start terms-check gap-2 mt-1">
             <input asp-for="TermsCondition" class="form-check-input" id="agreeTerms" />
@@ -244,419 +244,419 @@
 
               </label>
 
+
         </div>
-           
+
 
         <button type="submit" class="btn login-btn">Register Account</button>
             <span class="lock-text"><span class="lock"></span> Your Info is safely secured</span>
-    </form>
 
-
+            </form>
 </div>
 @section Scripts {
- 
+
     @{
-     await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script>
-        $(document).ready(function () {
-            $(".select2").select2();
+            <script>
+                $(document).ready(function () {
+                    $(".select2").select2();
 
-        $('#TermsConditionsverifyBtn').click(function () {
-            $('#agreeTerms').prop('checked', true);   
-            $('#agreeTerms').val(true);               
-            $('#createTemplate').modal('hide');      
-        });
-
-     
-        $('#agreeTerms').change(function () {
-            if ($(this).is(':checked')) {
-                $(this).val(true);
-            } else {
-                $(this).val(false);
-            }
-        });
-        });
-        
-    </script>
-
-    <script>
-        // #region Resend otp-- >
-
-         $(document).ready(function () {
-
-                 const fieldIds = [
-                    'addreessline1',
-                    'addresstwo',
-                    'StateSelect',
-                    'CitySelect',
-                    'postal_code',
-                    'agreeTerms',
-                    'TermsConditionsverifyBtn'
-                    ];
-
-                 fieldIds.forEach(id => {
-                    $('#' + id).prop('disabled', true);
+                $('#TermsConditionsverifyBtn').click(function () {
+                    $('#agreeTerms').prop('checked', true);   
+                    $('#agreeTerms').val(true);               
+                    $('#createTemplate').modal('hide');      
                 });
-             let timerDuration = 2 * 60;
-             let interval;
 
-             function startTimer() {
-                 clearInterval(interval);
 
-                 let remaining = timerDuration;
-
-                  $("#resendOtpBtn").hide();
-                 $(".otp-text").removeClass("d-none");
-                 $("#timeRemaining").text(formatTime(remaining));
-
-                 interval = setInterval(function () {
-                     remaining--;
-
-                     if (remaining >= 0) {
-                         $("#timeRemaining").text(formatTime(remaining));
-                     }
-
-                     if (remaining === 0) {
-                         clearInterval(interval);
-                         $(".otp-text").addClass("d-none");
-                         $("#resendOtpBtn").show();
-                     }
-                 }, 1000);
-             }
-
-             function formatTime(seconds) {
-                 let minutes = Math.floor(seconds / 60);
-                 let secs = seconds % 60;
-                 return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
-             }
-             function sendOTP() {
-                 if (!$("#PhoneNumber").valid()) return;
-
-                 $("#loader").show();
-
-                 var PhoneNumber = $('#PhoneNumber').val();
-                 var CountryCode = $('#CountryCodeid').val();
-
-                 var req = {
-                     UserPhoneNumber: PhoneNumber,
-                     CountryCode: CountryCode
-                 };
-
-                 var url = "@Url.ActionLink("VarifyWhatsAppNumber", "Onboarding")";
-
-                 ajaxHelper.ajaxPost(
-                     url,
-                     null,
-                     req,
-                     function (response) {
-                            $("#loader").hide();
-                         if (response.status === true) {
-                             commonHelper.showSuccess(response.message)
-                            // showToast(response.message, "success");
-                             $('#contactNoOtpDiv').show();
-                                $('#varifyPhoneNumberbtn').hide();
-                             startTimer();
-                         } else {
-                             $('#phoneError').text(response.message);
-
-                         }
-                     },
-                     function (xhr) {
-                         commonHelper.showError("Technical Error.!")
-                         // showToast("Technical Error. Please try again.", "danger");
-                     },
-                     function () {
-                         $("#loader").hide();
-                     }
-                 );
-             }
-
-              $('#varifyPhoneNumberbtn').click(function (e) {
-                 e.preventDefault();
-                 sendOTP();
-             });
-              $('#resendOtpBtn').click(function (e) {
-                 e.preventDefault();
-                $('.otp-input').val('');
-                $('#contactNoOtpinput').val('');
-                $('#contactNoOtpError').val('');
-                $('#contactNoOtpError').text('');
-
-                $('.otp-input').first().focus();
-                 sendOTP();
-             });
-             // varify otp
-              $('#varifycontactNoOtpbtn').click(function (e) {
-                 e.preventDefault();
-
-                 if (!$("#PhoneNumber").valid() ) {
-                   return;
-                 }
-                 if (!$("#contactNoOtpinput").valid()) {
-                   return;
-                 }
-
-                 $("#loader").show();
-
-                 var PhoneNumber = $('#PhoneNumber').val();
-                 var CountryCode = $('#CountryCodeid').val();
-                 var contactNoOTP = $('#contactNoOtpinput').val();
-
-                 var req = {
-                     UserPhoneNumber: PhoneNumber,
-                     CountryCode: CountryCode,
-                     OTP: contactNoOTP
-                 };
-
-                 var url = "@Url.ActionLink("VerifyOtp", "Onboarding")";
-
-                 ajaxHelper.ajaxPost(
-                     url,
-                     null,
-                     req,
-                     function (response) {
-                         $("#loader").hide();
-                         
-                         if (response.status === true) {
-                            $('#PhoneNumberOtpVerifiedId').val(response.status);
-                            //showToast(response.message, "success");
-                            commonHelper.showSuccess(response.message)
-                            $('#contactNoOtpDiv,#phoneError').hide();
-                            $('#varifyPhoneNumberbtn').addClass('disabled-btn');
-                            $('#varifyPhoneNumberbtn span').text('');
-                            $('#PhoneNumber')
-                                 .prop('readonly', true)
-                                 .removeClass('is-invalid')
-                                 .addClass('form-control flex-grow-1 success');
-
-                             
-                                 fieldIds.forEach(id => {
-                                    $('#' + id).prop('disabled', false);
-                                });
-                         }
-                         else
-                         {
-                               //$("#resendOtpBtn").removeClass("d-none"); verifyBtnLink
-                              // $("#resendOtpBtn").addClass("d-none");
-                                //clearInterval(interval);
-                               // $(".otp-text").addClass("d-none");
-                               // $("#resendOtpBtn").removeClass("d-none").addClass("resend-otp");
-
-                               $('#contactNoOtpError').text(response.message || 'Invalid OTP. Please try again.');
-                         }
-                     },
-                     function (xhr) {
-                         $("#loader").hide();
-                         $('#OtpError').text('Failed to verify OTP. Please try again.');
-                     }
-                 );
-             });
-        });
-
-    </script>
-
-    <script>
-        // make form readonly
-         $(document).ready(function () {
-         let $form = $("#firststepform");
-            var isReadOnly = @Json.Serialize(ViewBag.IsReadOnly);
-                var disableButtons = @Json.Serialize(ViewBag.DisableButtons);
-
-                if (isReadOnly) {
-                    $('#fullName, #emailid, #PhoneNumber').prop("disabled", true);
-                }
-
-            if ($form.hasClass("readonly-mode")) {
-
-                $form.find("input, select, textarea, button").each(function () {
-                    let $element = $(this);
-
-                    if ($element.is("input") || $element.is("textarea")) {
-                        $element.prop("readonly", true);
-                    }
-                    if ($element.is("button") || $element.is("select")) {
-                        $element.prop("disabled", true);
+                $('#agreeTerms').change(function () {
+                    if ($(this).is(':checked')) {
+                        $(this).val(true);
+                    } else {
+                        $(this).val(false);
                     }
                 });
-               
-                $(' #passicon, #cpassicon,#agreeTerms')
-                    .addClass('disabled')
-                    .css({
-                        'pointer-events': 'none',
-                        'opacity': '0.5'
+                });
+
+            </script>
+
+            <script>
+                // #region Resend otp-- >
+
+                 $(document).ready(function () {
+
+                         const fieldIds = [
+                            'addreessline1',
+                            'addresstwo',
+                            'StateSelect',
+                            'CitySelect',
+                            'postal_code',
+                            'agreeTerms',
+                            'TermsConditionsverifyBtn'
+                            ];
+
+                         fieldIds.forEach(id => {
+                            $('#' + id).prop('disabled', true);
                         });
-                $('#varifyPhoneNumberbtn').hide();
-            }
+                     let timerDuration = 2 * 60;
+                     let interval;
 
-        });
-    </script>
+                     function startTimer() {
+                         clearInterval(interval);
 
-    <script>
-            fetch("/data/countries.json")
-        .then(res => res.json())
-        .then(data => {
-            const select = document.getElementById("countrySelect");
-            const hiddenInput = document.getElementById("hiddenCountry");
+                         let remaining = timerDuration;
 
-            
-            data.sort((a, b) => a.name.localeCompare(b.name));
+                          $("#resendOtpBtn").hide();
+                         $(".otp-text").removeClass("d-none");
+                         $("#timeRemaining").text(formatTime(remaining));
 
-            select.innerHTML = "";
-            const option = document.createElement("option");
-            option.value = "India";
-            option.textContent = "India";
-            select.appendChild(option);
+                         interval = setInterval(function () {
+                             remaining--;
 
-            select.value = "India";
-            select.disabled = true;
-            hiddenInput.value = "India";
-        })
-        .catch(err => console.error("Error fetching countries:", err));
+                             if (remaining >= 0) {
+                                 $("#timeRemaining").text(formatTime(remaining));
+                             }
+
+                             if (remaining === 0) {
+                                 clearInterval(interval);
+                                 $(".otp-text").addClass("d-none");
+                                 $("#resendOtpBtn").show();
+                             }
+                         }, 1000);
+                     }
+
+                     function formatTime(seconds) {
+                         let minutes = Math.floor(seconds / 60);
+                         let secs = seconds % 60;
+                         return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+                     }
+                     function sendOTP() {
+                         if (!$("#PhoneNumber").valid()) return;
+
+                         $("#loader").show();
+
+                         var PhoneNumber = $('#PhoneNumber').val();
+                         var CountryCode = $('#CountryCodeid').val();
+
+                         var req = {
+                             UserPhoneNumber: PhoneNumber,
+                             CountryCode: CountryCode
+                         };
+
+                         var url = "@Url.ActionLink("VarifyWhatsAppNumber", "Onboarding")";
+
+                         ajaxHelper.ajaxPost(
+                             url,
+                             null,
+                             req,
+                             function (response) {
+                                    $("#loader").hide();
+                                 if (response.status === true) {
+                                     commonHelper.showSuccess(response.message)
+                                    // showToast(response.message, "success");
+                                     $('#contactNoOtpDiv').show();
+                                        $('#varifyPhoneNumberbtn').hide();
+                                     startTimer();
+                                 } else {
+                                     $('#phoneError').text(response.message);
+
+                                 }
+                             },
+                             function (xhr) {
+                                 commonHelper.showError("Technical Error.!")
+                                 // showToast("Technical Error. Please try again.", "danger");
+                             },
+                             function () {
+                                 $("#loader").hide();
+                             }
+                         );
+                     }
+
+                      $('#varifyPhoneNumberbtn').click(function (e) {
+                         e.preventDefault();
+                         sendOTP();
+                     });
+                      $('#resendOtpBtn').click(function (e) {
+                         e.preventDefault();
+                        $('.otp-input').val('');
+                        $('#contactNoOtpinput').val('');
+                        $('#contactNoOtpError').val('');
+                        $('#contactNoOtpError').text('');
+
+                        $('.otp-input').first().focus();
+                         sendOTP();
+                     });
+                     // varify otp
+                      $('#varifycontactNoOtpbtn').click(function (e) {
+                         e.preventDefault();
+
+                         if (!$("#PhoneNumber").valid() ) {
+                           return;
+                         }
+                         if (!$("#contactNoOtpinput").valid()) {
+                           return;
+                         }
+
+                         $("#loader").show();
+
+                         var PhoneNumber = $('#PhoneNumber').val();
+                         var CountryCode = $('#CountryCodeid').val();
+                         var contactNoOTP = $('#contactNoOtpinput').val();
+
+                         var req = {
+                             UserPhoneNumber: PhoneNumber,
+                             CountryCode: CountryCode,
+                             OTP: contactNoOTP
+                         };
+
+                         var url = "@Url.ActionLink("VerifyOtp", "Onboarding")";
+
+                         ajaxHelper.ajaxPost(
+                             url,
+                             null,
+                             req,
+                             function (response) {
+                                 $("#loader").hide();
+
+                                 if (response.status === true) {
+                                    $('#PhoneNumberOtpVerifiedId').val(response.status);
+                                    //showToast(response.message, "success");
+                                    commonHelper.showSuccess(response.message)
+                                    $('#contactNoOtpDiv,#phoneError').hide();
+                                    $('#varifyPhoneNumberbtn').addClass('disabled-btn');
+                                    $('#varifyPhoneNumberbtn span').text('');
+                                    $('#PhoneNumber')
+                                         .prop('readonly', true)
+                                         .removeClass('is-invalid')
+                                         .addClass('form-control flex-grow-1 success');
 
 
-   $(document).ready(function () {
-        $('#StateSelect').on('change', function () {
-                var SelectedState = $(this).val();
+                                         fieldIds.forEach(id => {
+                                            $('#' + id).prop('disabled', false);
+                                        });
+                                 }
+                                 else
+                                 {
+                                       //$("#resendOtpBtn").removeClass("d-none"); verifyBtnLink
+                                      // $("#resendOtpBtn").addClass("d-none");
+                                        //clearInterval(interval);
+                                       // $(".otp-text").addClass("d-none");
+                                       // $("#resendOtpBtn").removeClass("d-none").addClass("resend-otp");
 
-                if (!SelectedState) return;
+                                       $('#contactNoOtpError').text(response.message || 'Invalid OTP. Please try again.');
+                                 }
+                             },
+                             function (xhr) {
+                                 $("#loader").hide();
+                                 $('#OtpError').text('Failed to verify OTP. Please try again.');
+                             }
+                         );
+                     });
+                });
 
-                
-                $('#StateSelect').removeClass('input-validation-error');
-                $('span[data-valmsg-for="StateId"]').text('');
+            </script>
 
-                var url = "@Url.Action("GetCitiesByStateId", "Onboarding")";
+            <script>
+                // make form readonly
+                 $(document).ready(function () {
+                 let $form = $("#firststepform");
+                    var isReadOnly = @Json.Serialize(ViewBag.IsReadOnly);
+                        var disableButtons = @Json.Serialize(ViewBag.DisableButtons);
 
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: { stateId: SelectedState },
-                    success: function (response) {
-                        var cityDropdown = $('#CitySelect');
-                        cityDropdown.empty();
-                        cityDropdown.append('<option value="" selected disabled>Select City</option>');
-
-                        if (response && response.length > 0) {
-                            $.each(response, function (index, city) {
-                                cityDropdown.append('<option value="' + city.id + '">' + city.name + '</option>');
-                            });
-                        } else {
-                            cityDropdown.append('<option disabled>No cities found</option>');
+                        if (isReadOnly) {
+                            $('#fullName, #emailid, #PhoneNumber').prop("disabled", true);
                         }
 
-                       
-                    },
-                    error: function () {
-                        //showToast("Technical Error!", "danger");
-                        commonHelper.showError("Technical Error.!")
+                    if ($form.hasClass("readonly-mode")) {
+
+                        $form.find("input, select, textarea, button").each(function () {
+                            let $element = $(this);
+
+                            if ($element.is("input") || $element.is("textarea")) {
+                                $element.prop("readonly", true);
+                            }
+                            if ($element.is("button") || $element.is("select")) {
+                                $element.prop("disabled", true);
+                            }
+                        });
+
+                        $(' #passicon, #cpassicon,#agreeTerms')
+                            .addClass('disabled')
+                            .css({
+                                'pointer-events': 'none',
+                                'opacity': '0.5'
+                                });
+                        $('#varifyPhoneNumberbtn').hide();
+                    }
+
+                });
+            </script>
+
+            <script>
+                    fetch("/data/countries.json")
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById("countrySelect");
+                    const hiddenInput = document.getElementById("hiddenCountry");
+
+
+                    data.sort((a, b) => a.name.localeCompare(b.name));
+
+                    select.innerHTML = "";
+                    const option = document.createElement("option");
+                    option.value = "India";
+                    option.textContent = "India";
+                    select.appendChild(option);
+
+                    select.value = "India";
+                    select.disabled = true;
+                    hiddenInput.value = "India";
+                })
+                .catch(err => console.error("Error fetching countries:", err));
+
+
+           $(document).ready(function () {
+                $('#StateSelect').on('change', function () {
+                        var SelectedState = $(this).val();
+
+                        if (!SelectedState) return;
+
+
+                        $('#StateSelect').removeClass('input-validation-error');
+                        $('span[data-valmsg-for="StateId"]').text('');
+
+                        var url = "@Url.Action("GetCitiesByStateId", "Onboarding")";
+
+                        $.ajax({
+                            url: url,
+                            type: "POST",
+                            data: { stateId: SelectedState },
+                            success: function (response) {
+                                var cityDropdown = $('#CitySelect');
+                                cityDropdown.empty();
+                                cityDropdown.append('<option value="" selected disabled>Select City</option>');
+
+                                if (response && response.length > 0) {
+                                    $.each(response, function (index, city) {
+                                        cityDropdown.append('<option value="' + city.id + '">' + city.name + '</option>');
+                                    });
+                                } else {
+                                    cityDropdown.append('<option disabled>No cities found</option>');
+                                }
+
+
+                            },
+                            error: function () {
+                                //showToast("Technical Error!", "danger");
+                                commonHelper.showError("Technical Error.!")
+
+                            }
+                        });
+                    });
+
+
+                    $('#CitySelect').on('change', function () {
+                        $('#CitySelect').removeClass('input-validation-error');
+                        $('span[data-valmsg-for="CityId"]').text('');
+                    });
+                    $('#Timezone').on('change', function () {
+                        $('#Timezone').removeClass('input-validation-error');
+                        $('span[data-valmsg-for="Timezone"]').text('');
+                    });
+
+                    $('#varifyPhoneNumberbtn').click(function () {
+                        $('.otp-section').show(300);
+                    });
+
+                });
+
+            </script>
+
+
+            <script>
+
+             $(document).ready(function () {
+                    var $inputs = $(".otp-input");
+                    var $hiddenOtp = $("#contactNoOtpinput");
+
+                    $inputs.on("input", function () {
+                        var $this = $(this);
+                        var val = $this.val();
+
+
+                        if (!/^\d$/.test(val)) {
+                            $this.val('');
+                            return;
+                        }
+
+
+                        var nextIndex = $inputs.index(this) + 1;
+                        if (val && nextIndex < $inputs.length) {
+                            $inputs.eq(nextIndex).focus();
+                        }
+
+                        updateHiddenOtp();
+                    });
+
+                    $inputs.on("keydown", function (e) {
+                        var $this = $(this);
+
+
+                        if (e.key === "Backspace" && !$this.val()) {
+                            var prevIndex = $inputs.index(this) - 1;
+                            if (prevIndex >= 0) $inputs.eq(prevIndex).focus();
+                        }
+
+
+                        setTimeout(updateHiddenOtp, 0);
+                    });
+
+                    function updateHiddenOtp() {
+                        var otpVal = "";
+                        $inputs.each(function () {
+                            otpVal += $(this).val();
+                        });
+
+                        $hiddenOtp.val(otpVal);
+
+                        if ($hiddenOtp.length && typeof $hiddenOtp.valid === "function") {
+                            $hiddenOtp.valid();
+                        }
+                    }
+                });
+
+
+
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    var input = document.getElementById("PhoneNumber");
+                    var hiddenInput = document.getElementById("CountryCodeid");
+
+                    if (input && hiddenInput) {
+                        var iti = window.intlTelInput(input, {
+                            initialCountry: "in",
+                            separateDialCode: true,
+                            nationalMode: true,
+                            formatOnDisplay: false,
+                            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+                        });
+
+
+                        var updateHiddenField = function () {
+                            var countryData = iti.getSelectedCountryData();
+                            hiddenInput.value = "+" + countryData.dialCode;
+                        };
+
+
+                        input.addEventListener('countrychange', updateHiddenField);
+                        var currentValue = input.value.trim();
+                            if (currentValue.startsWith('+')) {
+                                iti.setNumber(currentValue);
+                            }
+                           updateHiddenField();
 
                     }
                 });
-            });
 
-            
-            $('#CitySelect').on('change', function () {
-                $('#CitySelect').removeClass('input-validation-error');
-                $('span[data-valmsg-for="CityId"]').text('');
-            });
-            $('#Timezone').on('change', function () {
-                $('#Timezone').removeClass('input-validation-error');
-                $('span[data-valmsg-for="Timezone"]').text('');
-            });
-
-            $('#varifyPhoneNumberbtn').click(function () {
-                $('.otp-section').show(300);
-            });
-       
-        });
-
-    </script>
-
-
-    <script>
-
-     $(document).ready(function () {
-            var $inputs = $(".otp-input");
-            var $hiddenOtp = $("#contactNoOtpinput");
-
-            $inputs.on("input", function () {
-                var $this = $(this);
-                var val = $this.val();
-
-                
-                if (!/^\d$/.test(val)) {
-                    $this.val('');
-                    return;
-                }
-
-                
-                var nextIndex = $inputs.index(this) + 1;
-                if (val && nextIndex < $inputs.length) {
-                    $inputs.eq(nextIndex).focus();
-                }
-
-                updateHiddenOtp();
-            });
-
-            $inputs.on("keydown", function (e) {
-                var $this = $(this);
-
-                
-                if (e.key === "Backspace" && !$this.val()) {
-                    var prevIndex = $inputs.index(this) - 1;
-                    if (prevIndex >= 0) $inputs.eq(prevIndex).focus();
-                }
-
-                
-                setTimeout(updateHiddenOtp, 0);
-            });
-
-            function updateHiddenOtp() {
-                var otpVal = "";
-                $inputs.each(function () {
-                    otpVal += $(this).val();
-                });
-
-                $hiddenOtp.val(otpVal);
-
-                if ($hiddenOtp.length && typeof $hiddenOtp.valid === "function") {
-                    $hiddenOtp.valid();
-                }
-            }
-        });
-
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var input = document.getElementById("PhoneNumber");
-            var hiddenInput = document.getElementById("CountryCodeid");
-
-            if (input && hiddenInput) {
-                var iti = window.intlTelInput(input, {
-                    initialCountry: "in",
-                    separateDialCode: true,
-                    nationalMode: true,
-                    formatOnDisplay: false,
-                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
-                });
-
-
-                var updateHiddenField = function () {
-                    var countryData = iti.getSelectedCountryData();
-                    hiddenInput.value = "+" + countryData.dialCode;
-                };
-
-
-                input.addEventListener('countrychange', updateHiddenField);
-                var currentValue = input.value.trim();
-                    if (currentValue.startsWith('+')) {
-                        iti.setNumber(currentValue);
-                    }
-                   updateHiddenField();
-
-            }
-        });
-
-    </script>
+            </script>
 }
