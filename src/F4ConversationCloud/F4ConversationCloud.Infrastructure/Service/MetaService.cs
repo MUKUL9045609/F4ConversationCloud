@@ -169,13 +169,12 @@ namespace F4ConversationCloud.Infrastructure.Service
 
             try
             {
-                string token = "EAAfQDEk90fkBP4m33jjZAz6NZCKTd07HgHAev7J1ZB9Ea3SMmHRCZB3ZAt2KxGnRKP04Upv3j2RIqYewn5T644mgIHrNxtBBmQ7GeQtCUoqivEeZC0ffuibKOtwpGz1vwXkcOkVEVe3QrIMtThgQZAAcyGLDkChrwrZB0VbrTZAQB4ynM4rDl2MHmPi4OfWblZCZCpl4JPkikjZCN9ILwYfZCTAosRJkyAOpZB9n2LFudZBrQZDZD"; // <-- Replace with your valid Meta Access Token
-
+                var accessToken = "EAAfQDEk90fkBPwhC6Dths4M53um8rHPraOqb8KxSnXdGxJOBjqPQdo5kf14RsOOdQx1PxvyFcCZApV9Evn9fn2VN02kPCMybh0P5WIYYkWNsZAutr7J0qitlmkJY6QSWTqlyCh04JyuAvOZBZBcSAdbyQlSyeeSErIOX9KdOew4z5ckpvUdxEstzA37IKS5dB0PDnMf81jEzBwJRYKAsP7oZBikqUKgjkQzhu56nb8t2qm7YlFYwB6zZAEM9dthSJrdtEeuar7BTg5EMMZD";
                 apiUrl = "https://graph.facebook.com/v24.0/me" +
                          "?fields=business_users{id,name,assigned_whatsapp_business_accounts{name,phone_numbers{display_phone_number,verified_name,name_status,code_verification_status,whatsapp_commerce_settings,whatsapp_business_profile}}}";
                 headers = new Dictionary<string, string>
                 {
-                    { "Authorization", $"Bearer {token}" }
+                    { "Authorization", $"Bearer {accessToken}" }
                 };
 
                 var result = await _logService.CallExternalAPI<dynamic>(

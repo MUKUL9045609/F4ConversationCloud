@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Client Onboarding List";
 }
+@{
+    var BusinessId = User.Claims.FirstOrDefault(c => c.Type == "BusinessId")?.Value;
+    var ClientInfoId = User.Claims.FirstOrDefault(c => c.Type == "ClientInfoId")?.Value;
+}
+
 <div class="content bg-light">
     <div class="container-fluid">
         <div class="card padding box-shadow">
@@ -201,7 +206,24 @@
             });
 
         $("#sync-btn").click(function(){
-            location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
+
+          var BusinessId = '@BusinessId';
+          var ClientInfoId = '@ClientInfoId';
+
+           //location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
+               $.ajax({
+                url: '/MetaOnboarding/Sync-Meta-list',
+                type: 'POST',
+                data: { BusinessId: BusinessId },
+                success: function(response) {
+                    console.log("Sync successful:", response);
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.error("Sync failed:", error);
+                   
+                }
+             });
         });
 
         function loadData() {

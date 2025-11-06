@@ -34,15 +34,12 @@
                            placeholder="Enter Full Name"
                            id="fullName"
                            pattern="^[a-zA-Z\s'-]+$" />
-
                     <span asp-validation-for="FirstName" class="error-message text-danger small" id="fullNameError"></span>
                 </div>
                 <div class="group-form">
                     <label asp-for="Email" class="form-label">Email address <sup class="error">*</sup></label>
                     <input asp-for="Email" type="email" class="form-control flex-grow-1" placeholder="Enter Email Address" id="emailid">
                     <span asp-validation-for="Email" class="error-message text-danger small" id="emailError"></span>
-               
-
                 </div>
                 <div class="group-form">
                 <label class="form-label">Contact Number<sup class="error">*</sup></label>
@@ -163,20 +160,14 @@
            
                 <h5>Address</h5>
                 <div class="group-form w-100">
-                    
-                         <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
-                        <textarea asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here" id="addreessline1"></textarea>
+                        <label  class="form-label">Address Line 1 <sup class="error">*</sup></label>
+                        <input asp-for="Address" class="form-control flex-grow-1" placeholder="Enter Address Here" id="addreessline1"></input>
                         <span asp-validation-for="Address" class="error-message text-danger small"></span>
-                   
                 </div>
                 <div class="group-form w-100">
-                    
                         <label class="form-label">Address Line 2 (Optional)</label>
-                    <input asp-for="OptionalAddress" type="text" class="form-control"
-                               placeholder="Apartment, suite, unit, building, floor, etc." id="addresstwo"
-                               >       
+                        <input asp-for="OptionalAddress" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc." "id="addresstwo">       
                 </div>
-
                 <div class="group-form">
                     <label asp-for="Country" class="form-label">Country of residence <sup class="error">*</sup></label>
                         <input type="hidden" name="Country" id="hiddenCountry" value="India" />
@@ -185,15 +176,12 @@
                         </select>
                         <span asp-validation-for="Country" class="error-message text-danger small"></span>
                 </div>
-
                 <div class="group-form">
-                    
                         <label for="state" class="form-label">State <sup class="error">*</sup></label>
                         
                         <select id="StateSelect" class="form-control select2" asp-for="StateId" >
                         @if (ViewBag.DisableButtons)
                             {
-                                <!-- Show only the selected state -->
                                 <option value="@Model.StateId" selected>@Model.StateId</option>
                             }
                             else
@@ -215,19 +203,16 @@
                 <div class="group-form">
                     <div>
                         <label for="CitySelect" class="form-label">City <sup class="error">*</sup></label>
-                       
                             <select id="CitySelect" class="form-control select2" asp-for="CityId">
-                             @if (ViewBag.DisableButtons)
+                                @if (ViewBag.DisableButtons)
                                 {
                                     <option value="@Model.CityId" selected>@Model.CityId</option>
                                 }
                                 else
                                 {
                                     <option value="" selected disabled>Select City</option>
-                                    
                                 }
                             </select>
-
                             @if (!ViewBag.DisableButtons)
                             {
                                 <span asp-validation-for="CityId" class="error-message text-danger small"></span>

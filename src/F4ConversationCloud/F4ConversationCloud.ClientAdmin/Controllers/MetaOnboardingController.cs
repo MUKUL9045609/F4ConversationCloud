@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
+    [Route("MetaOnboarding")]
     public class MetaOnboardingController : BaseController
     {
         private readonly IOnboardingService _onboardingService;
@@ -111,5 +112,22 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return Json(new { result = false });
             }
         }
+
+
+
+        [HttpPost("Sync-Meta-list")]
+        public async Task<IActionResult> SyncMetaDetails(string BusinessId)
+        {
+            try
+            {
+                var result =  _addPhoneNumberService.SyncWhatsAppAccountsAsync(BusinessId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
