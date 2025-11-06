@@ -1782,9 +1782,6 @@ padding-left: 61px !important;
     vertical-align: middle;
     margin-left: 10px;
 }
-
-
-
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -1793,4 +1790,10 @@ padding-left: 61px !important;
     100% {
         transform: rotate(360deg);
     }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
