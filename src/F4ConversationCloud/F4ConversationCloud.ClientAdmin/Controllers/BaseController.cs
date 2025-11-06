@@ -43,7 +43,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 var actionName = context.RouteData.Values["action"]?.ToString();
 
 
-                if (controllerName == "Auth" && (actionName == "Login" || actionName == "Logout" || actionName == "ForgotPassword" || actionName == "InvalidUrl"))
+                if (controllerName == "Auth" && (actionName == "Login" || actionName == "Logout" || actionName == "ForgotPassword" || actionName== "ConfirmPassword" || actionName == "SetPassword" || actionName == "InvalidUrl"))
                 {
                     base.OnActionExecuting(context);
                     return;
