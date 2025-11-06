@@ -444,12 +444,10 @@
 }
 
 .phonewrap {
-    
-
     .form-control {
-        border-top-left-radius: 0px!important;
-        border-bottom-left-radius: 0px!important;
-        border-left: 0px;
+        // border-top-left-radius: 0px!important;
+        // border-bottom-left-radius: 0px!important;
+        // border-left: 0px;
         &.country-option {
             border-right: 1px solid #ddd !important;
             border-left: 1px solid #ddd !important;
@@ -459,11 +457,15 @@
             border-bottom-right-radius: 0px!important;
             max-width: 60px;
             text-align: center;
+                position: absolute;
         }
         &:focus {
-            border-left: 0px !important;
+            // border-left: 0px !important;
         }
     }
+}
+.iti--separate-dial-code .iti__selected-dial-code{
+    font-size: 14px!important;
 }
 
 .verifyBtnLink {
@@ -897,3 +899,4 @@ padding-left: 61px !important;
         transform: rotate(360deg);
     }
 }
+
