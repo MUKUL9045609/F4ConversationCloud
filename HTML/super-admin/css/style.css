@@ -5145,4 +5145,14 @@ body {
 .whatsapp-display-image .whatapp-preview p {
   color: #6C6C6C;
   font-size: 12px;
+}
+
+.error-message {
+  font-size: 12px !important;
+  color: #D06464;
+}
+
+.field-validation-error span {
+  font-size: 12px !important;
+  color: #D06464;
 }/*# sourceMappingURL=style.css.map */

@@ -1747,3 +1747,13 @@ padding-left: 61px !important;
         }
     }
 }
+.error-message {
+    font-size: 12px !important;
+    color: #D06464;
+}
+.field-validation-error{
+    span{
+        font-size: 12px !important;
+        color: #D06464;
+    }
+}
