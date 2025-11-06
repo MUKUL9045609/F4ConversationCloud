@@ -3729,8 +3729,10 @@ body {
   width: 60%;
 }
 
-.sidemenutoggle {
-  overflow: hidden;
+@media (max-width: 480px) {
+  .sidemenutoggle {
+    overflow: hidden;
+  }
 }
 .sidemenutoggle .app-sidebar {
   margin-left: -260px;
@@ -5143,4 +5145,54 @@ body {
 .whatsapp-display-image .whatapp-preview p {
   color: #6C6C6C;
   font-size: 12px;
+}
+
+.error-message {
+  font-size: 12px !important;
+  color: #D06464;
+}
+
+.field-validation-error span {
+  font-size: 12px !important;
+  color: #D06464;
+}
+
+.loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4117647059);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #03A9F5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
 }/*# sourceMappingURL=style.css.map */
