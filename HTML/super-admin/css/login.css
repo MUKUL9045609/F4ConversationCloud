@@ -14,13 +14,22 @@
   width: 100%;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 25px;
   overflow: hidden;
   padding: 30px 40px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+.loginWrapper .loginBox .logo-wrap {
+  width: 100%;
+}
+.loginWrapper .loginBox .logo-wrap img {
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 25px;
+}
 .loginWrapper .loginBox .template_login_title {
   font-size: 20px;
+  margin-bottom: 3px;
 }
 .loginWrapper .loginBox .forgot-password {
   color: #878a99;
@@ -35,7 +44,7 @@
   font-size: 15px;
   color: #878282;
   max-width: 350px;
-  margin: 0 auto 16px;
+  margin: 0 auto 12px;
 }
 .loginWrapper .loginBox .from-group {
   margin-bottom: 15px;
@@ -44,6 +53,7 @@
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 3px;
+  color: #686868;
 }
 .loginWrapper .loginBox .from-group .form-control {
   padding: 0.5rem 0.5rem;
