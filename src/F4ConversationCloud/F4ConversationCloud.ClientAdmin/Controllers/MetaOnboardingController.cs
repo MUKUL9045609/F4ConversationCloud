@@ -68,7 +68,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("save-meta-user-configuration-details")]
         public async Task<IActionResult> SaveMetaUserConfigurationDetails([FromBody] MetaUsersConfiguration command)
         {
             var message = "";

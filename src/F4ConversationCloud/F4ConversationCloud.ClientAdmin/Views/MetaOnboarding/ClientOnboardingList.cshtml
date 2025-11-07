@@ -18,7 +18,7 @@
                 <div class="right-col">
                     <div class="text-center">
                         <a href="#" class="btn btn-facebook" onclick="launchWhatsAppSignup()"><span class="facebook-icon"></span> Continue With Facebook</a>
-
+                        @* <button id="saveMetaBtn" class="btn btn-primary">Save Meta Configuration</button>    *@
 
                         <span class="small-text">We'll request your phone number from Facebook and verify automatically.</span>
                     </div>
@@ -139,70 +139,70 @@
               try {
                 const data = JSON.parse(event.data);
 
-            if (data.type === 'WA_EMBEDDED_SIGNUP') {
-              if (data.event === 'FINISH') {
+                if (data.type === 'WA_EMBEDDED_SIGNUP') {
+                  if (data.event === 'FINISH') {
 
-                const waba_id = data.data.waba_id;
-                const phone_number_id = data.data.phone_number_id;
-                const business_id = data.data.business_id;
+                    const waba_id = data.data.waba_id;
+                    const phone_number_id = data.data.phone_number_id;
+                    const business_id = data.data.business_id;
 
-                    console.log("WABA ID:", waba_id);
-                    console.log("Phone Number ID:", phone_number_id);
-                    console.log("Business ID:", business_id);
-
-
-                const metaResponse = {
-                  WabaId: waba_id,
-                  PhoneNumberId: phone_number_id,
-                  BusinessId: business_id
-                };
+                        console.log("WABA ID:", waba_id);
+                        console.log("Phone Number ID:", phone_number_id);
+                        console.log("Business ID:", business_id);
 
 
-                fetch('/MetaOnboarding/SaveMetaUserConfigurationDetails', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(metaResponse)
-                })
-                .then(res => {
-                  if (res.ok) {
-                    return res.json();
-                  } else {
-                    throw new Error('Network response was not ok');
-                  }
-                })
-                .then(responseData => {
-                  if (responseData.result) {
-                      window.location.href = '@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
-                      commonHelper.showSuccess(responseData.message)
-                  } else {
-                       commonHelper.showError("Failed Account linked");
+                    const metaResponse = {
+                      WabaId: waba_id,
+                      PhoneNumberId: phone_number_id,
+                      BusinessId: business_id
+                    };
 
-                        console.log('Failed: ' + responseData.message);
+                    console.log(metaResponse);
+                    fetch('/MetaOnboarding/save-meta-user-configuration-details', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(metaResponse)
+                    })
+                    .then(res => {
+                      if (res.ok) {
+                        return res.json();
+                      } else {
+                        throw new Error('Network response was not ok');
                       }
                     })
-                    .catch(error => {
-                      console.error("Error saving Meta config:", error);
-                        commonHelper.showError("Something went wrong while saving WhatsApp configuration.");
-                    });
+                    .then(responseData => {
+                      if (responseData.result) {
+                          window.location.href = '@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
+                          commonHelper.showSuccess(responseData.message)
+                      } else {
+                           commonHelper.showError("Failed Account linked");
 
-                  } else if (data.event === 'CANCEL') {
-                    const { current_step } = data.data;
-                    console.warn("User cancelled at step:", current_step);
-                     commonHelper.showError(current_step);
+                            console.log('Failed: ' + responseData.message);
+                          }
+                        })
+                        .catch(error => {
+                          console.log("Error saving Meta config:", error);
+                            commonHelper.showError("Something went wrong while saving WhatsApp configuration.");
+                        });
+
+                      } else if (data.event === 'CANCEL') {
+                        const { current_step } = data.data;
+                        console.warn("User cancelled at step:", current_step);
+                         commonHelper.showError(current_step);
+                      }
+                      else if (data.event === 'ERROR') {
+                        const { error_message } = data.data;
+                        console.error("Meta error:", error_message);
+
+                        commonHelper.showError("Meta error: "+error_message);
+                      }
+                    }
+
+                    document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+
+                  } catch {
+                    console.log('Non JSON Responses', event.data);
                   }
-                  else if (data.event === 'ERROR') {
-                    const { error_message } = data.data;
-                    console.error("Meta error:", error_message);
-
-                    commonHelper.showError("Meta error: "+error_message);
-                  }
-                }
-
-                document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
-
-              } catch {
-                console.log('Non JSON Responses', event.data);
-              }
             });
 
         $("#sync-btn").click(function(){
@@ -310,7 +310,41 @@
             src="https://connect.facebook.net/en_US/sdk.js">
     </script>
 
+    @* <script>
+         document.getElementById('saveMetaBtn').addEventListener('click', function () {
 
+             const metaResponse = {
+                  WabaId: "1289432215843735",
+                  PhoneNumberId: "745504358656439",
+                  BusinessId: "1502717307541680"
+             };
+
+              fetch('@Url.Action("SaveMetaUserConfigurationDetails", "MetaOnboarding")', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(metaResponse)
+             })
+             .then(res => {
+                 if (res.ok) {
+                     return res.json();
+                 } else {
+                     throw new Error('Network response was not ok');
+                 }
+             })
+             .then(responseData => {
+                if (responseData.result) {
+                      window.location.href ='@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
+                 } else {
+                    // showToast(responseData.message, "danger");
+                     console.log('Failed: ' + responseData.message);
+                 }
+             })
+             .catch(err => {
+                 //showToast("Technical Error!", "danger");
+                 console.error(err);
+             });
+         });
+    </script> *@
 
     @*  <script>
         const fbLoginCallback = (response) => {
