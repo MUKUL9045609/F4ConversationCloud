@@ -1,6 +1,8 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,22 +22,35 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             _logService = logService;
         }
 
-        public async Task<IEnumerable<WhatsappTemplateList>> GetTemplatesListAsync(WhatsappTemplateListFilter filter)
+        public async Task<WhatsAppTemplateResponse> GetTemplatesListAsync(WhatsappTemplateListFilter filter)
         {
+
             try
             {
-              var templateList = await _templateRepository.GetTemplatesListAsync(filter);
-                if(templateList == null || !templateList.Any())
-                {
-                    _logService.
-                    _logService.LogInfo("No WhatsApp templates found with the provided filter.");
-                }
-                return await
-            }
-            catch (Exception)
-            {
+                var (templates, totalCount) = await _templateRepository.GetTemplatesListAsync(filter);
 
-                return Enumerable.Empty<WhatsappTemplateList>();
+                return new WhatsAppTemplateResponse
+                {
+                    Templates = templates,
+                    TotalCount = totalCount
+                };
+            }
+            catch (Exception ex )
+            {
+                var log = new LogModel
+                {
+                    Source = "WhatsappTemplate/GetTemplatesListAsync",
+                    AdditionalInfo = $"Filter: {JsonConvert.SerializeObject(filter)}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+                await _logService.InsertLogAsync(log);
+                return new WhatsAppTemplateResponse
+                {
+                    Templates = Enumerable.Empty<WhatsappTemplateListItem>(),
+                    TotalCount = 0
+                };
             }
             
         }

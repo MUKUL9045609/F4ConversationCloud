@@ -18,26 +18,31 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             _repository = repository;
         }
 
-        public async Task<IEnumerable<WhatsappTemplateList>> GetTemplatesListAsync(WhatsappTemplateListFilter filter)
+        public async Task<(IEnumerable<WhatsappTemplateListItem> Templates, int TotalCount)> GetTemplatesListAsync(WhatsappTemplateListFilter filter)
         {
             try
             {
                 DynamicParameters Dp = new DynamicParameters();
 
-                Dp.Add("@SearchText", filter.SearchText);
-                Dp.Add("@LanguageCode", filter.LanguageCode);
-                Dp.Add("@Status", filter.Status);
+                Dp.Add("@ClientInfoId", filter.ClientInfoId);
+                Dp.Add("@templateName", filter.TemplateName);
+                Dp.Add("@category", filter.Category);
+                Dp.Add("@ClientInfoId", filter.ClientInfoId);
+                Dp.Add("@langCode", filter.LangCode);
+                Dp.Add("@modifiedOn", filter.ModifiedOn);
+                Dp.Add("@Templatestatus", filter.TemplateStatus);
                 Dp.Add("@PageNumber", filter.PageNumber);
                 Dp.Add("@PageSize", filter.PageSize);
 
+                 var templateList = await _repository.GetListByValuesAsync<WhatsappTemplateListItem>("[sp_GetWhatsappTemplateList]", Dp);
+                int TotalCount = await _repository.GetByValuesAsync<int>("sp_GetWhatsappTemplateCount", Dp);
+                return (templateList, TotalCount);
 
-
-                return await _repository.GetListByValuesAsync<WhatsappTemplateList>("[sp_GetWhatsappTemplateList]", Dp);
             }
             catch (Exception)
             {
 
-                return Enumerable.Empty<WhatsappTemplateList>();
+                return (Enumerable.Empty<WhatsappTemplateListItem>(),0);
             }
            
         }

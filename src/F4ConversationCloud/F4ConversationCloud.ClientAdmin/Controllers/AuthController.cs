@@ -73,7 +73,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         new Claim(ClaimTypes.Role, RoleName),
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
                         new Claim("BusinessId", clientdetails.BusinessId),
-                        new Claim("ClientInfoId", clientdetails.ClientInfoId)
+                        new Claim("ClientInfoId", clientdetails.ClientInfoId.ToString())
+
                     };
                 var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -85,7 +86,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
                 HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
                 HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
-
+                
                 var stageValue = HttpContext.Session.GetInt32("StageId");
 
                 ClientFormStage stage = (ClientFormStage)stageValue.Value;
