@@ -1,0 +1,58 @@
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Twilio.Rest.FlexApi.V1;
+
+namespace F4ConversationCloud.Infrastructure.Service.Common
+{
+    public class WhatsAppTemplateService: IWhatsAppTemplateService
+    {
+        private readonly IWhatsAppTemplateRepository _templateRepository;
+        private readonly ILogService _logService;
+        public WhatsAppTemplateService(IWhatsAppTemplateRepository templateRepository, ILogService logService)
+        {
+            _templateRepository = templateRepository;
+            _logService = logService;
+        }
+
+        public async Task<WhatsAppTemplateResponse> GetTemplatesListAsync(WhatsappTemplateListFilter filter)
+        {
+
+            try
+            {
+                var (templates, totalCount) = await _templateRepository.GetTemplatesListAsync(filter);
+
+                return new WhatsAppTemplateResponse
+                {
+                    Templates = templates,
+                    TotalCount = totalCount
+                };
+            }
+            catch (Exception ex )
+            {
+                var log = new LogModel
+                {
+                    Source = "WhatsappTemplate/GetTemplatesListAsync",
+                    AdditionalInfo = $"Filter: {JsonConvert.SerializeObject(filter)}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+                await _logService.InsertLogAsync(log);
+                return new WhatsAppTemplateResponse
+                {
+                    Templates = Enumerable.Empty<WhatsappTemplateListItem>(),
+                    TotalCount = 0
+                };
+            }
+            
+        }
+    }
+}

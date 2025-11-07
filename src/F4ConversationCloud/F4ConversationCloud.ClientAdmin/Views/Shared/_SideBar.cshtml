@@ -44,6 +44,10 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "TemplateManagemet" ? "active" : "")">
+                            <a asp-controller="TemplateManagemet" asp-action="List" class="template icon">Templates</a>
+                        </li>
                     }
                 </ul>
             </nav>
