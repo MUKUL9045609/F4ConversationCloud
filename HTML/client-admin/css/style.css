@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 .modal-wrapper .modal-content {
   padding: 30px 25px;
 }
@@ -2796,10 +2795,12 @@ body {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 30px;
+  margin: 0px -10px;
 }
 .page .main-content .template-body ul li {
-  width: 47.62%;
+  width: 50%;
+  padding: 0px 10px;
+  margin-bottom: 15px;
 }
 .page .main-content .template-body ul li.body {
   width: 100%;
@@ -2821,7 +2822,7 @@ body {
   display: inline-block;
 }
 .page .main-content .template-body ul li span {
-  font-size: 12px;
+  font-size: 13px;
   color: #1D242E;
   font-weight: 400;
 }
