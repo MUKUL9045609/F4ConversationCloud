@@ -7,6 +7,7 @@ using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Onboarding.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Onboarding.Models;
 using System;
 using Twilio.Jwt.AccessToken;
@@ -103,40 +104,50 @@ namespace F4ConversationCloud.Onboarding.Controllers
         [HttpGet("register-Client-Info")]
         public async Task<IActionResult> RegisterIndividualAccount()
         {
-            var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
-            var clientdetails = await _onboardingService.GetCustomerByIdAsync(step1form.UserId);
-            if (clientdetails.Stage == ClientFormStage.ClientRegistered || clientdetails.Stage == ClientFormStage.MetaRegistered)
+            try
             {
-                var clientinfo = new RegisterUserViewModel
+                var step1form = TempData.Get<RegisterUserViewModel>("registrationform");
+
+                if (step1form == null)
                 {
-                    FirstName = clientdetails.FirstName+" "+clientdetails.LastName,
-                    Email=clientdetails.Email,
-                    PhoneNumber= clientdetails.PhoneNumber,
-                    Address = clientdetails.Address,
-                    Country = clientdetails.Country,
-                    Timezone = clientdetails.Timezone,
-                    CityId = clientdetails.CityName,
-                    StateId = clientdetails.StateName,
-                    ZipCode = clientdetails.ZipCode,
-                    OptionalAddress = clientdetails.OptionalAddress,
-                    OrganizationsName = clientdetails.OrganizationsName,
-                    TermsCondition=true,
-                };
-                ViewBag.IsReadOnly = true;
-                ViewBag.DisableButtons = true;
-                TempData["InfoMessage"] = "You have already registered Please Complete Meta Onboarding !";
-                return View(clientinfo);
-            }
-            
-            
-            if (step1form != null)
-            {
+                    TempData["ErrorMessage"] = "This link is no longer active for security reasons.";
+                    return RedirectToAction("InvalidUrl");
+                }
+                var clientdetails = await _onboardingService.GetCustomerByIdAsync(step1form.UserId);
+                if (clientdetails.Stage == ClientFormStage.ClientRegistered)
+                {
+                    var clientinfo = new RegisterUserViewModel
+                    {
+                        FirstName = clientdetails.FirstName + " " + clientdetails.LastName,
+                        Email = clientdetails.Email,
+                        PhoneNumber = clientdetails.PhoneNumber,
+                        Address = clientdetails.Address,
+                        Country = clientdetails.Country,
+                        Timezone = clientdetails.Timezone,
+                        CityId = clientdetails.CityName,
+                        StateId = clientdetails.StateName,
+                        ZipCode = clientdetails.ZipCode,
+                        OptionalAddress = clientdetails.OptionalAddress,
+                        OrganizationsName = clientdetails.OrganizationsName,
+                        TermsCondition = true,
+                    };
+                    ViewBag.IsReadOnly = true;
+                    ViewBag.DisableButtons = true;
+                    TempData["InfoMessage"] = "You have already registered Please Complete Meta Onboarding !";
+                    return View(clientinfo);
+                }
+                else if (clientdetails.Stage == ClientFormStage.MetaRegistered)
+                {
+                    string RedirecttoClientAppLoginPage = _configuration["ClientAppUrlPath:LoginPath"];
+                    return Redirect(RedirecttoClientAppLoginPage);
+                }
+              
                 var existingData = new RegisterUserViewModel
                 {
                     TimeZones = await _authRepository.GetTimeZonesAsync(),
                     Cities = await _authRepository.GetCitiesAsync(),
                     States = await _authRepository.GetStatesAsync(),
-                    FirstName =step1form.FirstName +" "+ step1form.LastName,               
+                    FirstName = step1form.FirstName + " " + step1form.LastName,
                     Email = step1form.Email,
                     PhoneNumber = step1form.PhoneNumber,
 
@@ -144,17 +155,15 @@ namespace F4ConversationCloud.Onboarding.Controllers
                 ViewBag.IsReadOnly = true;
                 ViewBag.DisableButtons = false;
                 return View(existingData);
+             
             }
-           
-            var model = new RegisterUserViewModel
+            catch (Exception)
             {
-                TimeZones = await _authRepository.GetTimeZonesAsync(),
-                Cities = await _authRepository.GetCitiesAsync(),
-                States = await _authRepository.GetStatesAsync(),
-            };
 
+                TempData["ErrorMessage"] = "Technical Error.!";
+                return RedirectToAction("InvalidUrl");
+            }
 
-            return View(model);
 
         }
 
