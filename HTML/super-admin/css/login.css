@@ -26,6 +26,7 @@
   margin: 0 auto;
   display: block;
   margin-bottom: 25px;
+  height: 40px;
 }
 .loginWrapper .loginBox .template_login_title {
   font-size: 20px;
