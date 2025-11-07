@@ -10,7 +10,7 @@
             <div class="header-content">
                 <h3 class="sub-heading"><a href="@Url.Action("List", "ClientRegistration")" class="back"></a>Register User </h3>
                 <div>
-                    <button class="btn primary-btn resend d-flex" id="resend-btn"> Re-send</button>
+                    <button class="btn primary-btn resend d-flex" data-bs-toggle="modal" data-bs-target="#resendEmail-confirmation-popup" id="resend-btn"> Re-send</button>
                 </div>
             </div>
             <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-wrapper">
@@ -71,16 +71,35 @@
         </div>
     </div>
 </div>
+<div class="modal fade template-modal" id="resendEmail-confirmation-popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog confirm-model modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="refresh-icon"></span>
+                <h6>Re-send Onboarding Link</h6>
+                <p>Are you sure you want to re-send a new onboarding link to this user.</p>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button class="btn primary-btn" id="resend-yes-btn">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/js/unobtrusiveHelper.js" asp-append-version="true"></script>
 
     <script>
         $("#cancel-button").click(function(){
+            commonHelper.showHideLoader(true);
             location.href = '@Url.Action("List", "ClientRegistration")';
         });
 
-        $(document).on('click', '#resend-btn', function () {
+        $(document).on('click', '#resend-yes-btn', function () {
             commonHelper.showHideLoader(true);
             var id = @Html.Raw(Json.Serialize(Model.Id));
             var url = '@Url.Action("ResendEmail", "ClientRegistration")/' + id;
@@ -90,6 +109,11 @@
                 success: successCallback,
                 error: errorCallback
             });
+
+            var modal = bootstrap.Modal.getInstance(document.getElementById('resendEmail-confirmation-popup'));
+            if (modal){
+                modal.hide();
+            }
         });
 
         function successCallback(data) {
@@ -105,5 +129,17 @@
             commonHelper.showSuccess('Failed to an send an email.');
             commonHelper.showHideLoader(false);
         }
+
+        $(document).on('submit', 'form', function (e) {
+            if (this.checkValidity()) {
+                commonHelper.showHideLoader(true);
+            } else {
+                commonHelper.showHideLoader(false);
+            }
+        });
+
+        $(document).on('click', '.back', function () {
+            commonHelper.showHideLoader(true);
+        });
     </script>
 }

@@ -53,7 +53,7 @@
                         <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
                         <td>
                             <form method="get" action="@Url.Action("ClientDetails", "ClientManagement", new { id = item.Id })">
-                                <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.PhoneNumber)</a>
+                                <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id" id="name-link">@Html.DisplayFor(modelItem => item.PhoneNumber)</a>
                             </form>
                             <span class="buisness-category"><span class="fw-medium">Category :</span> @Html.DisplayFor(modelItem => item.Category)</span>
                             <span class="buisness-category"><span class="fw-medium">Client Id :</span> @Html.DisplayFor(modelItem => item.ClientId)</span>

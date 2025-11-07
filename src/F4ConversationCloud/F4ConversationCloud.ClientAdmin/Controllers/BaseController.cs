@@ -15,23 +15,38 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             {
                 string successMsg = TempData["SuccessMessage"]?.ToString();
                 string errorMsg = TempData["ErrorMessage"]?.ToString();
+                string infoMsg = TempData["InfoMessage"]?.ToString();
+                string warningMsg = TempData["WarningMessage"]?.ToString();
 
                 if (!string.IsNullOrEmpty(successMsg))
                 {
                     ViewData["ToastMsg"] = new { Type = "Success", Message = successMsg };
                     TempData.Remove("SuccessMessage");
                 }
-                if (!string.IsNullOrEmpty(errorMsg))
+                else if (!string.IsNullOrEmpty(errorMsg))
                 {
                     ViewData["ToastMsg"] = new { Type = "Error", Message = errorMsg };
                     TempData.Remove("ErrorMessage");
                 }
-                var path = context.HttpContext.Request.Path.Value?.ToLower() ?? "";
+                else if (!string.IsNullOrEmpty(infoMsg))
+                {
+                    ViewData["ToastMsg"] = new { Type = "Info", Message = infoMsg };
+                    TempData.Remove("InfoMessage");
+                }
+                else if (!string.IsNullOrEmpty(warningMsg))
+                {
+                    ViewData["ToastMsg"] = new { Type = "Warning", Message = warningMsg };
+                    TempData.Remove("WarningMessage");
+                }
 
-                if (path.StartsWith("/auth/login"))
+                var controllerName = context.RouteData.Values["controller"]?.ToString();
+                var actionName = context.RouteData.Values["action"]?.ToString();
+
+
+                if (controllerName == "Auth" && (actionName == "Login" || actionName == "Logout" || actionName == "ForgotPassword" || actionName== "ConfirmPassword" || actionName == "SetPassword" || actionName == "InvalidUrl"))
                 {
                     base.OnActionExecuting(context);
-                    return; 
+                    return;
                 }
 
                 var username = context.HttpContext.Session.GetString("Username");

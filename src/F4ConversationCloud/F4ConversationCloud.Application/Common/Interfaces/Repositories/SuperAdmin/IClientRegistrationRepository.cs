@@ -17,5 +17,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<ClientRegistration> GetByIdAsync(int id);
         Task<bool> CheckEmailExist(string email);
         Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id);
+        Task<bool> CheckContactNumberExist(string contactNumber);
     }
 }

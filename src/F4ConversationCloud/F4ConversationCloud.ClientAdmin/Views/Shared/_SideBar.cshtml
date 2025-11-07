@@ -19,20 +19,20 @@
         <div class="main-side-navigation">
             <nav>
                 <ul>
-                    @if (stage.HasValue && (stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered))
+                    @if (stage.Value == ClientFormStage.MetaRegistered)
+                    {
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                            <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
+                        </li>
+                    }
+                    @if (stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered)
                     {
                         <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MetaOnboarding" ? "active" : "")">
                             <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="meta icon">Meta Details</a>
                         </li>
                     }
-
-                    
                     @if (stage.HasValue && stage.Value == ClientFormStage.MetaRegistered)
                     {
-                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
-                            <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
-                        </li>
-
                         <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Campaigns" ? "active" : "")">
                             <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
                             <ul class="submenu">

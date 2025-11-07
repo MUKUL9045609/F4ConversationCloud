@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
@@ -33,6 +33,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(ClientLoginViewModel request)
         {
             try
@@ -71,6 +72,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         new Claim(ClaimTypes.MobilePhone, clientdetails.PhoneNumber),
                         new Claim(ClaimTypes.Role, RoleName),
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
+                        new Claim("BusinessId", clientdetails.BusinessId),
+                        new Claim("ClientInfoId", clientdetails.ClientInfoId)
                     };
                 var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -83,7 +86,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
                 HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
 
-                TempData["WarningMessage"] = $"Welcome Back {clientdetails.FirstName} {clientdetails.LastName}";
                 var stageValue = HttpContext.Session.GetInt32("StageId");
 
                 ClientFormStage stage = (ClientFormStage)stageValue.Value;
@@ -92,19 +94,21 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 {
                     return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
                 }
-                else
+                else if (stage == ClientFormStage.MetaRegistered)
                 {
-                    return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
+                    return RedirectToAction("Index", "Home");
 
+                }
+                else {
+                    TempData["InfoMessage"] = "You have not registered yet, Please complete your registration.!";
+                    return RedirectToAction("Login", "Auth");
                 }
             }
             catch (Exception)
             {
-                TempData["WarningMessage"] = "Error";
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return View(request);
             }
-
-
         }
 
         public async Task<IActionResult> Logout()
@@ -117,11 +121,11 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return StatusCode(500, false);
             }
         }
-
+        [AllowAnonymous]
         [HttpGet("forgot-password")]
         public async Task<IActionResult> ForgotPassword()
         {
@@ -134,6 +138,8 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 return View();
             }
         }
+
+        [AllowAnonymous]
         [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -158,10 +164,12 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
             catch (Exception ex)
             {
+                TempData["ErrorMessage"] = "Technical Error.!";
                 return View(model);
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("confirmpassword/{id}")]
         public async Task<IActionResult> ConfirmPassword([FromRoute] string id)
         {
@@ -207,9 +215,16 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             {
 
                 if (!ModelState.IsValid)
+                {
                     return View(model);
+                }
+                var UpdateRequest = new ConfirmPasswordModel
+                {
+                    UserId = model.UserId,
+                    Password = model.Password.Encrypt(),
 
-                bool success = await _onboardingService.SetNewPassword(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password });
+                };
+                bool success = await _onboardingService.SetNewPassword(UpdateRequest);
 
                 if (!success)
                 {
@@ -224,12 +239,13 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "technical error ";
+                TempData["ErrorMessage"] = "Technical Error! ";
 
                 return View(model);
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("invalid-token")]
         public IActionResult InvalidUrl()
         {

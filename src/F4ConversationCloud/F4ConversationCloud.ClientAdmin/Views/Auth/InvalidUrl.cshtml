@@ -9,13 +9,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fortune4 Conversation Cloud</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+
     <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
 </head>
 
 <body>
-    <h4> Token Expired Please Contact To Admin !</h4>
-    <div class="toastWrap">
+    <div class="invalid-wrap">
+        <img src="~/images/login/invalid.png" alt="Invalid" />
+
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <h5>Link Expired</h5>
+            <p>@TempData["ErrorMessage"]</p>
+        }
+        else
+        {
+            <h5>Link Expired</h5>
+            <p>This link is no longer active for security reasons.</p>
+        }
     </div>
     <div class="loader-wrapper" id="loader">
         <div class="loader"></div>
@@ -29,9 +44,6 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/unobtrusiveHelper.js"></script>
-
-
- 
 
 </body>
 </html>

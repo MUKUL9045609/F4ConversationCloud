@@ -5,7 +5,7 @@
 
 
 
-function showToast(message, type = "info", duration = 3000) {
+/*function showToast(message, type = "info", duration = 3000) {
     const toastEl = document.createElement("div");
     toastEl.className = "toast align-items-center border-0 show";
     toastEl.setAttribute("role", "alert");
@@ -47,7 +47,7 @@ function showToast(message, type = "info", duration = 3000) {
 
     setTimeout(() => toastEl.remove(), duration + 500);
 }
-
+*/
 
 document.addEventListener('DOMContentLoaded', function () {
     const messages = document.querySelectorAll('.temp-message');
@@ -66,26 +66,6 @@ window.onload = function () {
 };
 
 
-/*document.addEventListener('DOMContentLoaded', function () {
-    const togglePasswordIcons = document.querySelectorAll('.toggle-password');
-
-    togglePasswordIcons.forEach(icon => {
-        icon.addEventListener('click', function () {
-            const targetId = this.dataset.target;
-            const passwordInput = targetId
-                ? document.getElementById(targetId)
-                : this.parentElement.querySelector('input');
-
-            const eyeIcon = this.tagName.toLowerCase() === "i" ? this : this.querySelector('i');
-
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-
-            eyeIcon.classList.toggle('fa-eye');
-            eyeIcon.classList.toggle('fa-eye-slash');
-        });
-    });
-});*/
 $(".toggle-password").click(function () {
     $(this).toggleClass("fa-eye fa-eye-slash");
     input = $(this).parent().find("input");
