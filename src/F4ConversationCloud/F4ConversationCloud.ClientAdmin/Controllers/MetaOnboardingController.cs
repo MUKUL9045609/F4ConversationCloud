@@ -90,7 +90,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                         HttpContext.Session.SetInt32("StageId", (int)ClientFormStage.MetaRegistered);
 
-                        message = "success";
+                        message = "Your WhatsApp Business account has been successfully linked!";
 
                         return Json(new { result = true, message });
                     }
