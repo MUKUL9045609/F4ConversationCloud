@@ -21,6 +21,7 @@
         flex: 1;
         max-width: 100vw;
         margin-top: 59px;
+            background-color: #f8f9fa !important;
         .container-fluid{
             padding: 0px;
         }
@@ -667,11 +668,12 @@
             display: flex;
             align-items: flex-start;
             flex-wrap: wrap;
-            gap: 30px;
+            margin: 0px -10px;
 
             li {
-                width: 47.62%;
-
+                width: 50%;
+                padding: 0px 10px;
+                margin-bottom: 15px;
                 &.body {
                     width: 100%;
                 }
@@ -695,7 +697,7 @@
                 }
 
                 span {
-                    font-size: 12px;
+                    font-size: 13px;
                     color: $textColor;
                     font-weight: 400;
 
