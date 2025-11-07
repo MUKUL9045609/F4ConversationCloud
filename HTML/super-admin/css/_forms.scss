@@ -3,18 +3,19 @@
 
 .form-wrapper {
     label {
-        font-size: 13px;
-        color: #1D242E80;
-        margin-bottom: 5px;
+        font-size: 14px;
+        color: #686868;
+        margin-bottom: 4px;
+            font-weight: 400;
     }
 
     input {
         font-size: 13px;
-        color: #283342;
+        color: #888888;
         // height: 40px;
         padding: .475rem;
-        border-radius: 4px !important;
-
+        border-radius: 6px !important;
+        border: 1px solid #E5E5E5;
         &:focus {
             box-shadow: none;
         }
@@ -30,6 +31,7 @@
         // height: 40px;
         padding: .475rem;
         border-radius: 4px !important;
+        border: 1px solid #E5E5E5;
         cursor: pointer;
 
         &:focus {
@@ -180,7 +182,7 @@
     position: relative;
     &:focus{
         box-shadow: none!important;
-            border: 1px solid #ced4da;
+            border: 1px solid #E5E5E5;
     }
 }
 .reportrange{
@@ -225,6 +227,7 @@
 }
 
 .form-select{
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23626262' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e")!important;
     &:focus{
         box-shadow: none!important;
         border: 1px solid #ced4da!important;

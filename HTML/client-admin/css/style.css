@@ -385,14 +385,14 @@
 
 .form-wrapper label {
   font-size: 13px;
-  color: rgba(29, 36, 46, 0.5019607843);
+  color: #686868;
   margin-bottom: 5px;
 }
 .form-wrapper .form-control {
   font-size: 12px;
-  color: #283342;
+  color: #888888;
   padding: 0.475rem 0.75rem !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
 }
 .form-wrapper .form-control:focus {
   box-shadow: none;
@@ -404,7 +404,7 @@
   font-size: 12px;
   color: #283342;
   padding: 0.475rem 0.75rem !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   cursor: pointer;
 }
 .form-wrapper select:focus {
@@ -1907,6 +1907,16 @@ body {
   gap: 10px;
   text-decoration: none;
   align-items: center;
+}
+.page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-wrap::after {
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 0.5L5.5 5.5L10.5 0.5' stroke='%23767676' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 11px;
+  width: 14px;
+  display: inline-block;
 }
 .page .app-header .appheader-wrap .profile-dropdown .profile .dropdown-wrap p {
   margin-bottom: 0px;
