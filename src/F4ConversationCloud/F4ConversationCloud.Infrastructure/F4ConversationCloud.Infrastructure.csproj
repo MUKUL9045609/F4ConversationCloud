@@ -27,8 +27,4 @@
     <ProjectReference Include="..\F4ConversationCloud.Application\F4ConversationCloud.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\Client\" />
-  </ItemGroup>
-
 </Project>

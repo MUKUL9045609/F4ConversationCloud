@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="css/daterangepicker.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
 </head>
 
 <body>
@@ -29,7 +30,10 @@
                                 <a href="dashboard.html" class="home icon">Dashboard</a>
                             </li>
                             <li>
-                                <a href="index.html" class="users icon">Clients</a>
+                              <a href="client-registration.html" class="register icon">Register</a>
+                            </li>
+                            <li>
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
                             </li>
                             <li>
                                 <a href="user-management.html" class="user icon">User Management</a>
@@ -86,7 +90,7 @@
                                 </div>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                                    <li><a class="dropdown-item signout" href="login.html">Sign Out</a></li>
 
                                 </ul>
                             </div>
@@ -98,12 +102,11 @@
 
             <div class="content">
                 <div class="container-fluid">
-                    
-                        <h3 class="sub-heading"><a href="client-management.html" class="back"></a> Users </h3>
-
-                  
-                    <div class="card padding">
-                                
+          
+                    <div class="card">
+                        <div class="header-content">
+                            <h3 class="sub-heading"><a href="client-management.html" class="back"></a> Users</h3>
+                        </div>
                         
                         <div class="table-responsive">
                             <table class="table user-table form-wrapper">
@@ -133,7 +136,7 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Created Date & Time
+                                            Created Date
                                             <label class="datewrap" for="datepicker">
                                                 <input
                                                     type="text"
@@ -174,9 +177,15 @@
                                         <td align="center">1</td>
                                         <td>Pratik Singh</td>
                                         <td>pratik@fortune4.in</td>
-                                        <td>Manager</td>
-                                        <td>09-04-2025, 02:04:55</td>
-                                        <td>02-07-2025, 10:04:55</td>
+                                        <td>Admin</td>
+                                        <td>
+                                            <span class="date">28 june 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
+                                        <td>
+                                            <span class="date">28 Oct 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
                                         
                                         <td>
                                             <div class="action">
@@ -191,9 +200,15 @@
                                         <td align="center">2</td>
                                         <td>Dinesh Pol</td>
                                         <td>dinesh@fortune4.in</td>
-                                        <td>Manager</td>
-                                        <td>15-04-2025, 02:04:55</td>
-                                        <td>08-08-2025, 10:04:55</td>
+                                        <td>Admin</td>
+                                        <td>
+                                            <span class="date">28 July 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
+                                        <td>
+                                            <span class="date">28 Oct 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
                                         
                                         <td>
                                             <div class="action">

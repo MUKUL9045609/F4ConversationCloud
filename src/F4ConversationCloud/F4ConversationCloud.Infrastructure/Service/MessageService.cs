@@ -1,5 +1,8 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using Microsoft.Extensions.Configuration;
 using System.Net;
@@ -14,107 +17,109 @@ namespace F4ConversationCloud.Infrastructure.Service
     {
         private IConfiguration _configuration { get; }
         private IAPILogService _aPILogService { get; set; }
+        private IMetaCloudAPIService _metaCloudAPIService;
 
-      
 
 
-        public MessageService( IConfiguration configuration)
+        public MessageService( IConfiguration configuration,IMetaCloudAPIService metaCloudAPIService)
         {
             _configuration = configuration;
+            _metaCloudAPIService = metaCloudAPIService;
         }
+        //public async Task<SendSmsResponse> SendVerificationSmsAsync(string mobileNo, string Text)
+        //{
+        //    try 
+        //    {
+        //        string accountSid = _configuration["Twilio:AccountSid"];
+        //        string authToken = _configuration["Twilio:AuthToken"];
+        //        string verifyServiceSid = _configuration["Twilio:VerifyServiceSid"];
+        //        string from = _configuration["Twilio:From"];
+        //        TwilioClient.Init(accountSid, authToken);
 
-        
+        //        var messageOptions = new CreateMessageOptions(
+        //                 new PhoneNumber(mobileNo)
+        //             );
+        //        messageOptions.Body = Text;
+        //        messageOptions.From = new PhoneNumber(from);
 
 
 
-        public async Task<SendSmsResponse> SendVerificationSmsAsync(string mobileNo, string Text)
+        //        var message = await MessageResource.CreateAsync(messageOptions);
+
+        //        var verification = await VerificationResource.CreateAsync(
+        //            to: mobileNo,
+        //            channel: "sms",
+        //            pathServiceSid: verifyServiceSid
+        //        );
+
+        //        return new SendSmsResponse
+        //        {
+        //            Sid = verification.Sid,
+        //            Status = verification.Status
+        //        };
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return
+        //            new SendSmsResponse {
+        //                Sid = "",
+        //                Status = "Failed"
+        //            };
+               
+        //    }
+        //}
+
+        public async Task<OnboardingContactNoVerificationResponse> SendOnboardingVerificationAsync(VarifyMobileNumberModel request)
         {
-            try 
+            try
             {
-                string accountSid = _configuration["Twilio:AccountSid"];
-                string authToken = _configuration["Twilio:AuthToken"];
-                string verifyServiceSid = _configuration["Twilio:VerifyServiceSid"];
-                string from = _configuration["Twilio:From"];
-                TwilioClient.Init(accountSid, authToken);
-
-                var messageOptions = new CreateMessageOptions(
-                         new PhoneNumber(mobileNo)   
-                     );
-                messageOptions.Body = Text;
-                messageOptions.From = new PhoneNumber(from);
-
-
-
-                var message = await MessageResource.CreateAsync(messageOptions);
-
-                var verification = await VerificationResource.CreateAsync(
-                    to: mobileNo,
-                    channel: "sms",
-                    pathServiceSid: verifyServiceSid
-                );
-
-                return new SendSmsResponse
+                var whatsappRequest = new TextTemplateMessageRequest
                 {
-                    Sid = verification.Sid,
-                    Status = verification.Status
+                    To = request.UserPhoneNumber,
+                    Template = new TextMessageTemplate
+                    {
+                        Name = "onboarding_contact_varification",
+                        Language = new TextMessageLanguage
+                        {
+                            Code = "en_US"
+                        },
+                        Components = new List<TextMessageComponent>
+                                {
+                                    new TextMessageComponent
+                                    {
+                                        Type = "body",
+                                        Parameters = new List<TextMessageParameter>
+                                        {
+                                            new TextMessageParameter
+                                            {
+                                                Type = "text",
+                                                Text = request.OTP
+                                            }
+                                        }
+                                    }
+                                }
+                    }
+                };
+
+
+             var whatsAppMessagereponse = await _metaCloudAPIService.SendTextMessageTemplateAsync(whatsappRequest); 
+
+                return new OnboardingContactNoVerificationResponse
+                {
+                    MessageId = whatsAppMessagereponse != null && whatsAppMessagereponse.Messages != null && whatsAppMessagereponse.Messages.Count > 0 ? whatsAppMessagereponse.Messages[0].Id : null
                 };
 
             }
             catch (Exception ex)
             {
                 return
-                    new SendSmsResponse {
-                        Sid = "",
-                        Status = "Failed"
+                    new OnboardingContactNoVerificationResponse
+                    {
                     };
-               
+
             }
         }
-
-
-
-
-        public async Task<bool> SendEmail(EmailRequest Request)
-        {
-            try
-            {
-                string host = _configuration["MailSettings:SmtpServer"];
-                int port = int.Parse(_configuration["MailSettings:SmtpPort"]);
-                string user = _configuration["MailSettings:Username"];
-                string password = _configuration["MailSettings:Password"];
-                string senderEmail = _configuration["MailSettings:SenderEmail"];
-
-
-                SmtpClient client = new SmtpClient(host, port)
-                {
-                    EnableSsl = true,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(user,password)
-                };
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(senderEmail),
-                    Subject = Request.Subject,
-                    IsBodyHtml = true,
-                    Body = Request.Body
-                };
-
-                mail.To.Add(Request.ToEmail);
-
-                await client.SendMailAsync(mail);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                //  Console.WriteLine($"Error sending email: {ex.Message}");
-                return false;
-            }
-        }
-
-
     }
 }
 

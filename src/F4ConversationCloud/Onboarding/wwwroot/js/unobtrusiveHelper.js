@@ -131,3 +131,11 @@ $.validator.unobtrusive.adapters.add('requiredif', ['dependentproperty', 'desire
     options.rules['requiredif'] = options.params;
     options.messages['requiredif'] = options.message;
 });
+// Register a custom method
+$.validator.addMethod("phonenumverified", function (value, element, params) {
+    // Only valid if checkbox is checked or value is true
+    return value === true || $(element).is(":checked");
+}, "Please verify your Contact Number before proceeding.");
+
+// Add adapter to connect ASP.NET validation attribute with jQuery Validation
+$.validator.unobtrusive.adapters.addBool("phonenumberverified");

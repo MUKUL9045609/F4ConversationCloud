@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="dashboard.html" class="home icon">Dashboard</a>
+                            </li>
+                            <li class="active">
+                              <a href="client-registration.html" class="register icon">Register</a>
+                            </li>
+                            <li>
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="user icon">Client User Management</a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li>
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                            <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="billing icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item signout" href="login.html">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    
+                    
+                    <div class="card">
+                                <div class="header-content d-flex justify-content-between mb-3">
+                                    <h3 class="sub-heading mb-0">Register <span class="light-text ms-1">(155)</span> </h3> 
+                                    <div>
+                                        <a href="register.html" class="btn primary-btn add d-flex"> New Register</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="table-responsive">
+                                    <table class="table user-table form-wrapper">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr.<br> No</th>
+                                                
+                                                <th>
+                                                    Full Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                   Email ID
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    Contact Number
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th> Created Date
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>Last Update
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                
+                                                
+                                                <th>
+                                                    Status
+                                                    <select class="form-select">
+                                                        <option selected>Select Status</option> 
+                                                        <option>Approve</option> 
+                                                        <option>Pre-Approve</option> 
+                                                        <option>Reject</option> 
+                                                    </select>
+                                                </th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td align="center">01</td>
+                                                
+                                                <td>
+                                                    <a href="buisness-waba-details.html">Raj Maru</a>
+                                                </td>
+                                                <td><a href="buisness-waba-details.html">raj@fortune4.in</a></td>
+                                                <td>+91-8268180360</td>
+                                                <td>
+                                                    <span class="date">15 Apr 2025</span>    
+                                                    <span class="datetime">at 11:30 am</span>
+                                                </td>
+                                                <td>
+                                                    <span class="date">28 Oct 2025</span>    
+                                                    <span class="datetime">at 11:30 am</span>
+                                                </td>
+                                               
+                                                <td><span class="badge success">Active</span></td>
+                                                <td>
+                                                    <div class="action">
+                                                        <a href="#" class="edit-icon"></a>
+                                                       
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td align="center">02</td>
+                                                
+                                                <td>
+                                                    <a href="buisness-waba-details.html">Raj Maru</a>
+                                                </td>
+                                                <td><a href="buisness-waba-details.html">raj@fortune4.in</a></td>
+                                                <td>+91-8268180360</td>
+                                                <td>
+                                                    <span class="date">15 Apr 2025</span>    
+                                                    <span class="datetime">at 11:30 am</span>
+                                                </td>
+                                                <td>
+                                                    <span class="date">28 Oct 2025</span>    
+                                                    <span class="datetime">at 11:30 am</span>
+                                                </td>
+                                               
+                                                <td><span class="badge warning">Pending</span></td>
+                                                <td>
+                                                    <div class="action">
+                                                        <a href="#" class="edit-icon"></a>
+                                                       
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav aria-label="navigation example">
+                                    <ul class="pagination mt-5 d-flex justify-content-center">
+                                        <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                    </ul>
+                                </nav>
+
+                            </div> 
+
+                    
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+
+
+        </div>
+    </div>
+
+    <div class="backdrop"></div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

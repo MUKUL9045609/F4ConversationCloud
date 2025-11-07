@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/swiper-bundle.min.css" />
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     
 </head>
 
@@ -28,11 +30,11 @@
                             <li>
                                 <a href="index.html" class="home icon">Dashboard</a>
                             </li>
-                            <li class="active">
-                                <a href="index.html" class="users icon">Clients</a>
-                            </li>
                             <li>
-                                <a href="user-management.html" class="user icon">User Management</a>
+                              <a href="client-registration.html" class="register icon">Register</a>
+                            </li>
+                            <li class="active">
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
                             </li>
                             <li>
                                 <a href="client-management.html" class="user icon">Client User Management</a>
@@ -89,7 +91,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     
-                                    <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+                                    <li><a class="dropdown-item signout" href="login.html">Sign Out</a></li>
 
                                 </ul>
                             </div>
@@ -313,11 +315,10 @@
                                                 <div class="toolbar">   
                                                     <div class="btn-toolbar">
                                                         <div class="emoji">
-                                                            <button class='bx bx-emoji'>
-                                                                <div class="emoji-wrapper">
+                                                            <button class='bx bx-emoji' id="emojitoggleButton"></button>
+                                                            <div class="emoji-wrapper" id="myDiv">
                                                                     <emoji-picker class="emojipicker" id="picker"></emoji-picker>
-                                                                </div>
-                                                            </button>
+                                                            </div>
                                                         </div>
                                                         <button onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
                                                         <button onclick="formatDoc('underline')"><i class='bx bx-underline' ></i></button>
@@ -685,6 +686,19 @@
         }
     });
 </script>
+<script>
+    $("#myDiv").hide();
+    $("#emojitoggleButton").click(function (e) {
+      e.stopPropagation(); 
+      $("#myDiv").toggle(); 
+    });
+  
+    $(document).click(function (e) {
+      if (!$(e.target).closest('.emoji').length) {
+        $("#myDiv").hide();
+      }
+    });
+  </script>
 </body>
 
 </html>

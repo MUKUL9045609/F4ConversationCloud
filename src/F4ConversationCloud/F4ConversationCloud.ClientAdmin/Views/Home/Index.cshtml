@@ -1,0 +1,235 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="content">
+<div class="container-fluid">
+    @{
+        var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value;
+        var PhoneNoClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.MobilePhone)?.Value;
+
+
+    }
+
+
+    <h2 class="main-heading">Welcome, @userNameClaim</h2>
+
+</h2>
+    <div class="card-wrapper">
+        <div class="left-col">
+            <div class="card padding">
+                <div class="whatsapp">
+                    <div class="whatsapp-icon">
+                        <img src="/images/whats-icon.webp" width="42" height="42" alt="WhatsApp">
+                    </div>
+                    <div class="number">
+                        <h4>WhatsApp Business Number</h4>
+                        <div class="live-number">
+                            <span>@PhoneNoClaim</span>
+                            <a href="#" class="live">Live</a>
+                            <a href="#" class="verified">Verified</a>
+                        </div>
+                    </div>
+                    <button class="btn secondary-btn">WhatsApp Profile</button>
+                </div>
+
+                <ul class="whatsapp-rating">
+                    <li>
+                        <span>Ability to Send message</span>
+                        <p class="ability"><i class="healthy"></i>Healthy</p>
+                    </li>
+                    <li>
+                        <span>Messaging Limit</span>
+                        <p>1K Customers / 24 Hrs <a href="#">Upgrade tier</a></p>
+                    </li>
+                    <li>
+                        <span>Quality Rating</span>
+                        <p class="clr-green">Green</p>
+                    </li>
+                    <li>
+                        <span>Template restrictions</span>
+                        <p>Not Applicable</p>
+                    </li>
+                    <li>
+                        <span>Allowed Throughput</span>
+                        <p>70 TPS</p>
+                    </li>
+                </ul>
+
+                <button class="btn secondary-btn">View More</button>
+            </div>
+
+            <div class="card padding">
+                <h3 class="mb-2">Get started and build powerful conversational experiences</h3>
+                <p>Make every customer touchpoint across marketing, commerce, and support conversational</p>
+
+                <div class="create-campaign">
+                    <div class="d-flex align-items-start">
+                        <div class="nav flex-column nav-pills me-3" role="tablist"
+                             aria-orientation="vertical">
+                            <button class="nav-link active" id="sendCampaign" data-bs-toggle="pill"
+                                    data-bs-target="#send-campaign" type="button" role="tab"
+                                    aria-controls="send-campaign" aria-selected="true">
+                                <span class="send-icon"></span>Send a campaign
+                            </button>
+                            @* <button class="nav-link" id="createBot" data-bs-toggle="pill"
+                                    data-bs-target="#create-bot" type="button" role="tab"
+                                    aria-controls="create-bot" aria-selected="false">
+                                <span class="bot-icon"></span>Create a bot
+                            </button>
+                            <button class="nav-link" id="setUpInbox" data-bs-toggle="pill"
+                                    data-bs-target="#set-up-inbox" type="button" role="tab"
+                                    aria-controls="set-up-inbox" aria-selected="false">
+                                <span class="inbox-icon"></span>Set up your inbox
+                            </button> *@
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="send-campaign" role="tabpanel"
+                                 aria-labelledby="sendCampaign">
+                                <div class="accordion-wrapper">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#createTemplate" aria-expanded="true"
+                                                        aria-controls="createTemplate">
+                                                    <span class="circle"></span>Create a template
+                                                </button>
+                                            </h2>
+                                            <div id="createTemplate"
+                                                 class="accordion-collapse collapse show"
+                                                 aria-labelledby="headingOne"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <p>
+                                                        To launch your campaign, please create a template and
+                                                        submit to WhatsApp for approval.
+                                                    </p>
+                                                    <a href="#" class="btn primary-btn">Create Template</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingTwo">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#createCampaign" aria-expanded="false"
+                                                        aria-controls="createCampaign">
+                                                    <span class="circle"></span>Create a campaign
+                                                </button>
+                                            </h2>
+                                            <div id="createCampaign" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingTwo"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <p>
+                                                        To launch your campaign, please create a template and
+                                                        submit to WhatsApp for approval.
+                                                    </p>
+                                                    <a href="#" class="btn primary-btn">Create Campaign</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @* <div class="tab-pane fade" id="create-bot" role="tabpanel"
+                                 aria-labelledby="createBot">
+                                <h4>Create a bot</h4>
+                                <p>
+                                    Create a bot journey by selecting a pre-built template or construct from
+                                    scratch, and subsequently publish it.
+                                </p>
+                                <a href="#" class="btn primary-btn">Create Journey</a>
+                            </div>
+                            <div class="tab-pane fade" id="set-up-inbox" role="tabpanel"
+                                 aria-labelledby="setUpInbox">
+                                <h4>Set up your inbox</h4>
+                                <p>
+                                    Support and engage with customers, across multiple channels from a single
+                                    interface.
+                                </p>
+                                <a href="#" class="btn primary-btn">Invite Users</a>
+                            </div> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-col">
+            <div class="card">
+                <h3 class="heading-border">Explore real-world popular use cases</h3>
+                <div class="padding">
+                    <p>See how brands are delighting their customers and apply it to your business</p>
+                    <div class="swiper useCasesSwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <h4>Promotion Manager</h4>
+                                <p>
+                                    Communicates current pricing, discounts and promotional campaigns,
+                                    proactively suggesting relevant offers to boost sales.
+                                </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <h4>Support Specialist</h4>
+                                <p>
+                                    Communicates current pricing, discounts and promotional campaigns,
+                                    proactively suggesting relevant offers to boost sales.
+                                </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <h4>Lead Generation/Qualifier</h4>
+                                <p>
+                                    Communicates current pricing, discounts and promotional campaigns,
+                                    proactively suggesting relevant offers to boost sales.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <button class="btn secondary-btn">View All</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="heading-border">Explore more Channels</h3>
+                <div class="padding">
+                    <p>
+                        Reach your customers across every touchpoint in the journey, effortlessly. Avail free
+                        credits up to $5.
+                    </p>
+                    <select class="form-select select-channel" aria-label="Default select example">
+                        <option selected>Select Channel</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="heading-border">Project Team</h3>
+                <div class="padding">
+                    <p>Start collaborating with your team, it's super easy.</p>
+                    <button class="btn secondary-btn">Invite Now</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="heading-border">Get Support</h3>
+                <div class="padding">
+                    <p>Connect to see how we can seamlessly optimize omni-channel customer engagement.</p>
+                    <button class="btn secondary-btn">Get in Touch</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="heading-border">Documentation Hub</h3>
+                <div class="padding">
+                    <p>
+                        Get access to comprehensive documentation, learn how to easily build engaging
+                        customer experiences
+                    </p>
+                    <button class="btn secondary-btn">Visit Hub</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

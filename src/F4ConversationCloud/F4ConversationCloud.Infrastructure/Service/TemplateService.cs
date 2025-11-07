@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using Twilio.TwiML.Voice;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace F4ConversationCloud.Infrastructure.Service
@@ -444,7 +446,107 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
+
+
+        public async Task<dynamic> Whatsappbusinessprofile (string profilepicturehandle , string PhoneNumberId)
+        {
+            string apiUrl = string.Empty;
+            string methodType = "POST";
+            var headers = new Dictionary<string, string>();
+
+            try
+            {
+                var requestBody = new
+                {
+                    messaging_product = "whatsapp",
+                    profile_picture_handle = profilepicturehandle
+                };
+
+                string requestJson = JsonConvert.SerializeObject(requestBody);
+
+                
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+                
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
+                
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + WhatsAppBusinessRequestEndpoint.Whatsappbusinessprofile.Replace("{{Phone-Number-ID}}", PhoneNumberId);
+
+                var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
+                                                                    methodType,
+                                                                    requestBody,
+                                                                    headers,
+                                                                    "Updatewhatsapp business profile",
+                                                                    null,
+                                                                    true);
+
+                return new
+                {
+                    Success = true,
+                    Message = "Whatsapp Profile created successFully."
+
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Template not created successFully.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
+
+
+        public async Task<dynamic> GetWhatsappbusinessprofile(string PhoneNumberId)
+        {
+            string apiUrl = string.Empty;
+            string methodType = "POST";
+            var headers = new Dictionary<string, string>();
+            var requestBody = string.Empty;
+
+            try
+            {
+                string requestJson = JsonConvert.SerializeObject(requestBody);
+                
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+                
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + WhatsAppBusinessRequestEndpoint.Whatsappbusinessprofile.Replace("{{Phone-Number-ID}}", PhoneNumberId) + "whatsapp_business_profile?fields=profile_picture_url";
+
+                var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
+                                                                    methodType,
+                                                                    requestBody,
+                                                                    headers,
+                                                                    "Get Meta Whatsapp business profile",
+                                                                    null,
+                                                                    true);
+                return new
+                {
+                    Success = true,
+                    Message = "Whatsapp Profile created successFully."
+
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Template not created successFully.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
+
+
+
     }
+
 
 
 }

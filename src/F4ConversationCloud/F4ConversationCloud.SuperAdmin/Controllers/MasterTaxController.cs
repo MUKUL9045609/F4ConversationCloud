@@ -27,13 +27,17 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     viewModel.CGST = masterTaxData.CGST;
                     viewModel.IGST = masterTaxData.IGST;
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error occured while fetching record";
+                }
 
                 return View(viewModel);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new MasterTaxViewModel());
             }
         }
 
@@ -67,7 +71,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new MasterTaxViewModel());
             }
         }
     }

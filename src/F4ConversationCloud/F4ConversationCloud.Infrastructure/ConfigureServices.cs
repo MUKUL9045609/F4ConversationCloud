@@ -1,8 +1,11 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Client;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
@@ -10,25 +13,26 @@ using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Application.Common.Services;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using F4ConversationCloud.Infrastructure.Persistence;
+using F4ConversationCloud.Infrastructure.Repositories;
 using F4ConversationCloud.Infrastructure.Repositories.Client;
+using F4ConversationCloud.Infrastructure.Repositories.Common;
 using F4ConversationCloud.Infrastructure.Repositories.Onboarding;
 using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Service;
+using F4ConversationCloud.Infrastructure.Service.Client;
+using F4ConversationCloud.Infrastructure.Service.Common;
 using F4ConversationCloud.Infrastructure.Service.Meta;
 using F4ConversationCloud.Infrastructure.Service.MetaServices;
 using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using F4ConversationCloud.Application.Common.Interfaces.Repositories;
-using F4ConversationCloud.Infrastructure.Repositories;
+using Microsoft.IdentityModel.Tokens;
 using Polly;
 using Polly.Extensions.Http;
 using System.Net;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 
 
@@ -69,15 +73,23 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IMasterPriceService, MasterPriceService>();
             services.AddScoped<IMasterTaxRepository, MasterTaxRepository>();
             services.AddScoped<IMasterTaxService, MasterTaxService>();
+            services.AddScoped<IClientRegistrationService, ClientRegistrationService>();
+            services.AddScoped<IClientRegistrationRepository, ClientRegistrationRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            services.AddScoped<ILogService, LogService>();
+            services.AddScoped<IAddPhoneNumberService, AddPhoneNumberService>();
+            services.AddScoped<IAddPhoneNumberRepository, AddPhoneNumberRepository>();
 
             services.AddScoped<ITemplateManagementService, TemplateManagementService>();
-           // services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
+           //services.AddScoped<IMetaCloudAPIService , MetaCloudAPIService>();
             services.AddScoped<IF4AppCloudeService, F4AppCloudeService>();
             //services.AddScoped<MetaConfigurationService >();
             
 
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<ITemplateRepositories, TemplateRepositories>();
+            services.AddScoped<IMetaService, MetaService>();
+            services.AddScoped<IMetaRepositories, MetaRepositories>();
 
             services.AddScoped<IAuthService, AuthService>();
             return services;
@@ -99,6 +111,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddSingleton(new WhatsAppBusinessCloudApiConfig
             {
                 AccessToken = whatsAppConfig.AccessToken,
+                WhatsAppBusinessPhoneNumberId=whatsAppConfig.WhatsAppBusinessPhoneNumberId
             });
             services.AddHttpClient<IMetaCloudAPIService, MetaCloudAPIService>(options =>
             {

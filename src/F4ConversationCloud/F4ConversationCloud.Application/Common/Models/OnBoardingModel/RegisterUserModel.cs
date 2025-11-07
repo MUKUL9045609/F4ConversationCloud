@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Helper;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,10 +28,22 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public bool TermsCondition { get; set; }
         public bool EmailOtpVerified { get; set; } = false;
         public ClientRole Role { get; set; }
+        public string ClientRoles { get; set; }
         public string Timezone { get; set; }
         public ClientFormStage Stage { get; set; }
         public int UserId { get; set; }
         public string ClientId { get; set; }
+        public string CityId { get; set; }
+        public string StateId { get; set; }
+        public string ZipCode { get; set; }
+        public string OptionalAddress { get; set; }
+        public string? OrganizationsName { get; set; }
+        public ClientRegistrationStatus RegistrationStatus { get; set; }
+        public string CityName { get; set; }
+        public string StateName { get; set; }
+        public string BusinessId { get; set; } = string.Empty;
+        public string ClientInfoId { get; set; } = string.Empty;
+
         public IEnumerable<TimeZoneResponse> TimeZones { get; set; } = new List<TimeZoneResponse>();
 
     }
@@ -87,6 +100,18 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
 
         public string name { get; set; }
         public string current_utc_offset { get; set; }
+    }
+    public class Cities
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string StateId { get; set; }
+    }
+    public class States
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
 }
 

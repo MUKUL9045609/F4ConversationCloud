@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/css/login.css">
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/style.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
 </head>
 <body>
     <div class="loginWrapper">
@@ -26,10 +27,12 @@
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div class="from-group">
-                    <label class="form-label">Password</label>
+                    <div class="d-flex justify-content-between mb-1">
+                        <label class="form-label mb-0">Password</label>
+                        <a asp-action="ForgotPassword" class="forgot-password text-muted text-right d-block mt-0">Forgot Password?</a>
+                    </div>
                     <input type="password" asp-for="Password" class="form-control" placeholder="Password" autocomplete="off">
                     <span asp-validation-for="Password" class="text-danger"></span>
-                    <a asp-action="ForgotPassword" class="form-text text-muted text-right d-block">Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn btn-sign">Sign In</button>
             </form>
@@ -39,10 +42,9 @@
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
+    <script src="~/js/commonHelper.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/popper.min.js"></script>
-    <script src="~/js/commonhelper.js" asp-append-version="true"></script>
     <script src="~/js/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
@@ -61,6 +63,19 @@
                     commonHelper.showError(toastMsg.message);
             }
         });
+
+        $(document).on('submit', 'form', function (e) {
+            if (this.checkValidity()) {
+                commonHelper.showHideLoader(true);
+            } else {
+                commonHelper.showHideLoader(false);
+            }
+        });
+
+        $(document).on('click', '.forgot-password', function () {
+            commonHelper.showHideLoader(true);
+        });
+
         $(window).on('load', function () {
             $('.loader-wrapper').fadeOut('slow');
         });

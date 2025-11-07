@@ -45,6 +45,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
         [Required(ErrorMessage = "Please enter a message.")]
         [StringLength(550, ErrorMessage = "Body should be less than 550 characters.")]
+        [MessageBodyValidation(ErrorMessage = "Invalid variable formatting.")]
         public string MessageBody { get; set; }
         [StringLength(60, ErrorMessage = "Footer should be less than 60 characters.")]
         public string Footer { get; set; }

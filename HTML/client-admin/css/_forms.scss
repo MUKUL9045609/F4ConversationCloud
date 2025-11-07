@@ -3,31 +3,31 @@
 
 .form-wrapper {
     label {
-        font-size: 12px;
-        color: #1D242E80;
+        font-size: 13px;
+        color: #686868;
         margin-bottom: 5px;
     }
-
-    input {
+   
+    .form-control {
         font-size: 12px;
-        color: #283342;
-        height: 40px;
-        border-radius: 4px !important;
+        color: #888888;
+        padding: 0.475rem 0.75rem !important;
+        border-radius: 6px !important;
 
         &:focus {
             box-shadow: none;
         }
 
         &.srcIcon {
-            padding: 0 10px 0 30px;
+            padding: 0.475rem 10px 0.475rem 30px!important;
         }
     }
 
     select {
         font-size: 12px;
         color: #283342;
-        height: 40px;
-        border-radius: 4px !important;
+        padding: 0.475rem 0.75rem !important;
+        border-radius: 6px !important;
         cursor: pointer;
 
         &:focus {
@@ -56,8 +56,7 @@
     }
 
     button {
-        height: 40px;
-
+        
         &:hover {
             .reset {
                 background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.99992 13.6667C5.13881 13.6667 3.56242 13.0208 2.27075 11.7292C0.979085 10.4375 0.333252 8.86111 0.333252 6.99999C0.333252 5.13888 0.979085 3.56249 2.27075 2.27083C3.56242 0.979161 5.13881 0.333328 6.99992 0.333328C7.95825 0.333328 8.87492 0.531106 9.74992 0.926661C10.6249 1.32222 11.3749 1.88833 11.9999 2.62499V0.333328H13.6666V6.16666H7.83325V4.49999H11.3333C10.8888 3.72222 10.2813 3.11111 9.51075 2.66666C8.7402 2.22222 7.90325 1.99999 6.99992 1.99999C5.61103 1.99999 4.43047 2.48611 3.45825 3.45833C2.48603 4.43055 1.99992 5.61111 1.99992 6.99999C1.99992 8.38888 2.48603 9.56944 3.45825 10.5417C4.43047 11.5139 5.61103 12 6.99992 12C8.06936 12 9.03464 11.6944 9.89575 11.0833C10.7569 10.4722 11.361 9.66666 11.7083 8.66666H13.4583C13.0694 10.1389 12.2777 11.3403 11.0833 12.2708C9.88881 13.2014 8.5277 13.6667 6.99992 13.6667Z' fill='%23FFFFFF'/%3E%3C/svg%3E%0A");
@@ -97,20 +96,27 @@
 
     &.radio-btn {
         .form-check-input {
-            border: 2px solid $tabs;
+            border: 2px solid #ddd;
             background-color: #fff;
             cursor: pointer;
             width: 20px;
             height: 20px;
-            margin-left: -1.8em;
+            margin-left: -23px;
             margin-top: .10em;
             border-radius: 50%!important;
+            padding: 0px;
         }
-        .form-check-label{margin-bottom: 0px;}
+        .form-check-label{margin-bottom: 0px;font-weight: 400;color: #474747;}
+        input[type="radio"]:checked + div > label {
+            color: $tabs
+        }
+        
+        
     }
 
     .form-check-input {
         &:checked[type=radio] {
+            border: 2px solid $tabs;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%2303A9F5'/%3e%3c/svg%3e");
         }
 
@@ -120,7 +126,7 @@
     }
 
     .form-check-label {
-        font-size: 15px;
+        font-size: 14px;
         padding-left: 3px;
         
     }
@@ -155,3 +161,22 @@
         border-radius: 2rem !important;
     }
 }
+.searchIcon {
+        border-left: 0px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        z-index: 3;
+        cursor: pointer;
+
+        &::after {
+            content: "";
+            background-image: url("data:image/svg+xml,%3Csvg width='14' height='15' viewBox='0 0 14 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.2674 9.52847H9.61899L9.38919 9.30687C10.3741 8.15786 10.8829 6.59028 10.6039 4.92421C10.2181 2.6426 8.31404 0.820595 6.01602 0.54155C2.54436 0.114774 -0.377414 3.03655 0.0493621 6.50821C0.328408 8.80623 2.15041 10.7103 4.43202 11.096C6.09809 11.3751 7.66567 10.8662 8.81468 9.88138L9.03628 10.1112V10.7596L12.5244 14.2476C12.8609 14.5841 13.4107 14.5841 13.7472 14.2476C14.0837 13.9111 14.0837 13.3612 13.7472 13.0247L10.2674 9.52847ZM5.34303 9.52847C3.29943 9.52847 1.64977 7.87881 1.64977 5.83521C1.64977 3.79161 3.29943 2.14196 5.34303 2.14196C7.38663 2.14196 9.03628 3.79161 9.03628 5.83521C9.03628 7.87881 7.38663 9.52847 5.34303 9.52847Z' fill='%23D3D3D3'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 15px;
+            width: 15px;
+            display: block;
+        }
+    }

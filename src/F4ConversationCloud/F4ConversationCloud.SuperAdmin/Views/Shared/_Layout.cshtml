@@ -3,18 +3,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - F4ConversationCloud.SuperAdmin</title>
+    
     <script type="importmap"></script>
-
 
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="~/css/daterangepicker.css">
-    
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+
 </head>
 <body>
     <div id="custom-loader" class="position-fixed top-0 h-100 w-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 overflow-hidden" style="z-index:1060"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
@@ -30,8 +32,11 @@
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                                 <a asp-controller="Dashboard" asp-action="Index" class="home icon">Dashboard</a>
                             </li>
+                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientRegistration" ? "active" : "")">
+                                <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Registration</a>
+                            </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" || ViewContext.RouteData.Values["Controller"]?.ToString() == "TemplateManagement" ? "active" : "")">
-                                <a asp-controller="ClientManagement" asp-action="List" class="users icon">Clients</a>
+                                <a asp-controller="ClientManagement" asp-action="List" class="buisness icon">Business Account</a>
                             </li>
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "UserManagement" ? "active" : "")">
                                 <a asp-controller="UserManagement" asp-action="List" class="user icon">User Management</a>
@@ -39,14 +44,14 @@
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientUserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="ClientUserManagement" asp-action="List" class="user icon">Client User Management</a>
                             </li>
-                            <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
+                            @* <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Usages" asp-action="List" class="usages icon">Usages</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Billing" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Billing" asp-action="List" class="billing icon">Billing</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ActivityLog" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
-                                <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a>
+                                <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a> *@
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterPrice" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="MasterPrice" asp-action="List" class="billing icon">Master Price</a>
@@ -54,9 +59,9 @@
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterTax" && ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")">
                                 <a asp-controller="MasterTax" asp-action="Create" class="tax icon">Master Tax</a>
                             </li>
-                            <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                            @* <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                                 <a asp-controller="Configuration" asp-action="Index" class="cofig icon">Configuration</a>
-                            </li>
+                            </li> *@
                         </ul>
                     </nav>
                 </div>
@@ -116,7 +121,6 @@
     <script src="~/js/daterangepicker.min.js"></script>
     <script src="~/js/commonHelper.js" asp-append-version="true"></script>
     <script src="~/js/ajaxhelper.js" asp-append-version="true"></script>
-    <script src="~/js/unobtrusiveHelper.js" asp-append-version="true"></script>
     <script src="~/js/swiper-bundle.min.js"></script>
     <script src="~/js/editor-script.js"></script>
     <script>
@@ -136,6 +140,10 @@
                     commonHelper.showError(toastMsg.message);
             }
             commonHelper.showHideLoader(false);
+        });
+
+        $(document).on('click', '.signout', function () {
+            commonHelper.showHideLoader(true);
         });
 
     </script>

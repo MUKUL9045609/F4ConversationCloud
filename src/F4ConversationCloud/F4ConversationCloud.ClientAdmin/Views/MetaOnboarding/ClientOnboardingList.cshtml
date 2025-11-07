@@ -1,0 +1,346 @@
+﻿@model F4ConversationCloud.ClientAdmin.Models.PhoneNumberListViewModel
+@{
+    ViewData["Title"] = "Client Onboarding List";
+}
+@{
+    var BusinessId = User.Claims.FirstOrDefault(c => c.Type == "BusinessId")?.Value;
+    var ClientInfoId = User.Claims.FirstOrDefault(c => c.Type == "ClientInfoId")?.Value;
+}
+
+<div class="content bg-light">
+    <div class="container-fluid">
+        <div class="card padding box-shadow">
+            <div class="fb-wrap">
+                <div class="left-col">
+                    <h3>Connect with Facebook</h3>
+                    <p>Click the button below to securely connect your WhatApp number with Facebook. No manual entry needed</p>
+                </div>
+                <div class="right-col">
+                    <div class="text-center">
+                        <a href="#" class="btn btn-facebook" onclick="launchWhatsAppSignup()"><span class="facebook-icon"></span> Continue With Facebook</a>
+
+                        <span class="small-text">We'll request your phone number from Facebook and verify automatically.</span>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="">
+                <div class="facebook-header">
+                    <h3>Phone Numbers</h3>
+                    <button type="button" class="btn sync-btn" id="sync-btn"> Sync</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table user-table meta-table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.WABAId)
+                                    <div class="input-group">
+                                        <input asp-for="WABAIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.BusinessId)
+                                    <div class="input-group">
+                                        <input asp-for="BusinessIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.BusinessCategory)
+                                    <div class="input-group">
+                                        <input asp-for="BusinessCategoryFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.WhatsAppDisplayName)
+                                    <div class="input-group">
+                                        <input asp-for="WhatsappDisplayNameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.PhoneNumberId)
+                                    <div class="input-group">
+                                        <input asp-for="PhoneNumberIdFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.PhoneNumber)
+                                    <div class="input-group">
+                                        <input asp-for="PhoneNumberFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                        <span class="searchIcon" onclick="loadData()"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Columns.Status)
+                                    <select class="form-select" asp-for="StatusFilter" onchange="loadData()">
+                                        <option selected value="">Select Status</option>
+                                        <option value="PENDING">PENDING</option>
+                                        <option value="CONNECTED">CONNECTED</option>
+                                        <option value="OFFLINE">OFFLINE</option>
+                                    </select>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.data.Any())
+                            {
+                                <tr>
+                                    <td colspan="8" class="text-center">No Records Found</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.data)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.WABAId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.BusinessId)</td>
+                                        <td>
+                                            <span class="buisness-type">
+                                                @Html.DisplayFor(modelItem => item.BusinessCategory)
+                                            </span>
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.WhatsAppDisplayName)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PhoneNumberId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                        <td>
+                                            <a href="#" class="@(item.Status == "CONNECTED" ? "text-success" : "text-danger") text-decoration-none fw-medium">
+                                                @Html.DisplayFor(modelItem => item.Status)
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        window.addEventListener('message', (event) => {
+          if (event.origin !== "https://www.facebook.com" && event.origin !== "https://web.facebook.com") {
+            return;
+          }
+
+              try {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'WA_EMBEDDED_SIGNUP') {
+                  if (data.event === 'FINISH') {
+
+                    const waba_id = data.data.waba_id;
+                    const phone_number_id = data.data.phone_number_id;
+                    const business_id = data.data.business_id;
+
+                    const metaResponse = {
+                      WabaId: waba_id,
+                      PhoneNumberId: phone_number_id,
+                      BusinessId: business_id
+                    };
+
+                    console.log(metaResponse);
+                    fetch('/MetaOnboarding/save-meta-user-configuration-details', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(metaResponse)
+                    })
+                    .then(res => {
+                      if (res.ok) {
+                        return res.json();
+                      } else {
+                        throw new Error('Network response was not ok');
+                      }
+                    })
+                    .then(responseData => {
+                      if (responseData.result) {
+                          window.location.href = '/MetaOnboarding/client-onboarding-list';
+                          commonHelper.showSuccess(responseData.message)
+                      } else {
+                           commonHelper.showError("Failed Account linked");
+
+                            console.log('Failed: ' + responseData.message);
+                          }
+                        })
+                        .catch(error => {
+                          console.log("Error saving Meta config:", error);
+                            commonHelper.showError("Something went wrong while connecting to WhatsApp. Please try again later.");
+                        });
+
+                      } else if (data.event === 'CANCEL') {
+                        const { current_step } = data.data;
+                        console.log("User cancelled at step:", current_step);
+                        commonHelper.showError("Setup was cancelled. You can restart the linking process anytime ");
+                      }
+                      else if (data.event === 'ERROR') {
+                        const { error_message } = data.data;
+                        console.error("Meta error:", error_message);
+
+                       commonHelper.showError("We encountered an issue while linking your WhatsApp Business account,Contact to admin");
+                      }
+                    }
+
+                    //document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+
+                  } catch {
+                    console.log('Non JSON Responses', event.data);
+                  }
+            });
+
+        $("#sync-btn").click(function(){
+
+          var BusinessId = '@BusinessId';
+          var ClientInfoId = '@ClientInfoId';
+
+           //location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")';
+               $.ajax({
+                url: '/MetaOnboarding/Sync-Meta-list',
+                type: 'POST',
+                data: { BusinessId: BusinessId },
+                success: function(response) {
+                    console.log("Sync successful:", response);
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.error("Sync failed:", error);
+                   
+                }
+             });
+        });
+
+        function loadData() {
+            let WABAIdFilter = $("[name=WABAIdFilter]").val();
+            let BusinessIdFilter = $("[name=BusinessIdFilter]").val();
+            let BusinessCategoryFilter = $("[name=BusinessCategoryFilter]").val();
+            let WhatsappDisplayNameFilter = $("[name=WhatsappDisplayNameFilter]").val();
+            let PhoneNumberIdFilter = $("[name=PhoneNumberIdFilter]").val();
+            let PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+            let StatusFilter = $("[name=StatusFilter]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")' +
+                '?WABAIdFilter=' + WABAIdFilter +
+                '&BusinessIdFilter=' + encodeURIComponent(BusinessIdFilter) +
+                '&BusinessCategoryFilter=' + encodeURIComponent(BusinessCategoryFilter) +
+                '&WhatsappDisplayNameFilter=' + encodeURIComponent(WhatsappDisplayNameFilter) +
+                '&PhoneNumberIdFilter=' + encodeURIComponent(PhoneNumberIdFilter) +
+                '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
+                '&StatusFilter=' + encodeURIComponent(StatusFilter) +
+                '&PageNumber=' + pageNumber;
+        }
+
+        $(".srcIcon").on("keypress", function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+
+        $(".page-link").click(function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber !== undefined && pageNumber !== null) {
+                let WABAIdFilter = $("[name=WABAIdFilter]").val();
+            let BusinessIdFilter = $("[name=BusinessIdFilter]").val();
+            let BusinessCategoryFilter = $("[name=BusinessCategoryFilter]").val();
+            let WhatsappDisplayNameFilter = $("[name=WhatsappDisplayNameFilter]").val();
+            let PhoneNumberIdFilter = $("[name=PhoneNumberIdFilter]").val();
+            let PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+            let StatusFilter = $("[name=StatusFilter]").val();
+            let pageNumber = 1;
+            location.href = '@Url.Action("ClientOnboardingList", "MetaOnboarding")' +
+                '?WABAIdFilter=' + WABAIdFilter +
+                '&BusinessIdFilter=' + encodeURIComponent(BusinessIdFilter) +
+                '&BusinessCategoryFilter=' + encodeURIComponent(BusinessCategoryFilter) +
+                '&WhatsappDisplayNameFilter=' + encodeURIComponent(WhatsappDisplayNameFilter) +
+                '&PhoneNumberIdFilter=' + encodeURIComponent(PhoneNumberIdFilter) +
+                '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
+                '&StatusFilter=' + encodeURIComponent(StatusFilter) +
+                '&PageNumber=' + pageNumber;
+            }
+        });
+    </script>
+    <script>
+        const fbLoginCallback = (response) => {
+          if (response.authResponse) {
+            const code = response.authResponse.code;
+
+          }
+          document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
+        }
+
+        const launchWhatsAppSignup = () => {
+
+          FB.login(fbLoginCallback, {
+
+            config_id: '1798212677752254',
+            response_type: 'code',
+            override_default_response_type: true,
+            extras: {"version":"v3"}
+          });
+        }
+    </script>
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+
+            appId            : '2199076023947769',
+            autoLogAppEvents : true,
+            xfbml            : true,
+                version          : 'v23.0'
+          });
+        };
+    </script>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js">
+    </script>
+
+    
+
+    @*  <script>
+        const fbLoginCallback = (response) => {
+          if (response.authResponse) {
+            const code = response.authResponse.code;
+
+          }
+          document.getElementById("sdk-response").textContent = JSON.stringify(response, null, 2);
+        }
+
+        const launchWhatsAppSignup = () => {
+
+          FB.login(fbLoginCallback, {
+            config_id: '9869767589818097',
+            response_type: 'code',
+            override_default_response_type: true,
+            extras: {"version":"v3"}
+          });
+        }
+    </script>
+
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId            : '2983579265274951',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v23.0'
+          });
+        };
+    </script>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js">
+    </script> *@
+
+
+
+
+}

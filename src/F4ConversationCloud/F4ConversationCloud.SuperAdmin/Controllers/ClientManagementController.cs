@@ -1,8 +1,5 @@
 ﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models;
-using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Infrastructure.Service.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
@@ -33,7 +30,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     ClientNameSearch = model.ClientNameSearch ?? String.Empty,
                     StatusFilter = model.StatusFilter ?? String.Empty,
                     OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
-                    ApprovalStatusFilter = model.ApprovalStatusFilter ?? String.Empty,
+                    PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
                     PageNumber = model.PageNumber,
                     PageSize = model.PageSize,
                 });
@@ -51,20 +48,20 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     SrNo = x.SrNo,
                     ClientName = x.ClientName,
                     Status = x.Status,
-                    ApprovalStatus = x.ApprovalStatus,
                     IsActive = x.IsActive,
                     CreatedAt = x.CreatedAt,
                     UpdatedOn = x.UpdatedOn,
                     Category = x.Category,
                     ClientId = x.ClientId,
-                    RejectComment = x.RejectComment
+                    PhoneNumber = x.PhoneNumber
                 });
 
                 return View(model);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return View(new ClientManagementViewModel());
             }
         }
 
@@ -73,10 +70,17 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 var response = await _clientManagement.GetClientDetailsById(Id);
+
+                if (response is null)
+                {
+                    TempData["ErrorMessage"] = "Error occured while fetching record";
+                    return RedirectToAction("List");
+                }
+
                 var filter = new TemplatesListFilter
                 {
                     ClientInfoId = Id
-                  
+
                 };
                 var templates = await _templateManagementService.TemplateListAsync(filter);
                 var model = new ClientDetailsViewModel()
@@ -102,7 +106,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegisteredAddress = response.RegisteredAddress,
                     RegisteredCountry = response.RegisteredCountry,
                     RegisteredTimeZone = response.RegisteredTimeZone,
-                    TemplatesList = templates.Data
+                    TemplatesList = templates.Data,
+                    OrganizationName = response.OrganizationName
                 };
 
                 var masterPriceData = await _masterPriceService.GetLatestRecordsByConversationType();
@@ -126,8 +131,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
-            }           
+                return RedirectToAction("List");
+            }
         }
 
         [HttpPost]
@@ -135,9 +140,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
+                if (model == null)
+                    return BadRequest(new { message = "Invalid request data." });
+
+                var permissionsList = new List<ClientDetails>();
+
                 if (model.IsMarketing)
                 {
-                    var marketingPermissions = new ClientDetails
+                    permissionsList.Add(new ClientDetails
                     {
                         Id = model.Id,
                         TemplateType = (int)TemplateModuleType.Marketing,
@@ -147,14 +157,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         Delete = model.MarketingDelete,
                         All = model.MarketingAll,
                         AllowUserManagement = model.AllowUserManagement
-                    };
-
-                    await _clientManagement.SaveClientPermission(marketingPermissions);
+                    });
                 }
 
                 if (model.IsAuthentication)
                 {
-                    var authPermissions = new ClientDetails
+                    permissionsList.Add(new ClientDetails
                     {
                         Id = model.Id,
                         TemplateType = (int)TemplateModuleType.Authentication,
@@ -164,14 +172,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         Delete = model.AuthenticationDelete,
                         All = model.AuthenticationAll,
                         AllowUserManagement = model.AllowUserManagement
-                    };
-
-                    await _clientManagement.SaveClientPermission(authPermissions);
+                    });
                 }
 
                 if (model.IsUtility)
                 {
-                    var utilityPermissions = new ClientDetails
+                    permissionsList.Add(new ClientDetails
                     {
                         Id = model.Id,
                         TemplateType = (int)TemplateModuleType.Utility,
@@ -181,17 +187,21 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         Delete = model.UtilityDelete,
                         All = model.UtilityAll,
                         AllowUserManagement = model.AllowUserManagement
-                    };
+                    });
+                }
 
-                    await _clientManagement.SaveClientPermission(utilityPermissions);
+                foreach (var permission in permissionsList)
+                {
+                    var id = await _clientManagement.SaveClientPermission(permission);
+                    if (id == 0)
+                        return BadRequest(new { message = "Error occurred while setting permissions." });
                 }
 
                 return Ok(new { message = "Approved successfully!" });
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
-                return StatusCode(500, false);
+                return StatusCode(500, new { message = "Something went wrong. Please contact your administrator." });
             }
         }
 

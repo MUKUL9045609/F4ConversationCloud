@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using F4ConversationCloud.Domain.Enum;
+@{
+    int? stageValue = HttpContextAccessor.HttpContext.Session.GetInt32("StageId");
+    ClientFormStage? stage = null;
+
+    if (stageValue.HasValue)
+    {
+        stage = (ClientFormStage)stageValue.Value;
+    }
+}
+<!-- side Bar -->
+<aside class="app-sidebar">
+    <div class="sidenav-content">
+        <a href="#" class="main-sidebar-header">
+            <img src="/images/logo.svg" />
+        </a>
+        <div class="main-side-navigation">
+            <nav>
+                <ul>
+                    @if (stage.Value == ClientFormStage.MetaRegistered)
+                    {
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                            <a asp-controller="Home" asp-action="Index" class="home icon">Home</a>
+                        </li>
+                    }
+                    @if (stage.Value == ClientFormStage.ClientRegistered || stage.Value == ClientFormStage.MetaRegistered)
+                    {
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MetaOnboarding" ? "active" : "")">
+                            <a asp-controller="MetaOnboarding" asp-action="ClientOnboardingList" class="meta icon">Meta Details</a>
+                        </li>
+                    }
+                    @if (stage.HasValue && stage.Value == ClientFormStage.MetaRegistered)
+                    {
+                        <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Campaigns" ? "active" : "")">
+                            <a href="javascript:void(0)" class="speaker icon carret">Campaigns</a>
+                            <ul class="submenu">
+                                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "CampaignList" ? "active" : "")">
+                                    <a asp-controller="Campaigns" asp-action="CampaignList">Broadcast</a>
+                                </li>
+                                <li class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Guide" ? "active" : "")">
+                                    <a asp-controller="Campaigns" asp-action="Guide">Guide</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+
+       
+    </div>
+</aside>
+

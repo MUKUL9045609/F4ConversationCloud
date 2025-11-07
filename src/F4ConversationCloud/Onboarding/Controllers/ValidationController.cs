@@ -40,16 +40,16 @@ namespace F4ConversationCloud.Onboarding.Controllers
             }
         }
 
-        [AcceptVerbs("Get", "Post")]
-        public IActionResult IsValidEmailOtpVerify(bool EmailOtpVerified, string Email)
-        {
-            if (!EmailOtpVerified)
-            {
-                return Json($"Email OTP for {Email} is not verified.");
-            }
+        //[AcceptVerbs("Get", "Post")]
+        //public IActionResult IsPhoneNumberOTPVerify(bool PhoneNumberOTPVerified, string PhoneNumber)
+        //{
+        //    if (!PhoneNumberOTPVerified)
+        //    {
+        //        return Json($"Contact Number OTP is not verified.");
+        //    }
 
-            return Json(true);
-        }
+        //    return Json(true);
+        //}
 
     }
 }

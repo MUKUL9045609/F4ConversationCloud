@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration</title>
+    <style type="text/css">
+        .code {
+            display: inline-block;
+            margin: 0 8px;
+        }
+    </style>
+</head>
+
+<body style="line-height:1.6;margin: 0;padding: 0;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;font-size: 14px;background-color: #f7f7f7;">
+    <div style="max-width:600px;margin:30px auto;">
+        <div style="background-color:#FFF;padding:20px;">
+            <div style="text-align:center;margin-bottom:30px;padding-top: 20px;">
+                <a href="{{SITE_URL}}">
+                    <img src="{Logo}" alt="logo" />
+                </a>
+
+            </div>
+            <div style="text-align:center;margin-bottom:10px;">
+                <a href="{{SITE_URL}}">
+                    <img src="{RegistrationImage}" alt="" style="width:100%;max-width: 346px;margin: 0 auto;" />
+                </a>
+
+            </div>
+            <div class="content" style="color: #454545;">
+                <p>Hi <span style="font-weight: 600;">{user_name}</span>,</p>
+                <p style="margin-top: 0px;">We’re excited to have you onboard <br> Your basic details have been pre-filled to make the process faster and easier.</p>
+
+                <p style="margin-bottom: 0px;">Please review your information below:</p>
+                <p style="margin-top: 0px;margin-bottom: 0px;"><span>Full Name:</span><span style="font-weight: 600;"> {user_name}</span></p>
+                <p style="margin-top: 0px;margin-bottom: 0px;"><span>Email Address:</span><span style="font-weight: 600;"> {email}</span></p>
+                <p style="margin-top: 0px;"><span>Contact Number:</span><span style="font-weight: 600;"> {contact_number}</span></p>
+                <p>To complete your onboarding, kindly click the link below and fill in the remaining required details:</p>
+                <a href="{Link}" style="background-color: #03A9F5;color: #E1FCEF;text-decoration: none;padding: 8px 20px;border-radius: 10px;color: #E1FCEF;margin: 3px 0px;display: inline-block;">Continue Onboarding</a>
+                <p>This step helps us verify your information and activate your account securely. Please make sure to complete the form within the next 48 hours to avoid any delay in activation.</p>
+                <p style="font-size: 13px;margin-bottom: 0px;">If you have any questions or need assistance, feel free to contact our support team.</p>
+                <p>Thank you, <br> Fortune4 Cloud Team,<br><a href="mailto:support@f4cloud.com" style="color: #0D6EFD;">support@f4cloud.com</a></p>
+            </div>
+        </div>
+        <div class="footer" style="background-color:#283342;color:#fff;padding:20px;font-size:13px;text-align:center">
+            <p style="color:#fff;margin:0 0;">Fortune4 Cloud Conversation Pvt. Ltd.</p>
+            <p style="color:#fff;margin:0 0;">Copyright © {CurrentYear} F4Cloud. All rights reserved.</p>
+            <div style="list-style-type: none;color: #fff;display: inline-block;vertical-align: middle;">
+                <a href="#" style="color: #fff;text-decoration: none;display: inline-block;font-weight: 400;">Terms and Conditions </a>
+                <span style="background-color: #fff;height:3px;width:3px;display: inline-block;border-radius: 50%;vertical-align: middle;margin: 0px 3px;"></span>
+                <a href="#" style="color: #fff;text-decoration: none;display: inline-block;">Privacy Policy </a>
+                <span style="background-color: #fff;height:3px;width:3px;display: inline-block;border-radius: 50%;vertical-align: middle;margin: 0px 3px;"></span>
+                <a href="#" style="color: #fff;text-decoration: none;display: inline-block;">Contact Us </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

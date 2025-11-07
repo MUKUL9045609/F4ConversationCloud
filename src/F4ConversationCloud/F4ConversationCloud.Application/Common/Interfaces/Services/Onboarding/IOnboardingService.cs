@@ -12,13 +12,12 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
         Task<ValidateRegistrationOTPResponse> VerifyOTPAsync(ValidateRegistrationOTPModel request);
         
         Task<VarifyUserDetailsResponse> CheckIsMailExitsAsync(VarifyMobileNumberModel request);
+        Task<VarifyUserDetailsResponse> VarifyWhatsAppContactNoAsync(VarifyMobileNumberModel request);
         Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request);
 
-        Task<UserDetailsViewModel> GetCustomerByIdAsync(int UserId);
-        Task<bool> SendOnboardingConfirmationEmail(VarifyMobileNumberModel request);
+        Task<RegisterUserModel> GetCustomerByIdAsync(int UserId);
 
         Task<LoginResponse> OnboardingLogin(Loginrequest request);
-        Task SendRegistrationSuccessEmailAsync(RegisterUserModel Request);
 
         Task <bool> ValidateClientEmailAsync(string EmailId);
         Task SendResetPasswordLink(string EmailId);

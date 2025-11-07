@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+</head>
+
+<body>
+    
+    <div class="invalid-wrap">
+        <img src="../images/invalid.png"/>
+        <h5>Link Expired</h5>
+        <p>This link is no longer active for security reasons.</p>
+    </div>
+
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const termsChecked = document.getElementById('agreeTerms').checked;
+
+
+            const fullNameError = document.getElementById('fullNameError');
+            const emailError = document.getElementById('emailError');
+            const phoneNumberError = document.getElementById('phoneNumberError');
+            const passwordError = document.getElementById('passwordError');
+            const termsError = document.getElementById('termsError');
+
+
+            fullNameError.textContent = '';
+            emailError.textContent = '';
+            phoneNumberError.textContent = '';
+            passwordError.textContent = '';
+            termsError.textContent = '';
+
+            let isValid = true;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+            if (fullName === '') {
+                fullNameError.textContent = 'Full name is required.';
+                isValid = false;
+            }
+
+            if (!emailRegex.test(email)) {
+                emailError.textContent = 'Enter a valid email address.';
+                isValid = false;
+            }
+
+            if (phoneNumber === '') {
+                phoneNumberError.textContent = 'Phone number is required.';
+                isValid = false;
+            }
+
+            if (password.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters.';
+                isValid = false;
+            }
+
+            if (!termsChecked) {
+                termsError.textContent = 'You must agree to the terms and conditions.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                window.location.href = 'complete-your-profile.html';
+
+            }
+        });
+    </script>
+    <script>
+        const form = document.querySelector("#otp-form");
+        const inputs = document.querySelectorAll(".otp-input");
+        const verifyBtn = document.querySelector("#verify-btn");
+
+        const isAllInputFilled = () => {
+            return Array.from(inputs).every((item) => item.value);
+        };
+
+        const getOtpText = () => {
+            let text = "";
+            inputs.forEach((input) => {
+                text += input.value;
+            });
+            return text;
+        };
+
+        const verifyOTP = () => {
+            if (isAllInputFilled()) {
+                const text = getOtpText();
+                alert(`Your OTP is "${text}". OTP is correct`);
+            }
+        };
+
+        const toggleFilledClass = (field) => {
+            if (field.value) {
+                field.classList.add("filled");
+            } else {
+                field.classList.remove("filled");
+            }
+        };
+
+        form.addEventListener("input", (e) => {
+            const target = e.target;
+            const value = target.value;
+            console.log({ target, value });
+            toggleFilledClass(target);
+            if (target.nextElementSibling) {
+                target.nextElementSibling.focus();
+            }
+            verifyOTP();
+        });
+
+        inputs.forEach((input, currentIndex) => {
+            // fill check
+            toggleFilledClass(input);
+
+            // paste event
+            input.addEventListener("paste", (e) => {
+                e.preventDefault();
+                const text = e.clipboardData.getData("text");
+                console.log(text);
+                inputs.forEach((item, index) => {
+                    if (index >= currentIndex && text[index - currentIndex]) {
+                        item.focus();
+                        item.value = text[index - currentIndex] || "";
+                        toggleFilledClass(item);
+                        verifyOTP();
+                    }
+                });
+            });
+
+            // backspace event
+            input.addEventListener("keydown", (e) => {
+                if (e.keyCode === 8) {
+                    e.preventDefault();
+                    input.value = "";
+                    // console.log(input.value);
+                    toggleFilledClass(input);
+                    if (input.previousElementSibling) {
+                        input.previousElementSibling.focus();
+                    }
+                } else {
+                    if (input.value && input.nextElementSibling) {
+                        input.nextElementSibling.focus();
+                    }
+                }
+            });
+        });
+
+        verifyBtn.addEventListener("click", () => {
+            verifyOTP();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#sendmail').click(function () {
+                $('.otp-section').show(300);
+            });
+        });
+    </script>
+    <script>
+        $(".toggle-password").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            input = $(this).parent().find("input");
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

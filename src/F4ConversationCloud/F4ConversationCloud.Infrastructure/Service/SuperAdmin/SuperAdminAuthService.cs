@@ -1,13 +1,18 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 {
@@ -16,68 +21,177 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         private readonly ISuperAdminAuthRepository _superAdminAuthRepository;
         private readonly IEmailSenderService _emailService;
         private readonly IUrlHelper _urlHelper;
-        public SuperAdminAuthService(ISuperAdminAuthRepository superAdminAuthRepository, IEmailSenderService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
+        private readonly ILogService _logService;
+        public SuperAdminAuthService(ISuperAdminAuthRepository superAdminAuthRepository, IEmailSenderService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor,
+            IWebHostEnvironment env, IConfiguration configuration, ILogService logService)
         {
             _superAdminAuthRepository = superAdminAuthRepository;
             _emailService = emailService;
             _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+            _env = env;
+            _configuration = configuration;
+            _logService = logService;
         }
 
         public async Task<Auth> CheckUserExists(string username)
         {
-            return await _superAdminAuthRepository.CheckUserExists(username);
+            var response = new Auth();
+            try
+            {
+                response = await _superAdminAuthRepository.CheckUserExists(username);
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "SuperAdminAuth/CheckUserExists";
+                logModel.AdditionalInfo = $"UserName: {username}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
+
+            }
+            return response;
         }
 
         public async Task<bool> ValidateUserName(string userName)
         {
-            var userDetails = await _superAdminAuthRepository.CheckUserExists(userName);
+            bool response = false;
+            try
+            {
+                var userDetails = await _superAdminAuthRepository.CheckUserExists(userName);
+                if (userDetails is not null)
+                    response = true;
+            }
+            catch (Exception ex)
+            {
+                var model = new LogModel();
+                model.Source = "SuperAdminAuth/ValidateUserName";
+                model.AdditionalInfo = $"UserName: {userName}";
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(model);
+            }
+            finally
+            {
 
-            if (userDetails is null)
-                return false;
-
-            return true;
+            }
+            return response;
         }
 
-        public async Task SendPasswordResetLink(string userName)
+        public async Task<bool> SendPasswordResetLink(string userName)
         {
-            var userDetails = await _superAdminAuthRepository.CheckUserExists(userName);
-
-            string id = userDetails.Id.ToString();
-            string expiryTime = DateTime.UtcNow.AddMinutes(20).ToString();
-            string token = (id + "|" + expiryTime).Encrypt().Replace("/", "thisisslash").Replace("\\", "thisisbackslash").Replace("+", "thisisplus");
-
-            var resetUrl = _urlHelper.Action("ConfirmPassword", "Auth", new { id = token }, "https");
-
-            EmailRequest email = new EmailRequest()
+            var model = new LogModel();
+            model.Source = "SuperAdminAuth/SendPasswordResetLink";
+            model.AdditionalInfo = $"UserName: {userName}";
+            bool response = false;
+            try
             {
-                ToEmail = userDetails.Email,
-                Subject = "Password Reset",
-                Body = "<h3>You can reset your password using the below link.</h3><br/>" +
-                            $"<a href=\"{resetUrl}\">Click Here</a>" +
-                           "<br/>Please note: This link will expire in 20 minutes."
-            };
+                var userDetails = await _superAdminAuthRepository.CheckUserExists(userName);
 
-            await _emailService.Send(email);
+                string templatePath = Path.Combine(_env.WebRootPath, "Html", "PasswordResetEmailTemplate.html");
+                string htmlBody = await File.ReadAllTextAsync(templatePath);
+
+                string id = userDetails.Id.ToString();
+                string expiryTime = DateTime.UtcNow.AddMinutes(20).ToString();
+                string token = (id + "|" + expiryTime).Encrypt().Replace("/", "thisisslash").Replace("\\", "thisisbackslash").Replace("+", "thisisplus");
+
+                var resetUrl = _urlHelper.Action("ConfirmPassword", "Auth", new { id = token }, "https");
+
+                string logo = $"{_configuration["MailerLogo"]}";
+                string lockImage = $"{_configuration["MailerLockImage"]}";
+                string currentYear = DateTime.Now.Year.ToString();
+                htmlBody = htmlBody.Replace("{user_name}", userDetails.FirstName + " " + userDetails.LastName)
+                                   .Replace("{Logo}", logo)
+                                   .Replace("{Lock_Image}", lockImage)
+                                   .Replace("{Link}", resetUrl)
+                                   .Replace("{CurrentYear}", currentYear);
+
+                var emailRequest = new EmailRequest
+                {
+                    ToEmail = userDetails.Email,
+                    Subject = "Password Reset",
+                    Body = htmlBody
+                };
+
+                response = await _emailService.Send(emailRequest);
+                model.LogType = "Success";
+                model.Message = "Email sent successfully.";
+            }
+            catch (Exception ex)
+            {
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(model);
+            }
+            return response;
         }
 
         public async Task<bool> ConfirmPassword(ConfirmPasswordModel model)
         {
-            int result = await _superAdminAuthRepository.UpdatePasswordAsync(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password.Encrypt() });
+            bool response = false;
+            try
+            {
+                int result = await _superAdminAuthRepository.UpdatePasswordAsync(new ConfirmPasswordModel { UserId = model.UserId, Password = model.Password.Encrypt() });
 
-            return result is not 0;
+                response = result is not 0;
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "SuperAdminAuth/ConfirmPassword";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(model)}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
+
+            }
+            return response;
         }
-
 
         public async Task<bool> CheckValidRole(IEnumerable<string> roles, string email)
         {
-            var userDetails = await CheckUserExists(email);
 
-            if (userDetails is null)
+            bool response = false;
+            try
             {
-                return false;
-            }
+                var userDetails = await CheckUserExists(email);
 
-            return roles.Contains(userDetails.RoleName);
+                if (userDetails is null)
+                {
+                    response = false;
+                }
+                response = roles.Contains(userDetails.RoleName);
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "SuperAdminAuth/CheckValidRole";
+                logModel.AdditionalInfo = $"Roles: {string.Join(",", roles)}, Email: {email}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
+
+            }
+            return response;
         }
     }
 }
