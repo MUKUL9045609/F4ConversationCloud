@@ -12,7 +12,7 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public string SearchText { get; set; } = string.Empty;
         public string LanguageCode { get; set; } = string.Empty;
         public string Status { get; set; }
-        public int PageNumber { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; } 
     }
 }
