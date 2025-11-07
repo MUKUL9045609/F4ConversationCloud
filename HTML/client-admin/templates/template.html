@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+</head>
+
+<body>
+    <div class="page">
+        
+
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+             <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="../images/logo.svg" />
+                </a>
+           
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="../index.html" class="home icon">Home</a>
+                            </li>
+                            <li>
+                                <a href="#" class="speaker icon carret">Campaigns</a>
+                                <ul class="submenu">
+                                    <li><a href="../campaigns/broadcast.html">Broadcast</a></li>
+                                    <li class="sub-active"><a href="../campaigns/audience.html">Audience</a></li>
+                                    <li><a href="../campaigns/guide.html">Guide</a></li>
+                                </ul>
+                            </li>
+                            <li class="active">
+                                <a href="#" class="template icon">Templates</a>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- <div class="company-logo">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="company-template">
+                            <span class="logo">
+                                <img src="images/nbbi-logo.svg" />
+                            </span>
+                            <div>
+                                <span class="company-title">NBBL - NPCI Bharat...</span>
+                                <span class="company-name">Fortune4 Internal</span>
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div> -->
+            
+            <!-- <div class="bottom-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" class="org-analytics icon">Org Analytics</a>
+                        </li>
+                        <li>
+                            <a href="#" class="billing icon">Billing</a>
+                        </li>
+                        <li>
+                            <a href="#" class="project icon">Manage Project</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> -->
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    <!-- <div class="searchBox">
+                        <div class="input-group flex-nowrap">
+                            <input type="text" class="form-control" placeholder="Search for anything here.."
+                                aria-label="Username" aria-describedby="addon-wrapping">
+                            <span class="input-group-text" id="addon-wrapping"></span>
+                        </div>
+                    </div> -->
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    <div class="profile-dropdown ms-auto">
+                        <div class="lang">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected><span class="lang-icon"></span> English (US)</option>
+                                <option value="1">Hindi</option>
+                                <option value="2">Portugal</option>
+
+                            </select>
+                        </div>
+                        <div class="ask-ai">
+                            <a href="#">Ask AI Assistant <span class="question"></span></a>
+                        </div>
+                        <div class="profile-dropdown ms-auto">
+                            <div class="profile">
+                                <div class="dropdown">
+                                    <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <span class="profile-name">D</span> 
+                                        <div>
+                                            <p>Dinesh Sharma</p>
+                                            <span class="profile-role">Admin</span>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <span class="name">Dinesh Sharma</span>
+                                        <li><a class="dropdown-item user" href="#">Profile</a></li>
+                                        <li><a class="dropdown-item signout" href="#">Sign Out</a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="card">
+                        <h3 class="sub-heading">Templates </h3>
+                    
+                        <div class="table-responsive">
+                            <table class="table user-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>
+                                            Template Name
+                                            <div class="input-group">
+                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                <span class="searchIcon"></span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            Category
+                                            <div class="input-group">
+                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                <span class="searchIcon"></span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            Language
+                                            <div class="input-group">
+                                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                <span class="searchIcon"></span>
+                                            </div>
+                                        </th>
+                                        
+                                        
+                                        <th>Last Updated
+                                            <label class="datewrap" for="datepicker">
+                                                <input
+                                                    type="text"
+                                                    id="datepicker2"
+                                                    class="form-control datepicker search-form-control"
+                                                    placeholder="Select Date"
+                                                />
+                                                <span class="dateIcon"></span>
+                                            </label>
+
+                                        </th>
+                                        
+                                        <th>
+                                            Status
+                                            <select class="form-select">
+                                                <option selected>Select Status</option> 
+                                                <option>Approved</option> 
+                                                <option>Rejected</option> 
+                                                
+                                            </select>
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td align="center">01</td>
+                                        <td><span class="message-block">
+                                            Onboarding_Invite_Template
+                                        </span></td>
+                                        <td>Marketing</td>
+                                        <td>English (en)</td>
+                                        <td>
+                                            <span class="date">15 Apr 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
+
+                                        <td><span class="badge success">Approved</span></td>
+                                        <td>
+                                            <div class="action">
+                                                <a href="#" class="eye-blue" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">02</td>
+                                        <td><span class="message-block">
+                                            Welcome_Form
+                                        </span></td>
+                                        <td>Utility</td>
+                                        <td>English (en)</td>
+                                        <td>
+                                            <span class="date">15 Apr 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
+
+                                        <td><span class="badge danger">Rejected</span></td>
+                                        <td>
+                                            <div class="action">
+                                                
+                                                <a href="#" class="eye-blue" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">03</td>
+                                        <td><span class="message-block">
+                                            Start_Onboard
+                                        </span></td>
+                                        <td>Authentication</td>
+                                        <td>English (en)</td>
+                                        <td>
+                                            <span class="date">15 Apr 2025</span>    
+                                            <span class="datetime">at 11:30 am</span>
+                                        </td>
+
+                                        <td><span class="badge warning">Pending</span></td>
+                                        <td>
+                                            <div class="action">
+                                                <a href="#" class="eye-blue" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
+                                
+                                
+                            </table>
+                        </div>
+                        <nav aria-label="navigation example">
+                            <ul class="pagination mt-4 d-flex justify-content-center">
+                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                        
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+            </footer>
+        </div>
+
+        <!-- Message Modal -->
+        <div class="modal fade template-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <span class="lighttext d-block">Preview</span>
+                    <h5 class="modal-title" id="exampleModalLabel">Onboarding_Invite_Template</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="template-preview">
+                        <div class="swiper-card">
+                            <div class="template-slide-card">
+                                <span><img src="../images/card-img-03.png"></span>
+                                <div class="description">
+                                    <p>Dear {{1}}</p>
+                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                </div>
+                                <div class="time">1:59 PM</div>
+                            </div>
+                            <div class="buy-link">
+                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                <!-- <a href="#"><i class="backward"></i> Yes </a>
+                                <a href="#"><i class="call"></i> Call Us </a> -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+        <!--end message modal -->
+        
+        
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/swiper-bundle.min.js"></script>
+
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+
+        var swiper = new Swiper(".useCasesSwiper", {
+            spaceBetween: 30,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            loop: true
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

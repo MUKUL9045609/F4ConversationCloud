@@ -56,6 +56,9 @@
                                     <li><a href="../campaigns/guide.html">Guide</a></li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="../templates/template.html" class="template icon">Templates</a>
+                            </li>
                             <!-- <li>
                                 <a href="#" class="template icon">Templates</a>
                             </li> -->
@@ -122,13 +125,7 @@
             <!-- Header Bar -->
             <header class="app-header">
                 <div class="appheader-wrap">
-                    <!-- <div class="searchBox">
-                        <div class="input-group flex-nowrap">
-                            <input type="text" class="form-control" placeholder="Search for anything here.."
-                                aria-label="Username" aria-describedby="addon-wrapping">
-                            <span class="input-group-text" id="addon-wrapping"></span>
-                        </div>
-                    </div> -->
+                    
                     <span class="burger" id="toggleButton">
                         <span class="bar"></span>
                         <span class="bar"></span>
@@ -170,630 +167,632 @@
             <!-- End Header Bar -->
             <div class="content">
                 <div class="container-fluid">
-                    <h3 class="sub-heading"><a href="#" class="back"></a>Edit Broadcast Campaign</h3>
+                    <div class="card">
+                        <h3 class="sub-heading"><a href="#" class="back"></a>Edit Broadcast Campaign</h3>
 
-                    <div class="broadcast-tabs tab-spacing">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="details-tab" data-bs-toggle="tab"
-                                    data-bs-target="#details" type="button" role="tab" aria-controls="details"
-                                    aria-selected="true">01 Broadcast Details</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="audience-tab" data-bs-toggle="tab" data-bs-target="#audience"
-                                    type="button" role="tab" aria-controls="audience" aria-selected="false">02
-                                    Audience</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="template-tab" data-bs-toggle="tab" data-bs-target="#template"
-                                    type="button" role="tab" aria-controls="template" aria-selected="false">03
-                                    Template</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview"
-                                    type="button" role="tab" aria-controls="preview" aria-selected="false">04
-                                    Preview</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="details" role="tabpanel"
-                                aria-labelledby="details-tab">
-                                <div class="card padding">
+                        <div class="broadcast-tabs tab-spacing">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="details-tab" data-bs-toggle="tab"
+                                        data-bs-target="#details" type="button" role="tab" aria-controls="details"
+                                        aria-selected="true">01 Broadcast Details</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="audience-tab" data-bs-toggle="tab" data-bs-target="#audience"
+                                        type="button" role="tab" aria-controls="audience" aria-selected="false">02
+                                        Audience</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="template-tab" data-bs-toggle="tab" data-bs-target="#template"
+                                        type="button" role="tab" aria-controls="template" aria-selected="false">03
+                                        Template</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview"
+                                        type="button" role="tab" aria-controls="preview" aria-selected="false">04
+                                        Preview</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="details" role="tabpanel"
+                                    aria-labelledby="details-tab">
                                     
-                                    <div class="form-wrapper mt-2">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Campaign Name</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Campaign name">
-                                                    <div class="error-message" id="fullNameError">Please enter campaign name</div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label>WABA Number</label>
-                                                    <select class="form-select">
-                                                        <option>+91 9877474645</option>
-                                                        <option>+91 9877474645</option>
-                                                        <option>+91 9877474645</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end mt-3">
-                                                <button class="btn primary-btn">Next</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="audience" role="tabpanel" aria-labelledby="audience-tab">
-                                <div class="card padding">
-                                    
-                                    <div class="form-wrapper">
-                                        <div class="d-flex align-content-end gap-3 mb-3">
-                                            <div class="form-group w-50">
-                                                <label>Select Audience</label>
-                                                <select class="form-select">
-                                                    
-                                                    <option value="1">Diwali Campaign</option>
-                                                    <option value="2">Student</option>
-                                                    <option value="3">Employee</option>
-                                                </select>  
-                                            </div>
-                                            <div class="d-flex align-items-end">
-                                                <a href="audience.html" class="btn primary-btn">Create Audience</a>
-                                            </div>
-                                        </div>
                                         
-                                    </div>
-
-                                    <!-- <div class="download-sample">
-                                        <div class="form-control">
-                                            <a href="#" class="d-flex align-items-center gap-2">
-                                                <span class="download-icon"></span>Monthly_Sales_Report.xlsx
-                                            </a>
-                                        </div>
-                                    </div> -->
-                                    <div class="d-flex justify-content-end mt-3">
-                                        <button class="btn primary-btn">Next</button>
-                                    </div>
-
-                                    <!-- <div class="form-wrapper mt-5">
-                                        <input class="form-control" type="file" id="formFile">
-                                        <div class="download-sample">
-                                            <div class="form-control">
-                                                <a href="#" class="d-flex align-items-center gap-2">
-                                                    <span class="download-icon"></span>Download Sample
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="upload-list">
-                                        Upload list
-                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                    </div> -->
-                                    <!-- <div class="form-check my-3">
-                                        <input class="form-check-input" type="checkbox" value="" id="linkTracking">
-                                        <label class="form-check-label" for="linkTracking">
-                                            Enable link tracking
-                                        </label>
-                                    </div>
-                                    <p class="track-link">Track link clicks to effectively manage your campaigns, applicable
-                                        only if you upload list with URLs. Links must be in the format
-                                        “https://www.someurl.xyz/uvw”. <a href="#">Learn More</a>
-                                    </p> -->
-                                    <!-- <ul class="mandatory">
-                                        <li>“Phone” column is mandatory.</li>
-                                        <li>Phone number should have country code as prefix and no '+' symbol</li>
-                                    </ul> -->
-
-                                    <!-- <div class="form-check confirm">
-                                        <input class="form-check-input" type="checkbox" value="" id="confirm">
-                                        <label class="form-check-label" for="confirm">
-                                            I confirm that the contacts uploaded have agreed to receive this communication.
-                                        </label>
-                                    </div> -->
-
-                                    
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
-                                <div class="template-wrapper full-template-wrapper">
-                                    <ul class="template-card-listing mb-3">
-                                        <li>
-                                            <div class="template-card">
-                                                <h4>loan_demo</h4>
-                                                <div class="not-allowed">
-                                                    <i class="not-icon"></i>
-                                                    Not rated
-                                                </div>
-                                                <div class="template-preview">
-                                                    
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            <span><img src="../images/card-img-03.png"></span>
-                                                            <div class="description">
-                                                                <p>Dear {{1}}</p>
-                                                                <p>We are excited to present you with an exclusive offer ! {{}}</p>
-                                                            </div>
-                                                            <div class="time">1:59 PM</div>
-                                                        </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                            <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                            <a href="#"><i class="backward"></i> Yes </a>
-                                                            <a href="#"><i class="call"></i> Call Us </a>
-                                                            <a href="#"><i class="copy-code"></i> Copy Code </a>
-                                                        </div>
+                                        <div class="form-wrapper mt-2">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Campaign Name</label>
+                                                        <input type="text" class="form-control" placeholder="Enter Campaign name">
+                                                        <div class="error-message" id="fullNameError">Please enter campaign name</div>
                                                     </div>
-
-                                                    
-
-                                                </div>
-                                                
-                                                <div class="manage-section">
-                                                    <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn selectTemplate" id="">Select</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="template-card">
-                                                <h4>hdfc_home_loan_offer_new</h4>
-                                                <div class="not-allowed">
-                                                    <i class="not-icon"></i>
-                                                    Not rated
-                                                </div>
-                                                <div class="template-preview">
-                                                    <div class="message-chat">
-                                                        <p>Check out our exclusive festival offers below</p>
-                                                        <div class="time">11:59</div>
-                                                    </div>
-                                                
-                                                </div>
-                                                <div class="manage-section">
-                                                    <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn selectTemplate">Select</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="template-card">
-                                                <h4>appointment_confirmation</h4>
-                                                <div class="not-allowed">
-                                                    <i class="not-icon"></i>
-                                                    Not rated
-                                                </div>
-                                                <div class="template-preview">
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            
-                                                            <div class="description">
-                                                                <h6 class="variables-title">Hey {{customer_name}},</h6>
-                                                                <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
-                                                                <span class="description-small-text">Tap below to explore now</span>
-                                                            </div>
-                                                            <div class="time">1:59 PM</div>
-                                                        </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Shop Now</a> 
-                                                        </div>
+                                                    <div class="col-md-6">
+                                                        <label>WABA Number</label>
+                                                        <select class="form-select">
+                                                            <option>+91 9877474645</option>
+                                                            <option>+91 9877474645</option>
+                                                            <option>+91 9877474645</option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="manage-section">
-                                                    <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn selectTemplate">Select</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="template-card">
-                                                <h4>common_service_1</h4>
-                                                <div class="not-allowed">
-                                                    <i class="not-icon"></i>
-                                                    Not rated
-                                                </div>
-                                                <div class="template-preview">
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image location"></span>
-                                                        </div> 
-                                                    </div>
-                                                </div>
-                                                <div class="manage-section">
-                                                    <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn selectTemplate">Select</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="template-card">
-                                                <h4>bharat_bank_rec_service</h4>
-                                                <div class="not-allowed">
-                                                    <i class="not-icon"></i>
-                                                    Not rated
-                                                </div>
-                                                <div class="template-preview">
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image video"></span>
-                                                        </div>  
-                                                    </div>
-                                                </div>
-                                                <div class="manage-section">
-                                                    <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn selectTemplate">Select</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="template-card">
-                                                <h4>promotion_fd</h4>
-                                                <div class="not-allowed">
-                                                    <i class="not-icon"></i>
-                                                    Not rated
-                                                </div>
-                                                <div class="template-preview">
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            
-                                                            <div class="description">
-                                                                <h6 class="variables-title">Hey {{customer_name}},</h6>
-                                                                <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
-                                                                <span class="description-small-text">Tap below to explore now</span>
-                                                            </div>
-                                                            <div class="time">1:59 PM</div>
-                                                        </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Shop Now</a> 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="manage-section">
-                                                    <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
-                                                    <button class="btn secondary-btn selectTemplate">Select</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <nav aria-label="navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">20</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-
-                                <div class="edit-template" style="display: none;">
-                                    <div class="template-content-wrap">
-                                        <div class="template-creation-content">
-                                            <div class="card border-0">
-                                                <h3 class="mb-2">Template</h3>
-                                                <div class="template-body card padding">
-                                                    <ul>
-                                                        <li>
-                                                            <p>Template name</p>
-                                                            <span>loan_demo</span>
-                                                        </li>
-                                                        <li>
-                                                            <p>Media</p>
-                                                            <span>IMAGE</span>
-                                                        </li>
-                                                        <li class="body">
-                                                            <p>Body</p>
-                                                            <span>Dear {{1}}, We are excited to present you with an
-                                                                exclusive offer ! {{2}}</span>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn secondary-btn" id="change-template">Change Template</button>
-                                                    </div>
-                                                </div>
-
-                                                <div class="template-header card padding">
-                                                    <h4>Header</h4>
-                                                    <div class="d-flex gap-5">
-                                                        <div class="form-check radio-btn mb-2">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="flexRadioDefault" id="chooseImage">
-                                                            <label class="form-check-label" for="chooseImage">
-                                                                Choose image
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check radio-btn mb-2">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="flexRadioDefault" id="chooseUrl">
-                                                            <label class="form-check-label" for="chooseUrl">
-                                                                Choose URL
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="upload-container" style="display:none;">
-                                                        <div class="input-box">
-                                                            <label for="fileUpload">
-                                                                <i class="upload-icon"></i>
-                                                                <p>Upload Image</p>
-                                                                <span>Max 5MB (JPEG, JPG, PNG)</span>
-                                                                <input name="fileUpload" id="fileUpload"
-                                                                    onchange="loadFile(event)" type="file" />
-                                                            </label>
-                                                        </div>
-                                                      
-                                                                <div class="image-preview">
-                                                                    <div class="imgwp">
-                                                                        <img id="output" />
-                                                                        <button class="delImage"></button>
-                                                                    </div>
-                                                                </div>
-                                                           
-                                                    </div>
-                                                    <div class="form-wrapper chooseurl" style="display:none;">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Enter URL here">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="template-header card padding">
-                                                    <h4>Body</h4>
-                                                    <div class="form-wrapper">
-                                                        <form>
-                                                            <div class="row">
-                                                                <div class="col-md-4 mb-3">
-                                                                    <label>Variable</label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="{{1}}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4 mb-3">
-                                                                    <label>Value <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span></label>
-                                                                    <select class="form-select">
-                                                                        <option selected="">Customer Name (File)</option>
-                                                                        <option value="1">One</option>
-                                                                        <option value="2">Two</option>
-                                                                        <option value="3">Three</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-4 mb-3">
-                                                                    <label>Fallback <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span></label>
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="Fallback">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="{{1}}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-select">
-                                                                        <option selected="">Address (File)</option>
-                                                                        <option value="1">One</option>
-                                                                        <option value="2">Two</option>
-                                                                        <option value="3">Three</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="Fallback">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <p class="body-note">Note - URLs mentioned in the fallback will not be
-                                                        tracked.</p>
-                                                </div>
-                                                <div class="d-flex justify-content-end">
+                                                <div class="d-flex justify-content-end mt-3">
                                                     <button class="btn primary-btn">Next</button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                        <div class="template-creation-preview">
-                                            <div class="template-preview-card creation-card">
-                                                <h4>Template Preview</h4>
-                                                <div class="template-preview">
-                                                    <div class="message-chat d-none">
-                                                        <p>Check out our exclusive festival offers below</p>
-                                                        <div class="time">11:59</div>
+                                    
+                                </div>
+
+                                <div class="tab-pane fade" id="audience" role="tabpanel" aria-labelledby="audience-tab">
+                                    
+                                        
+                                        <div class="form-wrapper">
+                                            <div class="d-flex align-content-end gap-3 mb-3">
+                                                <div class="form-group w-50">
+                                                    <label>Select Audience</label>
+                                                    <select class="form-select">
+                                                        
+                                                        <option value="1">Diwali Campaign</option>
+                                                        <option value="2">Student</option>
+                                                        <option value="3">Employee</option>
+                                                    </select>  
+                                                </div>
+                                                <div class="d-flex align-items-end">
+                                                    <a href="audience.html" class="btn primary-btn">Create Audience</a>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <!-- <div class="download-sample">
+                                            <div class="form-control">
+                                                <a href="#" class="d-flex align-items-center gap-2">
+                                                    <span class="download-icon"></span>Monthly_Sales_Report.xlsx
+                                                </a>
+                                            </div>
+                                        </div> -->
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button class="btn primary-btn">Next</button>
+                                        </div>
+
+                                        <!-- <div class="form-wrapper mt-5">
+                                            <input class="form-control" type="file" id="formFile">
+                                            <div class="download-sample">
+                                                <div class="form-control">
+                                                    <a href="#" class="d-flex align-items-center gap-2">
+                                                        <span class="download-icon"></span>Download Sample
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="upload-list">
+                                            Upload list
+                                            <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                        </div> -->
+                                        <!-- <div class="form-check my-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="linkTracking">
+                                            <label class="form-check-label" for="linkTracking">
+                                                Enable link tracking
+                                            </label>
+                                        </div>
+                                        <p class="track-link">Track link clicks to effectively manage your campaigns, applicable
+                                            only if you upload list with URLs. Links must be in the format
+                                            “https://www.someurl.xyz/uvw”. <a href="#">Learn More</a>
+                                        </p> -->
+                                        <!-- <ul class="mandatory">
+                                            <li>“Phone” column is mandatory.</li>
+                                            <li>Phone number should have country code as prefix and no '+' symbol</li>
+                                        </ul> -->
+
+                                        <!-- <div class="form-check confirm">
+                                            <input class="form-check-input" type="checkbox" value="" id="confirm">
+                                            <label class="form-check-label" for="confirm">
+                                                I confirm that the contacts uploaded have agreed to receive this communication.
+                                            </label>
+                                        </div> -->
+
+                                        
+                                    
+                                </div>
+
+                                <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
+                                    <div class="template-wrapper full-template-wrapper">
+                                        <ul class="template-card-listing mb-3">
+                                            <li>
+                                                <div class="template-card">
+                                                    <h4>loan_demo</h4>
+                                                    <div class="not-allowed">
+                                                        <i class="not-icon"></i>
+                                                        Not rated
                                                     </div>
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            <span><img src="../images/card-img-03.png"></span>
-                                                            <div class="description">
-                                                                <p>Dear {{1}}</p>
-                                                                <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                    <div class="template-preview">
+                                                        
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                <span><img src="../images/card-img-03.png"></span>
+                                                                <div class="description">
+                                                                    <p>Dear {{1}}</p>
+                                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
                                                             </div>
-                                                            <div class="time">1:59 PM</div>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                                <a href="#"><i class="backward"></i> Yes </a>
+                                                                <a href="#"><i class="call"></i> Call Us </a>
+                                                                <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                                            </div>
                                                         </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                            <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                            <a href="#"><i class="backward"></i> Yes </a>
-                                                            <a href="#"><i class="call"></i> Call Us </a>
-                                                            <a href="#"><i class="copy-code"></i> Copy Code </a>
+
+                                                        
+
+                                                    </div>
+                                                    
+                                                    <div class="manage-section">
+                                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                                        <button class="btn secondary-btn selectTemplate" id="">Select</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="template-card">
+                                                    <h4>hdfc_home_loan_offer_new</h4>
+                                                    <div class="not-allowed">
+                                                        <i class="not-icon"></i>
+                                                        Not rated
+                                                    </div>
+                                                    <div class="template-preview">
+                                                        <div class="message-chat">
+                                                            <p>Check out our exclusive festival offers below</p>
+                                                            <div class="time">11:59</div>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                    <div class="manage-section">
+                                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                                        <button class="btn secondary-btn selectTemplate">Select</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="template-card">
+                                                    <h4>appointment_confirmation</h4>
+                                                    <div class="not-allowed">
+                                                        <i class="not-icon"></i>
+                                                        Not rated
+                                                    </div>
+                                                    <div class="template-preview">
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                
+                                                                <div class="description">
+                                                                    <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                                    <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                                    <span class="description-small-text">Tap below to explore now</span>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
+                                                            </div>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="manage-section">
+                                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                                        <button class="btn secondary-btn selectTemplate">Select</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="template-card">
+                                                    <h4>common_service_1</h4>
+                                                    <div class="not-allowed">
+                                                        <i class="not-icon"></i>
+                                                        Not rated
+                                                    </div>
+                                                    <div class="template-preview">
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image location"></span>
+                                                            </div> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="manage-section">
+                                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                                        <button class="btn secondary-btn selectTemplate">Select</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="template-card">
+                                                    <h4>bharat_bank_rec_service</h4>
+                                                    <div class="not-allowed">
+                                                        <i class="not-icon"></i>
+                                                        Not rated
+                                                    </div>
+                                                    <div class="template-preview">
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image video"></span>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                    <div class="manage-section">
+                                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                                        <button class="btn secondary-btn selectTemplate">Select</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="template-card">
+                                                    <h4>promotion_fd</h4>
+                                                    <div class="not-allowed">
+                                                        <i class="not-icon"></i>
+                                                        Not rated
+                                                    </div>
+                                                    <div class="template-preview">
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                
+                                                                <div class="description">
+                                                                    <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                                    <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                                    <span class="description-small-text">Tap below to explore now</span>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
+                                                            </div>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="manage-section">
+                                                        <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span>
+                                                        <button class="btn secondary-btn selectTemplate">Select</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <nav aria-label="navigation example">
+                                            <ul class="pagination">
+                                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+
+                                    <div class="edit-template" style="display: none;">
+                                        <div class="template-content-wrap">
+                                            <div class="template-creation-content">
+                                                <div class="card border-0">
+                                                    <h3 class="mb-2">Template</h3>
+                                                    <div class="template-body card padding">
+                                                        <ul>
+                                                            <li>
+                                                                <p>Template name</p>
+                                                                <span>loan_demo</span>
+                                                            </li>
+                                                            <li>
+                                                                <p>Media</p>
+                                                                <span>IMAGE</span>
+                                                            </li>
+                                                            <li class="body">
+                                                                <p>Body</p>
+                                                                <span>Dear {{1}}, We are excited to present you with an
+                                                                    exclusive offer ! {{2}}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn secondary-btn" id="change-template">Change Template</button>
                                                         </div>
                                                     </div>
 
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
+                                                    <div class="template-header card padding">
+                                                        <h4>Header</h4>
+                                                        <div class="d-flex gap-5">
+                                                            <div class="form-check radio-btn mb-2">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="flexRadioDefault" id="chooseImage">
+                                                                <label class="form-check-label" for="chooseImage">
+                                                                    Choose image
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check radio-btn mb-2">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="flexRadioDefault" id="chooseUrl">
+                                                                <label class="form-check-label" for="chooseUrl">
+                                                                    Choose URL
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="upload-container" style="display:none;">
+                                                            <div class="input-box">
+                                                                <label for="fileUpload">
+                                                                    <i class="upload-icon"></i>
+                                                                    <p>Upload Image</p>
+                                                                    <span>Max 5MB (JPEG, JPG, PNG)</span>
+                                                                    <input name="fileUpload" id="fileUpload"
+                                                                        onchange="loadFile(event)" type="file" />
+                                                                </label>
+                                                            </div>
+                                                        
+                                                                    <div class="image-preview">
+                                                                        <div class="imgwp">
+                                                                            <img id="output" />
+                                                                            <button class="delImage"></button>
+                                                                        </div>
+                                                                    </div>
                                                             
-                                                            <div class="description">
-                                                                <h6 class="variables-title">Hey {{customer_name}},</h6>
-                                                                <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
-                                                                <span class="description-small-text">Tap below to explore now</span>
+                                                        </div>
+                                                        <div class="form-wrapper chooseurl" style="display:none;">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Enter URL here">
                                                             </div>
-                                                            <div class="time">1:59 PM</div>
-                                                        </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Shop Now</a> 
                                                         </div>
                                                     </div>
 
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image image-smaple"></span> 
+                                                    <div class="template-header card padding">
+                                                        <h4>Body</h4>
+                                                        <div class="form-wrapper">
+                                                            <form>
+                                                                <div class="row">
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label>Variable</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="{{1}}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label>Value <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span></label>
+                                                                        <select class="form-select">
+                                                                            <option selected="">Customer Name (File)</option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label>Fallback <span class="info" data-toggle="tooltip" data-placement="top" title="Upload list"></span></label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="Fallback">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="{{1}}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-select">
+                                                                            <option selected="">Address (File)</option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="Fallback">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
                                                         </div>
+                                                        <p class="body-note">Note - URLs mentioned in the fallback will not be
+                                                            tracked.</p>
                                                     </div>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button class="btn primary-btn">Next</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="template-creation-preview">
+                                                <div class="template-preview-card creation-card">
+                                                    <h4>Template Preview</h4>
+                                                    <div class="template-preview">
+                                                        <div class="message-chat d-none">
+                                                            <p>Check out our exclusive festival offers below</p>
+                                                            <div class="time">11:59</div>
+                                                        </div>
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                <span><img src="../images/card-img-03.png"></span>
+                                                                <div class="description">
+                                                                    <p>Dear {{1}}</p>
+                                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
+                                                            </div>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                                <a href="#"><i class="backward"></i> Yes </a>
+                                                                <a href="#"><i class="call"></i> Call Us </a>
+                                                                <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                                            </div>
+                                                        </div>
 
-                                                    
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image location"></span>
-                                                        </div>  
-                                                    </div>
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                
+                                                                <div class="description">
+                                                                    <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                                    <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                                    <span class="description-small-text">Tap below to explore now</span>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
+                                                            </div>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                            </div>
+                                                        </div>
 
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image video"></span>
-                                                        </div>  
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image image-smaple"></span> 
+                                                            </div>
+                                                        </div>
+
+                                                        
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image location"></span>
+                                                            </div>  
+                                                        </div>
+
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image video"></span>
+                                                            </div>  
+                                                        </div>
+                                                        
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
-                                <div class="edit-template">
-                                    <div class="template-content-wrap">
-                                        <div class="template-creation-content">
-                                            <div class="card border-0">
-                                                <h3 class="mb-2">Preview</h3>
-                                                <div class="template-body card padding">
-                                                    <ul>
-                                                        <li>
-                                                            <p>Channel</p>
-                                                            <span>WhatsApp</span>
-                                                        </li>
-                                                        <li>
-                                                            <p>From Account</p>
-                                                            <span>919321572847</span>
-                                                        </li>
-                                                        <li>
-                                                            <p>Name <a href="#" class="edit-icon"></a></p>
-                                                            <span>test</span>
-                                                        </li>
-                                                        <li>
-                                                            <p>Audience (Total rows - 1) <a href="#" class="edit-icon"></a></p>
-                                                            <span class="link">campaigngupshup.xlsx</span>
-                                                        </li>
-                                                        <li>
-                                                            <p>Template <a href="#" class="edit-icon"></a></p>
-                                                            <span>loan_demo</span>
-                                                        </li>
-                                                        <li>
-                                                            <p>Type</p>
-                                                            <span class="link">One Way</span>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="template-question">
-                                                        <label class="form-label">When do you want to send the
-                                                            campaign?</label>
-                                                        <div>
-                                                            <div class="form-check radio-btn mb-2">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="flexRadioDefault" id="sendNow">
-                                                                <label class="form-check-label" for="sendNow">
-                                                                    Send Now
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check radio-btn mb-2">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="flexRadioDefault" id="scheduleForLater" data-bs-toggle="modal" data-bs-target="#scheduleModal">
-                                                                <label class="form-check-label" for="scheduleForLater">
-                                                                    Schedule for later
-                                                                </label>
+                                <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
+                                    <div class="edit-template">
+                                        <div class="template-content-wrap">
+                                            <div class="template-creation-content">
+                                                <div class="card border-0">
+                                                    <h3 class="mb-2">Preview</h3>
+                                                    <div class="template-body  padding">
+                                                        <ul>
+                                                            <li>
+                                                                <p>Channel</p>
+                                                                <span>WhatsApp</span>
+                                                            </li>
+                                                            <li>
+                                                                <p>From Account</p>
+                                                                <span>919321572847</span>
+                                                            </li>
+                                                            <li>
+                                                                <p>Name <a href="#" class="edit-icon"></a></p>
+                                                                <span>test</span>
+                                                            </li>
+                                                            <li>
+                                                                <p>Audience (Total rows - 1) <a href="#" class="edit-icon"></a></p>
+                                                                <span class="link">campaigngupshup.xlsx</span>
+                                                            </li>
+                                                            <li>
+                                                                <p>Template <a href="#" class="edit-icon"></a></p>
+                                                                <span>loan_demo</span>
+                                                            </li>
+                                                            <li>
+                                                                <p>Type</p>
+                                                                <span class="link">One Way</span>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="template-question">
+                                                            <label class="form-label">When do you want to send the
+                                                                campaign?</label>
+                                                            <div>
+                                                                <div class="form-check radio-btn mb-2">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="flexRadioDefault" id="sendNow">
+                                                                    <label class="form-check-label" for="sendNow">
+                                                                        Send Now
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check radio-btn mb-2">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="flexRadioDefault" id="scheduleForLater" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                                                                    <label class="form-check-label" for="scheduleForLater">
+                                                                        Schedule for later
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="d-flex justify-content-end">
-                                                    <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#sendCampaign">Confirm</button>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#sendCampaign">Confirm</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="template-creation-preview">
-                                            <div class="template-preview-card creation-card">
-                                                <h4>Template Preview</h4>
-                                                <div class="template-preview">
-                                                    <div class="message-chat d-none">
-                                                        <p>Check out our exclusive festival offers below</p>
-                                                        <div class="time">11:59</div>
-                                                    </div>
-                                                    <div class="swiper-card">
-                                                        <div class="template-slide-card">
-                                                            <span><img src="../images/card-img-03.png"></span>
-                                                            <div class="description">
-                                                                <p>Dear {{1}}</p>
-                                                                <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                            <div class="template-creation-preview">
+                                                <div class="template-preview-card creation-card">
+                                                    <h4>Template Preview</h4>
+                                                    <div class="template-preview">
+                                                        <div class="message-chat d-none">
+                                                            <p>Check out our exclusive festival offers below</p>
+                                                            <div class="time">11:59</div>
+                                                        </div>
+                                                        <div class="swiper-card">
+                                                            <div class="template-slide-card">
+                                                                <span><img src="../images/card-img-03.png"></span>
+                                                                <div class="description">
+                                                                    <p>Dear {{1}}</p>
+                                                                    <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
                                                             </div>
-                                                            <div class="time">1:59 PM</div>
-                                                        </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                            <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                            <a href="#"><i class="backward"></i> Yes </a>
-                                                            <a href="#"><i class="call"></i> Call Us </a>
-                                                            <a href="#"><i class="copy-code"></i> Copy Code </a>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            
-                                                            <div class="description">
-                                                                <h6 class="variables-title">Hey {{customer_name}},</h6>
-                                                                <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
-                                                                <span class="description-small-text">Tap below to explore now</span>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                                                                <a href="#"><i class="forward"></i> My Account Balance</a>
+                                                                <a href="#"><i class="backward"></i> Yes </a>
+                                                                <a href="#"><i class="call"></i> Call Us </a>
+                                                                <a href="#"><i class="copy-code"></i> Copy Code </a>
                                                             </div>
-                                                            <div class="time">1:59 PM</div>
                                                         </div>
-                                                        <div class="buy-link">
-                                                            <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                
+                                                                <div class="description">
+                                                                    <h6 class="variables-title">Hey {{customer_name}},</h6>
+                                                                    <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
+                                                                    <span class="description-small-text">Tap below to explore now</span>
+                                                                </div>
+                                                                <div class="time">1:59 PM</div>
+                                                            </div>
+                                                            <div class="buy-link">
+                                                                <a href="#"><i class="buy-icon"></i> Shop Now</a> 
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image image-smaple"></span> 
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image image-smaple"></span> 
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image location"></span>
-                                                        </div>  
-                                                    </div>
+                                                        
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image location"></span>
+                                                            </div>  
+                                                        </div>
 
-                                                    <div class="swiper-card d-none">
-                                                        <div class="template-slide-card">
-                                                            <span class="default-image video"></span>
-                                                        </div>  
+                                                        <div class="swiper-card d-none">
+                                                            <div class="template-slide-card">
+                                                                <span class="default-image video"></span>
+                                                            </div>  
+                                                        </div>
+                                                        
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>

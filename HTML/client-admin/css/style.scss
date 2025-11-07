@@ -212,7 +212,7 @@ body {
     }
 }
 .fw-semibold {
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 .vertical-list{
     padding: 0px;
@@ -1120,4 +1120,17 @@ padding-left: 61px !important;
     100% {
         transform: rotate(360deg);
     }
+}
+.date {
+    color: #5E5E5E;
+    display: block;
+}
+.datetime {
+    color: #9D9D9D;
+    font-size: 13px;
+}
+.message-block {
+    max-width: 120px;
+    display: block;
+    white-space: wrap;
 }
