@@ -172,7 +172,7 @@
                     })
                     .then(responseData => {
                       if (responseData.result) {
-                          window.location.href = '@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
+                          window.location.href = '/MetaOnboarding/client-onboarding-list';
                           commonHelper.showSuccess(responseData.message)
                       } else {
                            commonHelper.showError("Failed Account linked");
@@ -198,7 +198,7 @@
                       }
                     }
 
-                    document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
+                    //document.getElementById("session-info-response").textContent = JSON.stringify(data, null, 2);
 
                   } catch {
                     console.log('Non JSON Responses', event.data);
@@ -314,12 +314,11 @@
          document.getElementById('saveMetaBtn').addEventListener('click', function () {
 
              const metaResponse = {
-                  WabaId: "1289432215843735",
-                  PhoneNumberId: "745504358656439",
-                  BusinessId: "1502717307541680"
+                 WabaId: "808590325048419",
+                 PhoneNumberId: "771326362734920",
+                 BusinessId: "1502717307541680"
              };
-
-              fetch('@Url.Action("SaveMetaUserConfigurationDetails", "MetaOnboarding")', {
+             fetch('/MetaOnboarding/save-meta-user-configuration-details', {
                  method: 'POST',
                  headers: { 'Content-Type': 'application/json' },
                  body: JSON.stringify(metaResponse)
@@ -333,7 +332,7 @@
              })
              .then(responseData => {
                 if (responseData.result) {
-                      window.location.href ='@Url.ActionLink("ClientOnboardingList", "MetaOnboarding")';
+                    window.location.href = '/MetaOnboarding/client-onboarding-list';
                  } else {
                     // showToast(responseData.message, "danger");
                      console.log('Failed: ' + responseData.message);
