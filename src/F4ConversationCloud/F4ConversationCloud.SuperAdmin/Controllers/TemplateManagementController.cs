@@ -1,29 +1,24 @@
 ﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
-using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
-using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
-using F4ConversationCloud.SuperAdmin.Handler;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient.DataClassification;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Text.Json;
-using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class TemplateManagementController : Controller
     {
         private readonly ITemplateManagementService _templateManagementService;
-        
-        public TemplateManagementController(ITemplateManagementService templateManagementService)
+        private readonly ITemplateRepositories _templateRepositories;
+
+        public TemplateManagementController(ITemplateManagementService templateManagementService, ITemplateRepositories templateRepositories)
         {
             _templateManagementService = templateManagementService;
-        
+            _templateRepositories = templateRepositories;
         }
         public IActionResult Index()
         {
@@ -81,25 +76,26 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             catch (Exception)
             {
                 return View();
-            }   
+            }
         }
         [HttpPost]
-        public async  Task<IActionResult> DeleteTemplate(string Template_id ,int ClientInfoId, string TemplateName)
+        public async Task<IActionResult> DeleteTemplate(string Template_id, int ClientInfoId, string TemplateName)
         {
 
             try
             {
-                dynamic isDeletedResponce =await  _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
+                dynamic isDeletedResponce = await _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
                 if (isDeletedResponce != null)
                 {
                     TempData["SuccessMessage"] = isDeletedResponce.message;
                     return Json(isDeletedResponce);
                 }
-                else {
+                else
+                {
                     TempData["SuccessMessage"] = "Unknown error occurred.";
                     return Json(new DeleteTemplateResponse { success = false, message = "Unknown error occurred." });
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -169,7 +165,35 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                     return View(model);
                 }
+                var templateRequest = new TemplateRequest();
 
+                templateRequest.Name = model.TemplateName;
+                //templateRequest.Language = EnumExtensions.GetDisplayNameById<TemplateLanguages>(model.Language);
+                templateRequest.Language = "en";
+                //templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
+                templateRequest.Category = "UTILITY";
+                templateRequest.TemplateHeader.Type = "HEADER";
+                templateRequest.TemplateHeader.Format = "TEXT";
+                templateRequest.TemplateHeader.Text = model.Header;
+                templateRequest.TemplateHeader.Example = new HeaderExample
+                {
+                    Header_Text = new List<string> { model.HeaderVariableValue },
+                    Format = "TEXT"
+                };
+                templateRequest.TemplateBody.Type = "BODY";
+                templateRequest.TemplateBody.Text = model.MessageBody;
+                //templateRequest.TemplateBody.Text = "Shop now through {{1}} and use code {{2}} to get {{3}} off of all merchandise.\r\n";
+                templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
+                {
+                    Body_Text = new List<List<string>>
+                        {
+                            new List<string> { "the end of August", "25OFF", "25%" }
+                        }
+                };
+                templateRequest.TemplateFooter.type = "FOOTER";
+                templateRequest.TemplateFooter.text = model.Footer;
+
+                await _templateRepositories.MetaCreateTemplate(templateRequest);
                 return View(model);
             }
             catch (Exception ex)
@@ -270,22 +294,22 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             return PartialView(viewName, model);
         }
 
-        public IActionResult AddMessageVariable(int index)
-        {
-            var model = new TemplateViewModel();
+        //public IActionResult AddMessageVariable(int index)
+        //{
+        //    var model = new TemplateViewModel();
 
-            // Ensure the list is initialized
-            if (model.bodyVariables == null)
-                model.bodyVariables = new List<BodyVariable>();
+        //    // Ensure the list is initialized
+        //    if (model.bodyVariables == null)
+        //        model.bodyVariables = new List<BodyVariable>();
 
-            // Add empty items until the list has the required index
-            while (model.bodyVariables.Count <= index)
-            {
-                model.bodyVariables.Add(new BodyVariable());
-            }
+        //    // Add empty items until the list has the required index
+        //    while (model.bodyVariables.Count <= index)
+        //    {
+        //        model.bodyVariables.Add(new BodyVariable());
+        //    }
 
-            ViewData["Index"] = index;
-            return PartialView("_MessageVariableBody", model);
-        }
+        //    ViewData["Index"] = index;
+        //    return PartialView("_MessageVariableBody", model);
+        //}
     }
 }

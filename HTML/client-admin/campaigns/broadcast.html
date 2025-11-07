@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -54,6 +55,9 @@
                                     <li><a href="../campaigns/audience.html">Audience</a></li>
                                     <li><a href="../campaigns/guide.html">Guide</a></li>
                                 </ul>
+                            </li>
+                            <li>
+                                <a href="../templates/template.html" class="template icon">Templates</a>
                             </li>
                             <!-- <li>
                                 <a href="../templates/create-templates.html" class="template icon">Templates</a>
@@ -169,38 +173,39 @@
             <!-- End Header Bar -->
             <div class="content">
                 <div class="container-fluid">
-                    <h3 class="sub-heading">Broadcast Campaigns</h3>
-                    <div class="form-wrapper">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Search Broadcast</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control srcIcon" placeholder="Search Broadcast">
-                                        <span class="searchIcon"></span>
+                     <div class="card padding">
+                        <h3 class="sub-heading">Broadcast Campaigns</h3>
+                        <div class="form-wrapper">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Search Broadcast</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control srcIcon" placeholder="Search Broadcast">
+                                            <span class="searchIcon"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Status</label>
+                                        <select class="form-select">
+                                            <option selected>Select status</option>
+                                            <option value="1">Draft</option>
+                                            <option value="2">Sent</option>
+                                            <option value="3">Scheduled</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 align-content-end">
+                                        <button class="btn secondary-btn reset-btn"><i class="reset"></i></button>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-end align-items-end">
+                                        <button type="button" class="btn primary-btn" data-bs-toggle="modal"
+                                            data-bs-target="#createTemplate">Create Broadcast </button>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <label>Status</label>
-                                    <select class="form-select">
-                                        <option selected>Select status</option>
-                                        <option value="1">Draft</option>
-                                        <option value="2">Sent</option>
-                                        <option value="3">Scheduled</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 align-content-end">
-                                    <button class="btn secondary-btn reset-btn"><i class="reset"></i></button>
-                                </div>
-                                <div class="col-md-2 d-flex justify-content-end align-items-end">
-                                    <button type="button" class="btn primary-btn" data-bs-toggle="modal"
-                                        data-bs-target="#createTemplate">Create Broadcast </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="campaign-list">
-                        <div class="card padding">
+                            </form>
+                        </div>
+                        <div class="campaign-list">
+                       
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -366,7 +371,7 @@
                         </div>
 
                         <nav aria-label="navigation example">
-                            <ul class="pagination">
+                            <ul class="pagination mt-4 mb-0">
                                 <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                                 <li class="page-item"><a class="page-link" href="#">2</a></li>

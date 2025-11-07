@@ -13,7 +13,7 @@
     var m = Model;
 }
 
-<form asp-action="Create" method="post" enctype="multipart/form-data" id="mainForm">
+<form asp-action="CreateTemplate" method="post" enctype="multipart/form-data" id="mainForm">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="content bg-light">
         <div class="main-content">
@@ -237,6 +237,7 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/unobtrusiveHelper.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <script type="module">
         import 'https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js';
