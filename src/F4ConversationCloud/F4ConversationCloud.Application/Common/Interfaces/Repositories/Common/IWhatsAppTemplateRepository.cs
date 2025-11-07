@@ -1,4 +1,5 @@
-﻿using System;
+﻿using F4ConversationCloud.Application.Common.Models.CommonModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
 {
     public interface IWhatsAppTemplateRepository
     {
+        Task<IEnumerable<WhatsappTemplateList>> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
     }
 }
