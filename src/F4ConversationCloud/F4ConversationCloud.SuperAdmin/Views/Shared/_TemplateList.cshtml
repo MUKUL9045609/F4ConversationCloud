@@ -1,270 +1,160 @@
-﻿@model TemplatesListViewModel
-@{
-    ViewData["Title"] = "Template List";
-}
-<h2 class="accordion-header" id="headingThird">
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplatesListViewModel
+
+<h2 class="accordion-header" id="headingThirtyTwo">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapseThird" aria-expanded="false" aria-controls="collapseThird">
-        Templates <span class="light-text ms-1">@Model.TotalCount</span>
+            data-bs-target="#collapseThirtyTwo" aria-expanded="false" aria-controls="collapseThirtyTwo">
+        Templates <span class="light-text ms-1">(5)</span>
     </button>
 </h2>
-<div id="collapseThird" class="accordion-collapse collapse" aria-labelledby="headingThird"
-     data-bs-parent="#accordionWrap">
+<div id="collapseThirtyTwo" class="accordion-collapse collapse" aria-labelledby="headingThirtyTwo"
+     data-bs-parent="#accordionExample">
     <div class="accordion-body">
-        <div class="filterWrapper form-wrapper justify-content-end">
-            <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn add d-flex">Create Template</a>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="lighttext">Created Templates are 142</span>
+            <a href="create-templates.html" class="btn primary-btn d-flex">Create Templates</a>
         </div>
         <div class="table-responsive">
 
-            <table class="table user-table form-wrapper" id="templatesTable">
-                <tr>
-                    <th>
-                        Template ID
-                        <div class="input-group">
-                            <input type="text" class="form-control srcIcon" placeholder="Search">
-                            <span class="searchIcon"></span>
-                        </div>
-                    </th>
-                    <th>
-                        Template Name
-                        <div class="input-group">
-                            <input type="text" class="form-control srcIcon" placeholder="Search">
-                            <span class="searchIcon"></span>
-                        </div>
-                    </th>
-                    <th>
-                        Category
-                        <select class="form-select">
-                            <option selected>Select Type</option>
-                            <option>Marketing</option>
-                            <option>Authentication</option>
-                            <option>Utility</option>
-                        </select>
-                    </th>
-                    <th>
-                        Language
-                        <select class="form-select">
-                            <option selected>Select Language</option>
-                            <option>English</option>
-                            <option>Hindi</option>
-
-                        </select>
-                    </th>
-                   
-                    <th>
-                        Last Updated
-                        <label class="datewrap" for="datepicker">
-                            <input type="text"
-                                   id="datepicker"
-                                   class="form-control datepicker search-form-control"
-                                   placeholder="Select Date" />
-                            <span class="dateIcon"></span>
-                        </label>
-
-                    </th>
-                    <th>
-                        Rejection Reason
-                        <div class="input-group">
-                            <input type="text" class="form-control srcIcon" placeholder="Search">
-                            <span class="searchIcon"></span>
-                        </div>
-                    </th>
-                    <th>
-                        Status
-                        <select class="form-select">
-                            <option selected>Select Status</option>
-                            <option>Approved</option>
-                            <option>Rejected</option>
-
-                        </select>
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            @foreach (var templates in Model.data)
-                {
-                    var modalId = $"templateModal_{templates.Id}";
+            <table class="table user-table form-wrapper">
+                <thead>
                     <tr>
-                        <td>@templates.Id</td>
-                        <td>@templates.Name</td>
-                        <td>@templates.Category</td>
-                        <td>@templates.Language</td>
-                       
+                        <th>Sr. No.</th>
+                        <th>
+                            Template Name
+                            <div class="input-group">
+                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                <span class="searchIcon"></span>
+                            </div>
+                        </th>
+                        <th>
+                            Category
+                            <div class="input-group">
+                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                <span class="searchIcon"></span>
+                            </div>
+                        </th>
+                        <th>
+                            Language
+                            <div class="input-group">
+                                <input type="text" class="form-control srcIcon" placeholder="Search">
+                                <span class="searchIcon"></span>
+                            </div>
+                        </th>
 
-                        <td>--</td>
-                        <td>-</td>
-                        <td><span class="badge success">@templates.Status</span></td>
+
+                        <th>
+                            Last Updated
+                            <label class="datewrap" for="datepicker">
+                                <input type="text"
+                                       id="datepicker2"
+                                       class="form-control datepicker search-form-control"
+                                       placeholder="Select Date" />
+                                <span class="dateIcon"></span>
+                            </label>
+
+                        </th>
+
+                        <th>
+                            Status
+                            <select class="form-select">
+                                <option selected>Select Status</option>
+                                <option>Approved</option>
+                                <option>Rejected</option>
+
+                            </select>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center">01</td>
+                        <td>
+                            <span class="message-block">
+                                Onboarding_Invite_Template
+                            </span>
+                        </td>
+                        <td>Marketing</td>
+                        <td>English (en)</td>
+                        <td>
+                            <span class="date">15 Apr 2025</span>
+                            <span class="datetime">at 11:30 am</span>
+                        </td>
+
+                        <td><span class="badge success">Approved</span></td>
                         <td>
                             <div class="action">
-                                <a href="@Url.Action("UpdateTemplate", "TemplateManagement", new { Template_id = templates.Id })" class="edit-icon"></a>
-                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#@modalId"></a>
+                                <a href="#" class="edit-icon"></a>
+                                <a href="#" class="delete-blue"></a>
+                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
                             </div>
                         </td>
                     </tr>
-                    <!-- Message Modal -->
-                    <div class="modal fade template-modal" id="@modalId" tabindex="-1" aria-labelledby="modalLabel_@templates.Id" aria-hidden="true">
-                        <div class="modal-dialog modal-md modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel_@templates.Id">Message</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="template-preview">
-                                        <h4>Preview</h4>
-                                        <div class="template-white-card">
-                                            @foreach (var components in templates.Components)
-                                            {
+                    <tr>
+                        <td align="center">02</td>
+                        <td>
+                            <span class="message-block">
+                                Welcome_Form
+                            </span>
+                        </td>
+                        <td>Utility</td>
+                        <td>English (en)</td>
+                        <td>
+                            <span class="date">15 Apr 2025</span>
+                            <span class="datetime">at 11:30 am</span>
+                        </td>
 
-                                                @if (components.Type == "HEADER")
-                                                {
-                                                    <h5> @components.Text</h5>
-
-                                                    @if (components.Format == "IMAGE" && components.Example?.HeaderHandle != null && components.Example.HeaderHandle.Length > 0)
-                                                    {
-                                                        <span>
-                                                            <img src="@components.Example.HeaderHandle[0]" alt="Header Image">
-                                                        </span>
-                                                    }
-                                                }
-                                                else if (components.Type == "BODY")
-                                                {
-                                                    <div class="description">
-                                                        <p> @components.Text</p>
-                                                    </div>
-                                                }
-                                                else if (components.Type == "FOOTER")
-                                                {
-                                                    <p>@components.Text</p>
-                                                    @* <div class="time">1:59 PM</div> *@
-                                                }
-                                                else if (components.Type == "BUTTONS")
-                                                {
-                                                    @foreach (var btn in components.Buttons)
-                                                    {
-                                                        <div class="buy-link">
-                                                            @if (btn.Type == "URL")
-                                                            {
-                                                                <a href="@btn.Url" target="_blank"><i class="buy-icon"></i> @btn.Text</a>
-                                                            }
-                                                            else if (btn.Type == "PHONE_NUMBER")
-                                                            {
-
-                                                                <a href="tel:@btn.PhoneNumber"><i class="call"></i>@btn.Text</a>
-                                                            }
-                                                            @* <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                                    <a href="#"><i class="backward"></i> Yes </a>
-                                                                   *@
-
-                                                        </div>
-                                                    }
-                                                }
-                                                else if (components.Type == "CAROUSEL")
-                                                {
-
-                                                    <div class="swiper useCasesSwiper">
-                                                        <div class="swiper-wrapper">
-                                                            @foreach (var cards in components.cards)
-                                                            {
-                                                                <div class="swiper-slide">
-                                                                    @foreach (var cardComponents in cards.Components)
-                                                                    {
-                                                                        @if (cardComponents.Type == "HEADER" && cardComponents.Format == "IMAGE" && cardComponents.Example?.HeaderHandle != null && cardComponents.Example.HeaderHandle.Length > 0)
-                                                                        {
-                                                                            <div class="template-slide-card">
-                                                                                <span>
-                                                                                    <img src="@cardComponents.Example.HeaderHandle[0]" alt="Header Image" style="max-width:100%;">
-                                                                                </span>
-                                                                            </div>
-                                                                        }
-                                                                        else if (cardComponents.Type == "BODY")
-                                                                        {
-                                                                            <div class="template-slide-card">
-                                                                                <div class="description">
-                                                                                    <p>@cardComponents.Text</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        }
-                                                                        else if (cardComponents.Type == "FOOTER")
-                                                                        {
-                                                                            <div class="template-slide-card">
-                                                                                <p>@cardComponents.Text</p>
-                                                                            </div>
-                                                                        }
-                                                                        else if (cardComponents.Type == "BUTTONS")
-                                                                        {
-                                                                            @foreach (var btn in cardComponents.Buttons)
-                                                                            {
-                                                                                <div class="buy-link">
-                                                                                    @if (btn.Type == "URL")
-                                                                                    {
-                                                                                        <a href="@btn.Url" target="_blank"><i class="buy-icon"></i> @btn.Text</a>
-                                                                                    }
-                                                                                    else if (btn.Type == "PHONE_NUMBER")
-                                                                                    {
-                                                                                        <a href="tel:@btn.PhoneNumber"><i class="call"></i>@btn.Text</a>
-                                                                                    }
-                                                                                    @* <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                                                                 <a href="#"><i class="backward"></i> Yes </a>
-                                                                                             *@
-                                                                                </div>
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                        <div class="swiper-button-prev"></div>
-                                                        <div class="swiper-button-next"></div>
-                                                        <div class="swiper-pagination"></div>
-                                                    </div>
-                                                }
-
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
+                        <td><span class="badge danger">Rejected</span></td>
+                        <td>
+                            <div class="action">
+                                <a href="#" class="edit-icon"></a>
+                                <a href="#" class="delete-blue"></a>
+                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
                             </div>
-                        </div>
-                    </div>
-                    <!-- End message modal -->
-                 }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">03</td>
+                        <td>
+                            <span class="message-block">
+                                Start_Onboard
+                            </span>
+                        </td>
+                        <td>Authentication</td>
+                        <td>English (en)</td>
+                        <td>
+                            <span class="date">15 Apr 2025</span>
+                            <span class="datetime">at 11:30 am</span>
+                        </td>
+
+                        <td><span class="badge warning">Pending</span></td>
+                        <td>
+                            <div class="action">
+                                <a href="#" class="edit-icon"></a>
+                                <a href="#" class="delete-blue"></a>
+                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
 
 
             </table>
         </div>
         <nav aria-label="navigation example">
-            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+            <ul class="pagination mt-4 d-flex justify-content-center">
+                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+            </ul>
         </nav>
     </div>
 </div>
-
-<script  src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script>
-    $(document).ready(function () {
-            
-        var swiper = new Swiper(".useCasesSwiper", {
-                
-            spaceBetween: 30,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true
-            },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            loop: true
-        });
-
-    // $('#templatesTable').DataTable();
-    });
-
-          
-</script>
-
-
-
