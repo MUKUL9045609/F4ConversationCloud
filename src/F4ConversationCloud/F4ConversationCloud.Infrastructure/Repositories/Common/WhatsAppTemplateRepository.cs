@@ -56,78 +56,37 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             try
             {
 
-                string headerType = "", headerFormat = "", headerText = "", headerExample = "", headerMediaUrl = "";
-                string bodyType = "", bodyText = "", bodyExample = "";
-                string footerType = "", footerText = "";
+                var header = request.components?.FirstOrDefault(c => c?.@type?.Equals("header", StringComparison.OrdinalIgnoreCase) == true);
+                var body = request.components?.FirstOrDefault(c => c?.@type?.Equals("body", StringComparison.OrdinalIgnoreCase) == true);
+                var footer = request.components?.FirstOrDefault(c => c?.@type?.Equals("footer", StringComparison.OrdinalIgnoreCase) == true);
 
-                if (request.components != null)
+                string headerType = header?.@type ?? "";
+                string headerFormat = header?.format ?? "";
+                string headerText = "", headerExample = "", headerMediaUrl = "";
+
+                if (headerFormat.Equals("text", StringComparison.OrdinalIgnoreCase))
                 {
-                    foreach (var component in request.components)
-                    {
-                        string? type = component?.@type?.ToString()?.ToLower();
-                        if (type == null) continue;
-
-                        switch (type)
-                        {
-                            case "header":
-                                headerType = component.@type ?? "";
-                                headerFormat = component.format ?? "";
-
-                                if (headerFormat.Equals("text", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    headerText = component.text ?? "";
-                                    headerExample = string.Join(",", component.example?.header_text ?? new List<string>());
-                                }
-                                else if (headerFormat.Equals("image", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    headerMediaUrl = string.Join(",", component.example?.HeaderFile ?? new List<string>());
-                                }
-                                break;
-
-                            case "body":
-                                bodyType = component.@type ?? "";
-                                bodyText = component.text ?? "";
-                                if (component.example?.body_text is IEnumerable<IEnumerable<string>> bodyExamples)
-                                {
-                                    bodyExample = string.Join(" | ", bodyExamples.Select(row => string.Join(",", row)));
-                                }
-                                else
-                                {
-                                    bodyExample = "";
-                                }
-                                break;
-
-                            case "footer":
-                                footerType = component.@type ?? "";
-                                footerText = component.text ?? "";
-                                break;
-                        }
-                    }
+                    headerText = header?.text ?? "";
+                    headerExample = string.Join(",", header?.example?.header_text ?? Array.Empty<string>());
                 }
+                else if (headerFormat.Equals("image", StringComparison.OrdinalIgnoreCase))
+                {
+                    headerMediaUrl = string.Join(",", header?.example?.HeaderFile ?? Array.Empty<string>());
+                }
+
+                string bodyType = body?.@type ?? "";
+                string bodyText = body?.text ?? "";
+                string bodyExample = body?.example?.body_text is IEnumerable<IEnumerable<string>> examples
+                    ? string.Join(" | ", examples.Select(row => string.Join(",", row)))
+                    : "";
+
+                string footerType = footer?.@type ?? "";
+                string footerText = footer?.text ?? "";
 
                 var parameters = new DynamicParameters();
-
-                parameters.Add("@TemplateName", request.name ?? string.Empty, DbType.String);
-
-                if (Enum.TryParse<TemplateModuleType>(request.category, true, out var TemplateCategory))
-                {
-                    parameters.Add("@Category", (int)TemplateCategory, DbType.Int32);
-                }
-                else
-                {
-                    parameters.Add("@Category", (int)TemplateModuleType.Utility, DbType.Int32);
-
-                }
-
-                if (Enum.TryParse<TemplateLanguages>(request.language, true, out var Templatelanguage))
-                {
-                    parameters.Add("@LanguageCode", (int)Templatelanguage, DbType.Int32);
-                }
-                else
-                {
-                    parameters.Add("@LanguageCode", (int)TemplateLanguages.English, DbType.Int32);
-
-                }
+                parameters.Add("@TemplateName", request.name ?? "", DbType.String);
+                parameters.Add("@Category", Enum.TryParse<TemplateModuleType>(request.category, true, out var cat) ? (int)cat : (int)TemplateModuleType.Utility, DbType.Int32);
+                parameters.Add("@LanguageCode", Enum.TryParse<TemplateLanguages>(request.language, true, out var lang) ? (int)lang : (int)TemplateLanguages.English, DbType.Int32);
 
                 parameters.Add("@HeaderType", headerType, DbType.String);
                 parameters.Add("@HeaderFormat", headerFormat, DbType.String);
@@ -139,11 +98,14 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);
                 parameters.Add("@HeaderLongitude", null, DbType.Decimal);
                 parameters.Add("@HeaderAddress", null, DbType.String);
+
                 parameters.Add("@BodyType", bodyType, DbType.String);
                 parameters.Add("@BodyText", bodyText, DbType.String);
                 parameters.Add("@BodyExample", bodyExample, DbType.String);
+
                 parameters.Add("@FooterType", footerType, DbType.String);
                 parameters.Add("@FooterText", footerText, DbType.String);
+
                 parameters.Add("@CreatedBy", request.CreatedBy, DbType.String);
                 parameters.Add("@WABAID", request.WABAID, DbType.String);
                 parameters.Add("@ClientInfoId", request.ClientInfoId, DbType.String);
