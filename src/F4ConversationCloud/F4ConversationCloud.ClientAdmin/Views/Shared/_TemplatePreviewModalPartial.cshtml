@@ -13,38 +13,45 @@
     <div class="template-preview">
         <div class="swiper-card">
             <div class="template-slide-card">
-                <span><img src="images/card-img-03.png" /></span>
-                <div class="description">
+            
+               
                     @if (Model.templateDetail.HeaderType == "HEADER")
-                    {
-                        @if (@Model.templateDetail.HeaderFormat == "TEXT")
-                        {
-                            <p>@Model.templateDetail.HeaderText</p>
-                        }
-
-                        @if (Model.templateDetail.HeaderFormat == "IMAGE" )
+                    {   @if (Model.templateDetail.HeaderFormat == "IMAGE" )
                         {
                             <span>
                                 <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
                             </span>
                         }
-                        @if (Model.templateDetail.HeaderFormat == "DOCUMENT")
+                        <div class="description">
+                            @if (@Model.templateDetail.HeaderFormat == "TEXT")
                         {
-                            <span>
-                                <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
-                            </span>
+                            <p><strong>@Model.templateDetail.HeaderText</strong></p>
+                                
+                            }
+
+                        
+                            @if (Model.templateDetail.HeaderFormat == "DOCUMENT")
+                            {
+                                <span>
+                                    <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
+                                </span>
+                            }
+                        </div>
+                    }
+                    <div class="description">
+                        @if (Model.templateDetail.BodyType == "BODY")
+                        {
+                   
+                                <p>@Model.templateDetail.BodyText</p>
+
                         }
-                    }
-                    @if (Model.templateDetail.BodyType == "BODY")
-                    {
-                            <p>@Model.templateDetail.BodyText</p>
+                        @if (Model.templateDetail.FooterType == "FOOTER")
+                        {
+                        <span class="description-small-text">@Model.templateDetail.FooterText</span>
+                           
 
-                    }
-                    @if (Model.templateDetail.FooterType == "FOOTER")
-                    {
-                        <p>@Model.templateDetail.FooterText</p>
-
-                    }
+                        }
+                    </div>
                 </div>
                 <div class="time">@Model.templateDetail.ModifiedOn?.ToString("hh:mm tt")</div>
             </div>

@@ -44,7 +44,16 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                 var templateResponse = new TemplatesListViewModel
                 {
-                    Templates = templatesData.Templates,
+                    Templates = templatesData.Templates?.Select(t => new WhatsappTemplateListItem
+                    {
+                        SrNo = t.SrNo,
+                        TemplateName = t.TemplateName,
+                        TemplateId = t.TemplateId,
+                        Category = t.Category,
+                        LanguageCode = t.LanguageCode.ToString(),
+                        ModifiedOn = t.ModifiedOn,
+                        TemplateStatus = t.TemplateStatus
+                    }).ToList(),
                     TemplateName = request.TemplateName,
                     Category = request.Category,
                     LangCode = request.LangCode,

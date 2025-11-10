@@ -166,7 +166,6 @@
 
             var templateId = $(this).data('template-id');
             var url = '@Url.Action("TemplateDetailsById", "TemplateManagemet")?templateId=' + templateId;
-
             $.ajax({
                 url: url,
                 type: 'GET',
