@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
@@ -21,10 +22,12 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         private ITemplateService _templateService { get; }
 
-        public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService , ITemplateService templateService )
+        private IWhatsAppTemplateRepository _whatsAppTemplateRepository { get; }
+        public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService , ITemplateService templateService , IWhatsAppTemplateRepository whatsAppTemplateRepository)
         {
             _logService = logService;
             _templateService = templateService;
+            _whatsAppTemplateRepository = whatsAppTemplateRepository;
         }
 
         public async Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody)
@@ -55,7 +58,18 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 }
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
+                
                 var result = await _templateService.CreateTemplate(messageTemplate);
+
+                if (result != null)
+                {
+                  messageTemplate.category = result.data.category;
+                  messageTemplate.TemplateId = result.data.id;
+                  messageTemplate.TemplateStatus = result.data.status;
+                  var id =  await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate);
+
+                }
+
 
                 return new
                 {
