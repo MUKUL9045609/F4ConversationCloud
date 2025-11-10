@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace F4ConversationCloud.Application.Common.Models.CommonModels
+{
+    public class TemplateModel
+    {
+        public int Id { get; set; }
+        public int WABAId { get; set; }
+        public int SrNo { get; set; }
+        public string TemplateName { get; set; }
+        public string TemplateCategory { get; set; }
+        public string Language { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string Status { get; set; }
+    }
+}

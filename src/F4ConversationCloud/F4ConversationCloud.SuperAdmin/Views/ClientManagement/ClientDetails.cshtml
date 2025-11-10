@@ -520,8 +520,8 @@
                                     </div>
                                 </div> *@
 
-                                <div class="accordion-item">
-                                    <partial name="_TemplateList" model="new TemplatesListViewModel { data = Model.TemplatesList }" />
+                                <div class="accordion-item" id="template-list-container">
+                                    <partial name="_TemplateList" model="Model.TemplatesList" />
                                 </div>
 
                                 <div class="accordion-item">
@@ -921,6 +921,56 @@
 
         $(document).on('click', '.back', function () {
             commonHelper.showHideLoader(true);
+        });
+
+        function loadData() {
+            var expandedAccordionId = $(".accordion-collapse.show").attr("id");
+            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+            var filter = {
+                TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                LanguageFilter: $("[name=LanguageFilter]").val(),
+                CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                StatusFilter: $("[name=StatusFilter]").val(),
+                WABAId: wabaId,
+                PageNumber: 1,
+            };
+
+
+            $.ajax({
+                url: '/ClientManagement/GetFilteredTemplates',
+                type: 'GET',
+                data: filter,
+                success: function (result) {
+                    $("#template-list-container").html(result);
+                },
+                error: function () {
+                    commonHelper.showError("Failed to load templates.");
+                }
+            });
+        }
+
+        $(document).on("click", ".page-link", function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber) {
+                loadData(pageNumber);
+            }
+        });
+
+        $(document).on("keypress", ".srcIcon", function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+
+        $(document).on("click", "#create-template-btn", function (e) {
+            var model = @Html.Raw(Json.Serialize(Model));
+            var data = {
+                ClientInfoId: model.clientInfoId,
+                WABAId: model.wabaId
+            };
+
+            localStorage.setItem('ClientData', JSON.stringify(data));
         });
 
     </script>

@@ -1,6 +1,8 @@
 ﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
@@ -14,6 +16,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     {
         private readonly ITemplateManagementService _templateManagementService;
         private readonly ITemplateRepositories _templateRepositories;
+        private readonly IWhatsAppTemplateService _whatsAppTemplateService;
 
         public TemplateManagementController(ITemplateManagementService templateManagementService, ITemplateRepositories templateRepositories)
         {
@@ -104,26 +107,52 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
         }
 
-        [HttpGet("List")]
         public async Task<IActionResult> List(TemplatesListViewModel model)
         {
             try
             {
-                var filter = new TemplatesListFilter
+                model.StatusList = EnumExtensions.ToSelectList<TemplateApprovalStatus>();
+                model.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                model.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+
+                var response = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
                 {
+                    TemplateNameFilter = model.TemplateNameFilter ?? String.Empty,
+                    TemplateCategoryFilter = model.TemplateCategoryFilter,
+                    LanguageFilter = model.LanguageFilter,
+                    CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
+                    StatusFilter = model.StatusFilter,
                     PageNumber = model.PageNumber,
-                    PageSize = model.PageSize
-                };
+                    PageSize = model.PageSize,
+                });
 
-                var templates = await _templateManagementService.TemplateListAsync(filter);
-                return PartialView("_TemplateList", templates);
+                if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
+                {
+                    if (model.PageNumber > 1)
+                    {
+                        TempData["ErrorMessage"] = "Invalid Page";
+                    }
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    TemplateName = x.TemplateName,
+                    TemplateCategory = x.TemplateCategory,
+                    CreatedOn = x.CreatedOn,
+                    Status = x.Status
+                });
+
+                return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return PartialView("_TemplateList", new List<TemplatesListViewModel>());
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(new TemplatesListViewModel());
             }
-
         }
 
         public async Task<IActionResult> CreateTemplate()
@@ -194,7 +223,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 templateRequest.TemplateFooter.text = model.Footer;
 
                 await _templateRepositories.MetaCreateTemplate(templateRequest);
-                return View(model);
+
+                return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.ClientInfoId });
             }
             catch (Exception ex)
             {

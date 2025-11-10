@@ -2,6 +2,7 @@
 using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,36 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
                 return new WhatsappTemplateDetail();
             }
+        }
+
+        public async Task<int> GetCountAsync(TemplateListFilter filter)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("WABAId", filter.WABAId);
+            parameters.Add("TemplateNameFilter", filter.TemplateNameFilter);
+            parameters.Add("TemplateCategoryFilter", filter.TemplateCategoryFilter);
+            parameters.Add("LanguageFilter", filter.LanguageFilter);
+            parameters.Add("CreatedOnFilter", filter.CreatedOnFilter);
+            parameters.Add("StatusFilter", filter.StatusFilter);
+
+            return await _repository.GetCountAsync("sp_GetTemplateCountByWABAId", parameters);
+        }
+
+        public async Task<IEnumerable<TemplateModel>> GetFilteredAsync(TemplateListFilter filter)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("WABAId", filter.WABAId);
+            parameters.Add("TemplateNameFilter", filter.TemplateNameFilter);
+            parameters.Add("TemplateCategoryFilter", filter.TemplateCategoryFilter);
+            parameters.Add("LanguageFilter", filter.LanguageFilter);
+            parameters.Add("CreatedOnFilter", filter.CreatedOnFilter);
+            parameters.Add("StatusFilter", filter.StatusFilter);
+            parameters.Add("pageNumber", filter.PageNumber);
+            parameters.Add("pageSize", filter.PageSize);
+
+            return await _repository.GetListByValuesAsync<TemplateModel>("sp_GetFilteredTemplatesByWABAId", parameters);
         }
     }
 }

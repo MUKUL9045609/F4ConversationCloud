@@ -1,11 +1,14 @@
 ﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Reflection;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -14,11 +17,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         private readonly IClientManagementService _clientManagement;
         private readonly IMasterPriceService _masterPriceService;
         private readonly ITemplateManagementService _templateManagementService;
-        public ClientManagementController(IClientManagementService clientManagement, IMasterPriceService masterPriceService, ITemplateManagementService templateManagementService)
+        private readonly IWhatsAppTemplateService _whatsAppTemplateService;
+        public ClientManagementController(IClientManagementService clientManagement, IMasterPriceService masterPriceService, ITemplateManagementService templateManagementService
+            , IWhatsAppTemplateService whatsAppTemplateService)
         {
             _clientManagement = clientManagement;
             _masterPriceService = masterPriceService;
             _templateManagementService = templateManagementService;
+            _whatsAppTemplateService = whatsAppTemplateService;
         }
 
         public async Task<IActionResult> List(ClientManagementViewModel model)
@@ -106,7 +112,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegisteredAddress = response.RegisteredAddress,
                     RegisteredCountry = response.RegisteredCountry,
                     RegisteredTimeZone = response.RegisteredTimeZone,
-                    TemplatesList = templates.Data,
+                    //TemplatesList = templates.Data,
                     OrganizationName = response.OrganizationName
                 };
 
@@ -125,6 +131,34 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 }).ToList();
 
                 model.masterPrices = mappedMasterPrices;
+
+                model.TemplatesList.StatusList = EnumExtensions.ToSelectList<TemplateApprovalStatus>();
+                model.TemplatesList.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                model.TemplatesList.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                
+                var templateListResponse = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
+                {
+                    WABAId = model.WABAId,
+                    TemplateNameFilter = model.TemplatesList.TemplateNameFilter ?? String.Empty,
+                    TemplateCategoryFilter = model.TemplatesList.TemplateCategoryFilter,
+                    LanguageFilter = model.TemplatesList.LanguageFilter,
+                    CreatedOnFilter = model.TemplatesList.CreatedOnFilter ?? String.Empty,
+                    StatusFilter = model.TemplatesList.StatusFilter,
+                    PageNumber = model.TemplatesList.PageNumber,
+                    PageSize = model.TemplatesList.PageSize
+                });
+
+                model.TemplatesList.TotalCount = templateListResponse.Item2;
+                model.TemplatesList.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    TemplateName = x.TemplateName,
+                    TemplateCategory = ((TemplateModuleType)Convert.ToInt32(x.TemplateCategory)).GetDisplayName(),
+                    Language = ((TemplateLanguages)Convert.ToInt32(x.Language)).GetDisplayName(),
+                    CreatedOn = x.CreatedOn,
+                    Status = ((TemplateApprovalStatus)Convert.ToInt32(x.Status)).GetDisplayName(),
+                });
 
                 return View(model);
             }
@@ -232,6 +266,40 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
                 return StatusCode(500, false);
             }
+        }
+
+        public async Task<IActionResult> GetFilteredTemplates(TemplateListFilter filter)
+        {
+            var model = new TemplatesListViewModel();
+            model.StatusList = EnumExtensions.ToSelectList<TemplateApprovalStatus>();
+            model.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+            model.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+
+            var templateListResponse = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
+            {
+                WABAId = filter.WABAId,
+                TemplateNameFilter = filter.TemplateNameFilter ?? String.Empty,
+                TemplateCategoryFilter = filter.TemplateCategoryFilter,
+                LanguageFilter = filter.LanguageFilter,
+                CreatedOnFilter = filter.CreatedOnFilter ?? String.Empty,
+                StatusFilter = filter.StatusFilter,
+                PageNumber = filter.PageNumber,
+                PageSize = filter.PageSize
+            });
+
+            model.TotalCount = templateListResponse.Item2;
+            model.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
+            {
+                Id = x.Id,
+                SrNo = x.SrNo,
+                TemplateName = x.TemplateName,
+                TemplateCategory = ((TemplateModuleType)Convert.ToInt32(x.TemplateCategory)).GetDisplayName(),
+                Language = ((TemplateLanguages)Convert.ToInt32(x.Language)).GetDisplayName(),
+                CreatedOn = x.CreatedOn,
+                Status = ((TemplateApprovalStatus)Convert.ToInt32(x.Status)).GetDisplayName()
+            });
+
+            return PartialView("_TemplateList", model);
         }
     }
 }
