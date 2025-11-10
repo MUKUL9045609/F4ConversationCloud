@@ -12,7 +12,7 @@ using Twilio.Rest.FlexApi.V1;
 
 namespace F4ConversationCloud.Infrastructure.Service.Common
 {
-    public class WhatsAppTemplateService: IWhatsAppTemplateService
+    public class WhatsAppTemplateService : IWhatsAppTemplateService
     {
         private readonly IWhatsAppTemplateRepository _templateRepository;
         private readonly ILogService _logService;
@@ -35,7 +35,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
                     TotalCount = totalCount
                 };
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 var log = new LogModel
                 {
@@ -52,7 +52,28 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
                     TotalCount = 0
                 };
             }
-            
+
+        }
+        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id)
+        {
+            try
+            {
+                var templateDetail = await _templateRepository.GetTemplateByIdAsync(Template_id);
+                return templateDetail;
+            }
+            catch (Exception ex)
+            {
+                var log = new LogModel
+                {
+                    Source = "WhatsappTemplate/GetTemplateByIdAsync",
+                    AdditionalInfo = $"TemplateId: {Template_id}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+                await _logService.InsertLogAsync(log);
+                return null;
+            }
         }
     }
 }

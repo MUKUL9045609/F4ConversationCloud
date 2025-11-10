@@ -161,18 +161,18 @@
                                         @* <span><img src="images/card-img-03.png"></span> *@
                                         <div class="description">
                                             <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
-                                            <p>Dear {{1}}</p>
-                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                            <div id="message-body"></div>
+                                            <span class="description-small-text" id="footer-text"></span>
                                         </div>
                                         <div class="time">1:59 PM</div>
                                     </div>
-                                    <div class="buy-link">
+                                    @* <div class="buy-link">
                                         <a href="#"><i class="buy-icon"></i> Buy Now</a>
                                         <a href="#"><i class="forward"></i> My Account Balance</a>
                                         <a href="#"><i class="backward"></i> Yes </a>
                                         <a href="#"><i class="call"></i> Call Us </a>
                                         <a href="#"><i class="copy-code"></i> Copy Code </a>
-                                    </div>
+                                    </div> *@
                                 </div>
 
                                 <div class="swiper-card d-none">
@@ -354,6 +354,7 @@
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
                             var content = editor.getData();
+                            $('#message-body').html(content);
                             validateWhatsAppVariables(content);
                         });
 
@@ -560,7 +561,9 @@
             }
             $('#variable-card').show();
             $('#variable-card-header').show();
-            $('[name="HeaderVariableName"]').val(variableToInsert);
+            $('[name="HeaderVariableName"]').val("{{1}}");
+            $('#header-text-preview').show();
+            $('#header-text-preview').text("{{1}}");
 
             // Check if variable already exists
             if (!headerInput.value.includes("{{")) {
@@ -585,7 +588,7 @@
                 $('#variable-card').show();
                 $('#variable-card-header').show();
                 // Update the readonly input with asp-for="HeaderVariableName"
-                $('[name="HeaderVariableName"]').val(headerVal);
+                $('[name="HeaderVariableName"]').val("{{1}}");
                 $('#header-text-preview').show();
                 $('#header-text-preview').text(headerVal);
             } else {
@@ -618,6 +621,12 @@
             validator.settings.messages.Header.headervariableformat = newMessage;
 
             $('#Header').valid();
+        });
+
+        $(document).on('input', '[name="Footer"]', function () {
+            var footerVal = $(this).val().trim();
+
+            $('#footer-text').text(footerVal);
         });
     </script>
 }
