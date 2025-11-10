@@ -53,6 +53,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string HeaderVariableValue { get; set; }
         public List<BodyVariable> bodyVariables { get; set; } = new List<BodyVariable>();
         public int ClientInfoId { get; set; }
+        public int MetaConfigId { get; set; }
         public string WABAId { get; set; }
 
         public class BodyVariable()

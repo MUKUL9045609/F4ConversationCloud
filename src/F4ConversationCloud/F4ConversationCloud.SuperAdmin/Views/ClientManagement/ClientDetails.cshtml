@@ -965,9 +965,11 @@
 
         $(document).on("click", "#create-template-btn", function (e) {
             var model = @Html.Raw(Json.Serialize(Model));
+           
             var data = {
                 ClientInfoId: model.clientInfoId,
-                WABAId: model.wabaId
+                WABAId: model.wabaId,
+                MetaConfigId: model.id
             };
 
             localStorage.setItem('ClientData', JSON.stringify(data));

@@ -221,10 +221,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 };
                 templateRequest.TemplateFooter.type = "FOOTER";
                 templateRequest.TemplateFooter.text = model.Footer;
+                templateRequest.ClientInfoId = model.ClientInfoId.ToString();
+                templateRequest.WABAID = model.WABAId;
 
                 await _templateRepositories.MetaCreateTemplate(templateRequest);
 
-                return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.ClientInfoId });
+                return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
             }
             catch (Exception ex)
             {
