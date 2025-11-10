@@ -10,12 +10,12 @@ namespace F4ConversationCloud.Domain.Enum
 {
     public enum VariableTypes
     {
-        [Description("Name")]
-        [Display(Name = "Name")]
-        Name = 1,
+        //[Description("Name")]
+        //[Display(Name = "Name")]
+        //Name = 1,
 
         [Description("Number")]
         [Display(Name = "Number")]
-        Number = 2
+        Number = 1
     }
 }
