@@ -18,6 +18,9 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string WABAID { get; set; }
         public string ClientInfoId { get; set; }
         public string CreatedBy { get; set; }
+        public string TemplateStatus { get; set; }
+        public string TemplateId { get; set; }
+
         public List<dynamic> components { get; set; } = new List<dynamic>();
 
     }

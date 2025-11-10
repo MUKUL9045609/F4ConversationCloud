@@ -58,11 +58,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 }
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
+                
                 var result = await _templateService.CreateTemplate(messageTemplate);
 
                 if (result != null)
                 {
-                  var TemplateId =  await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate);
+                  messageTemplate.category = result.data.category;
+                  messageTemplate.TemplateId = result.data.id;
+                  messageTemplate.TemplateStatus = result.data.status;
+                  var id =  await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate);
 
                 }
 

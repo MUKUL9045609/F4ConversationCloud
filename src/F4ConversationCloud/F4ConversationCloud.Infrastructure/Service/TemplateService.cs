@@ -54,6 +54,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 return new
                 {
                     Success = true,
+                    data = result,
                     Message = "Template created successFully."
 
                 };
@@ -293,6 +294,9 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     }
                 }
+
+                messageTemplate.WABAID = request.WABAID;
+                messageTemplate.ClientInfoId = request.ClientInfoId;
 
                 return messageTemplate;
                 //await CreateTemplate(messageTemplate);
