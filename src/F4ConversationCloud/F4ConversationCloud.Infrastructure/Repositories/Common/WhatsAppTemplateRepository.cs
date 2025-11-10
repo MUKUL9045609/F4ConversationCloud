@@ -44,8 +44,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 Dp.Add("@PageNumber", filter.PageNumber);
                 Dp.Add("@PageSize", filter.PageSize);
                 var serialize = Serializers.JsonObject(filter);
-                 var templateList = await _repository.GetListByValuesAsync<WhatsappTemplateListItem>("[sp_GetWhatsappTemplateList]", Dp);
-
                 var templateList = await _repository.GetListByValuesAsync<WhatsappTemplateListItem>("[sp_GetWhatsappTemplateList]", Dp);
                 int TotalCount = await _repository.GetByValuesAsync<int>("sp_GetWhatsappTemplateCount", Dp);
                 return (templateList, TotalCount);
@@ -73,8 +71,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             catch (Exception)
             {
                 return new WhatsappTemplateDetail();
-            }
-                return (Enumerable.Empty<WhatsappTemplateListItem>(), 0);
             }
 
         }
