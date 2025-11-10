@@ -2,9 +2,12 @@
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.Templates;
+using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +55,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         {
             try
             {
-                var dp = new DynamicParameters();
 
                 string headerType = "", headerFormat = "", headerText = "", headerExample = "", headerMediaUrl = "";
                 string bodyType = "", bodyText = "", bodyExample = "";
@@ -62,72 +64,91 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 {
                     foreach (var component in request.components)
                     {
-                        string? type = component?.Type?.ToString()?.ToLower();
+                        string? type = component?.@type?.ToString()?.ToLower();
                         if (type == null) continue;
 
                         switch (type)
                         {
                             case "header":
-                                headerType = component.Type ?? "";
-                                headerFormat = component.Format ?? "";
+                                headerType = component.@type ?? "";
+                                headerFormat = component.format ?? "";
 
                                 if (headerFormat.Equals("text", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    headerText = component.Text ?? "";
-                                    headerExample = string.Join(",", component.Example?.Header_Text ?? new List<string>());
+                                    headerText = component.text ?? "";
+                                    headerExample = string.Join(",", component.example?.header_text ?? new List<string>());
                                 }
                                 else if (headerFormat.Equals("image", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    headerMediaUrl = string.Join(",", component.Example?.HeaderFile ?? new List<string>());
+                                    headerMediaUrl = string.Join(",", component.example?.HeaderFile ?? new List<string>());
                                 }
                                 break;
 
                             case "body":
-                                bodyType = component.Type ?? "";
-                                bodyText = component.Text ?? "";
-                                bodyExample = component.Body_Example?.Body_Text != null
-                                    ? string.Join(" | ", component.Body_Example.Body_Text)
-                                    : "";
+                                bodyType = component.@type ?? "";
+                                bodyText = component.text ?? "";
+                                if (component.example?.body_text is IEnumerable<IEnumerable<string>> bodyExamples)
+                                {
+                                    bodyExample = string.Join(" | ", bodyExamples.Select(row => string.Join(",", row)));
+                                }
+                                else
+                                {
+                                    bodyExample = "";
+                                }
                                 break;
 
                             case "footer":
-                                footerType = component.Type ?? "";
-                                footerText = component.Text ?? "";
+                                footerType = component.@type ?? "";
+                                footerText = component.text ?? "";
                                 break;
                         }
                     }
                 }
 
-                var parameters = new (string, object)[]
+                var parameters = new DynamicParameters();
+
+                parameters.Add("@TemplateName", request.name ?? string.Empty, DbType.String);
+
+                if (Enum.TryParse<TemplateModuleType>(request.category, true, out var TemplateCategory))
                 {
-                    ("@HeaderType", headerType),
-                    ("@HeaderFormat", headerFormat),
-                    ("@HeaderText", headerText),
-                    ("@HeaderExample", headerExample),
-                    ("@HeaderMediaUrl", headerMediaUrl),
-                    ("@HeaderMediaId", ""),
-                    ("@HeaderFileName", ""),
-                    ("@HeaderLatitude", ""),
-                    ("@HeaderLongitude", ""),
-                    ("@HeaderAddress", ""),
-                    ("@BodyType", bodyType),
-                    ("@BodyText", bodyText),
-                    ("@BodyExample", bodyExample),
-                    ("@FooterType", footerType),
-                    ("@FooterText", footerText),
-                    ("@CreatedBy", "System"),
-                    ("@WABAID", request.WABAID),
-                    ("@ClientInfoId", request.ClientInfoId)
-                };
+                    parameters.Add("@Category", (int)TemplateCategory, DbType.Int32);
+                }
+                else
+                {
+                    parameters.Add("@Category", (int)TemplateModuleType.Utility, DbType.Int32);
 
-                foreach (var (key, value) in parameters)
-                    dp.Add(key, value ?? string.Empty);
+                }
 
-                dp.Add("@TemplateName", request.name ?? string.Empty);
-                dp.Add("@LanguageCode", request.language ?? string.Empty);
-                dp.Add("@Category", request.category ?? string.Empty);
+                if (Enum.TryParse<TemplateLanguages>(request.language, true, out var Templatelanguage))
+                {
+                    parameters.Add("@LanguageCode", (int)Templatelanguage, DbType.Int32);
+                }
+                else
+                {
+                    parameters.Add("@LanguageCode", (int)TemplateLanguages.English, DbType.Int32);
 
-                return await _repository.InsertUpdateAsync("sp_Create_Campaign", dp);
+                }
+
+                parameters.Add("@HeaderType", headerType, DbType.String);
+                parameters.Add("@HeaderFormat", headerFormat, DbType.String);
+                parameters.Add("@HeaderText", headerText, DbType.String);
+                parameters.Add("@HeaderExample", headerExample, DbType.String);
+                parameters.Add("@HeaderMediaUrl", headerMediaUrl, DbType.String);
+                parameters.Add("@HeaderMediaId", null, DbType.String);
+                parameters.Add("@HeaderFileName", null, DbType.String);
+                parameters.Add("@HeaderLatitude", null, DbType.Decimal);
+                parameters.Add("@HeaderLongitude", null, DbType.Decimal);
+                parameters.Add("@HeaderAddress", null, DbType.String);
+                parameters.Add("@BodyType", bodyType, DbType.String);
+                parameters.Add("@BodyText", bodyText, DbType.String);
+                parameters.Add("@BodyExample", bodyExample, DbType.String);
+                parameters.Add("@FooterType", footerType, DbType.String);
+                parameters.Add("@FooterText", footerText, DbType.String);
+                parameters.Add("@CreatedBy", request.CreatedBy, DbType.String);
+                parameters.Add("@WABAID", request.WABAID, DbType.String);
+                parameters.Add("@ClientInfoId", request.ClientInfoId, DbType.String);
+
+                return await _repository.InsertUpdateAsync("sp_InsertWhatsappTemplate", parameters);
             }
             catch (Exception ex)
             {

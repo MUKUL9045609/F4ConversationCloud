@@ -11,7 +11,7 @@ namespace F4ConversationCloud.Domain.Enum
     public enum TemplateLanguages
     {
         [Description("English")]
-        [Display(Name = "English")]
+        [Display(Name = "en")]
         English = 1,
 
         [Description("Hindi")]
