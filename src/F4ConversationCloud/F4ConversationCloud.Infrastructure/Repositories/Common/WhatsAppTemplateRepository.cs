@@ -108,9 +108,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@WABAID", request.WABAID, DbType.String);
                 parameters.Add("@ClientInfoId", request.ClientInfoId, DbType.String);
                 parameters.Add("@Templateid", request.TemplateId, DbType.String);
-                parameters.Add("@TemplateStatus", request.TemplateStatus, DbType.String);
-                parameters.Add("@TemplateStatus", request.TemplateStatus, DbType.String);
-                //parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var lang) ? (int)lang : (int)TemplateLanguages.English, DbType.Int32);
+                parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
 
 
                 return await _repository.InsertUpdateAsync("sp_InsertWhatsappTemplate", parameters);
