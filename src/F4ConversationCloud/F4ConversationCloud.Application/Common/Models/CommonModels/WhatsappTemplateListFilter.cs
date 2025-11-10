@@ -11,11 +11,11 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
     {
 
         public int ClientInfoId { get; set; }
-        public string TemplateName { get; set; } = string.Empty;
+        public string TemplateName { get; set; } 
         public TemplateModuleType Category { get; set; }
-        public string LangCode { get; set; } = string.Empty;
+        public string LangCode { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        public string TemplateStatus { get; set; } = string.Empty;
+        public TemplateApprovalStatus TemplateStatus { get; set; } 
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }

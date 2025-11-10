@@ -1,5 +1,6 @@
 ﻿@using F4ConversationCloud.Domain.Enum
 @model F4ConversationCloud.ClientAdmin.Models.TemplateModel.TemplatesListViewModel;
+@namespace F4ConversationCloud.Domain.Extension
 @{
     ViewData["Title"] = "Template List";
 
@@ -26,13 +27,15 @@
                                 <div class="input-group">
                                         <select class="form-select" name="Category">
                                             <option value="">Select Category</option>
-                                        @foreach (var cat in Enum.GetValues(typeof(TemplateModuleType)))
+
+                                            @foreach (TemplateModuleType cat in Enum.GetValues(typeof(TemplateModuleType)))
                                             {
+                                                var isSelected = Model?.Category != null && Model.Category == cat;
                                                 <option value="@cat">@cat</option>
                                             }
                                         </select>
-                                    <span class="searchIcon"></span>
                                 </div>
+
                             </th>
                             <th>
                                 Language
@@ -52,14 +55,21 @@
 
                             </th>
 
-                            <th>
-                                Status
-                               <select class="form-select" name="TemplateStatus">
-                                    <option value="" disabled selected>Select Status</option>
-                                    <option value="Approved" >Approved</option>
-                                    <option value="Rejected" >Rejected</option>
-                                </select>
-                            </th>
+                                 <th>
+                                    Status
+                                    <select class="form-control" name="TemplateStatus">
+                                        <option value="">Select Status</option>
+                                        @foreach (TemplateApprovalStatus status in Enum.GetValues(typeof(TemplateApprovalStatus)))
+                                        {
+                                            var isSelected = (Model.TemplateStatus == status);
+                                            @* <option value="@status" >
+                                                @status.GetDisplayName()
+                                            </option> *@
+                                        }
+                                    </select>
+
+                                </th>
+
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -69,6 +79,7 @@
                            
                             foreach (var item in Model.Templates)
                             {
+                                
                                 <tr>
                                     <td>@item.SrNo</td>
                                     <td>@item.TemplateName</td>
@@ -108,13 +119,17 @@
                 dateFormat: "dd MM yy"
             });
         });
-        function loadData(pageNumber = 1) {
-            const templateName = $("[name='TemplateName']").val();
-            const category = $("[name='Category']").val();
-            const langCode = $("[name='LangCode']").val();
-            const modifiedOn = $("[name='ModifiedOn']").val();
-            const templateStatus = $("[name='TemplateStatus']").val();
+       $("[name='Category'], [name='TemplateStatus'],[name='ModifiedOn']").on("change", function () {
+            loadData();
+        });
 
+        function loadData(pageNumber = 1) {
+                let templateName = $("[name='TemplateName']").val()?.trim() || '';
+                let category = $("[name='Category']").val();
+                let langCode = $("[name='LangCode']").val()?.trim() || '';
+                let modifiedOn = $("[name='ModifiedOn']").val()?.trim() || '';
+                let templateStatus = $("[name='TemplateStatus']").val();
+    
             const url = '@Url.Action("List", "TemplateManagemet")' +
                 `?TemplateName=${encodeURIComponent(templateName)}` +
                 `&Category=${encodeURIComponent(category)}` +

@@ -10,5 +10,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
     public interface IWhatsAppTemplateRepository
     {
         Task<(IEnumerable<WhatsappTemplateListItem> Templates, int TotalCount)> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
+        Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id);
     }
 }

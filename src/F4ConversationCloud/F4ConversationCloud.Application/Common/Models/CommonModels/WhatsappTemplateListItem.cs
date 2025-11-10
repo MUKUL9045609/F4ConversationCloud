@@ -1,4 +1,5 @@
-﻿using System;
+﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public string Category { get; set; }
         public DateTime ModifiedOn { get; set; }
         public string TemplateStatus{ get; set; }
+        public IEnumerable<TemplateData> Templatedata { get; set; } = new List<TemplateData>();
 
     }
 }
