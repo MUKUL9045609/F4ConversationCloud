@@ -24,7 +24,9 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public BodyComponent TemplateBody { get; set; } = new BodyComponent();
         public FooterComponent TemplateFooter { get; set; } = new FooterComponent();
         public ButtonComponet TemplateButton { get; set; } = new ButtonComponet();
-
+        public string WABAID { get; set; }
+        public string ClientInfoId { get; set; }
+        public string CreatedBy { get; set; }
 
 
     }
