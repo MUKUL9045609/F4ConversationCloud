@@ -28,8 +28,8 @@
                     <nav>
                         <ul>
                             <li>
-                            <a href="dashboard.html" class="home icon">Dashboard</a>
-                        </li>
+                                <a href="dashboard.html" class="home icon">Dashboard</a>
+                            </li>
                             <li>
                               <a href="client-registration.html" class="register icon">Register</a>
                             </li>
@@ -42,13 +42,13 @@
                             <li>
                                 <a href="client-management.html" class="users icon">Client User Management</a>
                             </li>
-                            <li class="active">
+                            <li>
                                 <a href="usages.html" class="usages icon">Usages</a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="billing.html" class="billing icon">Billing</a>
                             </li>
-                            <li>
+                             <li>
                                 <a href="activity-log.html" class="log icon">Activity Log</a>
                             </li>
                             <li>
@@ -86,11 +86,12 @@
                                     aria-expanded="false">
                                 <span class="profile-name">D</span> 
                                 <div>
-                                        <p>Dinesh Sharma</p>
-                                        <span class="profile-role">Super Admin</span>
+                                    <p>Dinesh Sharma</p>
+                                    <span class="profile-role">Super Admin</span>
                                 </div>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    
                                     <li><a class="dropdown-item signout" href="login.html">Sign Out</a></li>
 
                                 </ul>
@@ -103,10 +104,19 @@
 
             <div class="content">
                 <div class="container-fluid">
-                   
+                    
+                    
                     <div class="card padding">
                         <div class="header-content">
-                            <h3 class="sub-heading">Usages</h3>
+                            <h3 class="sub-heading">
+                                <a href="billing-1.html" class="d-flex align-items-center">
+                                    <span class="back"></span>
+                                    <div>
+                                    <small class="light-text d-block fw-normal">Billing </small>
+                                        Buldana Urban Co-op. Credit Society Ltd.
+                                    </div>
+                                </a>
+                            </h3>
                             <div class="d-flex form-wrapper align-items-end gap-2">
                                 <div>
                                     
@@ -120,125 +130,68 @@
                         </div>
                         
                         <div class="table-responsive">
-                                <table id="example" class="table user-table billing-table form-wrapper">
+                                <table class="table user-table billing-table form-wrapper">
                                         <thead>
                                             <tr>
-                                                <th>Sr. <br>No</th>
-                                                
-                                                <th>
-                                                    Organizations
-                                                    
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                                        <span class="searchIcon"></span>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                   WABA Phone No.
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                                        <span class="searchIcon"></span>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    WhatsApp Display Name
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
-                                                        <span class="searchIcon"></span>
-                                                    </div>
-                                                </th>
-                                                
-                                                <th> Conversation Type</th>
-                                                <!-- <th>Duration</th> -->
-                                                <th>Message</th>    
-                                                <th>Total Amount</th>
-                                                <th>Actions</th>    
+                                                <th class="text-center">Sr. No</th>
+                                                <th>Conversation Type</th>
+                                                <th>Duration</th>
+                                                <th>Messages</th>
+                                                <th>Amount	</th>
+                                                <!-- <th>Actions</th>     -->
                                             </tr>
                                             
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td rowspan="6" align="center">01</td>
-                                              
-                                                <td rowspan="6">
-                                                   
-                                                    <a href="buisness-details.html" class="mb-1 d-block">Buldana Urban Co-op. Credit Society Ltd.</a>
-                                                    
-                                                    <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
-                                                    <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
-                                            
+                                                <td align="center">01</td>
+                                                <td>
+                                                   Marketing
                                                 </td>
-                                                <td rowspan="3"><a href="buisness-details.html">+91-9123456789</a></td>
-                                                <td rowspan="3">Buldana Urban Credit Society</td>
-                                                <td>Marketing</td>
-                                                <!-- <td class="no-wrap">23 May 2025 to 31 Dec 9999</td> -->
+                                                <td>01 Sept 2025 to 30 Sept 2025	</td>
                                                 <td>54</td>
-                                                <td>&#8377;192.12</td>
+                                                <td>₹192.12	</td>
                                         
-                                                <td rowspan="3">
-                                                    <div class="action justify-content-center">
-                                                       
-                                                        <a href="#" class="download" download></a>
-                                                    </div>
-                                                </td>
+                                               
                                             
                                             </tr>
-                                           
-                                            <!-- <tr>
-                                               
-                                                <td>Marketing</td>
-                                                <td class="no-wrap">22 march 2025 to 31 Dec 9999</td>
-                                                <td>54</td>
-                                                <td>&#8377;192.12</td>
-                                                
-                                            </tr> -->
                                             <tr>
-                                                <td>Authentication</td>
-                                                <!-- <td class="no-wrap">22 March 2025 to 22 May 2025</td> -->
-                                                <td>64</td>
-                                                <td>&#8377;153.00</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>Utility</td>
-                                                <!-- <td class="no-wrap">22 March 2025 to 31 Dec 9999</td> -->
-                                                <td>68</td>
-                                                <td>&#8377;154.64</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td rowspan="3"><a href="buisness-details.html"> +91-9123456756</a> </td>
-                                                <td rowspan="3">Buldana Urban Co-op Society HQ</td>
-                                                <td>Marketing</td>
-                                                <!-- <td class="no-wrap">22 March 2025 to 31 Dec 9999</td> -->
-                                                <td>54</td>
-                                                <td>&#8377;192.12</td>
-                                                <td rowspan="3">
-                                                    <div class="action justify-content-center">
-                                                       
-                                                        <a href="#" class="download" download></a>
-                                                    </div>
+                                                <td align="center">02</td>
+                                                <td>
+                                                   Authentication
                                                 </td>
-                                           </tr>
-                                           <tr>
-                                               
-                                                
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td>Authentication</td>
-                                                <!-- <td class="no-wrap">22 March 2025 to 22 May 2025</td> -->
+                                                <td>01 Sept 2025 to 30 Sept 2025	</td>
                                                 <td>64</td>
-                                                <td>&#8377;153.00</td>
-                                                
+                                                <td>₹153.00</td>
+                                        
+                                               
+                                            
                                             </tr>
                                             <tr>
+                                                <td align="center">03</td>
+                                                <td>Utility</td>
+                                                <td>01 Sept 2025 to 30 Sept 2025	</td>
+                                                <td>68</td>
+                                                <td>₹154.64</td>
+                                        
                                                 
+                                            
                                             </tr>
+                                            <tr>
+                                                <td colspan="3" align="right">
+                                                    <span class="fw-semibold text-black">Total</span>
+                                                </td>
+                                                <td><span class="fw-semibold text-black">186</span></td>
+                                                <td><span class="fw-semibold text-black">499.76</span></td>
+                                            </tr>
+     
                                         </tbody>
                                 </table>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <a href="invoice.html" class="btn primary-btn">Generate Invoice</a>
+                                </div>
                         </div>
-                        <nav aria-label="navigation example">
+                        <!-- <nav aria-label="navigation example">
                             <ul class="pagination mt-5 d-flex justify-content-center">
                                 <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -251,7 +204,7 @@
                                 <li class="page-item"><a class="page-link" href="#">20</a></li>
                                 <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
                             </ul>
-                        </nav>
+                        </nav> -->
                     </div>
                     
                 </div>
@@ -277,8 +230,21 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/daterangepicker.min.js"></script>
-    
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
 
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
     <script>
            
             $(function() {
@@ -294,16 +260,19 @@
                 //timePicker: true,
                 //startDate: moment().startOf('hour'),
                 endDate: moment().startOf('hour').add(32, 'hour'),
-
+                showDropdowns: true, 
+                minYear: 1900,
+                maxYear: parseInt(moment().format('YYYY'), 10) + 10 ,
                 startDate: start,
                 endDate: end,
                 ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                // 'Today': [moment(), moment()],
+                // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment().endOf('year')]
                 }
             }, cb);
 
@@ -313,23 +282,12 @@
             
     </script>
     <script>
-        $('nav ul ul').hide();
-        $('nav > ul > li > a').on('click', function (e) {
-            e.stopPropagation();
-            $('nav ul ul').slideUp();
-            $(this).next().is(":visible") || $(this).next().slideDown();
-        });
-
-        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
-    </script>
-    <script>
         $(document).ready(function() {
             $('#toggleButton').on('click', function() {
                 $('body').toggleClass('sidemenutoggle');
             });
         });
     </script>
-    
 </body>
 
 </html>
