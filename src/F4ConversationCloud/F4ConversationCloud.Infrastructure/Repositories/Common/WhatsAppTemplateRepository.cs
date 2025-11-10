@@ -30,25 +30,26 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
 
                 Dp.Add("@ClientInfoId", filter.ClientInfoId);
                 Dp.Add("@templateName", filter.TemplateName);
-                Dp.Add("@category", filter.Category != 0 ? filter.Category.Get<DisplayAttribute>().Name : string.Empty);
+                Dp.Add("@category", filter.Category);
                 Dp.Add("@langCode", filter.LangCode);
                 Dp.Add("@modifiedOn", filter.ModifiedOn);
-                Dp.Add("@Templatestatus", filter.TemplateStatus != 0 ? filter.TemplateStatus.Get<DisplayAttribute>().Name: string.Empty);
+                Dp.Add("@Templatestatus", filter.TemplateStatus);
                 Dp.Add("@PageNumber", filter.PageNumber);
                 Dp.Add("@PageSize", filter.PageSize);
-                var serialize = Serializers.JsonObject(filter);
-                 var templateList = await _repository.GetListByValuesAsync<WhatsappTemplateListItem>("[sp_GetWhatsappTemplateList]", Dp);
-                int TotalCount = await _repository.GetByValuesAsync<int>("sp_GetWhatsappTemplateCount", Dp);
-                return (templateList, TotalCount);
 
+                var serialize = Serializers.JsonObject(filter);
+
+                var templateList = await _repository.GetListByValuesAsync<WhatsappTemplateListItem>("[sp_GetWhatsappTemplateList]", Dp);
+                int TotalCount = await _repository.GetByValuesAsync<int>("sp_GetWhatsappTemplateCount", Dp);
+
+                return (templateList, TotalCount);
             }
             catch (Exception)
             {
-
-                return (Enumerable.Empty<WhatsappTemplateListItem>(),0);
+                return (Enumerable.Empty<WhatsappTemplateListItem>(), 0);
             }
-           
         }
+
 
         public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id)
         {

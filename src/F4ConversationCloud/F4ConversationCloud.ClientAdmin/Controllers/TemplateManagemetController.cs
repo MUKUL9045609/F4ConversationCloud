@@ -8,6 +8,7 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Infrastructure.Service.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
@@ -32,13 +33,15 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                 {
                     ClientInfoId = Convert.ToInt32(userId),
                     TemplateName = request.TemplateName,
-                    Category = request.Category,
-                    LangCode = request.LangCode,
+                    Category = request.Category.HasValue ? (TemplateModuleType?)request.Category.Value : null,
+                    LangCode = request.templateLanguages.HasValue?(TemplateLanguages?)request.templateLanguages.Value:null,
                     ModifiedOn = request.ModifiedOn,
-                    TemplateStatus = request.TemplateStatus,
+                    TemplateStatus = request.TemplateStatus.HasValue ? (TemplateApprovalStatus?)request.TemplateStatus.Value : null,
                     PageNumber = request.PageNumber,
                     PageSize = request.PageSize
                 };
+
+
 
                 var templatesData = await _whatsAppTemplate.GetTemplatesListAsync(filter);
 
@@ -49,21 +52,24 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         SrNo = t.SrNo,
                         TemplateName = t.TemplateName,
                         TemplateId = t.TemplateId,
-                        Category = t.Category,
-                        LanguageCode = t.LanguageCode.ToString(),
+                        Category = ((TemplateModuleType)Convert.ToInt32(t.Category)).GetDisplayName(),
+                        LanguageCode = ((TemplateLanguages)Convert.ToInt32(t.LanguageCode)).GetDisplayName(),
                         ModifiedOn = t.ModifiedOn,
-                        TemplateStatus = t.TemplateStatus
+                        TemplateStatus = ((TemplateApprovalStatus)Convert.ToInt32(t.Category)).GetDisplayName()
+
+
                     }).ToList(),
                     TemplateName = request.TemplateName,
                     Category = request.Category,
-                    LangCode = request.LangCode,
+                    LanguageList = Enum.GetValues(typeof(TemplateLanguages)).Cast<TemplateLanguages>().Select(e => new SelectListItem { Value = ((int)e).ToString(), Text = e.GetDisplayName(), Selected = request.templateLanguages == e }),
                     ModifiedOn = request.ModifiedOn,
-                    TemplateStatusSet = Enum.GetValues(typeof(TemplateApprovalStatus)).Cast<TemplateApprovalStatus>().ToDictionary(t => (int)t, t => t.GetDisplayName()),
+                    StatusList = Enum.GetValues(typeof(TemplateApprovalStatus)).Cast<TemplateApprovalStatus>().Select(e => new SelectListItem { Value = ((int)e).ToString(), Text = e.GetDisplayName(), Selected = request.TemplateStatus == e }),
+                    CategoryList = Enum.GetValues(typeof(TemplateModuleType)).Cast<TemplateModuleType>().Select(e => new SelectListItem { Value = ((int)e).ToString(), Text = e.GetDisplayName(), Selected = request.Category == e }),
                     PageNumber = request.PageNumber,
                     PageSize = request.PageSize,
-                    TotalCount= templatesData.TotalCount
+                    TotalCount = templatesData.TotalCount
                 };
-
+    
                 return View(templateResponse);
             }
             catch (Exception ex)

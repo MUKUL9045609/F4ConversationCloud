@@ -9,7 +9,6 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
     public class WhatsappTemplateDetail
     {
         
-            public int TemplateId { get; set; }
 
             public string TemplateName { get; set; }
 

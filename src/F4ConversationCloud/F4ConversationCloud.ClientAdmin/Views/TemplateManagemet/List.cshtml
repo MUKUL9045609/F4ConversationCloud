@@ -25,24 +25,18 @@
                             <th>
                                 Category
                                 <div class="input-group">
-                                        <select class="form-select" name="Category">
-                                            <option value="">Select Category</option>
+                                    <select asp-for="Category" asp-items="Model.CategoryList" class="form-select">
+                                        <option value="">Select Category</option>
+                                    </select>
 
-                                            @foreach (TemplateModuleType cat in Enum.GetValues(typeof(TemplateModuleType)))
-                                            {
-                                                var isSelected = Model?.Category != null && Model.Category == cat;
-                                                <option value="@cat">@cat</option>
-                                            }
-                                        </select>
                                 </div>
 
                             </th>
                             <th>
                                 Language
-                                <div class="input-group">
-                                    <input type="text" class="form-control srcIcon" placeholder="Search" name="LangCode" value="@Model.LangCode" />
-                                    <span class="searchIcon"></span>
-                                </div>
+                                <select asp-for="templateLanguages" asp-items="Model.LanguageList" class="form-select">
+                                    <option value="">Select Language</option>
+                                </select>
                             </th>
 
 
@@ -57,17 +51,9 @@
 
                                  <th>
                                     Status
-                                    <select class="form-control" name="TemplateStatus">
-                                        <option value="">Select Status</option>
-                                        @foreach (TemplateApprovalStatus status in Enum.GetValues(typeof(TemplateApprovalStatus)))
-                                        {
-                                            var isSelected = (Model.TemplateStatus == status);
-                                            @* <option value="@status" >
-                                                @status.GetDisplayName()
-                                            </option> *@
-                                        }
-                                    </select>
-
+                                <select asp-for="TemplateStatus" asp-items="Model.StatusList" class="form-select">
+                                    <option value="">Select Status</option>
+                                </select>
                                 </th>
 
                             <th>Actions</th>
@@ -120,7 +106,7 @@
 <div class="modal fade template-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content" id="templateModalContent">
-            @* Partial view will be injected here via AJAX *@
+           
         </div>
     </div>
 </div>
@@ -132,21 +118,21 @@
                 dateFormat: "dd MM yy"
             });
         });
-       $("[name='Category'], [name='TemplateStatus'],[name='ModifiedOn']").on("change", function () {
+        $("[name='Category'], [name='TemplateStatus'],[name='templateLanguages'],[name='ModifiedOn']").on("change", function () {
             loadData();
         });
 
         function loadData(pageNumber = 1) {
                 let templateName = $("[name='TemplateName']").val()?.trim() || '';
                 let category = $("[name='Category']").val();
-                let langCode = $("[name='LangCode']").val()?.trim() || '';
+                  let templateLanguages = $("[name='templateLanguages']").val()?.trim() || '';
                 let modifiedOn = $("[name='ModifiedOn']").val()?.trim() || '';
                 let templateStatus = $("[name='TemplateStatus']").val();
     
             const url = '@Url.Action("List", "TemplateManagemet")' +
                 `?TemplateName=${encodeURIComponent(templateName)}` +
                 `&Category=${encodeURIComponent(category)}` +
-                `&LangCode=${encodeURIComponent(langCode)}` +
+                  `&templateLanguages=${encodeURIComponent(templateLanguages)}` +
                 `&ModifiedOn=${encodeURIComponent(modifiedOn)}` +
                 `&TemplateStatus=${encodeURIComponent(templateStatus)}` +
                 `&PageNumber=${pageNumber}`;
