@@ -89,7 +89,11 @@
                                     <td><span class="badge @(item.TemplateStatus == "Approved" ? "success" : item.TemplateStatus == "Rejected" ? "danger" : "warning")">@item.TemplateStatus</span></td>
                                     <td>
                                         <div class="action">
-                                            <a href="#" class="eye-blue" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                            <a href="javascript:void(0);"
+                                               class="eye-blue view-template"
+                                               data-template-id="@item.TemplateId"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#exampleModal"></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -112,6 +116,15 @@
 
     </div>
 </div>
+
+<div class="modal fade template-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" id="templateModalContent">
+            @* Partial view will be injected here via AJAX *@
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         $(function () {
@@ -148,6 +161,22 @@
         $(document).on("click", ".page-link", function () {
             const pageNumber = $(this).data("page-number");
             if (pageNumber) loadData(pageNumber);
+        });
+               $(document).on('click', '.view-template', function () {
+
+            var templateId = $(this).data('template-id');
+            var url = '@Url.Action("TemplateDetailsById", "TemplateManagemet")?templateId=' + templateId;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (result) {
+                    $('#templateModalContent').html(result);  
+                },
+                error: function () {
+                    alert('Failed to load template details.');
+                }
+            });
         });
 
     </script>

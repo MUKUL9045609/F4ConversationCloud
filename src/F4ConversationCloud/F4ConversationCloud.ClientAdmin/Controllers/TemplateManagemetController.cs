@@ -68,9 +68,14 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
         {
             try
             {
-               // var templateDetails = await _whatsAppTemplate.GetTemplateByIdAsync(templateId);
+               var templateDetails = await _whatsAppTemplate.GetTemplateByIdAsync(templateId);
+                    
+                var templateModel = new TemplatesListViewModel
+                {
+                    templateDetail = templateDetails
+                };
 
-                return PartialView("_TemplatePreviewModalPartial");
+                return PartialView("_TemplatePreviewModalPartial", templateModel);
             }
             catch (Exception)
             {

@@ -1,10 +1,58 @@
-﻿@{
+﻿@model F4ConversationCloud.ClientAdmin.Models.TemplateModel.TemplatesListViewModel;
+@{
     ViewData["Title"] = "template preview  List";
 }
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="templateModalContent">
-            <!-- Partial view content will load here -->
+<!-- Message Modal -->
+
+<div class="modal-header">
+    <span class="lighttext d-block">Preview</span>
+    <h5 class="modal-title">@Model.templateDetail.TemplateName</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="template-preview">
+        <div class="swiper-card">
+            <div class="template-slide-card">
+                <span><img src="images/card-img-03.png" /></span>
+                <div class="description">
+                    @if (Model.templateDetail.HeaderType == "HEADER")
+                    {
+                        @if (@Model.templateDetail.HeaderFormat == "TEXT")
+                        {
+                            <p>@Model.templateDetail.HeaderText</p>
+                        }
+
+                        @if (Model.templateDetail.HeaderFormat == "IMAGE" )
+                        {
+                            <span>
+                                <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
+                            </span>
+                        }
+                        @if (Model.templateDetail.HeaderFormat == "DOCUMENT")
+                        {
+                            <span>
+                                <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
+                            </span>
+                        }
+                    }
+                    @if (Model.templateDetail.BodyType == "BODY")
+                    {
+                            <p>@Model.templateDetail.BodyText</p>
+
+                    }
+                    @if (Model.templateDetail.FooterType == "FOOTER")
+                    {
+                        <p>@Model.templateDetail.FooterText</p>
+
+                    }
+                </div>
+                <div class="time">@Model.templateDetail.ModifiedOn?.ToString("hh:mm tt")</div>
+            </div>
+            @* <div class="buy-link">
+                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                <a href="#"><i class="forward"></i> My Account Balance</a>
+            </div> *@
         </div>
     </div>
 </div>
+

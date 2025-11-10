@@ -27,7 +27,9 @@ namespace F4ConversationCloud.ClientAdmin.Models.TemplateModel
 
         public IEnumerable<WhatsappTemplateListItem> Templates { get; set; }
         public int TotalCount { get; set; }
-            
+
+        public WhatsappTemplateDetail templateDetail { get; set; }
+
 
     }
 }
