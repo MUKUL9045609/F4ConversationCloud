@@ -16,11 +16,15 @@
         width: 100%;
         background-color: #fff;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 25px;
         overflow: hidden;
         padding: 30px 40px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-        .template_login_title{font-size: 20px;}
+        .logo-wrap{
+            width: 100%;
+            img{margin: 0 auto;display: block;margin-bottom: 25px;height: 40px;}
+        }
+        .template_login_title{font-size: 20px;margin-bottom: 3px;}
         .forgot-password{color: #878a99;font-weight: 400;font-size: 14px;}
         .form-text {
             color: #03A9F5;
@@ -30,7 +34,7 @@
             font-size: 15px;
             color: #878282;
             max-width: 350px;
-            margin: 0 auto 16px;
+            margin: 0 auto 12px;
         }
         .from-group{
             margin-bottom: 15px;
@@ -38,7 +42,7 @@
                 font-weight: 500;
                 font-size: 14px;
                 margin-bottom: 3px;
-                
+                color: #686868;
             }
             .form-control{
                 padding: 0.5rem 0.5rem;
