@@ -42,10 +42,10 @@ namespace F4ConversationCloud.SuperAdmin.Handler
                 {
                     return new ValidationResult("Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).");
                 }
-                else if (variableType == (int)VariableTypes.Name)
-                {
-                    return new ValidationResult("Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).");
-                }
+                //else if (variableType == (int)VariableTypes.Name)
+                //{
+                //    return new ValidationResult("Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).");
+                //}
             }
             
             if (variableType == (int)VariableTypes.Number)
@@ -58,16 +58,16 @@ namespace F4ConversationCloud.SuperAdmin.Handler
                     return new ValidationResult("Variable parameters must be whole numbers with two sets of curly brackets (e.g., {{1}}).");
                 }
             }
-            else if (variableType == (int)VariableTypes.Name)
-            {
-                var matches = Regex.Matches(header, @"\{\{[a-z][a-z0-9_]*\}\}");
+            //else if (variableType == (int)VariableTypes.Name)
+            //{
+            //    var matches = Regex.Matches(header, @"\{\{[a-z][a-z0-9_]*\}\}");
 
-                // Must contain exactly one valid match and match the full trimmed header
-                if (matches.Count != 1 || header.Trim() != matches[0].Value)
-                {
-                    return new ValidationResult("Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).");
-                }
-            }
+            //    // Must contain exactly one valid match and match the full trimmed header
+            //    if (matches.Count != 1 || header.Trim() != matches[0].Value)
+            //    {
+            //        return new ValidationResult("Variable parameters must start with a lowercase letter and contain only lowercase letters, underscores, and numbers (e.g., {{customer_name}}, {{order_id}}).");
+            //    }
+            //}
 
             return ValidationResult.Success;
         }

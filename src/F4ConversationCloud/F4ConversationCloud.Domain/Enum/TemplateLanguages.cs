@@ -14,12 +14,12 @@ namespace F4ConversationCloud.Domain.Enum
         [Display(Name = "English")]
         English = 1,
 
-        [Description("Hindi")]
-        [Display(Name = "Hindi")]
-        Hindi = 2,
+        //[Description("Hindi")]
+        //[Display(Name = "Hindi")]
+        //Hindi = 2,
 
-        [Description("Marathi")]
-        [Display(Name = "Marathi")]
-        Marathi = 3
+        //[Description("Marathi")]
+        //[Display(Name = "Marathi")]
+        //Marathi = 3
     }
 }

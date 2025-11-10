@@ -14,20 +14,20 @@ namespace F4ConversationCloud.Domain.Enum
         [Display(Name = "None")]
         None = 0,
 
-        [Description("Image")]
-        [Display(Name = "Image")]
-        Image = 1,
+        //[Description("Image")]
+        //[Display(Name = "Image")]
+        //Image = 1,
 
-        [Description("Video")]
-        [Display(Name = "Video")]
-        Video = 2,
+        //[Description("Video")]
+        //[Display(Name = "Video")]
+        //Video = 2,
 
-        [Description("Document")]
-        [Display(Name = "Document")]
-        Document = 3,
+        //[Description("Document")]
+        //[Display(Name = "Document")]
+        //Document = 3,
 
-        [Description("Location")]
-        [Display(Name = "Location")]
-        Location = 4
+        //[Description("Location")]
+        //[Display(Name = "Location")]
+        //Location = 4
     }
 }
