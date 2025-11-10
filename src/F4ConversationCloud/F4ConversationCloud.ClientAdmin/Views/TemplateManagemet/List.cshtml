@@ -1,0 +1,154 @@
+﻿@using F4ConversationCloud.Domain.Enum
+@model F4ConversationCloud.ClientAdmin.Models.TemplateModel.TemplatesListViewModel;
+@namespace F4ConversationCloud.Domain.Extension
+@{
+    ViewData["Title"] = "Template List";
+
+}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <h3 class="sub-heading">Templates </h3>
+
+            <div class="table-responsive">
+                <table class="table user-table">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>
+                                Template Name
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search" name="TemplateName" value="@Model.TemplateName" />
+                                    <span class="searchIcon"></span>
+                                </div>
+                            </th>
+                            <th>
+                                Category
+                                <div class="input-group">
+                                        <select class="form-select" name="Category">
+                                            <option value="">Select Category</option>
+
+                                            @foreach (TemplateModuleType cat in Enum.GetValues(typeof(TemplateModuleType)))
+                                            {
+                                                var isSelected = Model?.Category != null && Model.Category == cat;
+                                                <option value="@cat">@cat</option>
+                                            }
+                                        </select>
+                                </div>
+
+                            </th>
+                            <th>
+                                Language
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search" name="LangCode" value="@Model.LangCode" />
+                                    <span class="searchIcon"></span>
+                                </div>
+                            </th>
+
+
+                            <th>
+                                Last Updated
+                                <label class="datewrap" for="datepicker">
+                                    <input type="text" class="form-control datepicker search-form-control" placeholder="Select Date" id="datepicker2" name="ModifiedOn" value="@(Model.ModifiedOn?.ToString("dd MMM yyyy") ?? "")" />
+                                    <span class="dateIcon"></span>
+                                </label>
+
+                            </th>
+
+                                 <th>
+                                    Status
+                                    <select class="form-control" name="TemplateStatus">
+                                        <option value="">Select Status</option>
+                                        @foreach (TemplateApprovalStatus status in Enum.GetValues(typeof(TemplateApprovalStatus)))
+                                        {
+                                            var isSelected = (Model.TemplateStatus == status);
+                                            @* <option value="@status" >
+                                                @status.GetDisplayName()
+                                            </option> *@
+                                        }
+                                    </select>
+
+                                </th>
+
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Templates != null && Model.Templates.Any())
+                        {
+                           
+                            foreach (var item in Model.Templates)
+                            {
+                                
+                                <tr>
+                                    <td>@item.SrNo</td>
+                                    <td>@item.TemplateName</td>
+                                    <td>@item.Category</td>
+                                    <td>@item.LanguageCode</td>
+                                    <td>@item.ModifiedOn.ToString("dd MMM yyyy hh:mm tt")</td>
+                                    <td><span class="badge @(item.TemplateStatus == "Approved" ? "success" : item.TemplateStatus == "Rejected" ? "danger" : "warning")">@item.TemplateStatus</span></td>
+                                    <td>
+                                        <div class="action">
+                                            <a href="#" class="eye-blue" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                               
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="7" class="text-center">No templates found.</td></tr>
+                        }
+                    </tbody>
+
+
+
+
+                </table>
+            </div>
+            <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+            $("#datepicker2").datepicker({
+                dateFormat: "dd MM yy"
+            });
+        });
+       $("[name='Category'], [name='TemplateStatus'],[name='ModifiedOn']").on("change", function () {
+            loadData();
+        });
+
+        function loadData(pageNumber = 1) {
+                let templateName = $("[name='TemplateName']").val()?.trim() || '';
+                let category = $("[name='Category']").val();
+                let langCode = $("[name='LangCode']").val()?.trim() || '';
+                let modifiedOn = $("[name='ModifiedOn']").val()?.trim() || '';
+                let templateStatus = $("[name='TemplateStatus']").val();
+    
+            const url = '@Url.Action("List", "TemplateManagemet")' +
+                `?TemplateName=${encodeURIComponent(templateName)}` +
+                `&Category=${encodeURIComponent(category)}` +
+                `&LangCode=${encodeURIComponent(langCode)}` +
+                `&ModifiedOn=${encodeURIComponent(modifiedOn)}` +
+                `&TemplateStatus=${encodeURIComponent(templateStatus)}` +
+                `&PageNumber=${pageNumber}`;
+
+            location.href = url;
+        }
+
+        $(".srcIcon").on("keypress", function (e) {
+            if (e.which === 13) loadData();
+        });
+
+        $(document).on("click", ".page-link", function () {
+            const pageNumber = $(this).data("page-number");
+            if (pageNumber) loadData(pageNumber);
+        });
+
+    </script>
+}
