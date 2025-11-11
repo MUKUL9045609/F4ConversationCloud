@@ -35,7 +35,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 //string token = _configuration["WhatsAppAPISettings:Token"];
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                string WABAID = "528970240291210";
+                string WABAID = requestBody.WABAID;
 
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
@@ -194,6 +194,47 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
+
+        public async Task<dynamic> SyncTemplateByTemplateID (string TemplateId)
+        {
+            string apiUrl = string.Empty;
+            string methodType = "SyncTemplate";
+            var headers = new Dictionary<string, string>();
+
+            try
+            {
+
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.GraphTemplateSyncApi.ToString().Replace("{{template_id}}", TemplateId);
+
+                var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
+                                                                    methodType,
+                                                                    null,
+                                                                    headers,
+                                                                    "Sync Template",
+                                                                    null,
+                                                                    true);
+
+                return new
+                {
+                    Success = true,
+                    Message = "Template Sync successFully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Template not deletd.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
         public MessageTemplateDTO TryDeserializeAndAddComponent(TemplateRequest request)
         {
             try
@@ -306,7 +347,6 @@ namespace F4ConversationCloud.Infrastructure.Service
                 return new MessageTemplateDTO();
             }
         }
-
 
         public MessageTemplateDTO TryDeserializeComponent(TemplateRequest request)
         {
@@ -546,6 +586,8 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
+
+
 
 
 
