@@ -50,7 +50,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             return Tuple.Create(new JwtSecurityTokenHandler().WriteToken(token), Convert.ToInt32(_configuration["JWT:expirationTimeInSeconds"]));
         }
 
-        public async Task<APILoginResponse> ValidateUser(UserDetailsDTO request)
+        public async Task<APIResponse> ValidateUser(UserDetailsDTO request)
         {
             try
             {
@@ -72,11 +72,11 @@ namespace F4ConversationCloud.Infrastructure.Service
                             IsView = true
                         }).Result;
 
-                        return new APILoginResponse()
+                        return new APIResponse()
                         {
                             Status = true,
                             Message = "Success",
-                            Data = new APILoginData
+                            Data = new APIData
                             {
                                 Token = token.Item1,
                                 ExpiryInSeconds = token.Item2

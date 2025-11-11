@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -128,29 +129,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplate.category = result.data.category;
                     var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate,result.data.id);
 
-                    return new
-                    {
-                        Message = "Template edited successFully.",
-                        Success = true
-                    };
-                }
-                else
+                return new APIResponse
                 {
-
-                    return new
-                    {
-                        Message = result.Message?.ToString().Trim('{', '}'),
-                        Success = false
-                    };
-                }
+                    Message = "Template created successFully.",
+                    Status = true
+                };
 
             }
             catch (Exception ex)
             {
-                return new
+                return new APIResponse
                 {
-                    Message = "Template not edited.",
-                    Success = false,
+                    Message = "Template not created successFully.",
+                    Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };

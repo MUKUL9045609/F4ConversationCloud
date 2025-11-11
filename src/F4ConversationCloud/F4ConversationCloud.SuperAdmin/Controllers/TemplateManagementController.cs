@@ -2,6 +2,7 @@
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
@@ -9,6 +10,7 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -230,8 +232,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 templateRequest.WABAID = model.WABAId;
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
 
-                await _templateRepositories.MetaCreateTemplate(templateRequest);
+                APIResponse result = await _templateRepositories.MetaCreateTemplate(templateRequest);
 
+                TempData["SuccessMessage"] = result.Message;
                 return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
             }
             catch (Exception ex)
