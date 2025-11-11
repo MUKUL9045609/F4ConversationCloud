@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -71,19 +72,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 }
 
 
-                return new
+                return new APIResponse
                 {
                     Message = "Template created successFully.",
-                    Success = true
+                    Status = true
                 };
 
             }
             catch (Exception ex)
             {
-                return new
+                return new APIResponse
                 {
                     Message = "Template not created successFully.",
-                    Success = false,
+                    Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };

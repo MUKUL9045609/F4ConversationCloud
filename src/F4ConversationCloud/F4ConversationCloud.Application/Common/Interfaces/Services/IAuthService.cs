@@ -10,6 +10,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
     public interface IAuthService
     {
         Task<Tuple<string, int>> GenerateToken(UserContextModel userContextModel);
-        Task<APILoginResponse> ValidateUser(UserDetailsDTO request);
+        Task<APIResponse> ValidateUser(UserDetailsDTO request);
     }
 }
