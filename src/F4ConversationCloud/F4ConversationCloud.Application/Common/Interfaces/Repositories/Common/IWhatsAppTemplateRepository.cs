@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
     {
         Task<(IEnumerable<WhatsappTemplateListItem> Templates, int TotalCount)> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
         Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id);
+        Task<int> InsertTemplatesListAsync(MessageTemplateDTO request);
     }
 }

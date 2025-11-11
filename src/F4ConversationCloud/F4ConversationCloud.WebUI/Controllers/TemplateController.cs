@@ -13,7 +13,7 @@ using Twilio.TwiML.Voice;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
-    [Authorize(Roles = "1")]
+    //[Authorize(Roles = "1")]
     [ApiController]
     [Route("MessageTemplates")]
     public class TemplateController : Controller
@@ -30,7 +30,7 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("[action]")]
         [Consumes("application/json")]
-        [HasPermission("IsCreateTemplate")]
+        //[HasPermission("IsCreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)
