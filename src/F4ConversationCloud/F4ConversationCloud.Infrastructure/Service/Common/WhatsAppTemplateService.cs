@@ -118,6 +118,28 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
         }
 
+        public async Task<Tuple<IEnumerable<TemplateModel>, int>> GetFilteredTemplatesByWABAId(TemplateListFilter filter)
+        {
+            Tuple<IEnumerable<TemplateModel>, int> response = Tuple.Create(Enumerable.Empty<TemplateModel>(), 0);
+            try
+            {
+                response = Tuple.Create(await _templateRepository.GetFilteredAsync(filter), await _templateRepository.GetCountAsync(filter));
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "WhatsappTemplate/GetFilteredAsync";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(filter)}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
 
+            }
+            return response;
+        }
     }
 }
