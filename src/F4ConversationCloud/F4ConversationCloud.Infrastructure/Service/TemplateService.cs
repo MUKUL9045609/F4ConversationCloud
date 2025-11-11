@@ -70,7 +70,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
-        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody, string TemplateID)
+        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -81,11 +81,10 @@ namespace F4ConversationCloud.Infrastructure.Service
                 string requestJson = JsonConvert.SerializeObject(requestBody);
 
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                string WABAID = "528970240291210";
-
+                
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
-                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + TemplateID;
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + requestBody.TemplateId;
 
                 var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
                                                                     methodType,

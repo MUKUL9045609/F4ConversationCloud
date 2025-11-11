@@ -53,7 +53,7 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("[action]")]
         [HasPermission("IsEditTemplate")]
-        public async Task<IActionResult> EditTemplate(TemplateRequest request, string id)
+        public async Task<IActionResult> EditTemplate(TemplateRequest request)
         {
 
             if (!ModelState.IsValid)
@@ -64,7 +64,7 @@ namespace F4ConversationCloud.WebUI.Controllers
             try
             {
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(request);
-                await _templateService.EditTemplate(messageTemplate, id);
+                await _templateService.EditTemplate(messageTemplate);
 
                 return Ok();
             }

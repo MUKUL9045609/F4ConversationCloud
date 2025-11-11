@@ -118,5 +118,45 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 return 0;
             }
         }
+
+        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request)
+        {
+            try
+            {
+                var data = _parser.Parse(request);
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@TemplateName", request.name ?? "", DbType.String);
+                parameters.Add("@Category", Enum.TryParse<TemplateModuleType>(request.category, true, out var cat) ? (int)cat : (int)TemplateModuleType.Utility, DbType.Int32);
+                parameters.Add("@LanguageCode", Enum.TryParse<TemplateLanguages>(request.language, true, out var lang) ? (int)lang : (int)TemplateLanguages.English, DbType.Int32);
+
+                parameters.Add("@HeaderType", data.HeaderType, DbType.String);
+                parameters.Add("@HeaderFormat", data.HeaderFormat, DbType.String);
+                parameters.Add("@HeaderText", data.HeaderText, DbType.String);
+                parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
+                parameters.Add("@HeaderMediaUrl", data.HeaderMediaUrl, DbType.String);
+                parameters.Add("@HeaderMediaId", null, DbType.String);
+                parameters.Add("@HeaderFileName", null, DbType.String);
+                parameters.Add("@HeaderLatitude", null, DbType.Decimal);
+                parameters.Add("@HeaderLongitude", null, DbType.Decimal);
+                parameters.Add("@HeaderAddress", null, DbType.String);
+
+                parameters.Add("@BodyType", data.BodyType, DbType.String);
+                parameters.Add("@BodyText", data.BodyText, DbType.String);
+                parameters.Add("@BodyExample", data.BodyExample, DbType.String);
+
+                parameters.Add("@FooterType", data.FooterType, DbType.String);
+                parameters.Add("@FooterText", data.FooterText, DbType.String);
+
+                parameters.Add("@Id", request.TemplateId, DbType.String);
+                parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
+
+                return await _repository.InsertUpdateAsync("sp_UpdateWhatsappTemplate", parameters);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 }

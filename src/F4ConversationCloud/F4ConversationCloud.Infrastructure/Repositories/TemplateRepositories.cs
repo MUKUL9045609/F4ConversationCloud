@@ -89,6 +89,61 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
             }
         }
+
+        public async Task<dynamic> MetaEditTemplate(TemplateRequest requestBody)
+        {
+            try
+            {
+                if (requestBody != null)
+                {
+                    if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
+                    {
+
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString());
+                        using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
+                        JsonElement root = doc.RootElement;
+
+                        if (root.TryGetProperty("h", out JsonElement hProperty))
+                        {
+                            string hValue = hProperty.GetString();
+                            requestBody.TemplateHeader.Example.HeaderFile.Clear();
+                            requestBody.TemplateHeader.Example.HeaderFile.Add(hValue);
+                        }
+                    }
+                }
+
+                MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
+
+                var result = await _templateService.EditTemplate(messageTemplate);
+
+                if (result != null)
+                {
+                    messageTemplate.category = result.data.category;
+                    messageTemplate.TemplateId = result.data.id;
+                    messageTemplate.TemplateStatus = result.data.status;
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate);
+
+                }
+
+
+                return new
+                {
+                    Message = "Template created successFully.",
+                    Success = true
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Template not created successFully.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
     }
 
 }
