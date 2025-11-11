@@ -12,8 +12,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
     {
         Task<(IEnumerable<WhatsappTemplateListItem> Templates, int TotalCount)> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
         Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id);
-        Task<int> InsertTemplatesListAsync(MessageTemplateDTO request);
-        
-        Task<int> UpdateTemplatesAsync(MessageTemplateDTO request);
+        Task<int> InsertTemplatesListAsync(MessageTemplateDTO request, string TemplateId, string ClientInfoId, string CreatedBy, string WABAID);
+
+        Task<int> UpdateTemplatesAsync(MessageTemplateDTO request, string TemplateId);
     }
 }

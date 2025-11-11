@@ -75,7 +75,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
 
         }
 
-        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request)
+        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID  )
         {
             try
             {
@@ -104,10 +104,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@FooterType", data.FooterType, DbType.String);
                 parameters.Add("@FooterText", data.FooterText, DbType.String);
 
-                parameters.Add("@CreatedBy", request.CreatedBy, DbType.String);
-                parameters.Add("@WABAID", request.WABAID, DbType.String);
-                parameters.Add("@ClientInfoId", request.ClientInfoId, DbType.String);
-                parameters.Add("@Templateid", request.TemplateId, DbType.String);
+                parameters.Add("@CreatedBy", CreatedBy, DbType.String);
+                parameters.Add("@WABAID", WABAID, DbType.String);
+                parameters.Add("@ClientInfoId", ClientInfoId, DbType.String);
+                parameters.Add("@Templateid", TemplateId, DbType.String);
                 parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
 
 
@@ -119,7 +119,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
-        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request)
+        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@FooterType", data.FooterType, DbType.String);
                 parameters.Add("@FooterText", data.FooterText, DbType.String);
 
-                parameters.Add("@Id", request.TemplateId, DbType.String);
+                parameters.Add("@Id", TemplateId, DbType.String);
                 parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
 
                 return await _repository.InsertUpdateAsync("sp_UpdateWhatsappTemplate", parameters);

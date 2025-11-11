@@ -1,6 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -23,7 +24,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             _logService = logService;
         }
 
-        public async Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody)
+        public async Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody,string WABAID)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -35,8 +36,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 //string token = _configuration["WhatsAppAPISettings:Token"];
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                string WABAID = requestBody.WABAID;
-
+                
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
                 var whatsAppBusinessAccountId = WABAID;
@@ -50,14 +50,28 @@ namespace F4ConversationCloud.Infrastructure.Service
                                                                     "Create Template",
                                                                     null,
                                                                     true);
-
-                return new
+                if (result.error != null)
                 {
-                    Success = true,
-                    data = result,
-                    Message = "Template created successFully."
+                    return new
+                    {
+                        Success = false,
+                        result = result.error,
+                        Message = result.error.error_user_msg
 
-                };
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Success = true,
+                        result = result.data,
+                        Message = "Template created successFully."
+                    };
+
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -70,7 +84,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
-        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody)
+        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody , string TemplateId)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -84,7 +98,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
-                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + requestBody.TemplateId;
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + TemplateId;
 
                 var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
                                                                     methodType,
@@ -94,11 +108,27 @@ namespace F4ConversationCloud.Infrastructure.Service
                                                                     null,
                                                                     true);
 
-                return new
+                if(result.error != null)
                 {
-                    Success = true,
-                    Message = "Template edited successFully."
-                };
+                    return new
+                    {
+                        Success = false,
+                        result = result.error,
+                        Message = result.error.error_user_msg
+                        
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Success = true,
+                        result = result.data,
+                        Message = "Template edited successFully."
+                    };
+
+                }
+               
             }
             catch (Exception ex)
             {
@@ -234,7 +264,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
-        public MessageTemplateDTO TryDeserializeAndAddComponent(TemplateRequest request)
+        public MessageTemplateDTO TryDeserializeAndAddComponent(dynamic request)
         {
             try
             {
@@ -334,9 +364,6 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     }
                 }
-
-                messageTemplate.WABAID = request.WABAID;
-                messageTemplate.ClientInfoId = request.ClientInfoId;
 
                 return messageTemplate;
                 //await CreateTemplate(messageTemplate);

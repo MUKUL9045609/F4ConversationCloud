@@ -41,9 +41,9 @@ namespace F4ConversationCloud.WebUI.Controllers
 
             try
             {
-                await _templateRepositories.MetaCreateTemplate(request);
+                var result = await _templateRepositories.MetaCreateTemplate(request);
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -52,8 +52,8 @@ namespace F4ConversationCloud.WebUI.Controllers
         }
 
         [HttpPost("[action]")]
-        [HasPermission("IsEditTemplate")]
-        public async Task<IActionResult> EditTemplate(TemplateRequest request)
+        //[HasPermission("IsEditTemplate")]
+        public async Task<IActionResult> EditTemplate(EditTemplateRequest request)
         {
 
             if (!ModelState.IsValid)
@@ -63,10 +63,10 @@ namespace F4ConversationCloud.WebUI.Controllers
 
             try
             {
-                MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(request);
-                await _templateService.EditTemplate(messageTemplate);
+                
+                var result = await _templateRepositories.MetaEditTemplate(request);
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
