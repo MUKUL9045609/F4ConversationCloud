@@ -222,7 +222,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 string messageBody = model.MessageBody;
                 bool hasVariables = Regex.IsMatch(messageBody, @"\{\{\d+\}\}");
 
-                if (!hasVariables)
+                if (hasVariables)
                 {
                     templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
                     {

@@ -67,19 +67,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplate.category = result.data.category;
                     var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, result.data.id, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
 
-                    return new
+                    return new APIResponse
                     {
                         Message = "Template created successFully.",
-                        Success = true
+                        Status = true
                     };
                 }
                 else
                 {
 
-                    return new
+                    return new APIResponse
                     {
                         Message = result.Message?.ToString().Trim('{', '}'),
-                        Success = false
+                        Status = false
                     };
                 }
 
@@ -87,10 +87,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                return new
+                return new APIResponse
                 {
-                    Message = "Template not created.",
-                    Success = false,
+                    Message = "Error occured while creating template",
+                    Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };
@@ -120,27 +120,36 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 }
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
-                
-                
-                var result = await _templateService.EditTemplate(messageTemplate , requestBody.TemplateId);
 
-                if (result.Success == true )
+
+                var result = await _templateService.EditTemplate(messageTemplate, requestBody.TemplateId);
+
+                if (result.Success == true)
                 {
                     messageTemplate.category = result.data.category;
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate,result.data.id);
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, result.data.id);
 
-                return new APIResponse
+                    return new APIResponse
+                    {
+                        Message = "Template created successFully.",
+                        Status = true
+                    };
+
+                }
+                else
                 {
-                    Message = "Template created successFully.",
-                    Status = true
-                };
-
+                    return new APIResponse
+                    {
+                        Message = result.Message?.ToString().Trim('{', '}'),
+                        Status = false
+                    };
+                }
             }
             catch (Exception ex)
             {
                 return new APIResponse
                 {
-                    Message = "Template not created successFully.",
+                    Message = "Error occured while creating template",
                     Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
