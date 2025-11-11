@@ -158,6 +158,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Language = ((TemplateLanguages)Convert.ToInt32(x.Language)).GetDisplayName(),
                     CreatedOn = x.CreatedOn,
                     Status = ((TemplateApprovalStatus)Convert.ToInt32(x.Status)).GetDisplayName(),
+                    HeaderText = x.HeaderText,
+                    HeaderExample = x.HeaderExample,
+                    BodyText = x.BodyText,
+                    BodyExample = x.BodyExample,
+                    FooterText = x.FooterText
                 });
 
                 return View(model);
@@ -296,7 +301,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 TemplateCategory = ((TemplateModuleType)Convert.ToInt32(x.TemplateCategory)).GetDisplayName(),
                 Language = ((TemplateLanguages)Convert.ToInt32(x.Language)).GetDisplayName(),
                 CreatedOn = x.CreatedOn,
-                Status = ((TemplateApprovalStatus)Convert.ToInt32(x.Status)).GetDisplayName()
+                Status = ((TemplateApprovalStatus)Convert.ToInt32(x.Status)).GetDisplayName(),
+                HeaderText = x.HeaderText,
+                HeaderExample = x.HeaderExample,
+                BodyText = x.BodyText,
+                BodyExample = x.BodyExample,
+                FooterText = x.FooterText
             });
 
             return PartialView("_TemplateList", model);

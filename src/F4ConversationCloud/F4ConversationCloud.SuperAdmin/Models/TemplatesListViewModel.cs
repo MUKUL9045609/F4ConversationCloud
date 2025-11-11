@@ -40,6 +40,11 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Status")]
             public string Status { get; set; }
+            public string HeaderText { get; set; }
+            public string HeaderExample { get; set; }
+            public string BodyText { get; set; }
+            public string BodyExample { get; set; }
+            public string FooterText { get; set; }
         }
     }
 }

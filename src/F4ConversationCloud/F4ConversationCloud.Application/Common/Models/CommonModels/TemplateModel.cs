@@ -16,5 +16,10 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public string Language { get; set; }
         public DateTime CreatedOn { get; set; }
         public string Status { get; set; }
+        public string HeaderText { get; set; }
+        public string HeaderExample { get; set; }
+        public string BodyText { get; set; }
+        public string BodyExample { get; set; }
+        public string FooterText { get; set; }
     }
 }
