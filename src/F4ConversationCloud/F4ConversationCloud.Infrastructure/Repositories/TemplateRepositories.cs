@@ -59,30 +59,97 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
                 
-                var result = await _templateService.CreateTemplate(messageTemplate);
+                var result = await _templateService.CreateTemplate(messageTemplate ,  requestBody.WABAID);
 
-                if (result != null)
+                if (result.Success == true)
                 {
-                  messageTemplate.category = result.data.category;
-                  messageTemplate.TemplateId = result.data.id;
-                  messageTemplate.TemplateStatus = result.data.status;
-                  var id =  await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate);
+                    messageTemplate.category = result.data.category;
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, result.data.id, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
 
+                    return new
+                    {
+                        Message = "Template created successFully.",
+                        Success = true
+                    };
+                }
+                else
+                {
+
+                    return new
+                    {
+                        Message = result.Message?.ToString().Trim('{', '}'),
+                        Success = false
+                    };
                 }
 
-
-                return new
-                {
-                    Message = "Template created successFully.",
-                    Success = true
-                };
 
             }
             catch (Exception ex)
             {
                 return new
                 {
-                    Message = "Template not created successFully.",
+                    Message = "Template not created.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
+
+        public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
+        {
+            try
+            {
+                if (requestBody != null)
+                {
+                    if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
+                    {
+
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString());
+                        using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
+                        JsonElement root = doc.RootElement;
+
+                        if (root.TryGetProperty("h", out JsonElement hProperty))
+                        {
+                            string hValue = hProperty.GetString();
+                            requestBody.TemplateHeader.Example.HeaderFile.Clear();
+                            requestBody.TemplateHeader.Example.HeaderFile.Add(hValue);
+                        }
+                    }
+                }
+
+                MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
+                
+                
+                var result = await _templateService.EditTemplate(messageTemplate , requestBody.TemplateId);
+
+                if (result.Success == true )
+                {
+                    messageTemplate.category = result.data.category;
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate,result.data.id);
+
+                    return new
+                    {
+                        Message = "Template edited successFully.",
+                        Success = true
+                    };
+                }
+                else
+                {
+
+                    return new
+                    {
+                        Message = result.Message?.ToString().Trim('{', '}'),
+                        Success = false
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Template not edited.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
