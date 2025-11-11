@@ -4973,6 +4973,7 @@ body {
             color: #6E6E6E;
             display: flex;
             justify-content: end;
+            padding: 7px;
         }
 
     .template-preview .swiper-button-prev,

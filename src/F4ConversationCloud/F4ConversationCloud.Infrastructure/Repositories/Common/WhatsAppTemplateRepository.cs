@@ -59,7 +59,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         }
 
 
-        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id)
+        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(int Template_id)
         {
             try
             {

@@ -10,7 +10,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Common
     public interface IWhatsAppTemplateService
     {
         Task<WhatsAppTemplateResponse> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
-        Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id);
+        Task<WhatsappTemplateDetail> GetTemplateByIdAsync(int Template_id);
         Task<Tuple<IEnumerable<TemplateModel>, int>> GetFilteredTemplatesByWABAId(TemplateListFilter filter);
     }
 }
