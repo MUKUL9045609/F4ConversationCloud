@@ -79,7 +79,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             }
         }
 
-        public async Task<IActionResult> TemplateDetailsById(string templateId)
+        public async Task<IActionResult> TemplateDetailsById(int templateId)
         {
             try
             {

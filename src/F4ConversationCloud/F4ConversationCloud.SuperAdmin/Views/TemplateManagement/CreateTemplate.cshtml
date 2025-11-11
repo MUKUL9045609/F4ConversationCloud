@@ -25,6 +25,9 @@
                             <h3 class="mb-2">Set Up Your Template</h3>
                             <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
                             <input asp-for="TemplateCategory" type="hidden" />
+                            <input asp-for="ClientInfoId" type="hidden" />
+                            <input asp-for="WABAId" type="hidden" />
+                            <input asp-for="MetaConfigId" type="hidden" />
                             <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
@@ -161,18 +164,18 @@
                                         @* <span><img src="images/card-img-03.png"></span> *@
                                         <div class="description">
                                             <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
-                                            <p>Dear {{1}}</p>
-                                            <p>We are excited to present you with an exclusive offer ! {{}}</p>
+                                            <div id="message-body"></div>
+                                            <span class="description-small-text" id="footer-text"></span>
                                         </div>
                                         <div class="time">1:59 PM</div>
                                     </div>
-                                    <div class="buy-link">
+                                    @* <div class="buy-link">
                                         <a href="#"><i class="buy-icon"></i> Buy Now</a>
                                         <a href="#"><i class="forward"></i> My Account Balance</a>
                                         <a href="#"><i class="backward"></i> Yes </a>
                                         <a href="#"><i class="call"></i> Call Us </a>
                                         <a href="#"><i class="copy-code"></i> Copy Code </a>
-                                    </div>
+                                    </div> *@
                                 </div>
 
                                 <div class="swiper-card d-none">
@@ -245,6 +248,12 @@
     <script>
         $(document).ready(function () {
             $('#TemplateCategory').val(1);
+
+            var storedData = JSON.parse(localStorage.getItem('ClientData'));
+            $('#ClientInfoId').val(storedData.ClientInfoId);
+            $('#WABAId').val(storedData.WABAId);
+            $('#MetaConfigId').val(storedData.MetaConfigId);
+
             $('.nav-link').on('click', function () {
                 var selectedTabId = $(this).attr('id');
                 var categoryValue;
@@ -354,6 +363,7 @@
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
                             var content = editor.getData();
+                            $('#message-body').html(content);
                             validateWhatsAppVariables(content);
                         });
 
@@ -560,7 +570,9 @@
             }
             $('#variable-card').show();
             $('#variable-card-header').show();
-            $('[name="HeaderVariableName"]').val(variableToInsert);
+            $('[name="HeaderVariableName"]').val("{{1}}");
+            $('#header-text-preview').show();
+            $('#header-text-preview').text("{{1}}");
 
             // Check if variable already exists
             if (!headerInput.value.includes("{{")) {
@@ -585,7 +597,7 @@
                 $('#variable-card').show();
                 $('#variable-card-header').show();
                 // Update the readonly input with asp-for="HeaderVariableName"
-                $('[name="HeaderVariableName"]').val(headerVal);
+                $('[name="HeaderVariableName"]').val("{{1}}");
                 $('#header-text-preview').show();
                 $('#header-text-preview').text(headerVal);
             } else {
@@ -618,6 +630,12 @@
             validator.settings.messages.Header.headervariableformat = newMessage;
 
             $('#Header').valid();
+        });
+
+        $(document).on('input', '[name="Footer"]', function () {
+            var footerVal = $(this).val().trim();
+
+            $('#footer-text').text(footerVal);
         });
     </script>
 }

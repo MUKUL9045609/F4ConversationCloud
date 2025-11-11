@@ -27,5 +27,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
         public static string TemplateID { get; private set; } = "{{TEMPLATE_ID}}";
         public static string SendMessage { get; private set; } = "{{Phone-Number-ID}}/messages";
         public static string Whatsappbusinessprofile { get; private set; } = "{{Phone-Number-ID}}/whatsapp_business_profile";
+
+        public static Uri GraphTemplateSyncApi { get; private set; } = new Uri("https://graph.facebook.com/v21.0/{{template_id}}");
     }
 }

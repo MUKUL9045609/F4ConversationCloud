@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using Newtonsoft.Json;
@@ -37,15 +38,15 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
             catch (Exception ex)
             {
-                var log = new LogModel
+                var log = new ClientAdminLogsModel
                 {
                     Source = "WhatsappTemplate/GetTemplatesListAsync",
-                    AdditionalInfo = $"Filter: {JsonConvert.SerializeObject(filter)}",
+                    Data = $"Filter: {JsonConvert.SerializeObject(filter)}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
-                await _logService.InsertLogAsync(log);
+                await _logService.InsertClientAdminLogsAsync(log);
                 return new WhatsAppTemplateResponse
                 {
                     Templates = Enumerable.Empty<WhatsappTemplateListItem>(),
@@ -54,7 +55,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
 
         }
-        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string templateId)
+        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(int templateId)
         {
             try
             {
@@ -83,15 +84,15 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
             catch (Exception ex)
             {
-                var log = new LogModel
+                var log = new ClientAdminLogsModel
                 {
                     Source = "WhatsappTemplate/GetTemplateByIdAsync",
-                    AdditionalInfo = $"TemplateId: {templateId}",
+                    Data = $"TemplateId: {templateId}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
-                await _logService.InsertLogAsync(log);
+                await _logService.InsertClientAdminLogsAsync(log);
                 return null;
             }
         }
@@ -118,6 +119,28 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
         }
 
+        public async Task<Tuple<IEnumerable<TemplateModel>, int>> GetFilteredTemplatesByWABAId(TemplateListFilter filter)
+        {
+            Tuple<IEnumerable<TemplateModel>, int> response = Tuple.Create(Enumerable.Empty<TemplateModel>(), 0);
+            try
+            {
+                response = Tuple.Create(await _templateRepository.GetFilteredAsync(filter), await _templateRepository.GetCountAsync(filter));
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "WhatsappTemplate/GetFilteredAsync";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(filter)}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+            }
+            finally
+            {
 
+            }
+            return response;
+        }
     }
 }
