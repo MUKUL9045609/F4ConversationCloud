@@ -1,5 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using Newtonsoft.Json;
@@ -37,15 +38,15 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
             catch (Exception ex)
             {
-                var log = new LogModel
+                var log = new ClientAdminLogsModel
                 {
                     Source = "WhatsappTemplate/GetTemplatesListAsync",
-                    AdditionalInfo = $"Filter: {JsonConvert.SerializeObject(filter)}",
+                    Data = $"Filter: {JsonConvert.SerializeObject(filter)}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
-                await _logService.InsertLogAsync(log);
+                await _logService.InsertClientAdminLogsAsync(log);
                 return new WhatsAppTemplateResponse
                 {
                     Templates = Enumerable.Empty<WhatsappTemplateListItem>(),
@@ -83,15 +84,15 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
             catch (Exception ex)
             {
-                var log = new LogModel
+                var log = new ClientAdminLogsModel
                 {
                     Source = "WhatsappTemplate/GetTemplateByIdAsync",
-                    AdditionalInfo = $"TemplateId: {templateId}",
+                    Data = $"TemplateId: {templateId}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
-                await _logService.InsertLogAsync(log);
+                await _logService.InsertClientAdminLogsAsync(log);
                 return null;
             }
         }
