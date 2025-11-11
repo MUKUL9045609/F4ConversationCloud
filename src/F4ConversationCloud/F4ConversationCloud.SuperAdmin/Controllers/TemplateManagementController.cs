@@ -6,6 +6,7 @@ using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -17,11 +18,15 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         private readonly ITemplateManagementService _templateManagementService;
         private readonly ITemplateRepositories _templateRepositories;
         private readonly IWhatsAppTemplateService _whatsAppTemplateService;
+        private readonly DbContext _context;
 
-        public TemplateManagementController(ITemplateManagementService templateManagementService, ITemplateRepositories templateRepositories)
+        public TemplateManagementController(ITemplateManagementService templateManagementService, ITemplateRepositories templateRepositories,
+            IWhatsAppTemplateService whatsAppTemplateService, DbContext context)
         {
             _templateManagementService = templateManagementService;
             _templateRepositories = templateRepositories;
+            _whatsAppTemplateService = whatsAppTemplateService;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -223,10 +228,37 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 templateRequest.TemplateFooter.text = model.Footer;
                 templateRequest.ClientInfoId = model.ClientInfoId.ToString();
                 templateRequest.WABAID = model.WABAId;
+                templateRequest.CreatedBy = _context.SessionUserId.ToString();
 
                 await _templateRepositories.MetaCreateTemplate(templateRequest);
 
                 return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(new TemplateViewModel());
+            }
+        }
+
+        public async Task<IActionResult> UpdateTemplate([FromRoute] int id)
+        {
+            try
+            { 
+                var data = await _whatsAppTemplateService.GetTemplateByIdAsync(id);
+
+                var viewModel = new TemplateViewModel();
+                viewModel.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                viewModel.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
+                viewModel.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.TemplateName = data.TemplateName;
+                viewModel.Header = data.HeaderText;
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {
