@@ -25,6 +25,9 @@
                             <h3 class="mb-2">Set Up Your Template</h3>
                             <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
                             <input asp-for="TemplateCategory" type="hidden" />
+                            <input asp-for="ClientInfoId" type="hidden" />
+                            <input asp-for="WABAId" type="hidden" />
+                            <input asp-for="MetaConfigId" type="hidden" />
                             <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
@@ -245,6 +248,12 @@
     <script>
         $(document).ready(function () {
             $('#TemplateCategory').val(1);
+
+            var storedData = JSON.parse(localStorage.getItem('ClientData'));
+            $('#ClientInfoId').val(storedData.ClientInfoId);
+            $('#WABAId').val(storedData.WABAId);
+            $('#MetaConfigId').val(storedData.MetaConfigId);
+
             $('.nav-link').on('click', function () {
                 var selectedTabId = $(this).attr('id');
                 var categoryValue;

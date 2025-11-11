@@ -1937,7 +1937,7 @@ body {
 .page .app-header .appheader-wrap .profile-dropdown {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0px;
 }
 .page .app-header .appheader-wrap .profile-dropdown .form-select {
   font-size: 14px;
