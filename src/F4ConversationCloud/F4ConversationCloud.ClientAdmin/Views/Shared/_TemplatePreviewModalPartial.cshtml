@@ -24,9 +24,8 @@
                         }
                         <div class="description">
                             @if (@Model.templateDetail.HeaderFormat == "TEXT")
-                        {
-                            <p><strong>@Model.templateDetail.HeaderText</strong></p>
-                                
+                            {
+                            <p><strong>@Html.Raw(Model.templateDetail.HeaderText)</strong></p>
                             }
 
                         
@@ -41,13 +40,13 @@
                     <div class="description">
                         @if (Model.templateDetail.BodyType == "BODY")
                         {
-                   
-                                <p>@Model.templateDetail.BodyText</p>
+
+                            <p>@Html.Raw(Model.templateDetail.BodyText)</p>
 
                         }
                         @if (Model.templateDetail.FooterType == "FOOTER")
                         {
-                        <span class="description-small-text">@Model.templateDetail.FooterText</span>
+                        <span class="description-small-text">@Html.Raw(Model.templateDetail.FooterText)</span>
                            
 
                         }
