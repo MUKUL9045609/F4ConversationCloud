@@ -235,6 +235,28 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
         }
 
+        public async Task<IActionResult> UpdateTemplate([FromRoute] int id)
+        {
+            try
+            { 
+                var viewModel = new TemplateViewModel();
+                viewModel.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                viewModel.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
+                viewModel.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(new TemplateViewModel());
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> GetTemplateTypePartialView(TemplateViewModel model)
         {

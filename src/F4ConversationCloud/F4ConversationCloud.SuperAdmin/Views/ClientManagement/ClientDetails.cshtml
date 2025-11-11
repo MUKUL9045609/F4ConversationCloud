@@ -530,6 +530,10 @@
                                     <div id="collapseThirtyTwo" class="accordion-collapse collapse" aria-labelledby="headingThirtyTwo"
                                          data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <span class="lighttext">Created Templates are @Model.TemplatesList.TotalCount</span>
+                                                <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
+                                            </div>
                                             <partial name="_TemplateList" model="Model.TemplatesList" />
                                         </div>
                                     </div>
