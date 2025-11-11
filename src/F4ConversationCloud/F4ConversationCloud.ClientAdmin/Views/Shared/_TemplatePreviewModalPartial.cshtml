@@ -1,10 +1,64 @@
-﻿@{
+﻿@model F4ConversationCloud.ClientAdmin.Models.TemplateModel.TemplatesListViewModel;
+@{
     ViewData["Title"] = "template preview  List";
 }
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="templateModalContent">
-            <!-- Partial view content will load here -->
+<!-- Message Modal -->
+
+<div class="modal-header">
+    <span class="lighttext d-block">Preview</span>
+    <h5 class="modal-title">@Model.templateDetail.TemplateName</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="template-preview">
+        <div class="swiper-card">
+            <div class="template-slide-card">
+            
+               
+                    @if (Model.templateDetail.HeaderType == "HEADER")
+                    {   @if (Model.templateDetail.HeaderFormat == "IMAGE" )
+                        {
+                            <span>
+                                <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
+                            </span>
+                        }
+                        <div class="description">
+                            @if (@Model.templateDetail.HeaderFormat == "TEXT")
+                            {
+                            <p><strong>@Html.Raw(Model.templateDetail.HeaderText)</strong></p>
+                            }
+
+                        
+                            @if (Model.templateDetail.HeaderFormat == "DOCUMENT")
+                            {
+                                <span>
+                                    <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
+                                </span>
+                            }
+                        </div>
+                    }
+                    <div class="description">
+                        @if (Model.templateDetail.BodyType == "BODY")
+                        {
+
+                            <p>@Html.Raw(Model.templateDetail.BodyText)</p>
+
+                        }
+                        @if (Model.templateDetail.FooterType == "FOOTER")
+                        {
+                        <span class="description-small-text">@Html.Raw(Model.templateDetail.FooterText)</span>
+                           
+
+                        }
+                    </div>
+                </div>
+                <div class="time">@Model.templateDetail.ModifiedOn?.ToString("hh:mm tt")</div>
+            </div>
+            @* <div class="buy-link">
+                <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                <a href="#"><i class="forward"></i> My Account Balance</a>
+            </div> *@
         </div>
     </div>
 </div>
+

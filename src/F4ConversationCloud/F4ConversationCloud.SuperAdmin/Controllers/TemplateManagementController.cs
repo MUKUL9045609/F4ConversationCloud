@@ -1,9 +1,12 @@
 ﻿using BuldanaUrban.Domain.Helpers;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -14,11 +17,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
     {
         private readonly ITemplateManagementService _templateManagementService;
         private readonly ITemplateRepositories _templateRepositories;
+        private readonly IWhatsAppTemplateService _whatsAppTemplateService;
+        private readonly DbContext _context;
 
-        public TemplateManagementController(ITemplateManagementService templateManagementService, ITemplateRepositories templateRepositories)
+        public TemplateManagementController(ITemplateManagementService templateManagementService, ITemplateRepositories templateRepositories,
+            IWhatsAppTemplateService whatsAppTemplateService, DbContext context)
         {
             _templateManagementService = templateManagementService;
             _templateRepositories = templateRepositories;
+            _whatsAppTemplateService = whatsAppTemplateService;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -104,26 +112,52 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
         }
 
-        [HttpGet("List")]
         public async Task<IActionResult> List(TemplatesListViewModel model)
         {
             try
             {
-                var filter = new TemplatesListFilter
+                model.StatusList = EnumExtensions.ToSelectList<TemplateApprovalStatus>();
+                model.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                model.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+
+                var response = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
                 {
+                    TemplateNameFilter = model.TemplateNameFilter ?? String.Empty,
+                    TemplateCategoryFilter = model.TemplateCategoryFilter,
+                    LanguageFilter = model.LanguageFilter,
+                    CreatedOnFilter = model.CreatedOnFilter ?? String.Empty,
+                    StatusFilter = model.StatusFilter,
                     PageNumber = model.PageNumber,
-                    PageSize = model.PageSize
-                };
+                    PageSize = model.PageSize,
+                });
 
-                var templates = await _templateManagementService.TemplateListAsync(filter);
-                return PartialView("_TemplateList", templates);
+                if (model.PageNumber > 1 && Math.Ceiling((decimal)response.Item2 / (decimal)model.PageSize) < model.PageNumber)
+                {
+                    if (model.PageNumber > 1)
+                    {
+                        TempData["ErrorMessage"] = "Invalid Page";
+                    }
+                    return RedirectToAction("List");
+                }
+
+                model.TotalCount = response.Item2;
+                model.data = response.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
+                {
+                    Id = x.Id,
+                    SrNo = x.SrNo,
+                    TemplateName = x.TemplateName,
+                    TemplateCategory = x.TemplateCategory,
+                    CreatedOn = x.CreatedOn,
+                    Status = x.Status
+                });
+
+                return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return PartialView("_TemplateList", new List<TemplatesListViewModel>());
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(new TemplatesListViewModel());
             }
-
         }
 
         public async Task<IActionResult> CreateTemplate()
@@ -192,9 +226,39 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 };
                 templateRequest.TemplateFooter.type = "FOOTER";
                 templateRequest.TemplateFooter.text = model.Footer;
+                templateRequest.ClientInfoId = model.ClientInfoId.ToString();
+                templateRequest.WABAID = model.WABAId;
+                templateRequest.CreatedBy = _context.SessionUserId.ToString();
 
                 await _templateRepositories.MetaCreateTemplate(templateRequest);
-                return View(model);
+
+                return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return View(new TemplateViewModel());
+            }
+        }
+
+        public async Task<IActionResult> UpdateTemplate([FromRoute] int id)
+        {
+            try
+            { 
+                var data = await _whatsAppTemplateService.GetTemplateByIdAsync(id);
+
+                var viewModel = new TemplateViewModel();
+                viewModel.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
+                viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
+                viewModel.VariableTypeList = EnumExtensions.ToSelectList<VariableTypes>();
+                viewModel.MediaTypeList = EnumExtensions.ToSelectList<MediaType>();
+                viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
+                viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
+                viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.TemplateName = data.TemplateName;
+                viewModel.Header = data.HeaderText;
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {

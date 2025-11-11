@@ -520,8 +520,23 @@
                                     </div>
                                 </div> *@
 
-                                <div class="accordion-item">
-                                    <partial name="_TemplateList" model="new TemplatesListViewModel { data = Model.TemplatesList }" />
+                                <div class="accordion-item" id="template-list-container">
+                                    <h2 class="accordion-header" id="headingThirtyTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseThirtyTwo" aria-expanded="false" aria-controls="collapseThirtyTwo">
+                                            Templates <span class="light-text ms-1">(@Model.TemplatesList.TotalCount)</span>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThirtyTwo" class="accordion-collapse collapse" aria-labelledby="headingThirtyTwo"
+                                         data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <span class="lighttext">Created Templates are @Model.TemplatesList.TotalCount</span>
+                                                <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
+                                            </div>
+                                            <partial name="_TemplateList" model="Model.TemplatesList" />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="accordion-item">
@@ -647,6 +662,37 @@
         </div>
     </div>
 </div>
+<div class="modal fade template-modal" id="template-preview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="lighttext d-block">Preview</span>
+                <h5 class="modal-title" id="template-preview-Label">Onboarding_Invite_Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="template-preview">
+                    <div class="swiper-card">
+                        <div class="template-slide-card">
+                            @* <span><img src="images/card-img-03.png"></span> *@
+                            <div class="description">
+                                <p id="template-preview-header" style="font-weight: 500;"></p>
+                                <p id="template-preview-body"></p>
+                                <span class="description-small-text" id="template-preview-footer"></span>
+                            </div>
+                            <div class="time">1:59 PM</div>
+                        </div>
+                        @* <div class="buy-link">
+                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                            <a href="#"><i class="forward"></i> My Account Balance</a>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!-- Reject Modal -->
 @* <div class="modal fade comment-modal" id="exampleModal11" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered">
@@ -691,7 +737,7 @@
 </div> *@
 <!--end Reject modal -->
 @section Scripts {
-    <script src="~/js/unobtrusiveHelper.js"></script>
+    @* <script src="~/js/unobtrusiveHelper.js"></script> *@
     <script>
         $(document).ready(function() {
             $('#save-btn').hide();
@@ -920,6 +966,84 @@
 
         $(document).on('click', '.back', function () {
             commonHelper.showHideLoader(true);
+        });
+
+        function loadData() {
+            var expandedAccordionId = $(".accordion-collapse.show").attr("id");
+            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+            var filter = {
+                TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                LanguageFilter: $("[name=LanguageFilter]").val(),
+                CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                StatusFilter: $("[name=StatusFilter]").val(),
+                WABAId: wabaId,
+                PageNumber: 1,
+            };
+
+
+            $.ajax({
+                url: '/ClientManagement/GetFilteredTemplates',
+                type: 'GET',
+                data: filter,
+                success: function (result) {
+                    $("#template-list-container").html(result);
+                },
+                error: function () {
+                    commonHelper.showError("Failed to load templates.");
+                }
+            });
+        }
+
+        $(document).on("click", ".page-link", function () {
+            var pageNumber = $(this).data("page-number");
+            if (pageNumber) {
+                loadData(pageNumber);
+            }
+        });
+
+        $(document).on("keypress", ".srcIcon", function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+
+        $(document).on("click", "#create-template-btn", function (e) {
+            var model = @Html.Raw(Json.Serialize(Model));
+
+            var data = {
+                ClientInfoId: model.clientInfoId,
+                WABAId: model.wabaId,
+                MetaConfigId: model.id
+            };
+
+            localStorage.setItem('ClientData', JSON.stringify(data));
+        });
+
+        $(document).on("click", "#template-view", function (e) {
+            var templateName = $(this).data("templatename");
+            var templateheadertext = $(this).data("templateheadertext");
+            var templateheaderexample = $(this).data("templateheaderexample");
+            var templatebodytext = $(this).data("templatebodytext");
+            var templatebodyexample = $(this).data("templatebodyexample");
+            var templatefooter = $(this).data("templatefooter");
+
+            if (templateheadertext.includes("{{1}}")) {
+                templateheadertext = templateheadertext.replace("{{1}}", templateheaderexample);
+            }
+
+            if (templatebodytext && templatebodyexample) {
+                var exampleValues = templatebodyexample.split(',');
+                exampleValues.forEach(function(value, index) {
+                    var placeholder = `{{${index + 1}}}`;
+                    templatebodytext = templatebodytext.replace(placeholder, value.trim());
+                });
+            }
+
+            $('#template-preview-Label').text(templateName);
+            $('#template-preview-header').text(templateheadertext);
+            $('#template-preview-body').html(templatebodytext);
+            $('#template-preview-footer').text(templatefooter);
         });
 
     </script>

@@ -49,8 +49,6 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string RejectComment { get; set; }
         public string OrganizationName { get; set; }
         public List<MasterPrice> masterPrices { get; set; }
-        public List<TemplateData> TemplatesList { get; set; } = new List<TemplateData>();
-
-      //public TemplatesListViewModel TemplatesList { get; set; } = new TemplatesListViewModel();
+        public TemplatesListViewModel TemplatesList { get; set; } = new TemplatesListViewModel();
     }
 }

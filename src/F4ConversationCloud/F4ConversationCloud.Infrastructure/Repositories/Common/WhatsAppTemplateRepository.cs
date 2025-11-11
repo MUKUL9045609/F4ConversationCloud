@@ -3,6 +3,7 @@ using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Interfaces;
@@ -37,27 +38,28 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
 
                 Dp.Add("@ClientInfoId", filter.ClientInfoId);
                 Dp.Add("@templateName", filter.TemplateName);
-                Dp.Add("@category", filter.Category != 0 ? filter.Category.Get<DisplayAttribute>().Name : string.Empty);
+                Dp.Add("@category", filter.Category);
                 Dp.Add("@langCode", filter.LangCode);
                 Dp.Add("@modifiedOn", filter.ModifiedOn);
-                Dp.Add("@Templatestatus", filter.TemplateStatus != 0 ? filter.TemplateStatus.Get<DisplayAttribute>().Name: string.Empty);
+                Dp.Add("@Templatestatus", filter.TemplateStatus);
                 Dp.Add("@PageNumber", filter.PageNumber);
                 Dp.Add("@PageSize", filter.PageSize);
+
                 var serialize = Serializers.JsonObject(filter);
+
                 var templateList = await _repository.GetListByValuesAsync<WhatsappTemplateListItem>("[sp_GetWhatsappTemplateList]", Dp);
                 int TotalCount = await _repository.GetByValuesAsync<int>("sp_GetWhatsappTemplateCount", Dp);
-                return (templateList, TotalCount);
 
+                return (templateList, TotalCount);
             }
             catch (Exception)
             {
-
-                return (Enumerable.Empty<WhatsappTemplateListItem>(),0);
+                return (Enumerable.Empty<WhatsappTemplateListItem>(), 0);
             }
-           
         }
 
-        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id)
+
+        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(int Template_id)
         {
             try
             {
@@ -117,6 +119,36 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
                 return 0;
             }
+        }
+
+        public async Task<int> GetCountAsync(TemplateListFilter filter)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("WABAId", filter.WABAId);
+            parameters.Add("TemplateNameFilter", filter.TemplateNameFilter);
+            parameters.Add("TemplateCategoryFilter", filter.TemplateCategoryFilter);
+            parameters.Add("LanguageFilter", filter.LanguageFilter);
+            parameters.Add("CreatedOnFilter", filter.CreatedOnFilter);
+            parameters.Add("StatusFilter", filter.StatusFilter);
+
+            return await _repository.GetCountAsync("sp_GetTemplateCountByWABAId", parameters);
+        }
+
+        public async Task<IEnumerable<TemplateModel>> GetFilteredAsync(TemplateListFilter filter)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("WABAId", filter.WABAId);
+            parameters.Add("TemplateNameFilter", filter.TemplateNameFilter);
+            parameters.Add("TemplateCategoryFilter", filter.TemplateCategoryFilter);
+            parameters.Add("LanguageFilter", filter.LanguageFilter);
+            parameters.Add("CreatedOnFilter", filter.CreatedOnFilter);
+            parameters.Add("StatusFilter", filter.StatusFilter);
+            parameters.Add("pageNumber", filter.PageNumber);
+            parameters.Add("pageSize", filter.PageSize);
+
+            return await _repository.GetListByValuesAsync<TemplateModel>("sp_GetFilteredTemplatesByWABAId", parameters);
         }
 
         public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId)
