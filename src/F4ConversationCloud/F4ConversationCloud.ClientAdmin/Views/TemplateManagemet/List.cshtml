@@ -42,12 +42,14 @@
 
                             <th>
                                 Last Updated
-                                <label class="datewrap" for="datepicker">
-                                    <input type="text" class="form-control datepicker search-form-control" placeholder="Select Date" id="datepicker2" name="ModifiedOn" value="@(Model.ModifiedOn?.ToString("dd MMM yyyy") ?? "")" />
-                                    <span class="dateIcon"></span>
-                                </label>
-
+                                <input type="date"
+                                       id="datepicker2"
+                                       name="ModifiedOn"
+                                       class="form-control search-form-control"
+                                       value="@(Model.ModifiedOn?.ToString("yyyy-MM-dd") ?? "")"
+                                       max="@DateTime.Now.ToString("yyyy-MM-dd")" />
                             </th>
+
 
                                  <th>
                                     Status
@@ -113,11 +115,8 @@
 
 @section Scripts {
     <script>
-        $(function () {
-            $("#datepicker2").datepicker({
-                dateFormat: "dd MM yy"
-            });
-        });
+        
+
         $("[name='Category'], [name='TemplateStatus'],[name='templateLanguages'],[name='ModifiedOn']").on("change", function () {
             loadData();
         });
