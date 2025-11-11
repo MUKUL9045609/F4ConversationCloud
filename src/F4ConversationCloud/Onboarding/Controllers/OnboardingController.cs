@@ -32,7 +32,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
 
             try
             {
-
                 if (string.IsNullOrEmpty(token))
                 {
                     TempData["ErrorMessage"] = "This link is no longer active for security reasons .";

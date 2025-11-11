@@ -54,11 +54,31 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
 
         }
-        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string Template_id)
+        public async Task<WhatsappTemplateDetail> GetTemplateByIdAsync(string templateId)
         {
             try
             {
-                var templateDetail = await _templateRepository.GetTemplateByIdAsync(Template_id);
+                var templateDetail = await _templateRepository.GetTemplateByIdAsync(templateId);
+
+                if (templateDetail != null)
+                {
+                    if (!string.IsNullOrEmpty(templateDetail.BodyExample))
+                    {
+                        templateDetail.BodyText = await ReplaceTemplatePlaceholdersAsync(
+                            templateDetail.BodyText,
+                            templateDetail.BodyExample
+                        );
+                    }
+
+                    if (!string.IsNullOrEmpty(templateDetail.HeaderExample))
+                    {
+                        templateDetail.HeaderText = await ReplaceTemplatePlaceholdersAsync(
+                            templateDetail.HeaderText,
+                            templateDetail.HeaderExample
+                        );
+                    }
+                }
+
                 return templateDetail;
             }
             catch (Exception ex)
@@ -66,13 +86,35 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
                 var log = new LogModel
                 {
                     Source = "WhatsappTemplate/GetTemplateByIdAsync",
-                    AdditionalInfo = $"TemplateId: {Template_id}",
+                    AdditionalInfo = $"TemplateId: {templateId}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
                 await _logService.InsertLogAsync(log);
                 return null;
+            }
+        }
+
+        private async Task<string> ReplaceTemplatePlaceholdersAsync(string templateText, string parameters)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(templateText) || string.IsNullOrEmpty(parameters))
+                    return templateText;
+
+                var paramArray = parameters.Split(',').Select(p => p.Trim()).ToArray();
+
+                for (int i = 0; i < paramArray.Length; i++)
+                {
+                    templateText = templateText.Replace($"{{{{{i + 1}}}}}", paramArray[i]);
+                }
+
+                return templateText;
+            }
+            catch
+            {
+                return string.Empty;
             }
         }
 

@@ -18,5 +18,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
         Task<dynamic> UploadMetaImage(string base64Image);
         Task<dynamic> Whatsappbusinessprofile(string profilepicturehandle, string PhoneNumberId);
         Task<dynamic> GetWhatsappbusinessprofile(string PhoneNumberId);
+        Task<dynamic> SyncTemplateByTemplateID(string TemplateId);
     }
 }

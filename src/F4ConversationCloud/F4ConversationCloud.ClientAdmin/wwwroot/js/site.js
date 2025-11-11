@@ -22,3 +22,6 @@ $('#toggleButton').on('click', function () {
   
     $('body').toggleClass('sidemenutoggle');
 });
+window.onload = function () {
+    $("#loader").fadeOut("slow");
+};
