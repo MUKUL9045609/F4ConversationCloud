@@ -60,30 +60,98 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
                 
-                var result = await _templateService.CreateTemplate(messageTemplate);
+                var response = await _templateService.CreateTemplate(messageTemplate ,  requestBody.WABAID);
 
-                if (result != null)
+                if (response.Status)
                 {
-                  messageTemplate.category = result.data.category;
-                  messageTemplate.TemplateId = result.data.id;
-                  messageTemplate.TemplateStatus = result.data.status;
-                  var id =  await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate);
+                    messageTemplate.category = response.result.category;
+                    var resId = response.result.id?.ToString();
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
 
+                    return new APIResponse
+                    {
+                        Message = "Template created successFully.",
+                        Status = true
+                    };
+                }
+                else
+                {
+
+                    return new APIResponse
+                    {
+                        Message = response.Message?.ToString().Trim('{', '}'),
+                        Status = false
+                    };
                 }
 
-
-                return new APIResponse
-                {
-                    Message = "Template created successFully.",
-                    Status = true
-                };
 
             }
             catch (Exception ex)
             {
                 return new APIResponse
                 {
-                    Message = "Template not created successFully.",
+                    Message = "Error occured while creating template",
+                    Status = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
+
+        public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
+        {
+            try
+            {
+                if (requestBody != null)
+                {
+                    if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
+                    {
+
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString());
+                        using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
+                        JsonElement root = doc.RootElement;
+
+                        if (root.TryGetProperty("h", out JsonElement hProperty))
+                        {
+                            string hValue = hProperty.GetString();
+                            requestBody.TemplateHeader.Example.HeaderFile.Clear();
+                            requestBody.TemplateHeader.Example.HeaderFile.Add(hValue);
+                        }
+                    }
+                }
+
+                MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
+
+
+                var response = await _templateService.EditTemplate(messageTemplate, requestBody.TemplateId);
+
+                if (response.Status == true)
+                {
+                    messageTemplate.category = response.result.category;
+                    var resId = response.result.id?.ToString();
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId);
+
+                    return new APIResponse
+                    {
+                        Message = "Template created successFully.",
+                        Status = true
+                    };
+
+                }
+                else
+                {
+                    return new APIResponse
+                    {
+                        Message = response.Message?.ToString().Trim('{', '}'),
+                        Status = false
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse
+                {
+                    Message = "Error occured while creating template",
                     Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace

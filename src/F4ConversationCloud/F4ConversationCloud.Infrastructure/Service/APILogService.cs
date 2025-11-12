@@ -131,10 +131,9 @@ namespace F4ConversationCloud.Infrastructure.Service
                 errorMessage = response.ErrorMessage;
                 rawResponse = await response.Response.Content.ReadAsStringAsync();
                 statusCode = (int)response.Response.StatusCode;
-                if (isSuccess)
-                {
-                    ReturnResponse = JsonConvert.DeserializeObject<T>(rawResponse);
-                }
+                
+                ReturnResponse = JsonConvert.DeserializeObject<T>(rawResponse);
+                
             }
             catch (Exception ex)
             {

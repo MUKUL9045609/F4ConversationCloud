@@ -10,11 +10,11 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
 {
     public interface ITemplateService
     {
-        Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody);
-        Task<dynamic> EditTemplate(MessageTemplateDTO requestBody, string TemplateID);
+        Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody, string WABAID);
+        Task<dynamic> EditTemplate(MessageTemplateDTO requestBody, string TemplateId);
         Task<dynamic> DeleteTemplate(int TemplateId, string TemplateName);
         Task<dynamic> DeleteTemplateByName(string TemplateName);
-        MessageTemplateDTO TryDeserializeAndAddComponent(TemplateRequest request);
+        MessageTemplateDTO TryDeserializeAndAddComponent(dynamic request);
         Task<dynamic> UploadMetaImage(string base64Image);
         Task<dynamic> Whatsappbusinessprofile(string profilepicturehandle, string PhoneNumberId);
         Task<dynamic> GetWhatsappbusinessprofile(string PhoneNumberId);

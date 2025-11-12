@@ -12,6 +12,8 @@ using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -218,14 +220,21 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 };
                 templateRequest.TemplateBody.Type = "BODY";
                 templateRequest.TemplateBody.Text = model.MessageBody;
-                //templateRequest.TemplateBody.Text = "Shop now through {{1}} and use code {{2}} to get {{3}} off of all merchandise.\r\n";
-                templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
+                string messageBody = model.MessageBody;
+                bool hasVariables = Regex.IsMatch(messageBody, @"\{\{\d+\}\}");
+
+                if (hasVariables)
                 {
-                    Body_Text = new List<List<string>>
+                    templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
+                    {
+                        Body_Text = new List<List<string>>
                         {
                             new List<string> { "the end of August", "25OFF", "25%" }
                         }
-                };
+                    };
+                }
+                //templateRequest.TemplateBody.Text = "Shop now through {{1}} and use code {{2}} to get {{3}} off of all merchandise.\r\n";
+                
                 templateRequest.TemplateFooter.type = "FOOTER";
                 templateRequest.TemplateFooter.text = model.Footer;
                 templateRequest.ClientInfoId = model.ClientInfoId.ToString();
@@ -234,7 +243,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 APIResponse result = await _templateRepositories.MetaCreateTemplate(templateRequest);
 
-                TempData["SuccessMessage"] = result.Message;
+                if (result.Status)
+                {
+                    TempData["SuccessMessage"] = result.Message;
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = result.Message;
+                }
                 return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
             }
             catch (Exception ex)

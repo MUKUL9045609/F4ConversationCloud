@@ -23,6 +23,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             _whatsAppTemplate = whatsAppTemplate;
             _logService = logService;
         }
+        [HttpGet("template-list")]
         public async Task<IActionResult> List(TemplatesListViewModel request)
         {
             try
