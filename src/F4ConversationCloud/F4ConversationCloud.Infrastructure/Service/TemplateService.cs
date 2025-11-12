@@ -78,7 +78,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new APIResponse
                 {
-                    Message = "Template not created successFully.",
+                    Message = "Error occured while creating template.",
                     Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
@@ -135,7 +135,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
-                    Message = "Template not edited.",
+                    Message = "Error occured while editing template.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
@@ -176,7 +176,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
-                    Message = "Template not deletd.",
+                    Message = "Error occured while deleting template..",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
@@ -217,7 +217,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
-                    Message = "Template not deletd.",
+                    Message = "Error occured while deleting template.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
@@ -258,7 +258,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
-                    Message = "Template not deletd.",
+                    Message = "Error occured while deleting template.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
@@ -565,7 +565,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
-                    Message = "Template not created successFully.",
+                    Message = "Error occured while creating template.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
@@ -609,7 +609,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             {
                 return new
                 {
-                    Message = "Template not created successFully.",
+                    Message = "Error occured while creating template.",
                     Success = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
