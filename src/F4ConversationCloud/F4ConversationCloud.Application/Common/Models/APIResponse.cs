@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Models
 {
-    public class APILoginResponse
+    public class APIResponse
     {
         public bool Status { get; set; }
         public string Message { get; set; } = string.Empty;
-        public APILoginData Data { get; set; } = new APILoginData();
+        public string Error { get; set; } = string.Empty;
+        public string StackTrace { get; set; } = string.Empty;
+        public APIData Data { get; set; } = new APIData();
+        public object result { get; set; }
     }
-    public class APILoginData
+    public class APIData
     {
         public string Token { get; set; } = string.Empty;
         public int ExpiryInSeconds { get; set; }
