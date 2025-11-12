@@ -25,7 +25,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             _logService = logService;
         }
 
-        public async Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody,string WABAID)
+        public async Task<dynamic> CreateTemplate(MessageTemplateDTO requestBody, string WABAID)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -37,7 +37,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 //string token = _configuration["WhatsAppAPISettings:Token"];
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                
+
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
                 var whatsAppBusinessAccountId = WABAID;
@@ -85,7 +85,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 };
             }
         }
-        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody , string TemplateId)
+        public async Task<dynamic> EditTemplate(MessageTemplateDTO requestBody, string TemplateId)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -96,7 +96,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 string requestJson = JsonConvert.SerializeObject(requestBody);
 
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                
+
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
                 var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + TemplateId;
@@ -109,14 +109,14 @@ namespace F4ConversationCloud.Infrastructure.Service
                                                                     null,
                                                                     true);
 
-                if(result.error != null)
+                if (result.error != null)
                 {
                     return new
                     {
                         Success = false,
                         result = result.error,
                         Message = result.error.error_user_msg
-                        
+
                     };
                 }
                 else
@@ -129,7 +129,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                     };
 
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -225,7 +225,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
-        public async Task<dynamic> SyncTemplateByTemplateID (string TemplateId)
+        public async Task<dynamic> SyncTemplateByTemplateID(string TemplateId)
         {
             string apiUrl = string.Empty;
             string methodType = "SyncTemplate";
@@ -343,8 +343,11 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "footer")
                     {
-                        messageTemplate.components.Add(JsonSerializer.Deserialize<FootersComponent>(Footerroot, options));
-
+                        var FooterValue = JsonSerializer.Deserialize<FootersComponent>(Footerroot, options);
+                        if (!string.IsNullOrEmpty(FooterValue.text))
+                        {
+                            messageTemplate.components.Add(FooterValue);
+                        }
                     }
                 }
 
@@ -519,7 +522,7 @@ namespace F4ConversationCloud.Infrastructure.Service
         }
 
 
-        public async Task<dynamic> Whatsappbusinessprofile (string profilepicturehandle , string PhoneNumberId)
+        public async Task<dynamic> Whatsappbusinessprofile(string profilepicturehandle, string PhoneNumberId)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -535,12 +538,12 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 string requestJson = JsonConvert.SerializeObject(requestBody);
 
-                
+
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                
+
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
-                
+
                 var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + WhatsAppBusinessRequestEndpoint.Whatsappbusinessprofile.Replace("{{Phone-Number-ID}}", PhoneNumberId);
 
                 var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
@@ -581,9 +584,9 @@ namespace F4ConversationCloud.Infrastructure.Service
             try
             {
                 string requestJson = JsonConvert.SerializeObject(requestBody);
-                
+
                 string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
-                
+
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
                 var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.BaseAddress + WhatsAppBusinessRequestEndpoint.Whatsappbusinessprofile.Replace("{{Phone-Number-ID}}", PhoneNumberId) + "whatsapp_business_profile?fields=profile_picture_url";
