@@ -969,7 +969,7 @@
         });
 
         function loadData() {
-            var expandedAccordionId = $(".accordion-collapse.show").attr("id");
+            alert();
             var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
             var filter = {
                 TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
@@ -997,8 +997,31 @@
 
         $(document).on("click", ".page-link", function () {
             var pageNumber = $(this).data("page-number");
-            if (pageNumber) {
-                loadData(pageNumber);
+            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+            
+            var filter = {};
+            if (pageNumber !== undefined && pageNumber !== null) {
+                filter = {
+                    TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                    TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                    LanguageFilter: $("[name=LanguageFilter]").val(),
+                    CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                    StatusFilter: $("[name=StatusFilter]").val(),
+                    WABAId: wabaId,
+                    PageNumber: pageNumber
+                };
+            
+                $.ajax({
+                    url: '/ClientManagement/GetFilteredTemplates',
+                    type: 'GET',
+                    data: filter,
+                    success: function (result) {
+                        $("#template-list-container").html(result);
+                    },
+                    error: function () {
+                        commonHelper.showError("Failed to load templates.");
+                    }
+                });
             }
         });
 
