@@ -12,6 +12,7 @@ using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -242,7 +243,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 APIResponse result = await _templateRepositories.MetaCreateTemplate(templateRequest);
 
-                TempData["SuccessMessage"] = result.Message;
+                if (result.Status)
+                {
+                    TempData["SuccessMessage"] = result.Message;
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = result.Message;
+                }
                 return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
             }
             catch (Exception ex)
