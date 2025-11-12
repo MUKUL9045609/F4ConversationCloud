@@ -2,15 +2,20 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using Twilio.TwiML;
 using Twilio.TwiML.Voice;
+using Twilio.Types;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace F4ConversationCloud.Infrastructure.Service
@@ -617,7 +622,76 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
+        public async Task<dynamic> GetAllTemplatesAsync(string wabaId)
+        {
+            string apiUrl = string.Empty;
+            string methodType = "Get";
+            var headers = new Dictionary<string, string>();
+            var requestBody = string.Empty;
 
+            try
+            {
+                var allTemplates = new List<WhatsappTemplateDetail>();
+
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.GraphTemplateSyncApi.ToString().Replace("{{waba_id}}", wabaId).Replace("{{access_token}}", token);
+                
+                string requestJson = formattedWhatsAppEndpoint;
+
+                while (!string.IsNullOrEmpty(formattedWhatsAppEndpoint))
+                {
+
+                    var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
+                                                                        methodType,
+                                                                        requestBody,
+                                                                        headers,
+                                                                        "Get Meta Whatsapp business profile",
+                                                                        null,
+                    true);
+
+
+
+                    var data = result["data"];
+
+                    foreach (var item in data)
+                    {
+                        allTemplates.Add(new WhatsappTemplateDetail
+                        {
+                            TemplateName = item["name"]?.ToString(),
+                            LanguageCode = item["language"]?.ToString(),
+                            Category = item["category"]?.ToString(),
+                            Status = item["status"]?.ToString(),
+                            TemplateId = item["id"]?.ToString()
+                        });
+                    }
+
+                    var paging = result["paging"];
+                    if (paging != null && paging["next"] != null)
+                    {
+                        formattedWhatsAppEndpoint = paging["next"]?.ToString();
+                    }
+                    else
+                    {
+                        formattedWhatsAppEndpoint = null;
+                    }
+                }
+
+                return allTemplates;
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Error occured while creating template.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
 
 
 

@@ -13,7 +13,7 @@ using Twilio.TwiML.Voice;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
-    [Authorize(Roles = "1")]
+    //[Authorize(Roles = "1")]
     [ApiController]
     [Route("MessageTemplates")]
     public class TemplateController : Controller
@@ -152,6 +152,23 @@ namespace F4ConversationCloud.WebUI.Controllers
                 var response = await _templateService.UploadMetaImage(uploadImage.base64Image);
 
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllTemplatesAsync()
+        {
+            try
+            {
+                var result = await _templateRepositories.MetaSyncTemplate();
+
+                return Ok();
             }
             catch (Exception ex)
             {

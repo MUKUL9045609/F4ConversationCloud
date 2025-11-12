@@ -188,5 +188,37 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 return 0;
             }
         }
+
+
+        public async Task<dynamic> GetMetaUsersConfiguration()
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                return await _repository.GetListByValuesAsync<dynamic>("GetMetaUsersConfiguration", parameters);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<int> SyncAndUpdateWhatsappTemplate(string TemplateId , string Templatecategory, string TemplateStatus)
+        {
+            try
+            {
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@TemplateId", TemplateId );
+                parameters.Add("@TemplateStatus", TemplateStatus);
+                parameters.Add("@Category", Templatecategory);
+               
+                return await _repository.InsertUpdateAsync("sp_SyncAndUpdateWhatsappTemplate", parameters);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 }
