@@ -62,10 +62,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 
                 var result = await _templateService.CreateTemplate(messageTemplate ,  requestBody.WABAID);
 
-                if (result.Success == true)
+                if (result.Status)
                 {
-                    messageTemplate.category = result.data.category;
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, result.data.id, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
+                    messageTemplate.category = result.result.category;
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, result.result.id, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
 
                     return new APIResponse
                     {

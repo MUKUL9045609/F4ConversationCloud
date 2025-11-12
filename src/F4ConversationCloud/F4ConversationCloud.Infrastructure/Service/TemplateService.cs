@@ -1,6 +1,7 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
@@ -52,20 +53,20 @@ namespace F4ConversationCloud.Infrastructure.Service
                                                                     true);
                 if (result.error != null)
                 {
-                    return new
+                    return new APIResponse
                     {
-                        Success = false,
-                        result = result.error,
+                        Status = false,
+                        Error = result.error,
                         Message = result.error.error_user_msg
 
                     };
                 }
                 else
                 {
-                    return new
+                    return new APIResponse
                     {
-                        Success = true,
-                        result = result.data,
+                        Status = true,
+                        result = result,
                         Message = "Template created successFully."
                     };
 
@@ -75,10 +76,10 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
             catch (Exception ex)
             {
-                return new
+                return new APIResponse
                 {
                     Message = "Template not created successFully.",
-                    Success = false,
+                    Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };
