@@ -704,5 +704,10 @@
                 commonHelper.showHideLoader(false);
             }
         });
+
+        $(document).on('click', '#discard-btn', function (e) {
+            var storedData = JSON.parse(localStorage.getItem('ClientData'));
+            location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
+        });
     </script>
 }
