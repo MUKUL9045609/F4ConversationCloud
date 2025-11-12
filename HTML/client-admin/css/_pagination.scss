@@ -6,7 +6,13 @@
     justify-content: center;
     li {
         margin-right: 8px;
-
+        &.active{
+            a{
+                background-color: transparent!important;
+                border-color: #03A9F5!important;
+                color: #03A9F5!important;
+            }
+        }
         a {
             padding: 10px;
             border-radius: 4px;

@@ -299,7 +299,7 @@
 }
 .nav-tabs .nav-item .nav-link:hover {
   border: 0px;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid #9A9A9A;
 }
 .nav-tabs .nav-item .nav-link.active {
   background-color: rgba(3, 169, 245, 0.1019607843);
@@ -323,6 +323,7 @@
 }
 .nav-tabs .nav-item .nav-link:focus {
   border: 0px;
+  border-bottom: 1px solid #9A9A9A;
 }
 .nav-tabs.conversation-list {
   display: flex;
@@ -513,6 +514,7 @@
 .form-check .form-check-input {
   margin-left: -24px !important;
   float: inherit !important;
+  border: 1px solid #999393;
 }
 .form-check .form-check-input:checked[type=radio] {
   border: 2px solid #03A9F5;
@@ -1259,7 +1261,6 @@ button:disabled {
   margin-bottom: 19px !important;
 }
 .accordion-guide.template-accordion .accordion-item .accordion-header .accordion-button {
-  border-bottom: 1px solid #ddd;
   padding: 14px 15px;
 }
 .accordion-guide.template-accordion .accordion-item .accordion-header .accordion-button.collapsed {
@@ -1608,7 +1609,7 @@ body {
 }
 .page .app-sidebar .main-side-navigation ul li a.icon.home::before {
   content: "";
-  background-image: url("data:image/svg+xml,%3Csvg width='14' height='15' viewBox='0 0 14 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.66667 12.9167H4.16667V8.75C4.16667 8.51389 4.24667 8.31611 4.40667 8.15667C4.56667 7.99722 4.76444 7.91722 5 7.91667H8.33333C8.56944 7.91667 8.7675 7.99667 8.9275 8.15667C9.0875 8.31667 9.16722 8.51445 9.16667 8.75V12.9167H11.6667V5.41667L6.66667 1.66667L1.66667 5.41667V12.9167ZM0 12.9167V5.41667C0 5.15278 0.0591665 4.90278 0.1775 4.66667C0.295833 4.43056 0.458889 4.23611 0.666667 4.08333L5.66667 0.333333C5.95833 0.111111 6.29167 0 6.66667 0C7.04167 0 7.375 0.111111 7.66667 0.333333L12.6667 4.08333C12.875 4.23611 13.0383 4.43056 13.1567 4.66667C13.275 4.90278 13.3339 5.15278 13.3333 5.41667V12.9167C13.3333 13.375 13.17 13.7675 12.8433 14.0942C12.5167 14.4208 12.1244 14.5839 11.6667 14.5833H8.33333C8.09722 14.5833 7.89945 14.5033 7.74 14.3433C7.58056 14.1833 7.50056 13.9856 7.5 13.75V9.58333H5.83333V13.75C5.83333 13.9861 5.75333 14.1842 5.59333 14.3442C5.43333 14.5042 5.23556 14.5839 5 14.5833H1.66667C1.20833 14.5833 0.816111 14.4203 0.49 14.0942C0.163889 13.7681 0.000555556 13.3756 0 12.9167Z' fill='white' fill-opacity='0.63'/%3E%3C/svg%3E%0A");
+  background-image: url("data:image/svg+xml,%3Csvg width='15' height='15' viewBox='0 0 14 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.66667 12.9167H4.16667V8.75C4.16667 8.51389 4.24667 8.31611 4.40667 8.15667C4.56667 7.99722 4.76444 7.91722 5 7.91667H8.33333C8.56944 7.91667 8.7675 7.99667 8.9275 8.15667C9.0875 8.31667 9.16722 8.51445 9.16667 8.75V12.9167H11.6667V5.41667L6.66667 1.66667L1.66667 5.41667V12.9167ZM0 12.9167V5.41667C0 5.15278 0.0591665 4.90278 0.1775 4.66667C0.295833 4.43056 0.458889 4.23611 0.666667 4.08333L5.66667 0.333333C5.95833 0.111111 6.29167 0 6.66667 0C7.04167 0 7.375 0.111111 7.66667 0.333333L12.6667 4.08333C12.875 4.23611 13.0383 4.43056 13.1567 4.66667C13.275 4.90278 13.3339 5.15278 13.3333 5.41667V12.9167C13.3333 13.375 13.17 13.7675 12.8433 14.0942C12.5167 14.4208 12.1244 14.5839 11.6667 14.5833H8.33333C8.09722 14.5833 7.89945 14.5033 7.74 14.3433C7.58056 14.1833 7.50056 13.9856 7.5 13.75V9.58333H5.83333V13.75C5.83333 13.9861 5.75333 14.1842 5.59333 14.3442C5.43333 14.5042 5.23556 14.5839 5 14.5833H1.66667C1.20833 14.5833 0.816111 14.4203 0.49 14.0942C0.163889 13.7681 0.000555556 13.3756 0 12.9167Z' fill='white' fill-opacity='0.63'/%3E%3C/svg%3E%0A");
 }
 .page .app-sidebar .main-side-navigation ul li a.icon.register::before {
   content: "";
@@ -1664,7 +1665,7 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.08995 7.6763e-07C2.28938 -0.000556342 1.49331 0.302129 0.882843 0.911208C0.845438 0.94853 0.806375 0.988983 0.77122 1.02764L3.3132 2.05022C3.8299 2.25825 4.07983 2.84076 3.87132 3.35628L3.62778 3.95363C3.41927 4.46915 2.83543 4.71851 2.31873 4.51048L0 3.57396C0.0945293 4.21508 0.388592 4.83237 0.882843 5.3255C1.70844 6.14922 2.88198 6.41056 3.93221 6.12027L10.4064 12.5848C10.9613 13.1384 11.8557 13.1384 12.4105 12.5848L12.5475 12.4481C13.1024 11.8945 13.1024 11.0021 12.5475 10.4485L6.09365 4.00425C6.40842 2.94318 6.14153 1.75375 5.30214 0.91627C4.69167 0.307191 3.89052 0.000556974 3.08995 7.6763e-07ZM11.7256 1.18963C11.4007 1.18915 11.0767 1.3156 10.8275 1.56424L7.63102 4.75346L8.12318 5.2445L11.4719 1.90341C11.5242 1.85125 11.6073 1.85125 11.6596 1.90341C11.7119 1.95557 11.7119 2.03855 11.6596 2.09071L8.31091 5.43181L8.75233 5.86716L12.096 2.53113C12.1483 2.47897 12.2365 2.47897 12.2888 2.53113C12.3411 2.58329 12.3411 2.66627 12.2888 2.71844L8.94006 6.05953L9.43222 6.5455L12.6287 3.36134C13.1271 2.86407 13.1221 2.06151 12.6237 1.56424C12.3744 1.31561 12.0505 1.19012 11.7256 1.18963ZM5.22603 8.23124L3.72418 9.72967L2.74493 9.91697L1.1619 12.4532L1.70988 12.9999L4.25693 11.4255L4.44466 10.4485L5.94651 8.95008L5.22603 8.23124ZM11.411 10.6915C11.6048 10.6915 11.7959 10.7667 11.9438 10.9142C12.2394 11.2092 12.2394 11.6874 11.9438 11.9824C11.6481 12.2774 11.1688 12.2774 10.8732 11.9824C10.5775 11.6874 10.5775 11.2092 10.8732 10.9142C11.021 10.7667 11.2173 10.6915 11.411 10.6915Z' fill='white' fill-opacity='0.63'/%3E%3C/svg%3E");
 }
 .page .app-sidebar .main-side-navigation ul li.active {
-  background-color: #009099;
+  background-color: #0896D3;
 }
 .page .app-sidebar .main-side-navigation ul li.active a {
   color: #fff;
@@ -3784,6 +3785,7 @@ body {
   .burger {
     position: absolute;
     right: 15px;
+    border-radius: 50%;
   }
 }
 .burger .bar {
@@ -3881,6 +3883,11 @@ body {
 .reportrange {
   white-space: nowrap;
   padding: 0.475rem 1.95rem 0.475rem 0.75rem !important;
+}
+@media (max-width: 480px) {
+  .reportrange {
+    margin-top: 8px;
+  }
 }
 
 .toastWrap {
@@ -4471,6 +4478,10 @@ body {
   border: 0px !important;
 }
 
+.daterangepicker td.active, .daterangepicker td.active:hover {
+  background-color: #03a9f5 !important;
+}
+
 .ui-datepicker-prev .ui-icon.ui-icon-circle-triangle-w {
   background-image: url("data:image/svg+xml,%3Csvg fill='%23fff' width='800px' height='800px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24'%3E%3Cpath d='M8.5,12.8l5.7,5.6c0.4,0.4,1,0.4,1.4,0c0,0,0,0,0,0c0.4-0.4,0.4-1,0-1.4l-4.9-5l4.9-5c0.4-0.4,0.4-1,0-1.4c-0.2-0.2-0.4-0.3-0.7-0.3c-0.3,0-0.5,0.1-0.7,0.3l-5.7,5.6C8.1,11.7,8.1,12.3,8.5,12.8C8.5,12.7,8.5,12.7,8.5,12.8z'/%3E%3C/svg%3E") !important;
   background-size: cover;
@@ -4854,6 +4865,11 @@ body {
   margin-left: 260px;
   transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out, margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
 }
+@media (max-width: 480px) {
+  .bottom-strip {
+    margin-left: 0px;
+  }
+}
 .bottom-strip .bottom-container {
   padding: 10px;
   display: flex;
@@ -5144,6 +5160,11 @@ body {
 .waba-wrap .user-list li {
   width: 33.33%;
   margin-bottom: 15px !important;
+}
+@media (max-width: 480px) {
+  .waba-wrap .user-list li {
+    width: 50%;
+  }
 }
 .waba-wrap hr {
   margin-bottom: 1rem !important;

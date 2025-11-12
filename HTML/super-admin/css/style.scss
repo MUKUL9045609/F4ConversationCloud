@@ -236,6 +236,7 @@ body {
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 12px;
+   
     .back-btn{
         background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 -6.5 36 36' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3Eleft-arrow%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='icons' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='ui-gambling-website-lined-icnos-casinoshunter' transform='translate(-342.000000, -159.000000)' fill='%23252528' fill-rule='nonzero'%3E%3Cg id='square-filled' transform='translate(50.000000, 120.000000)'%3E%3Cpath d='M317.108012,39.2902857 L327.649804,49.7417043 L327.708994,49.7959169 C327.889141,49.9745543 327.986143,50.2044182 328,50.4382227 L328,50.5617773 C327.986143,50.7955818 327.889141,51.0254457 327.708994,51.2040831 L327.6571,51.2479803 L317.108012,61.7097143 C316.717694,62.0967619 316.084865,62.0967619 315.694547,61.7097143 C315.30423,61.3226668 315.30423,60.6951387 315.694547,60.3080911 L324.702666,51.3738496 L292.99947,51.3746291 C292.447478,51.3746291 292,50.9308997 292,50.3835318 C292,49.8361639 292.447478,49.3924345 292.99947,49.3924345 L324.46779,49.3916551 L315.694547,40.6919089 C315.30423,40.3048613 315.30423,39.6773332 315.694547,39.2902857 C316.084865,38.9032381 316.717694,38.9032381 317.108012,39.2902857 Z M327.115357,50.382693 L316.401279,61.0089027 L327.002151,50.5002046 L327.002252,50.4963719 L326.943142,50.442585 L326.882737,50.382693 L327.115357,50.382693 Z' id='left-arrow' transform='translate(310.000000, 50.500000) scale(-1, 1) translate(-310.000000, -50.500000) '%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         background-size: 75%;
@@ -246,6 +247,9 @@ body {
     }
     .sub-heading{
         margin-bottom: 0px!important;
+        // @media (max-width:480px) {
+        //     margin-bottom: 10px!important;
+        // }
         a{color: #000;text-decoration: none;}
         .back{margin-right: 10px;}
     }
@@ -334,7 +338,8 @@ body {
     justify-content: center;
     @media (max-width:667px) {
         position: absolute;
-        right:15px
+        right:15px;
+        border-radius: 50%;
     }
     .bar{
         background-color: #000;
@@ -437,6 +442,9 @@ body {
 .reportrange{
     white-space: nowrap;
     padding: 0.475rem 1.95rem 0.475rem 0.75rem !important;
+    @media (max-width:480px) {
+        margin-top: 8px;
+    }
 }
 .toastWrap {
     position: fixed;
@@ -1036,7 +1044,9 @@ body {
     background-color: transparent!important;
     border: 0px!important;
 }
-
+.daterangepicker td.active, .daterangepicker td.active:hover{
+    background-color: #03a9f5!important;
+}
 .ui-datepicker-prev .ui-icon.ui-icon-circle-triangle-w{
     background-image: url("data:image/svg+xml,%3Csvg fill='%23fff' width='800px' height='800px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24'%3E%3Cpath d='M8.5,12.8l5.7,5.6c0.4,0.4,1,0.4,1.4,0c0,0,0,0,0,0c0.4-0.4,0.4-1,0-1.4l-4.9-5l4.9-5c0.4-0.4,0.4-1,0-1.4c-0.2-0.2-0.4-0.3-0.7-0.3c-0.3,0-0.5,0.1-0.7,0.3l-5.7,5.6C8.1,11.7,8.1,12.3,8.5,12.8C8.5,12.7,8.5,12.7,8.5,12.8z'/%3E%3C/svg%3E")!important;
     background-size: cover;
@@ -1419,6 +1429,9 @@ padding-left: 61px !important;
     ease-in-out, margin-right 0.35s 
     ease-in-out, right 0.35s 
     ease-in-out;
+    @media (max-width:480px) {
+        margin-left: 0px;
+    }
     .bottom-container{
         padding: 10px;
         display: flex;
@@ -1677,6 +1690,9 @@ padding-left: 61px !important;
         li{
             width: 33.33%;
             margin-bottom: 15px!important;
+            @media (max-width:480px) {
+                width: 50%
+            }
         }
     }
     hr{
