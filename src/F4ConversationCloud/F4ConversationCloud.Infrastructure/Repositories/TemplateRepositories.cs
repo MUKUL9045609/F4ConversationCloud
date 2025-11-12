@@ -60,12 +60,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
                 
-                var result = await _templateService.CreateTemplate(messageTemplate ,  requestBody.WABAID);
+                var response = await _templateService.CreateTemplate(messageTemplate ,  requestBody.WABAID);
 
-                if (result.Status)
+                if (response.Status)
                 {
-                    messageTemplate.category = result.result.category;
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, result.result.id, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
+                    messageTemplate.category = response.result.category;
+                    var resId = response.result.id?.ToString();
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
 
                     return new APIResponse
                     {
@@ -78,7 +79,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                     return new APIResponse
                     {
-                        Message = result.Message?.ToString().Trim('{', '}'),
+                        Message = response.Message?.ToString().Trim('{', '}'),
                         Status = false
                     };
                 }
@@ -122,12 +123,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
 
 
-                var result = await _templateService.EditTemplate(messageTemplate, requestBody.TemplateId);
+                var response = await _templateService.EditTemplate(messageTemplate, requestBody.TemplateId);
 
-                if (result.Success == true)
+                if (response.Status == true)
                 {
-                    messageTemplate.category = result.data.category;
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, result.data.id);
+                    messageTemplate.category = response.result.category;
+                    var resId = response.result.id?.ToString();
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId);
 
                     return new APIResponse
                     {
@@ -140,7 +142,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 {
                     return new APIResponse
                     {
-                        Message = result.Message?.ToString().Trim('{', '}'),
+                        Message = response.Message?.ToString().Trim('{', '}'),
                         Status = false
                     };
                 }

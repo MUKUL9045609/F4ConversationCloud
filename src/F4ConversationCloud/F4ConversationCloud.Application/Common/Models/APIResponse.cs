@@ -13,7 +13,7 @@ namespace F4ConversationCloud.Application.Common.Models
         public string Error { get; set; } = string.Empty;
         public string StackTrace { get; set; } = string.Empty;
         public APIData Data { get; set; } = new APIData();
-        public dynamic result { get; set; }
+        public object result { get; set; }
     }
     public class APIData
     {
