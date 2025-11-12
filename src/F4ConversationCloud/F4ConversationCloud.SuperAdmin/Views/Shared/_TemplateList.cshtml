@@ -1,93 +1,106 @@
 ﻿@model F4ConversationCloud.SuperAdmin.Models.TemplatesListViewModel
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <span class="lighttext">Created Templates are @Model.TotalCount</span>
-    <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
-</div>
-<div class="table-responsive">
-    <table class="table user-table form-wrapper">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Columns.TemplateName)
-                    <div class="input-group">
-                        <input asp-for="TemplateNameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
-                        <span class="searchIcon" onclick="loadData()"></span>
-                    </div>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Columns.TemplateCategory)
-                    <select asp-for="TemplateCategoryFilter" asp-items="Model.TemplateCategoryList" class="form-select" onchange="loadData()">
-                        <option value="0">Select Status</option>
-                    </select>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Columns.Language)
-                    <select asp-for="LanguageFilter" asp-items="Model.LanguageList" class="form-select" onchange="loadData()">
-                        <option value="0">Select Status</option>
-                    </select>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Columns.CreatedOn)
-                    <input asp-for="CreatedOnFilter" type="date"
-                           id="datepicker"
-                           class="form-control datepicker search-form-control"
-                           placeholder="Select Date" onchange="loadData()" />
-
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Columns.Status)
-                    <select asp-for="StatusFilter" asp-items="Model.StatusList" class="form-select" onchange="loadData()">
-                        <option value="0">Select Status</option>
-                    </select>
-                </th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!Model.data.Any())
-            {
-                <tr>
-                    <td colspan="7" class="text-center">No Records Found</td>
-                </tr>
-            }
-            else
-            {
-                @foreach (var item in Model.data)
-                {
+<h2 class="accordion-header" id="headingThirtyTwo">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThirtyTwo" aria-expanded="false" aria-controls="collapseThirtyTwo">
+        Templates <span class="light-text ms-1">(@Model.TotalCount)</span>
+    </button>
+</h2>
+<div id="collapseThirtyTwo" class="accordion-collapse collapse" aria-labelledby="headingThirtyTwo"
+     data-bs-parent="#accordionExample">
+    <div class="accordion-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="lighttext">Created Templates are @Model.TotalCount</span>
+            <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table user-table form-wrapper">
+                <thead>
                     <tr>
-                        <td align="center">@Html.DisplayFor(modelItem => item.SrNo)</td>
-                        <td>
-                            <span class="message-block">
-                                @Html.DisplayFor(modelItem => item.TemplateName)
-                            </span>
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.TemplateCategory)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Language)</td>
-                        <td>
-                            <span class="date">@item.CreatedOn.ToString("dd MMM yyyy")</span>
-                            <span class="datetime">at @item.CreatedOn.ToString("hh:mm tt")</span>
-                        </td>
-
-                        <td><span class="badge success">@Html.DisplayFor(modelItem => item.Status)</span></td>
-                        <td>
-                            <div class="action">
-                                <a href="#" class="edit-icon"></a>
-                                <a href="#" class="delete-blue"></a>
-                                <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#template-preview-modal" id="template-view"
-                                   data-templatename="@item.TemplateName"
-                                   data-templateheadertext="@item.HeaderText"
-                                   data-templateheaderexample="@item.HeaderExample"
-                                   data-templatebodytext="@item.BodyText"
-                                   data-templatebodyexample="@item.BodyExample"
-                                   data-templatefooter="@item.FooterText"></a>
+                        <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Columns.TemplateName)
+                            <div class="input-group">
+                                <input asp-for="TemplateNameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                <span class="searchIcon" onclick="loadData()"></span>
                             </div>
-                        </td>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Columns.TemplateCategory)
+                            <select asp-for="TemplateCategoryFilter" asp-items="Model.TemplateCategoryList" class="form-select" onchange="loadData()">
+                                <option value="0">Select Status</option>
+                            </select>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Columns.Language)
+                            <select asp-for="LanguageFilter" asp-items="Model.LanguageList" class="form-select" onchange="loadData()">
+                                <option value="0">Select Status</option>
+                            </select>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Columns.CreatedOn)
+                            <input asp-for="CreatedOnFilter" type="date"
+                                   id="datepicker"
+                                   class="form-control datepicker search-form-control"
+                                   placeholder="Select Date" onchange="loadData()" />
+
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Columns.Status)
+                            <select asp-for="StatusFilter" asp-items="Model.StatusList" class="form-select" onchange="loadData()">
+                                <option value="0">Select Status</option>
+                            </select>
+                        </th>
+                        <th>Actions</th>
                     </tr>
-                }
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!Model.data.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center">No Records Found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.data)
+                        {
+                            <tr>
+                                <td align="center">@Html.DisplayFor(modelItem => item.SrNo)</td>
+                                <td>
+                                    <span class="message-block">
+                                        @Html.DisplayFor(modelItem => item.TemplateName)
+                                    </span>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.TemplateCategory)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Language)</td>
+                                <td>
+                                    <span class="date">@item.CreatedOn.ToString("dd MMM yyyy")</span>
+                                    <span class="datetime">at @item.CreatedOn.ToString("hh:mm tt")</span>
+                                </td>
+
+                                <td><span class="badge success">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                                <td>
+                                    <div class="action">
+                                        <form method="get" action="@Url.Action("UpdateTemplate", "TemplateManagement", new { id = item.Id })">
+                                            <a method="get" class="edit-icon" asp-controller="TemplateManagement" asp-action="UpdateTemplate" asp-route-id="@item.Id"></a>
+                                        </form>
+                                        <a href="#" class="delete-blue"></a>
+                                        <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#template-preview-modal" id="template-view"
+                                           data-templatename="@item.TemplateName"
+                                           data-templateheadertext="@item.HeaderText"
+                                           data-templateheaderexample="@item.HeaderExample"
+                                           data-templatebodytext="@item.BodyText"
+                                           data-templatebodyexample="@item.BodyExample"
+                                           data-templatefooter="@item.FooterText"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
+    </div>
 </div>
-<partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />

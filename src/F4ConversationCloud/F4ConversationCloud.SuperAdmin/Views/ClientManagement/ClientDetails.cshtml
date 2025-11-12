@@ -521,18 +521,7 @@
                                 </div> *@
 
                                 <div class="accordion-item" id="template-list-container">
-                                    <h2 class="accordion-header" id="headingThirtyTwo">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseThirtyTwo" aria-expanded="false" aria-controls="collapseThirtyTwo">
-                                            Templates <span class="light-text ms-1">(@Model.TemplatesList.TotalCount)</span>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseThirtyTwo" class="accordion-collapse collapse" aria-labelledby="headingThirtyTwo"
-                                         data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <partial name="_TemplateList" model="Model.TemplatesList" />
-                                        </div>
-                                    </div>
+                                    <partial name="_TemplateList" model="Model.TemplatesList" />
                                 </div>
 
                                 <div class="accordion-item">
@@ -965,7 +954,6 @@
         });
 
         function loadData() {
-            var expandedAccordionId = $(".accordion-collapse.show").attr("id");
             var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
             var filter = {
                 TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
@@ -993,8 +981,31 @@
 
         $(document).on("click", ".page-link", function () {
             var pageNumber = $(this).data("page-number");
-            if (pageNumber) {
-                loadData(pageNumber);
+            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+
+            var filter = {};
+            if (pageNumber !== undefined && pageNumber !== null) {
+                filter = {
+                    TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                    TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                    LanguageFilter: $("[name=LanguageFilter]").val(),
+                    CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                    StatusFilter: $("[name=StatusFilter]").val(),
+                    WABAId: wabaId,
+                    PageNumber: pageNumber
+                };
+
+                $.ajax({
+                    url: '/ClientManagement/GetFilteredTemplates',
+                    type: 'GET',
+                    data: filter,
+                    success: function (result) {
+                        $("#template-list-container").html(result);
+                    },
+                    error: function () {
+                        commonHelper.showError("Failed to load templates.");
+                    }
+                });
             }
         });
 
