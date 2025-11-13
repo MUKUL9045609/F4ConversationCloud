@@ -952,70 +952,7 @@
         $(document).on('click', '.back', function () {
             commonHelper.showHideLoader(true);
         });
-
-        function loadData() {
-            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
-            var filter = {
-                TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
-                TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
-                LanguageFilter: $("[name=LanguageFilter]").val(),
-                CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
-                StatusFilter: $("[name=StatusFilter]").val(),
-                WABAId: wabaId,
-                PageNumber: 1,
-            };
-
-
-            $.ajax({
-                url: '/ClientManagement/GetFilteredTemplates',
-                type: 'GET',
-                data: filter,
-                success: function (result) {
-                    $("#template-list-container").html(result);
-                },
-                error: function () {
-                    commonHelper.showError("Failed to load templates.");
-                }
-            });
-        }
-
-        $(document).on("click", ".page-link", function () {
-            var pageNumber = $(this).data("page-number");
-            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
-
-            var filter = {};
-            if (pageNumber !== undefined && pageNumber !== null) {
-                filter = {
-                    TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
-                    TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
-                    LanguageFilter: $("[name=LanguageFilter]").val(),
-                    CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
-                    StatusFilter: $("[name=StatusFilter]").val(),
-                    WABAId: wabaId,
-                    PageNumber: pageNumber
-                };
-
-                $.ajax({
-                    url: '/ClientManagement/GetFilteredTemplates',
-                    type: 'GET',
-                    data: filter,
-                    success: function (result) {
-                        $("#template-list-container").html(result);
-                    },
-                    error: function () {
-                        commonHelper.showError("Failed to load templates.");
-                    }
-                });
-            }
-        });
-
-        $(document).on("keypress", ".srcIcon", function (e) {
-            if (e.which === 13) {
-                loadData();
-            }
-        });
-
-        $(document).on("click", "#create-template-btn", function (e) {
+         $(document).on("click", "#create-template-btn", function (e) {
             var model = @Html.Raw(Json.Serialize(Model));
 
             var data = {
@@ -1051,7 +988,204 @@
             $('#template-preview-header').text(templateheadertext);
             $('#template-preview-body').html(templatebodytext);
             $('#template-preview-footer').text(templatefooter);
+
         });
+
+
+        var currentPageNumber = 1;
+        function loadData() {
+            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+              var scrollPos = $(window).scrollTop();
+              currentPageNumber = 1
+            var filter = {
+                TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                LanguageFilter: $("[name=LanguageFilter]").val(),
+                CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                StatusFilter: $("[name=StatusFilter]").val(),
+                IsActivate: $("#templateStatusFilter").val(), 
+
+                WABAId: wabaId,
+                PageNumber: currentPageNumber,
+            };
+
+
+            $.ajax({
+                url: '/ClientManagement/GetFilteredTemplates',
+                type: 'GET',
+                data: filter,
+                success: function (result) {
+                   // $("#template-list-container").html(result);
+                    $(window).scrollTop(scrollPos);
+                    refreshTemplateList();
+                },
+                error: function () {
+                    commonHelper.showError("Failed to load templates.");
+                }
+            });
+        }
+
+        $(document).on("click", ".page-link", function () {
+             currentPageNumber  = $(this).data("page-number");
+            var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+             var scrollPos = $(window).scrollTop();
+            var filter = {};
+            if (currentPageNumber !== undefined && currentPageNumber !== null) {
+                filter = {
+                    TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                    TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                    LanguageFilter: $("[name=LanguageFilter]").val(),
+                    CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                    StatusFilter: $("[name=StatusFilter]").val(),
+                    IsActivate: $("#templateStatusFilter").val(),
+                    WABAId: wabaId,
+                    PageNumber: currentPageNumber
+                };
+
+                $.ajax({
+                    url: '/ClientManagement/GetFilteredTemplates',
+                    type: 'GET',
+                    data: filter,
+                    success: function (result) {
+                        //$("#template-list-container").html(result);
+                        $(window).scrollTop(scrollPos);
+                        refreshTemplateList();
+                    },
+                    error: function () {
+                        commonHelper.showError("Failed to load templates.");
+                    }
+                });
+            }
+        });
+
+        $(document).on("keypress", ".srcIcon", function (e) {
+            if (e.which === 13) {
+                loadData();
+            }
+        });
+
+       
+          // deactivate template
+            $(document).on("click", ".delete-blue", function () {
+
+                var templateId = $(this).data("id");
+                var templateName = $(this).data("templatename");
+
+                $("#ConfirmDeleteBtn").data("id", templateId);
+
+                   $("#deleteModalText").html(
+                        "Do you really want to delete Template '<b>" + templateName + "</b>'?"
+                    );
+            });
+            $(document).on("click", "#ConfirmDeleteBtn", function (e) {
+                 scrollPos = $(window).scrollTop();
+                var templateId = $(this).data("id");
+                if (!templateId) {
+                    commonHelper.showError("Technical error .");
+                    return;
+                }
+
+                 $.ajax({
+                    url: '@Url.Action("DeleteTemplate", "TemplateManagement")',
+                    type: 'POST',
+                    data: { TemplateId: templateId },
+                   success: function (data) {
+                        $('#deleteModal').modal('hide');
+
+                        if (data.success) {
+                            commonHelper.showSuccess(data.message);
+                            $(window).scrollTop(scrollPos);
+                             refreshTemplateList()
+                        } else {
+                            commonHelper.showError(data.message);
+                        }
+                    },
+                    error: function (xhr, errorType, error) {
+                        commonHelper.showError("Error deleting template: " + error);
+                     }
+                 });
+
+            });
+          // activate templatg
+            $(document).on("click", ".activate-template-btn", function () {
+                var templateId = $(this).data("id");
+                var templateName = $(this).data("templatename");
+
+                $("#ConfirmActivateBtn").data("id", templateId);
+
+                $("#activateModalText").html(
+                    "Do you really want to activate Template '<b>" + templateName + "</b>'?"
+                );
+            });
+            $(document).on("click", "#ConfirmActivateBtn", function (e) {
+                e.preventDefault();
+                var scrollPos = $(window).scrollTop();
+                var templateId = $(this).data("id");
+
+                if (!templateId) {
+                    commonHelper.showError("Technical error.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("ActivateTemplate", "TemplateManagement")',
+                    type: 'POST',
+                    data: { TemplateId: templateId },
+                    success: function (data) {
+                        $('#ActivateTemplateModal').modal('hide');
+
+                        if (data.success) {
+                            commonHelper.showSuccess(data.message);
+                            $(window).scrollTop(scrollPos);
+                            refreshTemplateList();
+                        } else {
+                            commonHelper.showError(data.message);
+                        }
+                    },
+                    error: function (xhr, errorType, error) {
+                        commonHelper.showError("Error activating template: " + error);
+                    }
+                });
+            });
+            function refreshTemplateList() {
+                
+                var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
+
+                var filter = {
+                    TemplateNameFilter: $("[name=TemplateNameFilter]").val(),
+                    TemplateCategoryFilter: $("[name=TemplateCategoryFilter]").val(),
+                    LanguageFilter: $("[name=LanguageFilter]").val(),
+                    CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
+                    StatusFilter: $("[name=StatusFilter]").val(),
+                    IsActivate: $("#templateStatusFilter").val(),
+                    WABAId: wabaId,
+                    PageNumber: currentPageNumber
+                };
+
+                $.ajax({
+                    url: '@Url.Action("GetFilteredTemplates", "ClientManagement")',
+                    type: 'GET',
+                    data: filter,
+                    success: function (partialViewHtml) {
+                        $('#template-list-container').html(partialViewHtml);
+                        var collapseElement = document.getElementById('collapseThirtyTwo');
+                        var bsCollapse = bootstrap.Collapse.getInstance(collapseElement);
+                        if (!bsCollapse) {
+                            bsCollapse = new bootstrap.Collapse(collapseElement, { toggle: true });
+                        } else {
+                            bsCollapse.show();
+                        }
+                    },
+                   error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        commonHelper.showError("Error refreshing template list.");
+                    }
+                });
+            }
+
+        
+
+
 
     </script>
 }

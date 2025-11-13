@@ -138,6 +138,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 
                 var templateListResponse = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
                 {
+                    
                     WABAId = model.WABAId,
                     TemplateNameFilter = model.TemplatesList.TemplateNameFilter ?? String.Empty,
                     TemplateCategoryFilter = model.TemplatesList.TemplateCategoryFilter,
@@ -162,7 +163,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     HeaderExample = x.HeaderExample,
                     BodyText = x.BodyText,
                     BodyExample = x.BodyExample,
-                    FooterText = x.FooterText
+                    FooterText = x.FooterText,
+                     IsActive = x.IsActive
                 });
 
                 return View(model);
@@ -283,6 +285,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             var templateListResponse = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
             {
                 WABAId = filter.WABAId,
+                IsActivate= filter.IsActivate,
                 TemplateNameFilter = filter.TemplateNameFilter ?? String.Empty,
                 TemplateCategoryFilter = filter.TemplateCategoryFilter,
                 LanguageFilter = filter.LanguageFilter,
@@ -293,6 +296,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             });
 
             model.TotalCount = templateListResponse.Item2;
+            model.PageNumber = filter.PageNumber;
+            model.PageSize = filter.PageSize;
             model.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
             {
                 Id = x.Id,
@@ -306,7 +311,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 HeaderExample = x.HeaderExample,
                 BodyText = x.BodyText,
                 BodyExample = x.BodyExample,
-                FooterText = x.FooterText
+                FooterText = x.FooterText,
+                IsActive = x.IsActive
             });
 
             return PartialView("_TemplateList", model);
