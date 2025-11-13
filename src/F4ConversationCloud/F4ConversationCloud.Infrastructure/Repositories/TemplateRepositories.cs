@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
         private ITemplateService _templateService { get; }
 
         private IWhatsAppTemplateRepository _whatsAppTemplateRepository { get; }
-        public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService , ITemplateService templateService , IWhatsAppTemplateRepository whatsAppTemplateRepository)
+        public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService, ITemplateService templateService, IWhatsAppTemplateRepository whatsAppTemplateRepository)
         {
             _logService = logService;
             _templateService = templateService;
@@ -35,8 +36,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories
         {
             try
             {
-                if (requestBody != null) { 
-                
+                if (requestBody != null)
+                {
+
                     //if(requestBody.TemplateHeader.Example.HeaderFile != null)
                     //{
                     //    requestBody.TemplateHeader.Example.HeaderFile = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.ToString());
@@ -59,8 +61,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 }
 
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
-                
-                var response = await _templateService.CreateTemplate(messageTemplate ,  requestBody.WABAID);
+
+                var response = await _templateService.CreateTemplate(messageTemplate, requestBody.WABAID);
 
                 if (response.Status)
                 {
@@ -158,10 +160,31 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
             }
         }
-        
 
-        
+        public async Task<bool> MetaSyncTemplate()
+        {
+            try
+            {
+                var metaDetails = await _whatsAppTemplateRepository.GetMetaUsersConfiguration();
+
+                foreach (var meta in metaDetails)
+                {
+                    var wabaId = meta.WabaId;
+                    var TemplateDetails = await _templateService.GetAllTemplatesAsync(wabaId);
+                    foreach (var Details in TemplateDetails)
+                    {
+                        var response = await _whatsAppTemplateRepository.SyncAndUpdateWhatsappTemplate(Details.TemplateId, Details.Category, Details.Status);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+
+            }
+        }
     }
-
 }
 

@@ -2,15 +2,21 @@
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using Twilio.TwiML;
 using Twilio.TwiML.Voice;
+using Twilio.Types;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace F4ConversationCloud.Infrastructure.Service
@@ -295,21 +301,45 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "header")
                     {
-
                         if (headroot.TryGetProperty("format", out JsonElement typehead) || headroot.TryGetProperty("Format", out typehead))
                         {
                             string _typeValue = typehead.GetString()?.ToLower();
+
+                            var Json = JsonNode.Parse(headJson);
+
                             if (_typeValue == "image")
                             {
-                                var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(headJson, options);
+                                var example = Json?["Example"];
+                                if (example == null ||
+                                    (example["HeaderFile"]?.GetValue<string>() == null &&
+                                     example["Format"]?.GetValue<string>() == null))
+                                {
+                                    Json?.AsObject().Remove("Example");
+                                }
+
+                                var cleanJson = Json?.ToJsonString();
+                                var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(cleanJson, options);
                                 messageTemplate.components.Add(headersComponent);
                             }
                             else
                             {
-                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
-                                messageTemplate.components.Add(bodyComponent);
-                            }
+                                var Text = Json?["Text"]?.AsArray();
+                                
 
+                                var headerTextArray = Json?["Example"]?["Header_Text"]?.AsArray();
+                                if (headerTextArray == null || headerTextArray.All(e => e is null))
+                                {
+                                    Json?.AsObject().Remove("Example");
+                                }
+
+                                if (Text != null)
+                                {
+
+                                    var cleanJson = Json?.ToJsonString();
+                                    var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(cleanJson, options);
+                                    messageTemplate.components.Add(bodyComponent);
+                                }
+                            }
                         }
                     }
                 }
@@ -317,6 +347,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 //BodyComponent
                 string BodyJson = JsonSerializer.Serialize(request.TemplateBody);
                 using var Bodydoc = JsonDocument.Parse(BodyJson);
+                var bodynode = JsonNode.Parse(BodyJson);
                 var Bodyroot = Bodydoc.RootElement;
 
                 if (Bodyroot.TryGetProperty("type", out JsonElement BodyElement) || Bodyroot.TryGetProperty("Type", out BodyElement))
@@ -325,7 +356,16 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "body")
                     {
-                        var bodyComponent = JsonSerializer.Deserialize<BodysComponent>(BodyJson, options);
+                        var example = bodynode?["Example"];
+                        if (example == null ||
+                            (example["HeaderFile"]?.GetValue<string>() == null &&
+                             example["Format"]?.GetValue<string>() == null))
+                        {
+                            bodynode?.AsObject().Remove("Example");
+                        }
+                        var cleanJson = bodynode?.ToJsonString();
+
+                        var bodyComponent = JsonSerializer.Deserialize<BodysComponent>(cleanJson, options);
                         messageTemplate.components.Add(bodyComponent);
 
                     }
@@ -617,7 +657,76 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
+        public async Task<dynamic> GetAllTemplatesAsync(string wabaId)
+        {
+            string apiUrl = string.Empty;
+            string methodType = "Get";
+            var headers = new Dictionary<string, string>();
+            var requestBody = string.Empty;
 
+            try
+            {
+                var allTemplates = new List<WhatsappTemplateDetail>();
+
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.GraphTemplateSyncApi.ToString().Replace("{{waba_id}}", wabaId).Replace("{{access_token}}", token);
+                
+                string requestJson = formattedWhatsAppEndpoint;
+
+                while (!string.IsNullOrEmpty(formattedWhatsAppEndpoint))
+                {
+
+                    var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
+                                                                        methodType,
+                                                                        requestBody,
+                                                                        headers,
+                                                                        "Get Meta Whatsapp business profile",
+                                                                        null,
+                    true);
+
+
+
+                    var data = result["data"];
+
+                    foreach (var item in data)
+                    {
+                        allTemplates.Add(new WhatsappTemplateDetail
+                        {
+                            TemplateName = item["name"]?.ToString(),
+                            LanguageCode = item["language"]?.ToString(),
+                            Category = item["category"]?.ToString(),
+                            Status = item["status"]?.ToString(),
+                            TemplateId = item["id"]?.ToString()
+                        });
+                    }
+
+                    var paging = result["paging"];
+                    if (paging != null && paging["next"] != null)
+                    {
+                        formattedWhatsAppEndpoint = paging["next"]?.ToString();
+                    }
+                    else
+                    {
+                        formattedWhatsAppEndpoint = null;
+                    }
+                }
+
+                return allTemplates;
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Message = "Error occured while creating template.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
 
 
 

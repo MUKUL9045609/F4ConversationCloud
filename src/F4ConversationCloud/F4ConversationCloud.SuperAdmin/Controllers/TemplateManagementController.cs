@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -220,21 +221,65 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 };
                 templateRequest.TemplateBody.Type = "BODY";
                 templateRequest.TemplateBody.Text = model.MessageBody;
-                string messageBody = model.MessageBody;
-                bool hasVariables = Regex.IsMatch(messageBody, @"\{\{\d+\}\}");
+                string messageBody = model.MessageBody ?? string.Empty; ;
+                var matches = Regex.Matches(messageBody, @"\{\{(\d+)\}\}");
 
-                if (hasVariables)
+                if (matches.Count > 0)
                 {
+                    // Get distinct variable numbers found in the body
+                    var variableNumbers = matches
+                        .Select(m => int.Parse(m.Groups[1].Value))
+                        .Distinct()
+                        .OrderBy(n => n)
+                        .ToList();
+                    
+                    // Build a map from BodyVariableValue ("{{1}}") to BodyVariableName ("the end of August")
+                    // Ensure model.bodyVariables is populated from your partial before POST.
+                    var valueToName = model.bodyVariables
+                        .Where(v => !string.IsNullOrWhiteSpace(v.BodyVariableValue))
+                        .ToDictionary(
+                            v => v.BodyVariableValue.Trim(), // key: "{{1}}"
+                            v => (v.BodyVariableName ?? string.Empty).Trim() // value: sample text
+                        );
+
+                    // Determine the max variable number present
+                    int maxVar = variableNumbers.Max();
+
+                    // Prepare the ordered samples: index 0 => {{1}}, index 1 => {{2}}, ...
+                    var orderedSamples = new List<string>(capacity: maxVar);
+                    for (int n = 1; n <= maxVar; n++)
+                    {
+                        string key = $"{{{{{n}}}}}"; // "{{n}}"
+                        if (valueToName.TryGetValue(key, out var sample) && !string.IsNullOrEmpty(sample))
+                        {
+                            orderedSamples.Add(sample);
+                        }
+                        else
+                        {
+                            // If a sample is missing, decide how to handle:
+                            // - Add empty string (Meta will likely reject)
+                            // - Or block submission with ModelState error
+                            ModelState.AddModelError(
+                                $"bodyVariables[{n - 1}].BodyVariableName",
+                                $"Please provide a sample for variable {{{{{n}}}}}."
+                            );
+                            return View(model);
+                        }
+                    }
+
+                    // Finally set the Body_Example with one inner list aligned by {{1}}, {{2}}, ...
                     templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
                     {
-                        Body_Text = new List<List<string>>
-                        {
-                            new List<string> { "the end of August", "25OFF", "25%" }
-                        }
+                        Body_Text = new List<List<string>>{orderedSamples}
                     };
                 }
+                else
+                {
+                    // No variables in body; omit Body_Example or set null
+                    templateRequest.TemplateBody.Body_Example = null;
+                }
                 //templateRequest.TemplateBody.Text = "Shop now through {{1}} and use code {{2}} to get {{3}} off of all merchandise.\r\n";
-                
+
                 templateRequest.TemplateFooter.type = "FOOTER";
                 templateRequest.TemplateFooter.text = model.Footer;
                 templateRequest.ClientInfoId = model.ClientInfoId.ToString();
@@ -439,5 +484,20 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         //    ViewData["Index"] = index;
         //    return PartialView("_MessageVariableBody", model);
         //}
+
+        [HttpPost]
+        public IActionResult RenderBodyVariablesPartial([FromBody] List<string> variableNumbers)
+        {
+            var model = new TemplateViewModel
+            {
+                bodyVariables = variableNumbers.Select(v => new BodyVariable
+                {
+                    BodyVariableValue = $"{{{{{v}}}}}",
+                    BodyVariableName = ""
+                }).ToList()
+            };
+
+            return PartialView("_MessageVariableBody", model);
+        }
     }
 }
