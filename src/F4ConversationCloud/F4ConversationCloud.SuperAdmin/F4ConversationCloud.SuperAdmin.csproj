@@ -21,11 +21,4 @@
     <ProjectReference Include="..\F4ConversationCloud.Infrastructure\F4ConversationCloud.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="wwwroot\favicon-32x32.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>
