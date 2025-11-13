@@ -27,7 +27,7 @@ builder.Services.AddHttpClient<WebhookService>();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices(builder.Configuration);
-builder.Services.AddHostedService<TemplateSyncService>();
+
 
 
 WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
