@@ -87,8 +87,19 @@
                                     <span class="date">@item.CreatedOn.ToString("dd MMM yyyy")</span>
                                     <span class="datetime">at @item.CreatedOn.ToString("hh:mm tt")</span>
                                 </td>
-
-                                <td><span class="badge success">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                                <td>
+                                    @{
+                                        string badgeClass = item.Status switch
+                                        {
+                                            "PENDING" => "warning",
+                                            "APPROVED" => "success",
+                                            "REJECTED" => "danger",
+                                            _ => "secondary" 
+                                        };
+                                    }
+                                    <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.Status)</span>
+                                </td>
+                                
                                 <td>
                                     <div class="action">
                                         <form method="get" action="@Url.Action("UpdateTemplate", "TemplateManagement", new { id = item.Id })">
