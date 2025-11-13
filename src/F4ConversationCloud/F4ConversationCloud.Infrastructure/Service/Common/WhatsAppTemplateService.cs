@@ -97,6 +97,91 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
         }
 
+        public async Task<DeleteTemplateResponse> DeactivateTemplateAsync(int templateId)
+        {
+            try
+            {
+                var tempRes = await _templateRepository.DeactivateTemplateAsync(templateId);
+
+                if (tempRes == 0)
+                {
+                    return new DeleteTemplateResponse
+                    {
+                        success = false,
+                        message = "Failed to deactivate template."
+                    };
+                }
+
+                return new DeleteTemplateResponse
+                {
+                    success = true,
+                    message = "Template deactivated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                var log = new ClientAdminLogsModel
+                {
+                    Source = "WhatsappTemplate/DeactivateTemplateAsync",
+                    Data = $"TemplateId: {templateId}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+
+                await _logService.InsertClientAdminLogsAsync(log);
+
+               
+                return new DeleteTemplateResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+        }
+
+        public async Task<DeleteTemplateResponse> ActivateTemplateAsync(int templateId)
+        {
+            try
+            {
+                var tempRes = await _templateRepository.ActivateTemplateAsync(templateId);
+
+                if (tempRes == 0)
+                {
+                    return new DeleteTemplateResponse
+                    {
+                        success = false,
+                        message = "Failed to activate template."
+                    };
+                }
+
+                return new DeleteTemplateResponse
+                {
+                    success = true,
+                    message = "Template activated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                var log = new ClientAdminLogsModel
+                {
+                    Source = "WhatsappTemplate/ActivateTemplateAsync",
+                    Data = $"TemplateId: {templateId}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+
+                await _logService.InsertClientAdminLogsAsync(log);
+
+                return new DeleteTemplateResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+        }
+
         private async Task<string> ReplaceTemplatePlaceholdersAsync(string templateText, string parameters)
         {
             try

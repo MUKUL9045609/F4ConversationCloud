@@ -16,5 +16,6 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public int StatusFilter { get; set; } = 0;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
+        public int IsActivate { get; set; } = 1;
     }
 }
