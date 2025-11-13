@@ -56,6 +56,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
         public class BodyVariable()
         {
+            [Required(ErrorMessage = "Please enter a sample for this variable.")]
             public string BodyVariableName { get; set; }
             public string BodyVariableValue { get; set; }
         }
