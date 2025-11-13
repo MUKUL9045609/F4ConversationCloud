@@ -109,6 +109,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@ClientInfoId", ClientInfoId, DbType.String);
                 parameters.Add("@Templateid", TemplateId, DbType.String);
                 parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
+                //parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? (int)cat : (int)TemplateApprovalStatus.Pending, DbType.Int32);
 
 
                 return await _repository.InsertUpdateAsync("sp_InsertWhatsappTemplate", parameters);
@@ -209,10 +210,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
 
                 var parameters = new DynamicParameters();
-                parameters.Add("@TemplateId", TemplateId );
-                parameters.Add("@TemplateStatus", TemplateStatus);
-                parameters.Add("@Category", Templatecategory);
-               
+                parameters.Add("@TemplateId", TemplateId);
+                parameters.Add("@TemplateStatus", (int)(Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? status : TemplateApprovalStatus.Pending) , DbType.Int32);
+                parameters.Add("@Category", (int)(Enum.TryParse<TemplateModuleType>(Templatecategory, true, out var cat) ? cat : TemplateModuleType.Utility) , DbType.Int32);
+                
                 return await _repository.InsertUpdateAsync("sp_SyncAndUpdateWhatsappTemplate", parameters);
             }
             catch (Exception ex)

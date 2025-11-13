@@ -2,6 +2,7 @@ using F4ConversationCloud.Application.Common.Handler;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
+using F4ConversationCloud.Infrastructure.Scheduler;
 using F4ConversationCloud.Infrastructure.Service;
 using F4ConversationCloud.WebUI;
 using F4ConversationCloud.WebUI.Services;
@@ -26,6 +27,8 @@ builder.Services.AddHttpClient<WebhookService>();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices(builder.Configuration);
+builder.Services.AddHostedService<TemplateSyncService>();
+
 
 WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
 
