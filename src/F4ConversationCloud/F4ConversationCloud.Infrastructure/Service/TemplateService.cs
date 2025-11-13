@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Twilio.TwiML;
 using Twilio.TwiML.Voice;
 using Twilio.Types;
@@ -300,21 +301,38 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "header")
                     {
-
                         if (headroot.TryGetProperty("format", out JsonElement typehead) || headroot.TryGetProperty("Format", out typehead))
                         {
                             string _typeValue = typehead.GetString()?.ToLower();
+
+                            var Json = JsonNode.Parse(headJson);
+
                             if (_typeValue == "image")
                             {
-                                var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(headJson, options);
+                                var example = Json?["Example"];
+                                if (example == null ||
+                                    (example["HeaderFile"]?.GetValue<string>() == null &&
+                                     example["Format"]?.GetValue<string>() == null))
+                                {
+                                    Json?.AsObject().Remove("Example");
+                                }
+
+                                var cleanJson = Json?.ToJsonString();
+                                var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(cleanJson, options);
                                 messageTemplate.components.Add(headersComponent);
                             }
                             else
                             {
-                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(headJson, options);
+                                var headerTextArray = Json?["Example"]?["Header_Text"]?.AsArray();
+                                if (headerTextArray == null || headerTextArray.All(e => e is null))
+                                {
+                                    Json?.AsObject().Remove("Example");
+                                }
+
+                                var cleanJson = Json?.ToJsonString();
+                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(cleanJson, options);
                                 messageTemplate.components.Add(bodyComponent);
                             }
-
                         }
                     }
                 }
