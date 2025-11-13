@@ -51,7 +51,7 @@
                         <input asp-for="VariableType" class="form-check-input"
                                type="radio"
                                id="@t.Value"
-                               value="@t.Value" />
+                               value="@t.Value" checked/>
                         <label class="form-check-label"
                                for="flexRadioDefault1">
                             @t.Text
@@ -165,7 +165,6 @@
                             <div class="flex-grow-1">
                                 <input asp-for="HeaderVariableValue" type="text" class="form-control" placeholder="Enter content for variable">
                             </div>
-                            @* <a href="#" class="delete"></a> *@
                         </div>
                     </div>
                     <div class="form-wrapper" id="variable-card-body" style="display:none;">
@@ -177,7 +176,6 @@
                             <div class="flex-grow-1">
                                 <input type="text" class="form-control" placeholder="Enter content for {{1}}">
                             </div>
-                            @* <a href="#" class="delete"></a> *@
                         </div>
                     </div>
                 </div>

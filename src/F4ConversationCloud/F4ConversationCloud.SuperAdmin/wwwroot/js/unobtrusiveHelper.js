@@ -11,41 +11,39 @@
         }
     });
 
-    $.validator.addMethod("headervariableformat", function (value, element, param) {
-        const variableTypeElement = $(`input[name="${param}"]:checked`)
-        const variableType = variableTypeElement.next('label').text().trim();
+    $.validator.addMethod("headervariableformat", function (value, element) {
+        const trimmedValue = (value || "").trim();
 
-        const trimmedValue = value.trim();
-
-        // Allow empty or single brackets as valid
         if (trimmedValue === "" || trimmedValue === "{}" || trimmedValue === "{" || trimmedValue === "}") {
             return true;
         }
 
-        // Reject malformed patterns
-        if (trimmedValue.includes("{{}}") || trimmedValue.includes("{{}") || trimmedValue.includes("{}}")) {
-            return false;
+        if (!trimmedValue.includes("{{1}}")) {
+
+            const malformedPatterns = ["{{}}", "{{1", "{1}}", "{{}", "{}}"];
+            for (const pattern of malformedPatterns) {
+                if (trimmedValue.includes(pattern)) {
+                    return false;
+                }
+            }
         }
 
-        // Match all {{...}} patterns
-        const matches = trimmedValue.match(/\{\{[^}]+\}\}/g);
+        // Match all {{number}} patterns
+        const variableMatches = trimmedValue.match(/{{\d+}}/g);
 
-        // Must contain exactly one valid variable
-        if (!matches || matches.length !== 1) {
-            return false;
+        if (variableMatches) {
+            // If any variable is not {{1}}, reject
+            if (variableMatches.some(v => v !== "{{1}}")) {
+                return false;
+            }
+
+            // If more than one {{1}}, reject
+            if (variableMatches.length > 1) {
+                return false;
+            }
         }
 
-        const match = matches[0];
-
-        if (variableType === "Number") {
-            // Only allow {{1}} exactly
-            return match == "{{1}}";
-        } else if (variableType === "Name") {
-            // Must start with a letter, and only contain lowercase letters, numbers, underscores
-            return /^\{\{[a-z][a-z0-9_]*\}\}$/.test(match);
-        }
-
-        return false;
+        return true;
     });
 
     //$.validator.addMethod("headervariableformat", function (value, element, param) {
@@ -69,8 +67,8 @@
     //    return false;
     //});
 
-    $.validator.unobtrusive.adapters.add("headervariableformat", ["VariableType"], function (options) {
-        options.rules["headervariableformat"] = options.params.VariableType;
+    $.validator.unobtrusive.adapters.add("headervariableformat", [], function (options) {
+        options.rules["headervariableformat"] = true; 
         options.messages["headervariableformat"] = options.message;
     });
 
