@@ -14,10 +14,13 @@
             <span class="lighttext">Created Templates are @Model.TotalCount</span>
             @* <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a> *@
             <div class="d-flex align-items-center gap-2">
-                <select id="templateStatusFilter" onchange="loadData()" asp-for="IsActivate" class="form-select">
-                    <option value="1" selected>Activate</option>
-                    <option value="0">Deactivate</option>
-                </select>
+                <div class="form-wrapper">
+                    <select id="templateStatusFilter" onchange="loadData()" asp-for="IsActivate" class="form-select">
+                        <option value="1" selected>Activate</option>
+                        <option value="0">Deactivate</option>
+                    </select>
+                </div>
+               
                 <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
                 </a>
             </div>
@@ -113,14 +116,13 @@
                                         }
                                         else 
                                         {
-                                            <button class="btn secondary-btn activate-template-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#ActivateTemplateModal"
-                                                    data-id="@item.Id"
-                                                    data-templatename="@item.TemplateName">
-                                                <i class="reset"></i>
-                                            </button>
-
+                                            <a href="javascript:void(0);"
+                                               class="activate-template-btn reset"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#ActivateTemplateModal"
+                                               data-id="@item.Id"
+                                               data-templatename="@item.TemplateName">
+                                            </a>
                                         }
 
 
