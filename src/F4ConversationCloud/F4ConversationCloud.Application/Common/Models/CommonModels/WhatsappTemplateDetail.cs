@@ -53,6 +53,8 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
             public DateTime? ModifiedOn { get; set; }
 
             public bool IsActive { get; set; }
+            public string Status { get; set; }
+            public string TemplateId { get; set; }
        
     }
 }
