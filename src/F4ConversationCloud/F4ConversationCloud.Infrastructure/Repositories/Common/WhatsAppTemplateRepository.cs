@@ -75,6 +75,44 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
 
         }
 
+        public async Task<int> DeactivateTemplateAsync(int templateId) {
+
+            try
+            {
+                DynamicParameters dp = new DynamicParameters();
+                dp.Add("@TemplateId", templateId);
+
+                    await _repository.InsertUpdateAsync("sp_DeleteWhatsappTemplate", dp);
+                return 1;
+            }
+            catch (Exception)
+            {
+                return 0;
+                
+            }
+            
+        }
+        
+        public async Task<int> ActivateTemplateAsync(int templateId)
+        {
+            try
+            {
+                DynamicParameters dp = new DynamicParameters();
+                dp.Add("@TemplateId", templateId);
+
+                 await _repository.InsertUpdateAsync("sp_ActivateWhatsappTemplate", dp);
+                return 1;
+
+            }
+            catch (Exception)
+            {
+                return 0;
+
+            }
+
+        }
+
+
         public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID  )
         {
             try
@@ -123,7 +161,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         public async Task<int> GetCountAsync(TemplateListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
-
+            parameters.Add("IsActivate", filter.IsActivate);
             parameters.Add("WABAId", filter.WABAId);
             parameters.Add("TemplateNameFilter", filter.TemplateNameFilter);
             parameters.Add("TemplateCategoryFilter", filter.TemplateCategoryFilter);
@@ -138,6 +176,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         {
             DynamicParameters parameters = new DynamicParameters();
 
+            parameters.Add("IsActivate", filter.IsActivate);
             parameters.Add("WABAId", filter.WABAId);
             parameters.Add("TemplateNameFilter", filter.TemplateNameFilter);
             parameters.Add("TemplateCategoryFilter", filter.TemplateCategoryFilter);

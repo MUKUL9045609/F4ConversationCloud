@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Common
         Task<WhatsAppTemplateResponse> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
         Task<WhatsappTemplateDetail> GetTemplateByIdAsync(int Template_id);
         Task<Tuple<IEnumerable<TemplateModel>, int>> GetFilteredTemplatesByWABAId(TemplateListFilter filter);
+        Task<DeleteTemplateResponse> DeactivateTemplateAsync(int templateId);
+        Task<DeleteTemplateResponse> ActivateTemplateAsync(int templateId);
     }
 }

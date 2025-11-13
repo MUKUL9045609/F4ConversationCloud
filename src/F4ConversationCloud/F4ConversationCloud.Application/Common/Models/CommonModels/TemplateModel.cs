@@ -21,5 +21,6 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public string BodyText { get; set; }
         public string BodyExample { get; set; }
         public string FooterText { get; set; }
+        public int IsActive { get; set; }
     }
 }

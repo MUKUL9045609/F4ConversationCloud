@@ -1,5 +1,6 @@
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
+using F4ConversationCloud.Infrastructure.Scheduler;
 using F4ConversationCloud.SuperAdmin.Handler;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -33,6 +34,7 @@ whatsAppConfig.AccessToken = builder.Configuration.GetSection("WhatsAppBusinessC
 builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHostedService<TemplateSyncService>();
 
 var app = builder.Build();
 

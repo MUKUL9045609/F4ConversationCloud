@@ -9,9 +9,18 @@
 <div id="collapseThirtyTwo" class="accordion-collapse collapse" aria-labelledby="headingThirtyTwo"
      data-bs-parent="#accordionExample">
     <div class="accordion-body">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <span class="lighttext">Created Templates are @Model.TotalCount</span>
-            <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
+            @* <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a> *@
+            <div class="d-flex align-items-center gap-2">
+                <select id="templateStatusFilter" onchange="loadData()" asp-for="IsActivate" class="form-select">
+                    <option value="1" selected>Activate</option>
+                    <option value="0">Deactivate</option>
+                </select>
+                <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
+                </a>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table user-table form-wrapper">
@@ -78,14 +87,44 @@
                                     <span class="date">@item.CreatedOn.ToString("dd MMM yyyy")</span>
                                     <span class="datetime">at @item.CreatedOn.ToString("hh:mm tt")</span>
                                 </td>
-
-                                <td><span class="badge success">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                                <td>
+                                    @{
+                                        string badgeClass = item.Status switch
+                                        {
+                                            "PENDING" => "warning",
+                                            "APPROVED" => "success",
+                                            "REJECTED" => "danger",
+                                            _ => "secondary" 
+                                        };
+                                    }
+                                    <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.Status)</span>
+                                </td>
+                                
                                 <td>
                                     <div class="action">
                                         <form method="get" action="@Url.Action("UpdateTemplate", "TemplateManagement", new { id = item.Id })">
                                             <a method="get" class="edit-icon" asp-controller="TemplateManagement" asp-action="UpdateTemplate" asp-route-id="@item.Id"></a>
                                         </form>
-                                        <a href="#" class="delete-blue"></a>
+                                       
+                                        @if(item.IsActive == 1)
+                                        {
+                                            <a class="delete-blue" data-bs-toggle="modal" href="#deleteModal" data-id="@item.Id" data-templatename="@item.TemplateName" role="button"></a>
+                                           
+                                        }
+                                        else 
+                                        {
+                                            <button class="btn secondary-btn activate-template-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#ActivateTemplateModal"
+                                                    data-id="@item.Id"
+                                                    data-templatename="@item.TemplateName">
+                                                <i class="reset"></i>
+                                            </button>
+
+                                        }
+
+
+
                                         <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#template-preview-modal" id="template-view"
                                            data-templatename="@item.TemplateName"
                                            data-templateheadertext="@item.HeaderText"
@@ -95,6 +134,7 @@
                                            data-templatefooter="@item.FooterText"></a>
                                     </div>
                                 </td>
+                                
                             </tr>
                         }
                     }
@@ -104,3 +144,43 @@
         <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />
     </div>
 </div>
+
+<div class="modal fade confirmation-modal" id="deleteModal" aria-labelledby="deleteModalLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="delete-icon"></span>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3>Are You sure?</h3>
+                </div>
+                <p id="deleteModalText">Do you really want to delete this Template?</p>
+
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="button" id="ConfirmDeleteBtn" class="btn primary-btn">Yes</button>
+                    <button type="button" class="btn danger-btn" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade confirmation-modal" id="ActivateTemplateModal" aria-labelledby="activateModalLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="activate-icon"></span>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3>Are You sure?</h3>
+                </div>
+                <p id="activateModalText">Do you really want to activate this Template?</p>
+
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="button" id="ConfirmActivateBtn" class="btn primary-btn">Yes</button>
+                    <button type="button" class="btn danger-btn" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

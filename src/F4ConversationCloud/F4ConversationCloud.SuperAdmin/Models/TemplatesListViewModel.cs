@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+﻿using F4ConversationCloud.Application.Common.Models.CommonModels;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,6 +11,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public int TemplateCategoryFilter { get; set; } = 0;
         public int LanguageFilter { get; set; } = 0;
         public string CreatedOnFilter { get; set; } = string.Empty;
+        public int IsActivate { get; set; } = 1;
         public int StatusFilter { get; set; } = 0;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
@@ -40,11 +42,16 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Status")]
             public string Status { get; set; }
+
+            
             public string HeaderText { get; set; }
             public string HeaderExample { get; set; }
             public string BodyText { get; set; }
             public string BodyExample { get; set; }
             public string FooterText { get; set; }
+            public int MyProperty { get; set; }
+            public int IsActive { get; set; }
+
         }
     }
 }
