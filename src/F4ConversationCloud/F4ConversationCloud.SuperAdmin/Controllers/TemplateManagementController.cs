@@ -90,31 +90,31 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return View();
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> DeleteTemplate(string Template_id, int ClientInfoId, string TemplateName)
-        {
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteTemplate(string Template_id, int ClientInfoId, string TemplateName)
+        //{
 
-            try
-            {
-                dynamic isDeletedResponce = await _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
-                if (isDeletedResponce != null)
-                {
-                    TempData["SuccessMessage"] = isDeletedResponce.message;
-                    return Json(isDeletedResponce);
-                }
-                else
-                {
-                    TempData["SuccessMessage"] = "Unknown error occurred.";
-                    return Json(new DeleteTemplateResponse { success = false, message = "Unknown error occurred." });
-                }
+        //    try
+        //    {
+        //        dynamic isDeletedResponce = await _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
+        //        if (isDeletedResponce != null)
+        //        {
+        //            TempData["SuccessMessage"] = isDeletedResponce.message;
+        //            return Json(isDeletedResponce);
+        //        }
+        //        else
+        //        {
+        //            TempData["SuccessMessage"] = "Unknown error occurred.";
+        //            return Json(new DeleteTemplateResponse { success = false, message = "Unknown error occurred." });
+        //        }
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
-            }
-        }
+        //        return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+        //    }
+        //}
 
         public async Task<IActionResult> List(TemplatesListViewModel model)
         {
@@ -285,6 +285,46 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return View(new TemplateViewModel());
             }
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteTemplate(int TemplateId)
+        {
+            try
+            {
+                var isDeletedResponce = await _whatsAppTemplateService.DeactivateTemplateAsync(TemplateId);
+                
+                if (isDeletedResponce.success)
+                {
+                    return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new DeleteTemplateResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ActivateTemplate(int TemplateId)
+        {
+            try
+            {
+                var result = await _whatsAppTemplateService.ActivateTemplateAsync(TemplateId);
+                if (result.success)
+                    return Json(new { success = true, message = result.message });
+                else
+                    return Json(new { success = false, message = result.message });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> GetTemplateTypePartialView(TemplateViewModel model)

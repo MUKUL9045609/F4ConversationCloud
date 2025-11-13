@@ -17,5 +17,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
         Task<int> GetCountAsync(TemplateListFilter filter);
         Task<int> InsertTemplatesListAsync(MessageTemplateDTO request, string TemplateId, string ClientInfoId, string CreatedBy, string WABAID);
         Task<int> UpdateTemplatesAsync(MessageTemplateDTO request, string TemplateId);
+        Task<int> DeactivateTemplateAsync(int templateId);
+        Task<int> ActivateTemplateAsync(int templateId);
     }
 }
