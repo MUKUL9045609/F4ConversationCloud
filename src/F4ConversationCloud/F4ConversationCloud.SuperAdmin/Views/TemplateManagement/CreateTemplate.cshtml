@@ -355,15 +355,25 @@
                             'bold', 'italic', 'underline', 'strikethrough',
                             'numberedList', 'bulletedList',
                             'link'
-                        ]
+                        ],
+                        initialData: 'Hello'
                     })
                     .then(editor => {
                         editorInstance = editor;
-
+                        var firstcontent = editor.getData();
+                        $('#message-body').html(firstcontent);
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
                             var content = editor.getData();
                             $('#message-body').html(content);
+                             console.log(content == '');
+                            if (content == ''){
+                                alert();
+                                $("#submit-btn").prop("disabled", true);
+                            }
+                            else{
+                                $("#submit-btn").prop("disabled", false);
+                            }
                             validateWhatsAppVariables(content);
                         });
 
@@ -493,7 +503,7 @@
                     } else {
                         errorSpan.innerText = "";
                         errorSpan.style.display = "none";
-                        $("#submit-btn").prop("disabled", false);
+                        //$("#submit-btn").prop("disabled", false);
                     }
 
                     return errorMessage;
