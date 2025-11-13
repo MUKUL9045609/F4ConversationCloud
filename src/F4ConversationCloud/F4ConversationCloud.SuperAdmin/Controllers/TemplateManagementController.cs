@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -434,5 +435,20 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         //    ViewData["Index"] = index;
         //    return PartialView("_MessageVariableBody", model);
         //}
+
+        [HttpPost]
+        public IActionResult RenderBodyVariablesPartial([FromBody] List<string> variableNumbers)
+        {
+            var model = new TemplateViewModel
+            {
+                bodyVariables = variableNumbers.Select(v => new BodyVariable
+                {
+                    BodyVariableValue = $"{{{{{v}}}}}",
+                    BodyVariableName = ""
+                }).ToList()
+            };
+
+            return PartialView("_MessageVariableBody", model);
+        }
     }
 }

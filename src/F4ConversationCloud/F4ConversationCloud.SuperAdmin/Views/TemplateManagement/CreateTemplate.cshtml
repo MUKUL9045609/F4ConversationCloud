@@ -362,19 +362,61 @@
                         editorInstance = editor;
                         var firstcontent = editor.getData();
                         $('#message-body').html(firstcontent);
+                        let previousVariables = [];
+                        let bodyValuesCache = {};
+
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
                             var content = editor.getData();
                             $('#message-body').html(content);
-                             console.log(content == '');
-                            if (content == ''){
-                                alert();
-                                $("#submit-btn").prop("disabled", true);
-                            }
-                            else{
-                                $("#submit-btn").prop("disabled", false);
-                            }
+                            $("#submit-btn").prop("disabled", content === '');
                             validateWhatsAppVariables(content);
+                            validateSubmitButton(editor);
+
+                            var variables = extractUniqueVariables(content);
+
+                            const variablesChanged =
+                            variables.length !== previousVariables.length ||
+                            variables.some((v, i) => v !== previousVariables[i]);
+
+                            if (!variablesChanged) return;
+
+                            // Cache current values
+                            bodyValuesCache = {};
+                            document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
+                                const number = row.getAttribute('data-number');
+                                const input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                if (input) {
+                                    bodyValuesCache[number] = input.value;
+                                }
+                            });
+
+                            previousVariables = [...variables];
+
+                            $.ajax({
+                                url: '/TemplateManagement/RenderBodyVariablesPartial', // your controller action
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(variables),
+                                success: function (html) {
+                                    $('#variable-card').show(); // show the whole card if needed
+                                    $('#variable-card-body').html(html).show();
+
+                                    document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
+                                        const number = row.getAttribute('data-number');
+                                        const input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                        if (input && bodyValuesCache[number]) {
+                                            input.value = bodyValuesCache[number];
+                                        }
+                                    });
+
+                                    bindBodyVariableInputListener(editor);
+                                    validateSubmitButton(editor);
+                                },
+                                error: function () {
+                                    commonHelper.showError("Failed to load variable partials.");
+                                }
+                            });
                         });
 
                         // Emoji picker
@@ -427,6 +469,26 @@
                     .catch(error => {
                         console.error(error);
                     });
+
+                    
+
+                    function extractUniqueVariables(content) {
+                        const regex = /\{\{(\d+)\}\}/g;
+                        const found = new Set();
+                        let match;
+                        while ((match = regex.exec(content)) !== null) {
+                            found.add(match[1]); // only the number part
+                        }
+                        return Array.from(found).sort((a, b) => a - b); // sorted for consistency
+                    }
+
+                    // Bind live validation on typing inside the body variable inputs
+                    function bindBodyVariableInputListener(editor) {
+                        $('#variable-card-body').off('input.body-var') // avoid duplicate binding
+                           .on('input.body-var', 'input[name$=".BodyVariableName"]', function () {
+                           validateSubmitButton(editor);
+                        });
+                    }
 
                     document.addEventListener('click', function (event) {
                         const emojiBtn = document.getElementById('emoji-btn');
@@ -499,7 +561,7 @@
                     if (errorMessage != '') {
                         errorSpan.innerText = errorMessage.trim();
                         errorSpan.style.display = "block";
-                        $("#submit-btn").prop("disabled", true);
+                        //$("#submit-btn").prop("disabled", true);
                     } else {
                         errorSpan.innerText = "";
                         errorSpan.style.display = "none";
@@ -640,6 +702,30 @@
             }
         });
 
+        function validateSubmitButton(editor) {
+            const content = editor.getData().trim();
+            const contentEmpty = content === '';
+
+            const messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
+            //console.log(messageBodyErrorVisible);
+            const bodyInputs = document.querySelectorAll(
+                '#variable-card-body input[name^="bodyVariables"][name$=".BodyVariableName"]'
+            );
+            const anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
+
+            // Header variable logic
+            const headerText = $('[name="Header"]').val()?.trim() || '';
+            const headerHasVariable = headerText.includes('{{1}}');
+            const headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
+            const headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
+            const headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
+
+            // Final check
+            const shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
+            
+            $('#submit-btn').prop('disabled', shouldDisable);
+        }
+
         $(document).on('input', '[name="Header"]', function () {
             var headerVal = $(this).val().trim();
 
@@ -666,16 +752,19 @@
                 $('#header-text-preview').hide();
                 $("#submit-btn").prop("disabled", false);
             }
+
+            validateSubmitButton(editorInstance);
         });
 
         $(document).on('input', '[name="HeaderVariableValue"]', function () {
-            var headerVariableVal = $(this).val().trim();
-            if (headerVariableVal != null && headerVariableVal != ''){
-                $("#submit-btn").prop("disabled", false);
-            }
-            else{
-                $("#submit-btn").prop("disabled", true);
-            }
+            validateSubmitButton(editorInstance);
+            // var headerVariableVal = $(this).val().trim();
+            // if (headerVariableVal != null && headerVariableVal != ''){
+            //     $("#submit-btn").prop("disabled", false);
+            // }
+            // else{
+            //     $("#submit-btn").prop("disabled", true);
+            // }
         });
 
         $(document).on('change', '[name="VariableType"]', function () {
