@@ -323,8 +323,10 @@ namespace F4ConversationCloud.Infrastructure.Service
                             }
                             else
                             {
-                                var Text = Json?["Text"]?.AsArray();
-                                
+                                var Text = Json?["Text"] is JsonArray arr ? arr.FirstOrDefault()?.GetValue<string>()
+                                            : Json?["Text"]?.GetValue<string>();
+
+
 
                                 var headerTextArray = Json?["Example"]?["Header_Text"]?.AsArray();
                                 if (headerTextArray == null || headerTextArray.All(e => e is null))
