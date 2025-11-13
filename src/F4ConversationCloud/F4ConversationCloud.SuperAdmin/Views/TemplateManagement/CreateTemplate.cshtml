@@ -355,15 +355,25 @@
                             'bold', 'italic', 'underline', 'strikethrough',
                             'numberedList', 'bulletedList',
                             'link'
-                        ]
+                        ],
+                        initialData: 'Hello'
                     })
                     .then(editor => {
                         editorInstance = editor;
-
+                        var firstcontent = editor.getData();
+                        $('#message-body').html(firstcontent);
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
                             var content = editor.getData();
                             $('#message-body').html(content);
+                             console.log(content == '');
+                            if (content == ''){
+                                alert();
+                                $("#submit-btn").prop("disabled", true);
+                            }
+                            else{
+                                $("#submit-btn").prop("disabled", false);
+                            }
                             validateWhatsAppVariables(content);
                         });
 
@@ -378,23 +388,41 @@
 
                         // Variable insertion
                         $(document).on("click", "#add-body-variable", function () {
+                            selectedVariableType = $('input[name="VariableType"]:checked').val();
+
                             if (!selectedVariableType) {
-                                commonHelper.showError("Please select type of variable.");
-                                return;
+                               commonHelper.showError("Please select type of variable.");
+                               return;
                             }
 
-                            var variableText = ` {{${variableCounter}}}`;
+                            // Use current editor content to determine the next available number
+                            const currentContent = editor.getData();
+                            const nextNumber = getNextAvailableVariableNumberFromContent(currentContent);
+
+                            const variableText = ` {{${nextNumber}}}`;
                             editor.model.change(writer => {
-                                var insertPosition = editor.model.document.selection.getFirstPosition();
+                                const insertPosition = editor.model.document.selection.getFirstPosition();
                                 writer.insertText(variableText, insertPosition);
                             });
 
-                            variableCounter++;
-
                             // Trigger validation after insertion
-                            var content = editor.getData();
-                            validateWhatsAppVariables(content);
+                            const updatedContent = editor.getData();
+                            validateWhatsAppVariables(updatedContent);
                         });
+
+                        function getNextAvailableVariableNumberFromContent(content) {
+                            const regex = /{{\d+}}/g;
+                            const matches = [...content.matchAll(regex)];
+                            const usedNumbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, ''), 10));
+
+                            if (usedNumbers.length === 0) return 1;
+
+                            // Find the smallest missing positive integer starting at 1
+                            const set = new Set(usedNumbers);
+                            let i = 1;
+                            while (set.has(i)) i++;
+                            return i;
+                        }
                     })
                     .catch(error => {
                         console.error(error);
@@ -430,10 +458,12 @@
 
                     var errorMessage = "";
 
+                    // Rule 1: No duplicates
                     if (numbers.length !== uniqueNumbers.length) {
                         errorMessage += "Duplicate variables found. "
                     }
 
+                    // Rule 2: Sequential starting from 1
                     uniqueNumbers.sort((a, b) => a - b);
                     for (var i = 0; i < uniqueNumbers.length; i++) {
                         if (uniqueNumbers[i] !== i + 1) {
@@ -441,17 +471,20 @@
                         }
                     }
 
+                    // Rule 3: Each variable must be surrounded by at least 3 normal words
                     var hasSurroundingWordError = false;
 
                     for (var match of matches) {
                         var index = match.index;
-                        var before = content.substring(0, index).trim();
-                        var after = content.substring(index + match[0].length).trim();
+                        const varLen = match[0].length;
 
-                        var beforeWords = before.split(/\s+/).filter(w => w.length > 0);
-                        var afterWords = after.split(/\s+/).filter(w => w.length > 0);
+                        var before = content.substring(0, index);
+                        var after = content.substring(index + varLen);
 
-                        if ((beforeWords.length + afterWords.length) < 3) {
+                        var beforeCount = countWordsExcludingVariables(before);
+                        var afterCount = countWordsExcludingVariables(after);
+
+                        if (!(beforeCount >= 2 && afterCount >= 2)) {
                             hasSurroundingWordError = true;
                             break;
                         }
@@ -462,16 +495,39 @@
                     }
 
                     var errorSpan = document.getElementById("messageBodyError");
-                    console.log(errorMessage)
+                    
                     if (errorMessage != '') {
                         errorSpan.innerText = errorMessage.trim();
                         errorSpan.style.display = "block";
+                        $("#submit-btn").prop("disabled", true);
                     } else {
                         errorSpan.innerText = "";
                         errorSpan.style.display = "none";
+                        //$("#submit-btn").prop("disabled", false);
                     }
 
                     return errorMessage;
+                }
+
+                function countWordsExcludingVariables(text) {
+                    if (!text) return 0;
+
+                    // 1) Normalize HTML entities that behave like spaces
+                    let clean = text.replace(/&nbsp;/gi, ' ').replace(/\u00A0/g, ' '); // non-breaking space
+                    
+                    // 2) Remove HTML tags (CKEditor outputs real <tags>, not &lt; &gt;)
+                    clean = clean.replace(/<[^>]*>/g, ' ');
+
+                    // 3) Remove all variables like {{1}}, {{22}}, ...
+                    clean = clean.replace(/{{\d+}}/g, ' ');
+
+                    // 4) Normalize whitespace
+                    clean = clean.replace(/\s+/g, ' ').trim();
+
+                    // 5) Count word tokens (Unicode letters/digits/underscore)
+                    // If your environment doesn't support \p{L} and \p{N}, fall back to /[A-Za-z0-9_]+/g
+                    const wordMatches = clean.match(/\b[\p{L}\p{N}_]+\b/gu) || [];
+                    return wordMatches.length;
                 }
 
                 commonHelper.showHideLoader(false);
@@ -573,6 +629,7 @@
             $('[name="HeaderVariableName"]').val("{{1}}");
             $('#header-text-preview').show();
             $('#header-text-preview').text("{{1}}");
+            $("#submit-btn").prop("disabled", true);
 
             // Check if variable already exists
             if (!headerInput.value.includes("{{")) {
@@ -600,11 +657,23 @@
                 $('[name="HeaderVariableName"]').val("{{1}}");
                 $('#header-text-preview').show();
                 $('#header-text-preview').text(headerVal);
+                $("#submit-btn").prop("disabled", true);
             } else {
                 $('#variable-card').hide();
                 $('#variable-card-header').hide();
                 $('[name="HeaderVariableName"]').val('');
                 $('#header-text-preview').hide();
+                $("#submit-btn").prop("disabled", false);
+            }
+        });
+
+        $(document).on('input', '[name="HeaderVariableValue"]', function () {
+            var headerVariableVal = $(this).val().trim();
+            if (headerVariableVal != null && headerVariableVal != ''){
+                $("#submit-btn").prop("disabled", false);
+            }
+            else{
+                $("#submit-btn").prop("disabled", true);
             }
         });
 
@@ -644,6 +713,11 @@
             } else {
                 commonHelper.showHideLoader(false);
             }
+        });
+
+        $(document).on('click', '#discard-btn', function (e) {
+            var storedData = JSON.parse(localStorage.getItem('ClientData'));
+            location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
     </script>
 }
