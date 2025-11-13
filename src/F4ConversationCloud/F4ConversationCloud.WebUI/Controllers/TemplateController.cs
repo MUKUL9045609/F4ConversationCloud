@@ -30,7 +30,7 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("[action]")]
         [Consumes("application/json")]
-        [HasPermission("IsCreateTemplate")]
+        //[HasPermission("IsCreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)

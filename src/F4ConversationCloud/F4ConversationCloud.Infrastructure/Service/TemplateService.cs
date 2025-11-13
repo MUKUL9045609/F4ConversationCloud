@@ -309,13 +309,32 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                             if (_typeValue == "image")
                             {
+
                                 var example = Json?["Example"];
-                                if (example == null ||
-                                    (example["HeaderFile"]?.GetValue<string>() == null &&
-                                     example["Format"]?.GetValue<string>() == null))
+
+                                if (example is not JsonObject exObj)
                                 {
                                     Json?.AsObject().Remove("Example");
                                 }
+                                else
+                                {
+                                    bool headerFileEmpty = exObj["HeaderFile"] switch
+                                    {
+                                        JsonArray arr => arr.All(a => a is null),
+                                        JsonValue val => string.IsNullOrEmpty(val.GetValue<string>()),
+                                        _ => true
+                                    };
+
+                                    bool formatEmpty = exObj["Format"] is not JsonValue fv ||
+                                                       string.IsNullOrEmpty(fv.GetValue<string>());
+
+                                    if (headerFileEmpty && formatEmpty)
+                                    {
+                                        Json?.AsObject().Remove("Example");
+                                    }
+                                }
+
+
 
                                 var cleanJson = Json?.ToJsonString();
                                 var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(cleanJson, options);
