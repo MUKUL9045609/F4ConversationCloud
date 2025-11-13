@@ -644,13 +644,13 @@
             var headerVal = $(this).val().trim();
 
             // Enable the button only if the input is empty
-            $('#header-add-btn').attr('disabled', headerVal !== '');
+            $('#header-add-btn').attr('disabled', headerVal !== '' && headerVal.includes("{{1}}"));
 
             // Trigger validation and store result
             var isValid = $(this).valid();
 
             // Show/hide variable card based on validity
-            if (isValid && headerVal != '') {
+            if (isValid && headerVal != '' && headerVal.includes("{{1}}")) {
                 $('#variable-card').show();
                 $('#variable-card-header').show();
                 // Update the readonly input with asp-for="HeaderVariableName"
@@ -658,7 +658,8 @@
                 $('#header-text-preview').show();
                 $('#header-text-preview').text(headerVal);
                 $("#submit-btn").prop("disabled", true);
-            } else {
+            }
+            else {
                 $('#variable-card').hide();
                 $('#variable-card-header').hide();
                 $('[name="HeaderVariableName"]').val('');
