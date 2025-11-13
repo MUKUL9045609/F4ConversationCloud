@@ -323,15 +323,22 @@ namespace F4ConversationCloud.Infrastructure.Service
                             }
                             else
                             {
+                                var Text = Json?["Text"]?.AsArray();
+                                
+
                                 var headerTextArray = Json?["Example"]?["Header_Text"]?.AsArray();
                                 if (headerTextArray == null || headerTextArray.All(e => e is null))
                                 {
                                     Json?.AsObject().Remove("Example");
                                 }
 
-                                var cleanJson = Json?.ToJsonString();
-                                var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(cleanJson, options);
-                                messageTemplate.components.Add(bodyComponent);
+                                if (Text != null)
+                                {
+
+                                    var cleanJson = Json?.ToJsonString();
+                                    var bodyComponent = JsonSerializer.Deserialize<HeadersComponent>(cleanJson, options);
+                                    messageTemplate.components.Add(bodyComponent);
+                                }
                             }
                         }
                     }
@@ -340,6 +347,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 //BodyComponent
                 string BodyJson = JsonSerializer.Serialize(request.TemplateBody);
                 using var Bodydoc = JsonDocument.Parse(BodyJson);
+                var bodynode = JsonNode.Parse(BodyJson);
                 var Bodyroot = Bodydoc.RootElement;
 
                 if (Bodyroot.TryGetProperty("type", out JsonElement BodyElement) || Bodyroot.TryGetProperty("Type", out BodyElement))
@@ -348,7 +356,16 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "body")
                     {
-                        var bodyComponent = JsonSerializer.Deserialize<BodysComponent>(BodyJson, options);
+                        var example = bodynode?["Example"];
+                        if (example == null ||
+                            (example["HeaderFile"]?.GetValue<string>() == null &&
+                             example["Format"]?.GetValue<string>() == null))
+                        {
+                            bodynode?.AsObject().Remove("Example");
+                        }
+                        var cleanJson = bodynode?.ToJsonString();
+
+                        var bodyComponent = JsonSerializer.Deserialize<BodysComponent>(cleanJson, options);
                         messageTemplate.components.Add(bodyComponent);
 
                     }
