@@ -8,8 +8,15 @@ using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Repositories
 {
@@ -246,6 +253,30 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };
+            }
+        }
+        public async Task<bool> MetaSyncTemplate()
+        {
+            try
+            {
+                var metaDetails = await _whatsAppTemplateRepository.GetMetaUsersConfiguration();
+
+                foreach (var meta in metaDetails)
+                {
+                    var wabaId = meta.WabaId;
+                    var TemplateDetails = await _templateService.GetAllTemplatesAsync(wabaId);
+                    foreach (var Details in TemplateDetails)
+                    {
+                        var response = await _whatsAppTemplateRepository.SyncAndUpdateWhatsappTemplate(Details.TemplateId, Details.Category, Details.Status);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+
             }
         }
     }

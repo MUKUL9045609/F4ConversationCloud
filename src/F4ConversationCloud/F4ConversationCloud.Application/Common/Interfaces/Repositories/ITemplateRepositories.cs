@@ -12,5 +12,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories
         Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody);
         Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody);
         Task<dynamic> BuildAndCreateTemplate(TemplateViewRequestModel model);
+        Task<bool> MetaSyncTemplate();
     }
 }
