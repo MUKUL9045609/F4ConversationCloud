@@ -19,55 +19,7 @@
         <div class="main-content">
             <div class="container-fluid">
                 <div class="template-content-wrap">
-                    <div class="template-creation-content" id="first-page">
-                        <div class="creation-card template-creation">
-
-                            <h3 class="mb-2">Set Up Your Template</h3>
-                            <p>Choose the category that best describes your message template. Then select the type of message you want to send.</p>
-                            <input asp-for="TemplateCategory" type="hidden" />
-                            <input asp-for="ClientInfoId" type="hidden" />
-                            <input asp-for="WABAId" type="hidden" />
-                            <input asp-for="MetaConfigId" type="hidden" />
-                            <ul class="nav nav-tabs conversation-list" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" type="button" role="tab" aria-controls="marketing" aria-selected="true">
-                                        <span class="marketing-icon tab-icon"></span> Marketing
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="utility-tab" data-bs-toggle="tab" data-bs-target="#utility" type="button" role="tab" aria-controls="utility" aria-selected="false">
-                                        <span class="utlity-icon tab-icon"></span> Utility
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="authentication-tab" data-bs-toggle="tab" data-bs-target="#authentication" type="button" role="tab" aria-controls="authentication" aria-selected="false">
-                                        <span class="authentication-icon tab-icon"></span> Authentication
-                                    </button>
-                                </li>
-                            </ul>
-                            <div class="tab-content pb-0" id="myTabContent">
-                                @if (Model.TemplateCategory == (int)TemplateModuleType.Marketing || Model.TemplateCategory == 0)
-                                {
-                                    <div class="tab-pane fade show active" id="marketing" role="tabpanel" aria-labelledby="marketing">
-                                        <partial name="_MarketingTemplateTypeOptions" model="@Model" />
-                                    </div>
-                                }
-                                else if (Model.TemplateCategory == (int)TemplateModuleType.Utility)
-                                {
-                                    <div class="tab-pane fade show active" id="utility" role="tabpanel" aria-labelledby="Utility">
-                                        <partial name="_UtilityTemplateTypeOptions" model="@Model" />
-                                    </div>
-                                }
-                                else if (Model.TemplateCategory == (int)TemplateModuleType.Authentication)
-                                {
-                                    <div class="tab-pane fade show active" id="authentication" role="tabpanel" aria-labelledby="Authentication">
-                                        <partial name="_AuthenticationTemplateTypeOptions" model="@Model" />
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-creation-content" id="partialForTemplateForm" style="display:none;">
+                    <div class="template-creation-content" id="partialForTemplateForm">
                         @if (categoryType == TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)
                         {
                             if (Model.TemplateType == (int)MarketingTemplateType.Default)
@@ -246,92 +198,23 @@
         import 'https://cdn.jsdelivr.net/npm/emoji-picker-element@latest/index.js';
     </script>
     <script>
+        var reqModel = @Html.Raw(Json.Serialize(Model));
         $(document).ready(function () {
-            $('#TemplateCategory').val(1);
-
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
             $('#ClientInfoId').val(storedData.ClientInfoId);
             $('#WABAId').val(storedData.WABAId);
             $('#MetaConfigId').val(storedData.MetaConfigId);
-
-            $('.nav-link').on('click', function () {
-                var selectedTabId = $(this).attr('id');
-                var categoryValue;
-                var categoryName = "";
-
-                switch (selectedTabId) {
-                    case 'marketing-tab':
-                        categoryValue = @((int)TemplateModuleType.Marketing);
-                        categoryName = "@(TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)";
-                        break;
-                    case 'utility-tab':
-                        categoryValue = @((int)TemplateModuleType.Utility);
-                        categoryName = "@(TemplateModuleType.Utility.Get<DisplayAttribute>().Name)";
-                        break;
-                    case 'authentication-tab':
-                        categoryValue = @((int)TemplateModuleType.Authentication);
-                        categoryName = "@(TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)";
-                        break;
-                }
-
-                $('#TemplateCategory').val(categoryValue);
-
-                $('#myTabContent').show();
-
-                var req = {
-                    TemplateCategory: parseInt(categoryValue),
-                    TemplateCategoryName: categoryName
-                };
-
-                var url = "/TemplateManagement/GetTemplateTypePartialView";
-
-                ajaxHelper.ajaxPost(url, null, req, function (response) {
-                    $('#myTabContent').html(response);
-                    commonHelper.showHideLoader(false);
-                }, null);
-            });
+            LoadForm(reqModel);
         });
 
-        $(document).on('change', 'input[name="TemplateType"]', function () {
-            var templateCategory = $('[name="TemplateCategory"]').val();
-            var templateType = $('input[name="TemplateType"]:checked').val();
-
-            if ((templateCategory == @((int)TemplateModuleType.Marketing) && templateType == @((int)MarketingTemplateType.Carousel))
-            || (templateCategory == @((int)TemplateModuleType.Utility) && templateType == @((int)UtilityTemplateType.Carousel))){
-                $('#carousel-template-preview').show();
-                $('#template-preview').hide();
-            }
-            else{
-                $('#carousel-template-preview').hide();
-                $('#template-preview').show();
-            }
-        });
-
-        $(document).on('click', '#marketing-tab, #utility-tab, #authentication-tab', function () {
-            var category = $(this).text().trim();
-
-            $('#carousel-template-preview').hide();
-            $('#template-preview').show();
-        });
-
-        $(document).on('click', '#next-btn', function () {
+        function LoadForm(reqModel) {
             commonHelper.showHideLoader(true);
-            var templateCategoryText = $('input[name="TemplateCategory"]:checked').next('label').text().trim();
-            var templateCategory = $('[name="TemplateCategory"]').val();
-            var templateTypeText = $('input[name="TemplateType"]:checked').next('label').text().trim();
-            var templateType = $('input[name="TemplateType"]:checked').val();
+            var reqModel = @Html.Raw(Json.Serialize(Model));
 
             $('#partialForTemplateForm').show();
-            var req = {
-                TemplateCategory: parseInt(templateCategory),
-                TemplateCategoryName: templateCategoryText,
-                TemplateType: parseInt(templateType),
-                TemplateTypeName: templateTypeText
-            };
-
             var url = "/TemplateManagement/GetTemplateFormPartialView";
 
-            ajaxHelper.ajaxPost(url, null, req, function (response) {
+            ajaxHelper.ajaxPost(url, null, reqModel, function (response) {
                 $('#partialForTemplateForm').html(response);
                 $('#first-page').hide();
                 $('#next-btn').hide();
@@ -344,6 +227,8 @@
                 var $form = $("#mainForm");
                 $form.removeData("validator").removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse($form);
+                console.log(reqModel.mediaType)
+                $('input[name="MediaType"][value="' + reqModel.mediaType + '"]').prop('checked', true);
                 $('[name="MediaType"]').trigger('change');
 
                 var variableCounter = 1;
@@ -476,7 +361,7 @@
 
                 commonHelper.showHideLoader(false);
             }, null);
-        });
+        }
 
         $(document).on('click', '#previous-btn', function () {
             commonHelper.showHideLoader(true);
