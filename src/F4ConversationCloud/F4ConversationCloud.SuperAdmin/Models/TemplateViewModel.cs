@@ -28,8 +28,6 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [Required(ErrorMessage = "Please select language")]
         public int Language { get; set; }
         public IEnumerable<SelectListItem> LanguageList { get; set; }
-
-        [Required(ErrorMessage = "Please select variable type")]
         public int VariableType { get; set; }
         public IEnumerable<SelectListItem> VariableTypeList { get; set; }
         public int MediaType { get; set; }
@@ -40,7 +38,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string FileUrl { get; set; }
 
         [StringLength(60, ErrorMessage = "Header should be less than 60 characters.")]
-        [HeaderVariableFormat("VariableType")]
+        [HeaderVariableFormat]
         public string Header { get; set; }
 
         [Required(ErrorMessage = "Please enter a message.")]
@@ -58,6 +56,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
         public class BodyVariable()
         {
+            [Required(ErrorMessage = "Please enter a sample for this variable.")]
             public string BodyVariableName { get; set; }
             public string BodyVariableValue { get; set; }
         }

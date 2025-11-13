@@ -10,10 +10,9 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -203,45 +202,35 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                     return View(model);
                 }
-                var templateRequest = new TemplateRequest();
 
-                templateRequest.Name = model.TemplateName;
-                //templateRequest.Language = EnumExtensions.GetDisplayNameById<TemplateLanguages>(model.Language);
-                templateRequest.Language = "en";
-                //templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
-                templateRequest.Category = "UTILITY";
-                templateRequest.TemplateHeader.Type = "HEADER";
-                templateRequest.TemplateHeader.Format = "TEXT";
-                templateRequest.TemplateHeader.Text = model.Header;
-                templateRequest.TemplateHeader.Example = new HeaderExample
+                var request = new TemplateViewRequestModel();
+                request.TemplateName = model.TemplateName;
+                request.TemplateCategory = model.TemplateCategory;
+                request.TemplateCategoryName = model.TemplateCategoryName;
+                request.TemplateType = model.TemplateType;
+                request.TemplateTypeName = model.TemplateTypeName;
+                request.Language = model.Language;
+                request.VariableType = model.VariableType;
+                request.MediaType = model.MediaType;
+                request.File = model.File;
+                request.FileName = model.FileName;
+                request.FileUrl = model.FileUrl;
+                request.Header = model.Header;
+                request.MessageBody = model.MessageBody;
+                request.Footer = model.Footer;
+                request.HeaderVariableName = model.HeaderVariableName;
+                request.HeaderVariableValue = model.HeaderVariableValue;
+                request.bodyVariables = model.bodyVariables
+                .Select(v => new TemplateViewRequestModel.BodyVariable
                 {
-                    Header_Text = new List<string> { model.HeaderVariableValue },
-                    Format = "TEXT"
-                };
-                templateRequest.TemplateBody.Type = "BODY";
-                templateRequest.TemplateBody.Text = model.MessageBody;
-                string messageBody = model.MessageBody;
-                bool hasVariables = Regex.IsMatch(messageBody, @"\{\{\d+\}\}");
+                    BodyVariableName = v.BodyVariableName,
+                    BodyVariableValue = v.BodyVariableValue
+                }).ToList();
+                request.ClientInfoId = model.ClientInfoId;
+                request.MetaConfigId = model.MetaConfigId;
+                request.WABAId = model.WABAId;
 
-                if (hasVariables)
-                {
-                    templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
-                    {
-                        Body_Text = new List<List<string>>
-                        {
-                            new List<string> { "the end of August", "25OFF", "25%" }
-                        }
-                    };
-                }
-                //templateRequest.TemplateBody.Text = "Shop now through {{1}} and use code {{2}} to get {{3}} off of all merchandise.\r\n";
-                
-                templateRequest.TemplateFooter.type = "FOOTER";
-                templateRequest.TemplateFooter.text = model.Footer;
-                templateRequest.ClientInfoId = model.ClientInfoId.ToString();
-                templateRequest.WABAID = model.WABAId;
-                templateRequest.CreatedBy = _context.SessionUserId.ToString();
-
-                APIResponse result = await _templateRepositories.MetaCreateTemplate(templateRequest);
+                APIResponse result = await _templateRepositories.BuildAndCreateTemplate(request);
 
                 if (result.Status)
                 {
@@ -263,7 +252,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         public async Task<IActionResult> UpdateTemplate([FromRoute] int id)
         {
             try
-            { 
+            {
                 var data = await _whatsAppTemplateService.GetTemplateByIdAsync(id);
 
                 var viewModel = new TemplateViewModel();
@@ -285,14 +274,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return View(new TemplateViewModel());
             }
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> DeleteTemplate(int TemplateId)
         {
             try
             {
                 var isDeletedResponce = await _whatsAppTemplateService.DeactivateTemplateAsync(TemplateId);
-                
+
                 if (isDeletedResponce.success)
                 {
                     return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });
@@ -434,5 +423,20 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         //    ViewData["Index"] = index;
         //    return PartialView("_MessageVariableBody", model);
         //}
+
+        [HttpPost]
+        public IActionResult RenderBodyVariablesPartial([FromBody] List<string> variableNumbers)
+        {
+            var model = new TemplateViewModel
+            {
+                bodyVariables = variableNumbers.Select(v => new BodyVariable
+                {
+                    BodyVariableValue = $"{{{{{v}}}}}",
+                    BodyVariableName = ""
+                }).ToList()
+            };
+
+            return PartialView("_MessageVariableBody", model);
+        }
     }
 }
