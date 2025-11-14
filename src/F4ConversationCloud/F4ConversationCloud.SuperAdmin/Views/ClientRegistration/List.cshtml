@@ -70,6 +70,12 @@
                                     <option value="0">Select Status</option>
                                 </select>
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.RegistrationStatus)
+                                <select asp-for="RegistrationStatusFilter" asp-items="Model.RegistrationStatusList" class="form-select" onchange="loadData()">
+                                    <option value="0">Select Status</option>
+                                </select>
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>

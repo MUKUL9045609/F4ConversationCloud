@@ -27,7 +27,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Sr. No.")]
             public int SrNo { get; set; }
 
-            [Display(Name = "Name")]
+            [Display(Name = "Full Name")]
             public string Name { get; set; }
 
             [Display(Name = "Email Address")]
@@ -51,6 +51,9 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Last Update")]
             public DateTime? UpdatedOn { get; set; }
+
+            [Display(Name = "Account Status")]
+            public int AccountStatus { get; set; }
         }
     }
 }
