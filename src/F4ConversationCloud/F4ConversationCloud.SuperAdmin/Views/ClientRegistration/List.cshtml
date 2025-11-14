@@ -24,6 +24,13 @@
                                 @Html.DisplayNameFor(model => model.Columns.SrNo)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Columns.organ)
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Columns.Name)
                                 <div class="input-group">
                                     <input asp-for="NameFilter" type="text" class="form-control srcIcon" placeholder="Search" id="searchInput">
@@ -71,10 +78,14 @@
                                 </select>
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Columns.RegistrationStatus)
-                                <select asp-for="RegistrationStatusFilter" asp-items="Model.RegistrationStatusList" class="form-select" onchange="loadData()">
-                                    <option value="0">Select Status</option>
+                                @Html.DisplayNameFor(model => model.Columns.AccountStatus)
+                                <select asp-for="AccountStatus" id="AccountStatusFilter" class="form-select" onchange="loadData()">
+                                    <option value="" selected>Select Status</option>
+                                    <option value="1">Enabled</option>
+                                    <option value="0">Disabled</option>
+                                  
                                 </select>
+                               
                             </th>
                             <th>Actions</th>
                         </tr>
@@ -121,6 +132,13 @@
                                     </td>
                                     <td>
                                         <span class="badge @(item.RegistrationStatusName == "Active" ? "success" : "warning")">@Html.DisplayFor(modelItem => item.RegistrationStatusName)</span>
+                                    </td>
+                                    <td>
+                                        <div class="action">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         @if (item.RegistrationStatusName == ClientRegistrationStatus.Pending.Get<DisplayAttribute>().Name)
