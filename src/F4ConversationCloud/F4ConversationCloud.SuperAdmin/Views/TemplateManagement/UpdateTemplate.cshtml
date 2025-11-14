@@ -15,6 +15,14 @@
 
 <form asp-action="CreateTemplate" method="post" enctype="multipart/form-data" id="mainForm">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="PageMode" type="hidden" value="Edit"/>
+    <input asp-for="TemplateType" type="hidden"/>
+    <input asp-for="TemplateCategory" type="hidden"/>
+    <input asp-for="WABAId" type="hidden"/>
+    <input asp-for="ClientInfoId" type="hidden"/>
+    <input asp-for="MetaConfigId" type="hidden"/>
+    <input asp-for="TemplateId" type="hidden"/>
+
     <div class="content bg-light">
         <div class="main-content">
             <div class="container-fluid">
@@ -183,8 +191,8 @@
     <div class="bottom-strip">
         <div class="bottom-container">
             <button type="button" class="btn secondary-btn" id="discard-btn">Discard</button>
-            <button type="button" class="btn secondary-btn" id="previous-btn" style="display:none;">Previous</button>
-            <button type="button" class="btn primary-btn" id="next-btn">Next</button>
+            @* <button type="button" class="btn secondary-btn" id="previous-btn" style="display:none;">Previous</button> *@
+            @* <button type="button" class="btn primary-btn" id="next-btn">Next</button> *@
             <button type="submit" class="btn primary-btn" id="submit-btn" style="display:none;">Submit for review</button>
         </div>
     </div>
@@ -201,6 +209,7 @@
         var reqModel = @Html.Raw(Json.Serialize(Model));
         $(document).ready(function () {
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
+            console.log(storedData)
             $('#ClientInfoId').val(storedData.ClientInfoId);
             $('#WABAId').val(storedData.WABAId);
             $('#MetaConfigId').val(storedData.MetaConfigId);
@@ -217,17 +226,26 @@
             ajaxHelper.ajaxPost(url, null, reqModel, function (response) {
                 $('#partialForTemplateForm').html(response);
                 $('#first-page').hide();
-                $('#next-btn').hide();
-                $('#discard-btn').hide();
+                // $('#next-btn').hide();
+                // $('#discard-btn').hide();
                 $('#submit-btn').show();
-                $('#previous-btn').show();
+                // $('#previous-btn').show();
                 $('#title').text('untitled');
                 $('#language-title').text('English');
 
                 var $form = $("#mainForm");
                 $form.removeData("validator").removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse($form);
-                console.log(reqModel.mediaType)
+                
+                $('#title').text(reqModel.templateName);
+                $('#header-text-preview').show();
+                $('#header-text-preview').text(reqModel.header);
+                $('#message-body').html(reqModel.messageBody);
+                $('#footer-text').text(reqModel.footer);
+
+                if (reqModel.headerVariableName != ''){
+                    $('#variable-card-header').show();
+                }
                 $('input[name="MediaType"][value="' + reqModel.mediaType + '"]').prop('checked', true);
                 $('[name="MediaType"]').trigger('change');
 
@@ -363,16 +381,16 @@
             }, null);
         }
 
-        $(document).on('click', '#previous-btn', function () {
-            commonHelper.showHideLoader(true);
-            $('#partialForTemplateForm').hide();
-            $('#first-page').show();
-            $('#next-btn').show();
-            $('#discard-btn').show();
-            $('#submit-btn').hide();
-            $('#previous-btn').hide();
-            commonHelper.showHideLoader(false);
-        });
+        // $(document).on('click', '#previous-btn', function () {
+        //     commonHelper.showHideLoader(true);
+        //     $('#partialForTemplateForm').hide();
+        //     $('#first-page').show();
+        //     $('#next-btn').show();
+        //     $('#discard-btn').show();
+        //     $('#submit-btn').hide();
+        //     $('#previous-btn').hide();
+        //     commonHelper.showHideLoader(false);
+        // });
 
         $(document).on('input', '[name="TemplateName"]', function () {
             var nameVal = $(this).val().trim();

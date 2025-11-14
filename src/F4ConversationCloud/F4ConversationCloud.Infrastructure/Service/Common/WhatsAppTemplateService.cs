@@ -60,7 +60,8 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             try
             {
                 var templateDetail = await _templateRepository.GetTemplateByIdAsync(templateId);
-
+                templateDetail.RawHeader = templateDetail.HeaderText;
+                templateDetail.RawBody = templateDetail.BodyText;
                 if (templateDetail != null)
                 {
                     if (!string.IsNullOrEmpty(templateDetail.BodyExample))

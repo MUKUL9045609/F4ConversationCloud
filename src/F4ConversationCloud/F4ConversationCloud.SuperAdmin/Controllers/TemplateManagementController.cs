@@ -230,8 +230,18 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.ClientInfoId = model.ClientInfoId;
                 request.MetaConfigId = model.MetaConfigId;
                 request.WABAId = model.WABAId;
+                request.PageMode = model.PageMode;
+                request.TemplateId = model.TemplateId;
 
-                APIResponse result = await _templateRepositories.BuildAndCreateTemplate(request);
+                APIResponse result = new APIResponse();
+                if (request.PageMode == "Edit")
+                {
+                    await _templateRepositories.BuildAndEditTemplate(request);
+                }
+                else
+                {
+                    await _templateRepositories.BuildAndCreateTemplate(request);
+                }
 
                 if (result.Status)
                 {
@@ -271,12 +281,29 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.TemplateName = data.TemplateName;
                 viewModel.VariableType = 1;
                 viewModel.MediaType = 0;
-                viewModel.Header = data.HeaderText;
-                viewModel.HeaderVariableValue = "{{1}}";
-                viewModel.HeaderVariableName = data.HeaderExample;
-                viewModel.MessageBody = data.BodyText;
+                viewModel.Header = data.RawHeader;
+                viewModel.HeaderVariableValue = data.HeaderExample;
+                viewModel.HeaderVariableName = "{{1}}";
+                viewModel.MessageBody = data.RawBody;
                 viewModel.Footer = data.FooterText;
+                viewModel.TemplateId = data.TemplateId;
 
+                viewModel.bodyVariables = new List<BodyVariable>();
+                if (!string.IsNullOrEmpty(data.BodyExample))
+                {
+                    var examples = data.BodyExample.Split(',');
+
+                    for (int i = 0; i < examples.Length; i++)
+                    {
+                        var bodyVariable = new BodyVariable
+                        {
+                            BodyVariableName = examples[i],
+                            BodyVariableValue = $"{{{{{i + 1}}}}}"
+                        };
+
+                        viewModel.bodyVariables.Add(bodyVariable);
+                    }
+                }
                 return View(viewModel);
             }
             catch (Exception ex)
