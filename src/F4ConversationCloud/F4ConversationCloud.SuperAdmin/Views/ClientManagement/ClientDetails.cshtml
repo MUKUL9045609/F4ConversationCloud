@@ -992,7 +992,37 @@
         });
 
 
-        var currentPageNumber = 1;
+        
+
+
+            var currentPageNumber = 1;
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('activeTab');
+            const openCollapse = urlParams.get('openCollapse');
+
+            if (activeTab) {
+                if (activeTab === "client-tab") {
+                    $('.nav-link').removeClass('active');
+                    $('.tab-pane').removeClass('show active');
+                    $('#client-tab').addClass('active');
+                    $('#client').addClass('show active');
+                }
+            }
+
+            if (activeTab && openCollapse) {
+               commonHelper.showHideLoader(true);
+               refreshTemplateList();
+                setTimeout(function () {
+                    $(window).scrollTop(700);
+                    commonHelper.showHideLoader(false); 
+                }, 500);
+            } else {
+                commonHelper.showHideLoader(false); 
+            }
+
+      
+
+
         function loadData() {
             var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
               var scrollPos = $(window).scrollTop();

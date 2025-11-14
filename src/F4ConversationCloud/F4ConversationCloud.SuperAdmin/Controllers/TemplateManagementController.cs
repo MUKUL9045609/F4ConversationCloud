@@ -251,7 +251,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 {
                     TempData["ErrorMessage"] = result.Message;
                 }
-                return RedirectToAction("ClientDetails", "ClientManagement", new { Id = model.MetaConfigId });
+                return RedirectToAction("ClientDetails", "ClientManagement", new
+                {
+                    Id = model.MetaConfigId,
+                    activeTab = "client-tab",
+                    openCollapse = "TemplateList"
+                });
             }
             catch (Exception ex)
             {
