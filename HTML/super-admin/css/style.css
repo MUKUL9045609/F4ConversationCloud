@@ -4992,6 +4992,11 @@ body {
   background-color: transparent;
   border: 0px;
 }
+.image-upload .image img {
+  width: 32px;
+  height: 48px;
+  border-radius: 5px;
+}
 
 .error-star {
   color: red;

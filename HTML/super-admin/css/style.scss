@@ -1545,6 +1545,13 @@ padding-left: 61px !important;
         height: 15px;width: 15px;display: block;
         background-color: transparent;border: 0px;
     }
+    .image{
+        img{
+            width: 32px;
+            height: 48px;
+            border-radius: 5px;
+        }
+    }
 }
 .error-star{color: red;}
 .invalid-feedback{font-size: 12px!important;display: block!important;}
