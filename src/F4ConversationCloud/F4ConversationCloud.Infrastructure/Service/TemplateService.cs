@@ -119,7 +119,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 {
                     return new APIResponse
                     {
-                        Status = true,
+                        Status = false,
                         result = result,
                         Message = result.error.error_user_msg
 

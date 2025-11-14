@@ -236,11 +236,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 APIResponse result = new APIResponse();
                 if (request.PageMode == "Edit")
                 {
-                    await _templateRepositories.BuildAndEditTemplate(request);
+                    result = await _templateRepositories.BuildAndEditTemplate(request);
                 }
                 else
                 {
-                    await _templateRepositories.BuildAndCreateTemplate(request);
+                    result = await _templateRepositories.BuildAndCreateTemplate(request);
                 }
 
                 if (result.Status)

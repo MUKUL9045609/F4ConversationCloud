@@ -133,7 +133,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 var response = await _templateService.EditTemplate(messageTemplate, requestBody.TemplateId);
 
-                if (response.Status == true)
+                if (response.Status)
                 {
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
@@ -141,7 +141,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                     return new APIResponse
                     {
-                        Message = "Template created successFully.",
+                        Message = response.Message?.ToString().Trim('{', '}'),
                         Status = true
                     };
 
