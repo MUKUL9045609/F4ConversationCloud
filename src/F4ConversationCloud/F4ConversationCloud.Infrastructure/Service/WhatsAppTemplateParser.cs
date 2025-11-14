@@ -29,7 +29,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
             else if (headerFormat.Equals("image", StringComparison.OrdinalIgnoreCase))
             {
-                headerMediaUrl = string.Join(",", header?.example?.HeaderFile ?? Array.Empty<string>());
+                headerMediaUrl = string.Join(",", header?.example?.header_handle ?? Array.Empty<string>());
             }
 
             string bodyType = body?.@type ?? "";
