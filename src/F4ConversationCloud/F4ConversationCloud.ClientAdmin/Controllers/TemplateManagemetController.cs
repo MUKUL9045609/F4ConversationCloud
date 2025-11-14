@@ -1,4 +1,5 @@
 ﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
@@ -7,32 +8,34 @@ using F4ConversationCloud.ClientAdmin.Models.TemplateModel;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Extension;
 using F4ConversationCloud.Infrastructure.Service.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
+    [Authorize]
     public class TemplateManagemetController : BaseController
     {
         private readonly IWhatsAppTemplateService _whatsAppTemplate;
         private readonly ILogService _logService;
+        private readonly ICurrentUserService _currentUserService;   
 
-        public TemplateManagemetController(IWhatsAppTemplateService whatsAppTemplate, ILogService logService)
+        public TemplateManagemetController(IWhatsAppTemplateService whatsAppTemplate, ILogService logService,ICurrentUserService currentUserService)
         {
             _whatsAppTemplate = whatsAppTemplate;
             _logService = logService;
+            _currentUserService = currentUserService;
         }
         [HttpGet("template-list")]
         public async Task<IActionResult> List(TemplatesListViewModel request)
         {
             try
-            {
-                var userId = HttpContext.Session.GetInt32("UserId");
-
+            {                
                 var filter = new WhatsappTemplateListFilter
                 {
-                    ClientInfoId = Convert.ToInt32(userId),
+                    ClientInfoId = Convert.ToInt32(_currentUserService.ClientInfoId),
                     TemplateName = request.TemplateName,
                     Category = request.Category.HasValue ? (TemplateModuleType?)request.Category.Value : null,
                     LangCode = request.templateLanguages.HasValue?(TemplateLanguages?)request.templateLanguages.Value:null,

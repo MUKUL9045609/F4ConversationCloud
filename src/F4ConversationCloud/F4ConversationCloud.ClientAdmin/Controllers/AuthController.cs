@@ -43,7 +43,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     return View(request);
                 }
 
-                var response = await _onboardingService.OnboardingLogin(new Loginrequest()
+                var response = await _onboardingService.ClientLogin(new Loginrequest()
                 {
                     Email = request.Email,
                     PassWord = request.Password
@@ -74,17 +74,13 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
                         new Claim("BusinessId", clientdetails.BusinessId),
                         new Claim("ClientInfoId", clientdetails.ClientInfoId.ToString())
-
+                        
                     };
                 var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
 
                 await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
-
-                HttpContext.Session.SetString("Username", clientdetails.Email);
-                HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
-                HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
                 HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
                 
                 var stageValue = HttpContext.Session.GetInt32("StageId");

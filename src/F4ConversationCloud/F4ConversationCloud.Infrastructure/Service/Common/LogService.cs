@@ -1,4 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
@@ -11,11 +12,12 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
     {
         private readonly ILogRepository _logRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public LogService(ILogRepository logRepository, IHttpContextAccessor httpContext)
+        private readonly ICurrentUserService _currentUser;
+        public LogService(ILogRepository logRepository, IHttpContextAccessor httpContext, ICurrentUserService currentUser)
         {
             _logRepository = logRepository;
             _httpContextAccessor = httpContext;
+            _currentUser = currentUser;
         }
 
         public async Task<int> InsertLogAsync(LogModel log)
@@ -39,6 +41,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
         {
             try
             {
+                clientAdminLogs.ClientInfoId = Convert.ToInt16(_currentUser.ClientInfoId);
                 return await _logRepository.InsertClientAdminLogsAsync(clientAdminLogs);
             }
             catch (Exception ex)

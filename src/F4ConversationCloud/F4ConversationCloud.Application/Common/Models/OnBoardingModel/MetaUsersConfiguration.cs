@@ -13,9 +13,9 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
     {
        
         public string AppVersion { get; set; } = "v23.0";
-        public string WabaId { get; set; }
+        public string WabaId { get; set; } 
         public string BusinessId { get; set; }
-        public string PhoneNumberId { get; set; }
+        public string PhoneNumberId { get; set; } 
         public int ClientInfoId { get; set; }
         public string CompanyName { get; set; }
         public string WhatsAppBotName { get; set; }
