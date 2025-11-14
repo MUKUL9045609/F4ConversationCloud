@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                            <a href="dashboard.html" class="home icon">Dashboard</a>
+                        </li>
+                            <li>
+                              <a href="client-registration.html" class="register icon">Register</a>
+                            </li>
+                            <li>
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="users icon">Client User Management</a>
+                            </li>
+                           
+                            
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li class="active">
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                             <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="price icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                        <p>Dinesh Sharma</p>
+                                        <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
+                                    <li><a class="dropdown-item signout" href="login.html">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    <!-- <h3 class="sub-heading text-center">Invoice</h3> -->
+                    <div class="card">
+                        <div class="d-flex justify-content-between">
+                            <!-- <h3 class="sub-heading text-center mb-0">
+                                <a href="billing-details.html"><span class="back"></span>Invoice</a>
+                            </h3> -->
+                            <h3 class="sub-heading">
+                                <a href="billing-1.html" class="d-flex align-items-center">
+                                    <span class="back"></span>
+                                    <div>
+                                    <small class="light-text d-block fw-normal">Invoice </small>
+                                        Buldana Urban Co-op. Credit Society Ltd.
+                                    </div>
+                                </a>
+                            </h3>
+                            <div class="download-btn">
+                                    <a href="#" class="btn primary-btn d-flex">Download</a>
+                            </div>
+                        </div>
+                        <div style="margin:0;padding:0;font-family:'Lucida Sans','Lucida Sans Regular','Lucida Grande','Lucida Sans Unicode',Geneva,Verdana,sans-serif;line-height:1.5;font-size:14px;background:#fff;">
+                            <div style="margin:20px;border:1px solid #999;max-width:100%;">
+                                
+                                <!-- Header -->
+                                <table style="border-collapse:collapse;border-bottom:1px solid #999;width:100%;">
+                                <tr>
+                                        <td width="200" style="padding-left:10px;"><img src="images/logo-black.png" alt="" style="height: 40px;"></td>
+                                        <td align="right" style="padding:14px 10px;">
+                                            <h3 style="margin-bottom:4px;margin-top:0;font-size: 15px;font-weight: 600;">Fortune4 Cloud Conversation</h3>
+                                            <p style="margin-top:0;margin-bottom:3px;width: 350px;">Unit No. 311, Building Number 2, Sector - 1, Millennium Business Park, Mahape, Navi Mumbai - 400710</p>
+                                            <p style="margin-top:0;margin-bottom:0;">Phone : 098035 53220 | Email : <a href="mailto:info@fortune4.in" style="color:#000;">info@fortune4.in</a></p>
+                                            <p style="margin-top:4px;margin-bottom:0;"><span style="font-weight: 600;">GSTIN  :</span> 27ABCDE1234F1Z5</p>
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <td align="center" colspan="2" style="border-top:1px solid #999;font-size:16px;font-weight:600;letter-spacing:1px;padding:6px 0;background:#f7f7f7;width: 100%;">
+                                    TAX INVOICE
+                                    </td>
+                                </tr>
+                                </table>
+
+                                <!-- Invoice Details -->
+                                <table style="border-collapse:collapse;" vlign="top" width="100%">
+                                    <tr>
+                                        <td style="border-bottom:1px solid #999;text-align: center;border-right:1px solid #999;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                            <span style="font-weight: 600;">Invoice No.:</span> F4-00001  
+                                        </td>
+                                        <td style="border-bottom:1px solid #999;text-align: center;border-right:1px solid #999;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                            <span style="font-weight: 600;">Invoice Date:</span> 30 Sept 2025
+                                        </td>
+                                        <td style="border-bottom:1px solid #999;text-align: center;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                            <span style="font-weight: 600;">Purchase Date:</span> 01 Sept 2025
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Bill To / Ship To -->
+                                <table style="border-collapse:collapse;" vlign="top" width="100%">
+                                    
+                                    <tr>
+                                        <td style="padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                            <p style="margin:0 0 14px 0;max-width:380px;">To,<br />
+                                            Buldana Urban Co-op Credit Soc. Ltd., Buldana </p>
+                                            <h4 style="margin-bottom: 4px;font-size: 15px;font-weight: 600;">Billing Address</h4>
+                                            <p style="margin-bottom:9px;margin-top: 0px;width:370px">"Sahakar Setu", Hutatma Gore Path, Buldana - 443 001, Maharashtra, India.</p>
+                                            <p style="margin:0;">Contact : +91 9867 757 757</p>
+                                            <p style="margin:0;">Email : <span style="color: #0d6efd;">info@buldanaurban.org</span></p>
+                                            
+                                        </td>
+                                        
+                                    </tr>
+                                    
+                                    
+                                </table>
+
+                                <!-- Item Table -->
+                                <table style="border-collapse:collapse;width:100%;">
+                                <thead>
+                                    <tr style="background:#f4f4f4;">
+                                    <th style="border:1px solid #999;padding:6px;border-left: 0px;">Sr. No</th>
+                                    <th style="border:1px solid #999;border-bottom: 0px;padding:6px;border-left: 0px;">WABA No.</th>
+                                    <th style="border:1px solid #999;padding:6px;border-left: 0px;">WhatsApp Display Name</th>
+                                    <th style="border:1px solid #999;padding:6px;border-left: 0px;">Conversation</th>
+                                    <th style="border:1px solid #999;padding:6px;border-left: 0px;">Duration</th>
+                                    <th style="border:1px solid #999;padding:6px;">Messages</th>
+                                    <th style="border:1px solid #999;padding:6px;border-right: 0px;">Rate</th>
+                                   
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="border:1px solid #999;padding:6px;text-align:center;border-left: 0px;" rowspan="5">1</td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:center;" rowspan="5">
+                                            <a href="buisness-details.html" style="white-space: nowrap;">+91-9123456789</a>
+                                        </td>
+                                        <td style="border:1px solid #999;border-bottom: none;padding:6px;" rowspan="5">Buldana Urban Financial Services</td>
+                                        <td style="border:1px solid #999;border-bottom: none;padding:6px;">Marketing</td>
+                                        <td style="border:1px solid #999;border-bottom: none;padding:6px;">01 Sept 2025 to 30 Sept 2025</td>
+                                        <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:center;border-bottom: 0px;border-top:0px">56</td>
+                                        <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:right;border-right: 0px;">₹153.00</td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid #999;padding:6px;border-top: 0px;border-bottom: 0px;">Authentication</td>
+                                        <td style="border:1px solid #999;padding:6px;border-top:0px;border-bottom: 0px;">01 Sept 2025 to 30 Sept 2025</td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:center;border-bottom: 0px;border-top:0px">64</td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:right;border-bottom: 0px;border-top:0px;border-right: 0px;">₹153.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid #999;padding:6px;border-top: 0px;border-bottom: 0px;">Utility</td>
+                                        <td style="border:1px solid #999;padding:6px;border-top:0px;border-bottom: 0px;">01 Sept 2025 to 30 Sept 2025</td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:center;border-bottom: 0px;border-top:0px">68</td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:right;border-bottom: 0px;border-top:0px;border-right: 0px;">₹154.64</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid #999;padding:6px;border-top: 0px;height: 30px;border-bottom: 0px;"></td>
+                                        <td style="border:1px solid #999;padding:6px;border-top:0px;border-bottom: 0px;"></td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:center;border-bottom: 0px;border-top:0px;"></td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:right;border-bottom: 0px;border-top:0px;border-right: 0px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid #999;padding:6px;border-top: 0px;height: 30px;border-bottom: 0px;"></td>
+                                        <td style="border:1px solid #999;padding:6px;border-top:0px;border-bottom: 0px;"></td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:center;border-bottom: 0px;border-top:0px;border-right: 0px;"></td>
+                                        <td style="border:1px solid #999;padding:6px;text-align:right;border-bottom: 0px;border-top:0px;border-right: 0px;"></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-left: 0px;border-bottom: 0px;"></th>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-left: 0px;border-bottom: 0px;"></th>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-left: 0px;border-bottom: 0px;"></th>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-left: 0px;border-bottom: 0px;"></th>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-left: 0px;border-bottom: 0px;"></th>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-left: 0px;border-bottom: 0px;">Total</th>
+                                        <th style="border:1px solid #999;padding:6px;text-align:right;border-bottom: 0px;border-right: 0px;">₹499.76</th>
+                                    </tr>
+                                    
+                                </tfoot>
+                                </table>
+                                <table style="border-collapse:collapse;width:100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:70%;border:1px solid #999;border-bottom: none;padding:6px;text-align:left;border-bottom: 0px;border-left: 0px;">
+                                                <div style="float: left;"><span style="font-weight: 600;">Ack No.</span> 16211029898598</div>
+                                                <div style="float: right;"><span style="font-weight: 600;">Ack Date.</span> 19-Jan-21</div>
+                                            </td>
+                                            <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:right;border-right: 0px;">
+                                                <span style="float: left;">CGST (9%)</span>
+                                                <span>₹58.74</span>
+                                            </td>
+                                            
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="width:70%;border:1px solid #999;border-bottom: none;padding:6px;text-align:left;border-bottom: 0px;border-left: 0px;">
+                                                <div style="float: left;"><span style="font-weight: 600;">PAN No.</span> AAMCS8473N</div>
+                                                
+                                            </td>
+                                            <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:right;border-right: 0px;">
+                                                <span style="float: left;">SGST(9%)</span>
+                                                <span>₹58.74</span>
+                                            </td>
+                                            
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:right;border-right: 0px;">
+                                                <span style="float: left;">IGST(18%)</span>
+                                                <span>₹00.00</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="width:70%;border:1px solid #999;border-bottom: none;padding:6px;text-align:left;border-bottom: 0px;border-left: 0px;">
+                                                <span style="font-weight: 600;display: block;margin-bottom: 4px;">Bank Details :</span>
+                                                <p style="margin-bottom: 0px;">Bank Name : <span style="font-weight: 600;">HDFC</span></p>
+                                                <p style="margin-bottom: 0px;">A/c No. : <span style="font-weight: 600;">021230100006789</span></p>
+                                                <p>Branch and IFSC code : <span style="font-weight: 600;">Ghansoli & IFSC0123456</span></p>
+                                                
+                                            </td>
+                                            <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:right;border-right: 0px;">
+                                                
+                                            </td>
+                                           
+                                        </tr>
+                                        
+                                        <tr>
+                                             <td style="border:1px solid #999;border-bottom: none;padding:6px;text-align:right;border-right: 0px;height: 30px;">
+                                                <span style="font-weight: 600;float: left;">Grand Total</span>
+                                                <span style="float: right;">₹627.24</span>
+
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <table style="border-collapse:collapse;width:100%;">
+                                    <tr>
+                                        <td style="border-top:1px solid #999;padding: 6px;"><p style="margin:0px;"><strong>Amount in Words:</strong> 
+                                            Six Hundred Twenty Seven Rupees Only</p></td>
+                                    </tr>
+                                </table>
+                                
+
+                                <!-- Footer -->
+                                <div style="padding:6px;border-top:1px solid #999;font-size:13px;">
+                                
+                                <!-- <p style="margin:6px 0;">Terms & Conditions: All disputes are subject to Jamnagar jurisdiction. Goods once sold will not be taken back. Interest @2% will be charged on all overdue bills.</p> -->
+                                <p style="margin:6px 0;text-align:right;"><strong>For, Fortune4 Cloud Conversation</strong><br><br>Authorised Signatory</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                    
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+            </footer>
+        </div>
+
+        
+
+
+        </div>
+    </div>
+<div class="backdrop"></div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+   
+   
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

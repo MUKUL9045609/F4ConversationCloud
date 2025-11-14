@@ -44,7 +44,7 @@
                                 <a href="user-management.html" class="user icon">User Management</a>
                             </li>
                             <li>
-                                <a href="client-management.html" class="user icon">Client User Management</a>
+                                <a href="client-management.html" class="users icon">Client User Management</a>
                             </li>
                             
                             <li>
@@ -57,7 +57,7 @@
                                 <a href="activity-log.html" class="log icon">Activity Log</a>
                             </li>
                             <li>
-                                <a href="master-price.html" class="billing icon">Master Price</a>
+                                <a href="master-price.html" class="price icon">Master Price</a>
                             </li>
                             <li>
                                 <a href="master-tax.html" class="tax icon">Master Tax</a>
@@ -157,7 +157,7 @@
                        
                         <h6 class="details-title">WhatsApp Business Account Details</h6>
                         <div class="table-responsive">
-                            <table class="table user-table form-wrapper">
+                            <table class="table user-table form-wrapper" id="wabanumbers">
                                     <thead>
                                         <tr>
                                             <th>Sr.No</th>
@@ -197,6 +197,14 @@
                                                     <option>Pending</option> 
                                                 </select>
                                             </th>
+                                            <th>
+                                                Account Status
+                                                <select class="form-select">
+                                                    <option selected>Select Status</option> 
+                                                    <option>Disabled</option> 
+                                                    <option>Enabled</option>  
+                                                </select>
+                                            </th>
                                             
                                         </tr>
                                     </thead>
@@ -217,6 +225,13 @@
                                             <td>
                                                 <span class="badge success">Connected</span>
                                             </td>
+                                            <td>
+                                                <div class="action">
+                                                    <div class="form-check form-switch"> 
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> 
+                                                    </div>
+                                                </div>
+                                            </td>
                                             
                                         </tr>
                                         <tr>
@@ -234,6 +249,13 @@
                                             
                                             <td>
                                                 <span class="badge warning">Pending</span>
+                                            </td>
+                                            <td>
+                                                <div class="action">
+                                                    <div class="form-check form-switch"> 
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" disabled> 
+                                                    </div>
+                                                </div>
                                             </td>
                                             
                                         </tr>
@@ -253,6 +275,13 @@
                                             <td>
                                                 <span class="badge success">Connected</span>
                                             </td>
+                                            <td>
+                                                <div class="action">
+                                                    <div class="form-check form-switch"> 
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"> 
+                                                    </div>
+                                                </div>
+                                            </td>
                                             
                                         </tr>
                                         <tr>
@@ -271,7 +300,13 @@
                                             <td>
                                                 <span class="badge warning">Pending</span>
                                             </td>
-                                            
+                                            <td>
+                                                <div class="action">
+                                                    <div class="form-check form-switch"> 
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" disabled> 
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
 
                                         
