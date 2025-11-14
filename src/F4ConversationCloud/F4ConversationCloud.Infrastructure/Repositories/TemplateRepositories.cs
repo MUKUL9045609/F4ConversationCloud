@@ -6,6 +6,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -240,7 +241,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.ClientInfoId = model.ClientInfoId.ToString();
                 templateRequest.WABAID = model.WABAId;
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
-
+                if (model.File != null)
+                {
+                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Format = "IMAGE";
+                }
                 APIResponse result = await MetaCreateTemplate(templateRequest);
 
                 return result;
@@ -331,6 +338,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.WABAID = model.WABAId;
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
                 templateRequest.TemplateId = model.TemplateId;
+                if (model.File != null)
+                {
+                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Format = "IMAGE";
+                }
 
                 APIResponse result = await MetaEditTemplate(templateRequest);
 

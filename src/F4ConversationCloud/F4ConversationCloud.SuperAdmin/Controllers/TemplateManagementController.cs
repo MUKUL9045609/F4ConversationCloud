@@ -200,8 +200,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                     model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                     model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
-
-                    return View(model);
+                    if (model.PageMode == "Edit")
+                    {
+                        await UpdateTemplate(model.TemplateTableId);
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
                 }
 
                 var request = new TemplateViewRequestModel();
@@ -232,7 +238,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.WABAId = model.WABAId;
                 request.PageMode = model.PageMode;
                 request.TemplateId = model.TemplateId;
-
+                request.File = model.File;
+                
                 APIResponse result = new APIResponse();
                 if (request.PageMode == "Edit")
                 {
@@ -292,6 +299,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.MessageBody = data.RawBody;
                 viewModel.Footer = data.FooterText;
                 viewModel.TemplateId = data.TemplateId;
+                viewModel.TemplateTableId = id;
 
                 viewModel.bodyVariables = new List<BodyVariable>();
                 if (!string.IsNullOrEmpty(data.BodyExample))

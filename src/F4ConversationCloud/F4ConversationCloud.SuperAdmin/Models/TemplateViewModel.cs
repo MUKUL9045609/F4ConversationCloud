@@ -55,6 +55,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string WABAId { get; set; }
         public string PageMode { get; set; }
         public string TemplateId { get; set; }
+        public int TemplateTableId { get; set; }
 
         public class BodyVariable()
         {

@@ -603,7 +603,7 @@
                         reader.onload = function (e) {
                             var img = new Image();
                             img.onload = function () {
-                                if (img.width === 192 && img.height === 192) {
+                                // if (img.width === 192 && img.height === 192) {
                                     // Valid size — show previews
                                     if (window.$) {
                                         $('.image-upload').show();
@@ -614,11 +614,12 @@
                                     if (imageTag) imageTag.src = e.target.result;
                                     if (cardPreviewImg) cardPreviewImg.src = e.target.result;
                                     if (fileNameSpan) fileNameSpan.textContent = file.name;
-                                    if (imagePreviewSpan) imagePreviewSpan.style.display = 'inline-block';
-                                } else {
-                                    commonHelper.showError("Please upload an image of exactly 192×192 pixels.");
-                                    resetPreview();
-                                }
+                                    if (imagePreviewSpan) imagePreviewSpan.style.display = 'block';
+                                    $('#submit-btn').prop('disabled', false);
+                                // } else {
+                                //     commonHelper.showError("Please upload an image of exactly 192×192 pixels.");
+                                //     resetPreview();
+                                // }
                             };
                             img.src = e.target.result;
                         };
@@ -629,6 +630,7 @@
                     }
 
                     function resetPreview() {
+                        $('#submit-btn').prop('disabled', true);
                         if (fileNameSpan) fileNameSpan.textContent = '';
                         if (imageTag) imageTag.src = '';
                         if (cardPreviewImg) cardPreviewImg.src = '';
@@ -643,23 +645,7 @@
                 });
 
                 document.getElementById('remove-file').addEventListener('click', function () {
-                    var imageTag = document.querySelector('.image img');
-                    var cardPreviewImg = document.querySelector('#image-preview img');
-                    var imagePreviewSpan = document.getElementById('image-preview');
-                    var fileNameSpan = document.getElementById('file-name');
-                    var fileInput = document.getElementById('UploadedFile');
-
-                    if (fileNameSpan) fileNameSpan.textContent = '';
-                    if (fileInput) fileInput.value = '';
-                    if (imageTag) imageTag.src = '';
-                    if (cardPreviewImg) cardPreviewImg.src = '';
-                    if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
-
-                    if (window.$) {
-                        $('.image-upload').hide();
-                    } else {
-                        document.querySelector('.image-upload').style.display = 'none';
-                    }
+                    deleteImage();
                 });
 
                 commonHelper.showHideLoader(false);
@@ -706,12 +692,12 @@
             var $attachment = $('#attachment');
             var $existingFileLink = $('#existingFileLink');
             var $fileValidationMessage = $('[data-valmsg-for="File"]');
-
+            deleteImage();
             $fileInput.val('');
             $existingFileLink.html('');
             $fileInput.removeAttr('accept');
-
             var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+            $('#submit-btn').prop('disabled', true);
 
             if (selectedValue > 0 && selectedText != 'Location') {
                 $attachment.show();
@@ -773,27 +759,27 @@
         });
 
         function validateSubmitButton(editor) {
-            const content = editor.getData().trim();
-            const contentEmpty = content === '';
+            var content = editor.getData().trim();
+            var contentEmpty = content === '';
 
-            const messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
+            var messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
             //console.log(messageBodyErrorVisible);
-            const bodyInputs = document.querySelectorAll(
+            var bodyInputs = document.querySelectorAll(
                 '#variable-card-body input[name^="bodyVariables"][name$=".BodyVariableName"]'
             );
-            const anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
+            var anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
 
             // Header variable logic
-            const headerText = $('[name="Header"]').val()?.trim() || '';
-            const headerHasVariable = headerText.includes('{{1}}');
-            const headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
-            const headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
-            const headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
+            var headerText = $('[name="Header"]').val()?.trim() || '';
+            var headerHasVariable = headerText.includes('{{1}}');
+            var headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
+            var headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
+            var headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
 
             // Final check
-            const shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
-            
-            $('#submit-btn').prop('disabled', shouldDisable);
+            var shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
+
+            c
         }
 
         $(document).on('input', '[name="Header"]', function () {
@@ -879,6 +865,27 @@
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
+
+        function deleteImage() {
+            $('#submit-btn').prop('disabled', true);
+            var imageTag = document.querySelector('.image img');
+            var cardPreviewImg = document.querySelector('#image-preview img');
+            var imagePreviewSpan = document.getElementById('image-preview');
+            var fileNameSpan = document.getElementById('file-name');
+            var fileInput = document.getElementById('UploadedFile');
+
+            if (fileNameSpan) fileNameSpan.textContent = '';
+            if (fileInput) fileInput.value = '';
+            if (imageTag) imageTag.src = '';
+            if (cardPreviewImg) cardPreviewImg.src = '';
+            if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
+
+            if (window.$) {
+                $('.image-upload').hide();
+            } else {
+                document.querySelector('.image-upload').style.display = 'none';
+            }
+        }
 
     </script>
 }
