@@ -2,13 +2,12 @@
 using F4ConversationCloud.Infrastructure.Service.Client;
 using Microsoft.AspNetCore.Mvc;
 
-namespace F4ConversationCloud.ClientAdmin
+namespace F4ConversationCloud.Onboarding
 {
     public static class ConfigureServices
     {
         public static IServiceCollection AddWebUIServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthorization();
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
             services.Configure<ApiBehaviorOptions>(options =>

@@ -1,6 +1,7 @@
 using F4ConversationCloud.Application.Common.Models.MetaModel.Configurations;
 using F4ConversationCloud.Infrastructure;
 using F4ConversationCloud.Infrastructure.Scheduler;
+using F4ConversationCloud.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Handler;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -26,6 +27,7 @@ builder.Services.AddAuthorization(config =>
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddWebUIServices(builder.Configuration);
 
 
 WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
