@@ -14,9 +14,9 @@ namespace F4ConversationCloud.Domain.Enum
         [Display(Name = "None")]
         None = 0,
 
-        //[Description("Image")]
-        //[Display(Name = "Image")]
-        //Image = 1,
+        [Description("Image")]
+        [Display(Name = "Image")]
+        Image = 1,
 
         //[Description("Video")]
         //[Display(Name = "Video")]
