@@ -14,6 +14,8 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public int RoleFilter { get; set; } = 0;
         public string CreatedOnFilter { get; set; } = string.Empty;
         public string UpdatedOnFilter { get; set; } = string.Empty;
+        public string OrganizationsNameFilter { get; set; } = string.Empty;
+        public int AccountStatusFilter {  get; set; }
         public int RegistrationStatusFilter { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;

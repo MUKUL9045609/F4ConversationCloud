@@ -43,11 +43,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("emailFilter", filter.EmailFilter);
             parameters.Add("contactNumberFilter", filter.ContactNumberFilter);
             parameters.Add("roleFilter", filter.RoleFilter);
+            parameters.Add("organizationsNameFilter", filter.OrganizationsNameFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
             parameters.Add("registrationStatusFilter", filter.RegistrationStatusFilter);
+            parameters.Add("accountStatusFilter", filter.AccountStatusFilter);
 
-            return await _repository.GetCountAsync("sp_GetClientRegistrationCount", parameters);
+            return await _repository.GetCountAsync("sp_GetClientRegistrationCount_v2", parameters);
         }
 
         public async Task<IEnumerable<ClientRegistrationListItemModel>> GetFilteredAsync(ClientRegistrationListFilter filter)
@@ -59,12 +61,14 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("contactNumberFilter", filter.ContactNumberFilter);
             parameters.Add("roleFilter", filter.RoleFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
+            parameters.Add("organizationsNameFilter", filter.OrganizationsNameFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
             parameters.Add("registrationStatusFilter", filter.RegistrationStatusFilter);
+            parameters.Add("accountStatusFilter", filter.AccountStatusFilter);
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
 
-            return await _repository.GetListByValuesAsync<ClientRegistrationListItemModel>("sp_GetFilteredClientRegistrations", parameters);
+            return await _repository.GetListByValuesAsync<ClientRegistrationListItemModel>("sp_GetFilteredClientRegistrations_v2", parameters);
         }
 
         public async Task<ClientRegistration> GetByIdAsync(int id)
@@ -101,6 +105,39 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("contactNumber", contactNumber);
 
             return await _repository.CheckExistAsync("sp_CheckRegisterContactNumberExist", parameters);
+        }
+
+        public async Task<int> ActivateDeactivateClientAccountAsync(int clientId, int IsActive)
+        {
+
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+
+                Dp.Add("clientId", clientId);
+                Dp.Add("isActive", IsActive);
+                return await _repository.InsertUpdateAsync("sp_ActivateDeactivateClientAccount", Dp);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+        public async Task<bool> ActivateClientAccountAsync(int clientId)
+        {
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("clientId", clientId);
+                return await _repository.DeleteAsync("sp_ActivateClientAccount", Dp);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
     }
 }

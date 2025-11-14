@@ -29,6 +29,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var response = await _clientRegistrationService.GetFilteredRegistrations(new ClientRegistrationListFilter
                 {
+                    OrganizationsNameFilter = model.OrganizationsNameFilter ?? String.Empty,
+                    AccountStatusFilter = model.AccountStatusFilter,
                     NameFilter = model.NameFilter ?? String.Empty,
                     EmailFilter = model.EmailFilter ?? String.Empty,
                     ContactNumberFilter = model.ContactNumberFilter ?? String.Empty,
@@ -62,6 +64,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegistrationStatusName = x.RegistrationStatus == 0 ? "" : ((ClientRegistrationStatus)x.RegistrationStatus).GetDisplayName(),
                     CreatedOn = x.CreatedOn,
                     UpdatedOn = x.UpdatedOn,
+                    AccountStatus = x.AccountStatus,
+                    OrganizationsName = x.OrganizationsName,
+                    ClientId = x.ClientId,
+                    Category = x.Category,
+
                     RoleName = ((ClientRole)x.Role).GetDisplayName()
                 });
 
@@ -188,7 +195,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var cr = await _clientRegistrationService.GetByIdAsync(model.Id);
 
-                if (cr.FirstName == model.FirstName && cr.LastName == model.LastName 
+                if (cr.FirstName == model.FirstName && cr.LastName == model.LastName
                     && cr.ContactNumber == model.ContactNumber && cr.Role == model.Role)
                 {
                     var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
@@ -211,7 +218,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         return View(model);
                     }
                 }
-                    
+
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {
                     Id = model.Id,
@@ -370,6 +377,51 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             {
                 return Ok(false);
             }
+        }
+
+
+        public async Task<IActionResult> ActivateDeactivateClientAccount(int ClientId, int IsActivate)
+        {
+
+            try
+            {
+                var isDeletedResponce = await _clientRegistrationService.ActivateDeactivateClientAccountAsync(ClientId, IsActivate);
+
+                if (isDeletedResponce.success)
+                {
+                    return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new DeleteTemplateResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> DeactivateClientAccount(int ClientId)
+        {
+            try
+            {
+                var isDeletedResponce = await _clientRegistrationService.DeactivateClientAccountAsync(ClientId);
+                if (isDeletedResponce.success)
+                {
+                    return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new DeleteTemplateResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+            }
+
+
         }
     }
 }

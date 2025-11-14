@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
@@ -234,5 +235,88 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             return response;
         }
+
+
+        public async Task<CommonSuperAdminServiceResponse> ActivateDeactivateClientAccountAsync(int clientId, int IsActive)
+        {
+            try
+            {
+                var tempRes = await _clientRegistrationRepository.ActivateDeactivateClientAccountAsync(clientId, IsActive);
+
+                if (tempRes == 0)
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Failed to Disable Client Account."
+                    };
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "Client Account Disable successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                var log = new LogModel
+                {
+                    Source = "WhatsappTemplate/DeactivateTemplateAsync",
+                    AdditionalInfo = $"clientId: {clientId}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+
+                await _logService.InsertLogAsync(log);
+
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+        }
+        public async Task<CommonSuperAdminServiceResponse> DeactivateClientAccountAsync(int clientId)
+        {
+            try
+            {
+                var tempRes = await _clientRegistrationRepository.ActivateClientAccountAsync(clientId);
+                if (!tempRes)
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Failed to Enable Client Account."
+                    };
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "Client Account Enable successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                var log = new LogModel
+                {
+                    Source = "WhatsappTemplate/ActivateClientAccountAsync",
+                    AdditionalInfo = $"clientId: {clientId}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+
+                await _logService.InsertLogAsync(log);
+
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+
+        }
+
     }
 }
