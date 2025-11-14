@@ -243,7 +243,8 @@
                 $('#message-body').html(reqModel.messageBody);
                 $('#footer-text').text(reqModel.footer);
 
-                if (reqModel.headerVariableName != ''){
+                console.log(reqModel.headerVariableValue)
+                if (reqModel.headerVariableValue != ''){
                     $('#variable-card-header').show();
                     $('#header-add-btn').prop("disabled", true);
                 }
