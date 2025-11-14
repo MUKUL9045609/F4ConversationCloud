@@ -25,6 +25,8 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public int ClientInfoId { get; set; }
         public int MetaConfigId { get; set; }
         public string WABAId { get; set; }
+        public string PageMode { get; set; }
+        public string TemplateId { get; set; }
 
         public class BodyVariable()
         {

@@ -11,6 +11,7 @@ using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
@@ -229,8 +230,18 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.ClientInfoId = model.ClientInfoId;
                 request.MetaConfigId = model.MetaConfigId;
                 request.WABAId = model.WABAId;
+                request.PageMode = model.PageMode;
+                request.TemplateId = model.TemplateId;
 
-                APIResponse result = await _templateRepositories.BuildAndCreateTemplate(request);
+                APIResponse result = new APIResponse();
+                if (request.PageMode == "Edit")
+                {
+                    result = await _templateRepositories.BuildAndEditTemplate(request);
+                }
+                else
+                {
+                    result = await _templateRepositories.BuildAndCreateTemplate(request);
+                }
 
                 if (result.Status)
                 {
@@ -268,9 +279,36 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.TemplateType = Convert.ToInt32(data.Category);
+                viewModel.TemplateTypeName = EnumExtensions.GetDisplayNameById<TemplateModuleType>(Convert.ToInt32(data.Category));
+                viewModel.TemplateCategory = 1;
+                viewModel.TemplateCategoryName = EnumExtensions.GetDisplayNameById<UtilityTemplateType>(1);
                 viewModel.TemplateName = data.TemplateName;
-                viewModel.Header = data.HeaderText;
+                viewModel.VariableType = 1;
+                viewModel.MediaType = 0;
+                viewModel.Header = data.RawHeader;
+                viewModel.HeaderVariableValue = data.HeaderExample;
+                viewModel.HeaderVariableName = "{{1}}";
+                viewModel.MessageBody = data.RawBody;
+                viewModel.Footer = data.FooterText;
+                viewModel.TemplateId = data.TemplateId;
 
+                viewModel.bodyVariables = new List<BodyVariable>();
+                if (!string.IsNullOrEmpty(data.BodyExample))
+                {
+                    var examples = data.BodyExample.Split(',');
+
+                    for (int i = 0; i < examples.Length; i++)
+                    {
+                        var bodyVariable = new BodyVariable
+                        {
+                            BodyVariableName = examples[i],
+                            BodyVariableValue = $"{{{{{i + 1}}}}}"
+                        };
+
+                        viewModel.bodyVariables.Add(bodyVariable);
+                    }
+                }
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -410,24 +448,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             ViewData["Index"] = 0;
             return PartialView(viewName, model);
         }
-
-        //public IActionResult AddMessageVariable(int index)
-        //{
-        //    var model = new TemplateViewModel();
-
-        //    // Ensure the list is initialized
-        //    if (model.bodyVariables == null)
-        //        model.bodyVariables = new List<BodyVariable>();
-
-        //    // Add empty items until the list has the required index
-        //    while (model.bodyVariables.Count <= index)
-        //    {
-        //        model.bodyVariables.Add(new BodyVariable());
-        //    }
-
-        //    ViewData["Index"] = index;
-        //    return PartialView("_MessageVariableBody", model);
-        //}
 
         [HttpPost]
         public IActionResult RenderBodyVariablesPartial([FromBody] List<string> variableNumbers)

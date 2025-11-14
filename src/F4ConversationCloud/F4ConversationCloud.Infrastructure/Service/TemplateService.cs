@@ -117,19 +117,19 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 if (result.error != null)
                 {
-                    return new
+                    return new APIResponse
                     {
-                        Success = false,
-                        result = result.error,
+                        Status = false,
+                        result = result,
                         Message = result.error.error_user_msg
 
                     };
                 }
                 else
                 {
-                    return new
+                    return new APIResponse
                     {
-                        Success = true,
+                        Status = true,
                         result = result.data,
                         Message = "Template edited successFully."
                     };
@@ -139,10 +139,10 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
             catch (Exception ex)
             {
-                return new
+                return new APIResponse
                 {
                     Message = "Error occured while editing template.",
-                    Success = false,
+                    Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };
