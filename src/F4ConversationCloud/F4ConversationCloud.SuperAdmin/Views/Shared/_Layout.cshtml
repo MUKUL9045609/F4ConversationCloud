@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="~/css/daterangepicker.css">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 </head>
@@ -35,7 +35,7 @@
                                 <a asp-controller="Dashboard" asp-action="Index" class="home icon">Dashboard</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientRegistration" ? "active" : "")">
-                                <a asp-controller="ClientRegistration" asp-action="List" class="users icon">Registration</a>
+                                <a asp-controller="ClientRegistration" asp-action="List" class="register icon">Registration</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientManagement" || ViewContext.RouteData.Values["Controller"]?.ToString() == "TemplateManagement" ? "active" : "")">
                                 <a asp-controller="ClientManagement" asp-action="List" class="buisness icon">Business Account</a>
@@ -44,7 +44,7 @@
                                 <a asp-controller="UserManagement" asp-action="List" class="user icon">User Management</a>
                             </li>
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ClientUserManagement" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
-                                <a asp-controller="ClientUserManagement" asp-action="List" class="user icon">Client User Management</a>
+                                <a asp-controller="ClientUserManagement" asp-action="List" class="users icon">Client User Management</a>
                             </li>
                             @* <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Usages" asp-action="List" class="usages icon">Usages</a>
@@ -56,7 +56,7 @@
                                 <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a> *@
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterPrice" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
-                                <a asp-controller="MasterPrice" asp-action="List" class="billing icon">Master Price</a>
+                                <a asp-controller="MasterPrice" asp-action="List" class="price icon">Master Price</a>
                             </li>
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "MasterTax" && ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")">
                                 <a asp-controller="MasterTax" asp-action="Create" class="tax icon">Master Tax</a>

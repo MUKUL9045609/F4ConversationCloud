@@ -13,12 +13,12 @@ namespace F4ConversationCloud.Infrastructure.Scheduler
     public class TemplateSyncService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(30);
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(10);
 
         public TemplateSyncService(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             _serviceProvider = serviceProvider;
-            _interval = configuration["TemplateSync:APIIntervalInMinutes"] is not null ? TimeSpan.FromMinutes(Convert.ToInt32(configuration["TemplateSync:APIIntervalInMinutes"])) : TimeSpan.FromMinutes(30);
+            _interval = configuration["TemplateSync:APIIntervalInMinutes"] is not null ? TimeSpan.FromMinutes(Convert.ToInt32(configuration["TemplateSync:APIIntervalInMinutes"])) : TimeSpan.FromMinutes(10);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

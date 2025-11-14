@@ -22,7 +22,7 @@
                 <label>Name your template</label>
                 <div class="input-group">
                     <input asp-for="TemplateName" type="text"
-                    class="form-control" placeholder="Enter a template name" maxlength="512" />
+                           class="form-control" placeholder="Enter a template name" maxlength="512" />
                 </div>
                 <div class="invalid-feedback mt-0">
                     <span asp-validation-for="TemplateName"></span>
@@ -51,7 +51,7 @@
                         <input asp-for="VariableType" class="form-check-input"
                                type="radio"
                                id="@t.Value"
-                               value="@t.Value" checked/>
+                               value="@t.Value" checked />
                         <label class="form-check-label"
                                for="flexRadioDefault1">
                             @t.Text
@@ -152,7 +152,7 @@
                     <span asp-validation-for="MessageBody" id="messageBodyError"></span>
                 </div>
             </div>
-            <div class="variables-sample mb-2" id="variable-card" style="display:none;">
+            <div class="variables-sample mb-2">
                 <div class="flex-grow-1">
                     <label>Variable Samples</label>
                     <p>Include samples of all variables in your message to help review your template. Remember not to include any customer information to protect your customer’s privacy.</p>
@@ -167,17 +167,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-wrapper" id="variable-card-body" style="display:none;">
-                        <label>Body</label>
-                        <div class="d-flex gap-2">
-                            <div class="small-input">
-                                <input type="text" class="form-control" value="{{1}}" disabled>
-                            </div>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control" placeholder="Enter content for {{1}}">
-                            </div>
-                        </div>
-                    </div>
+                    <partial name="_MessageVariableBody" model="@Model" />
                 </div>
             </div>
             <div class="mb-2 flex-grow-1">
