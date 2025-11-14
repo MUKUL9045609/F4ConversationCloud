@@ -1,11 +1,13 @@
-﻿using System;
+﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace F4ConversationCloud.Application.Common.Models.Templates
 {
-    public class TemplateRequest
+    public class TemplateRequest : IValidatableObject
     {
         public int? Id { get; set; }
 
@@ -24,14 +26,70 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public BodyComponent TemplateBody { get; set; } = new BodyComponent();
         public FooterComponent TemplateFooter { get; set; } = new FooterComponent();
         public ButtonComponet TemplateButton { get; set; } = new ButtonComponet();
+
+        [Required]
         public string WABAID { get; set; }
+
+        [Required]
         public string ClientInfoId { get; set; }
+
+        [Required]
         public string CreatedBy { get; set; }
         public string TemplateId { get; set; }
 
+        [Required]
+        public string TemplateTypes { get; set; }
 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrWhiteSpace(TemplateTypes))
+            {
+                yield return new ValidationResult("TemplateTypes is required.", new[] { nameof(TemplateTypes) });
+                yield break;
+            }
+
+            string typeInput = TemplateTypes.Trim();
+
+            bool isValid = false;
+
+            switch (Category?.ToUpper())
+            {
+                case "MARKETING":
+                    isValid = EnumExtensions.IsValidEnumValue<MarketingTemplateType>(typeInput);
+                    if (!isValid)
+                    {
+                        yield return new ValidationResult(
+                            $"Invalid TemplateTypes for MARKETING. Allowed values: {string.Join(", ", EnumExtensions.GetEnumDisplayNames<MarketingTemplateType>())}",
+                            new[] { nameof(TemplateTypes) });
+                    }
+                    break;
+
+                case "UTILITY":
+                    isValid = EnumExtensions.IsValidEnumValue<UtilityTemplateType>(typeInput);
+                    if (!isValid)
+                    {
+                        yield return new ValidationResult(
+                            $"Invalid TemplateTypes for UTILITY. Allowed values: {string.Join(", ", EnumExtensions.GetEnumDisplayNames<MarketingTemplateType>())}",
+                            new[] { nameof(TemplateTypes) });
+                    }
+                    break;
+
+                case "AUTHENTICATION":
+                    isValid = EnumExtensions.IsValidEnumValue<AuthenticationTemplateType>(typeInput);
+                    if (!isValid)
+                    {
+                        yield return new ValidationResult(
+                            $"Invalid TemplateTypes for AUTHENTICATION. Allowed value: {string.Join(", ", EnumExtensions.ToSelectList<AuthenticationTemplateType>())}",
+                            new[] { nameof(TemplateTypes) });
+                    }
+                    break;
+
+                default:
+                    yield return new ValidationResult($"Invalid Category: {Category}", new[] { nameof(Category) });
+                    break;
+            }
+        }
     }
-
     public class Component : IValidatableObject
     {
         [Required(ErrorMessage = "Component type is required.")]

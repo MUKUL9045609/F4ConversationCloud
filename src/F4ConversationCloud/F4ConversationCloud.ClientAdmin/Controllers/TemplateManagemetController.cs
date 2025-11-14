@@ -56,7 +56,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         Category = ((TemplateModuleType)Convert.ToInt32(t.Category)).GetDisplayName(),
                         LanguageCode = ((TemplateLanguages)Convert.ToInt32(t.LanguageCode)).GetDisplayName(),
                         ModifiedOn = t.ModifiedOn,
-                        TemplateStatus = ((TemplateApprovalStatus)Convert.ToInt32(t.Category)).GetDisplayName()
+                        TemplateStatus = ((TemplateApprovalStatus)Convert.ToInt32(t.TemplateStatus)).GetDisplayName()
 
 
                     }).ToList(),
