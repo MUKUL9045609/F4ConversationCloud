@@ -57,5 +57,31 @@ namespace BuldanaUrban.Domain.Helpers
 
             return enumValue.ToString(); // fallback to enum name
         }
+
+        public static bool IsValidEnumValue<T>(string value) where T : Enum
+        {
+            if (Enum.TryParse(typeof(T), value, ignoreCase: true, out _))
+                return true;
+
+            return GetEnumDisplayNames<T>().Any(x => x.Equals(value, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static IEnumerable<string> GetEnumDisplayNames<T>() where T : Enum
+        {
+            foreach (var field in typeof(T).GetFields())
+            {
+                if (!field.IsSpecialName)
+                {
+                    var display = field.GetCustomAttributes(typeof(DisplayAttribute), false)
+                                       .Cast<DisplayAttribute>()
+                                       .FirstOrDefault();
+
+                    if (display != null)
+                        yield return display.Name;
+                    else
+                        yield return field.Name;
+                }
+            }
+        }
     }
 }
