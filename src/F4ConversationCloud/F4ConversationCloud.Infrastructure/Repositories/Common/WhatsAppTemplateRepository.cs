@@ -113,7 +113,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         }
 
 
-        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID , string HeaderFileUrl , string TemplateTypes)
+        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID , string HeaderFileUrl , string TemplateTypes , string HeaderFileFilename)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
                 parameters.Add("@HeaderMediaUrl", HeaderFileUrl, DbType.String);
                 parameters.Add("@HeaderMediaId", null, DbType.String);
-                parameters.Add("@HeaderFileName", null, DbType.String);
+                parameters.Add("@HeaderFileName", HeaderFileFilename, DbType.String);
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);
                 parameters.Add("@HeaderLongitude", null, DbType.Decimal);
                 parameters.Add("@HeaderAddress", null, DbType.String);
@@ -189,7 +189,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             return await _repository.GetListByValuesAsync<TemplateModel>("sp_GetFilteredTemplatesByWABAId", parameters);
         }
 
-        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId, string HeaderFileUrl)
+        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId, string HeaderFileUrl , string HeaderFileFilename)
         {
             try
             {
@@ -206,7 +206,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
                 parameters.Add("@HeaderMediaUrl", HeaderFileUrl, DbType.String);
                 parameters.Add("@HeaderMediaId", null, DbType.String);
-                parameters.Add("@HeaderFileName", null, DbType.String);
+                parameters.Add("@HeaderFileName", HeaderFileFilename, DbType.String);
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);
                 parameters.Add("@HeaderLongitude", null, DbType.Decimal);
                 parameters.Add("@HeaderAddress", null, DbType.String);

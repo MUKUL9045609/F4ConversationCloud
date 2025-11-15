@@ -73,6 +73,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 if (response.Status)
                 {
                     var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
+                    var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
                     messageTemplate.category = response.result.category;
 
                     var resId = response.result.id?.ToString();
