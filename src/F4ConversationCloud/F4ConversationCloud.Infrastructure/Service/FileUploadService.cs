@@ -130,7 +130,7 @@ namespace F4ConversationCloud.Infrastructure.Service
             try
             {
                 var fullPath = "";
-                if (string.IsNullOrEmpty(base64String))
+                if (!string.IsNullOrEmpty(base64String))
                 {
                     string folderName = "TemplateImage";
 
