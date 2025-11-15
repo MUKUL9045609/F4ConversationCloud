@@ -985,12 +985,11 @@
                     templatebodytext = templatebodytext.replace(placeholder, value.trim());
                 });
             }
-
+            $('#header-image-preview img').attr('src', templateheadermediaurl);
             $('#template-preview-Label').text(templateName);
             $('#template-preview-header').text(templateheadertext);
             $('#template-preview-body').html(templatebodytext);
             $('#template-preview-footer').text(templatefooter);
-            $('#header-image-preview img').attr('src', templateheadermediaurl);
         });
 
             var currentPageNumber = 1;
