@@ -27,19 +27,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories
         private IConfiguration _configuration { get; }
 
         private ITemplateService _templateService { get; }
+        private IFileUploadService _fileUploadService { get; }
 
         private IWhatsAppTemplateRepository _whatsAppTemplateRepository { get; }
         public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService, ITemplateService templateService,
-            IWhatsAppTemplateRepository whatsAppTemplateRepository, DbContext context)
+            IWhatsAppTemplateRepository whatsAppTemplateRepository, DbContext context, IFileUploadService fileUploadService)
         {
             _logService = logService;
             _templateService = templateService;
             _whatsAppTemplateRepository = whatsAppTemplateRepository;
             _context = context;
+            _fileUploadService = fileUploadService;
         }
 
         public async Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString();
             try
             {
                 if (requestBody != null)
@@ -66,15 +69,18 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     }
                 }
 
+
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
 
                 var response = await _templateService.CreateTemplate(messageTemplate, requestBody.WABAID);
 
                 if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     messageTemplate.category = response.result.category;
+
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString());
 
                     return new APIResponse
                     {

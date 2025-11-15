@@ -113,7 +113,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         }
 
 
-        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID  )
+        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID ,string HeaderFileUrl )
         {
             try
             {
@@ -128,7 +128,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderFormat", data.HeaderFormat, DbType.String);
                 parameters.Add("@HeaderText", data.HeaderText, DbType.String);
                 parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
-                parameters.Add("@HeaderMediaUrl", data.HeaderMediaUrl, DbType.String);
+                parameters.Add("@HeaderMediaUrl", HeaderFileUrl, DbType.String);
                 parameters.Add("@HeaderMediaId", null, DbType.String);
                 parameters.Add("@HeaderFileName", null, DbType.String);
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);
