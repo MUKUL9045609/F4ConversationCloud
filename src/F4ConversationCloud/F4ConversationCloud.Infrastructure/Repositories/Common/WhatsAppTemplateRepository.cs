@@ -113,7 +113,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         }
 
 
-        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID ,string HeaderFileUrl )
+        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID , string HeaderFileUrl , string TemplateTypes)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@ClientInfoId", ClientInfoId, DbType.String);
                 parameters.Add("@Templateid", TemplateId, DbType.String);
                 parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
-                //parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? (int)cat : (int)TemplateApprovalStatus.Pending, DbType.Int32);
+                parameters.Add("@TemplateTypes", TemplateTypes);
 
 
                 return await _repository.InsertUpdateAsync("sp_InsertWhatsappTemplate", parameters);
