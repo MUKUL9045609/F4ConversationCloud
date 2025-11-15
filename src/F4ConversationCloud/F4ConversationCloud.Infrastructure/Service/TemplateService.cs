@@ -567,6 +567,52 @@ namespace F4ConversationCloud.Infrastructure.Service
                     };
                 }
 
+                //// Step 4: Extract Media ID
+                //var secondJson = JObject.Parse(secondResponseString);
+                //string mediaId = null;
+
+                //var hValue = secondJson["h"]?.ToString();
+                //if (!string.IsNullOrEmpty(hValue))
+                //{
+                //    var parts = hValue.Split(':');
+                //    if (parts.Length >= 3)
+                //    {
+                //        // WhatsApp media ID is ALWAYS 3rd last element
+                //        mediaId = parts[^3];  // ^3 = third item from end
+                //    }
+                //}
+
+
+                //if (string.IsNullOrEmpty(mediaId))
+                //{
+                //    return new
+                //    {
+                //        Success = false,
+                //        Message = "Media ID not found after second upload.",
+                //        Response = secondResponseString
+                //    };
+                //}
+
+                //// Step 5: GET Media URL (this gives the final image path)
+                //string mediaUrlApi = $"https://graph.facebook.com/v23.0/{mediaId}?fields=url";
+
+                //var mediaUrlResponse = await client.GetAsync(mediaUrlApi);
+                //var mediaUrlResponseString = await mediaUrlResponse.Content.ReadAsStringAsync();
+
+                //if (!mediaUrlResponse.IsSuccessStatusCode)
+                //{
+                //    return new
+                //    {
+                //        Success = false,
+                //        Message = "Failed to fetch media URL.",
+                //        StatusCode = mediaUrlResponse.StatusCode,
+                //        Response = mediaUrlResponseString
+                //    };
+                //}
+
+                //var mediaJson = JObject.Parse(mediaUrlResponseString);
+                //var finalImageUrl = mediaJson["url"]?.ToString();
+
                 return secondResponseString;
 
             }
