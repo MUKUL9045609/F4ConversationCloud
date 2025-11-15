@@ -867,6 +867,7 @@
         });
 
         $(document).on('click', '#discard-btn', function (e) {
+            commonHelper.showHideLoader(true);
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
