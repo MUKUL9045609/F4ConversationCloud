@@ -52,6 +52,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public int MyProperty { get; set; }
             public int IsActive { get; set; }
             public string HeaderMediaUrl { get; set; }
+            public string HeaderMediaName { get; set; }
         }
     }
 }
