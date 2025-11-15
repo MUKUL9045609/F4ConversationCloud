@@ -253,6 +253,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
                     templateRequest.TemplateHeader.Example.Format = "IMAGE";
                     templateRequest.TemplateHeader.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
                 }
                 APIResponse result = await MetaCreateTemplate(templateRequest);
 

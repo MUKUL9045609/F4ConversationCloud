@@ -164,7 +164,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     BodyText = x.BodyText,
                     BodyExample = x.BodyExample,
                     FooterText = x.FooterText,
-                     IsActive = x.IsActive
+                    IsActive = x.IsActive,
+                    HeaderMediaUrl = x.HeaderMediaUrl
                 });
 
                 return View(model);

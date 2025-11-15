@@ -367,56 +367,61 @@
 
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
-                            var content = editor.getData();
-                            $('#message-body').html(content);
-                            $("#submit-btn").prop("disabled", content === '');
-                            validateWhatsAppVariables(content);
-                            validateSubmitButton(editor);
+                            try{
+                                var content = editor.getData();
+                                $('#message-body').html(content);
+                                $("#submit-btn").prop("disabled", content === '');
+                                validateWhatsAppVariables(content);
+                                validateSubmitButton(editor);
 
-                            var variables = extractUniqueVariables(content);
+                                var variables = extractUniqueVariables(content);
 
-                            var variablesChanged =
-                            variables.length !== previousVariables.length ||
-                            variables.some((v, i) => v !== previousVariables[i]);
+                                var variablesChanged =
+                                variables.length !== previousVariables.length ||
+                                variables.some((v, i) => v !== previousVariables[i]);
 
-                            if (!variablesChanged) return;
+                                if (!variablesChanged) return;
 
-                            // Cache current values
-                            bodyValuesCache = {};
-                            document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
-                                var number = row.getAttribute('data-number');
-                                var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
-                                if (input) {
-                                    bodyValuesCache[number] = input.value;
-                                }
-                            });
+                                // Cache current values
+                                bodyValuesCache = {};
+                                document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
+                                    var number = row.getAttribute('data-number');
+                                    var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                    if (input) {
+                                        bodyValuesCache[number] = input.value;
+                                    }
+                                });
 
-                            previousVariables = [...variables];
+                                previousVariables = [...variables];
 
-                            $.ajax({
-                                url: '/TemplateManagement/RenderBodyVariablesPartial', // your controller action
-                                type: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify(variables),
-                                success: function (html) {
-                                    $('#variable-card').show(); // show the whole card if needed
-                                    $('#variable-card-body').html(html).show();
+                                $.ajax({
+                                    url: '/TemplateManagement/RenderBodyVariablesPartial', // your controller action
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(variables),
+                                    success: function (html) {
+                                        $('#variable-card').show(); // show the whole card if needed
+                                        $('#variable-card-body').html(html).show();
 
-                                    document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
-                                        var number = row.getAttribute('data-number');
-                                        var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
-                                        if (input && bodyValuesCache[number]) {
-                                            input.value = bodyValuesCache[number];
-                                        }
-                                    });
+                                        document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
+                                            var number = row.getAttribute('data-number');
+                                            var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                            if (input && bodyValuesCache[number]) {
+                                                input.value = bodyValuesCache[number];
+                                            }
+                                        });
 
-                                    bindBodyVariableInputListener(editor);
-                                    validateSubmitButton(editor);
-                                },
-                                error: function () {
-                                    commonHelper.showError("Failed to load variable partials.");
-                                }
-                            });
+                                        bindBodyVariableInputListener(editor);
+                                        validateSubmitButton(editor);
+                                    },
+                                    error: function () {
+                                        commonHelper.showError("Failed to load variable partials.");
+                                    }
+                                });
+                            }
+                            catch(err){
+
+                            }
                         });
 
                         // Emoji picker
@@ -467,6 +472,7 @@
                         }
                     })
                     .catch(error => {
+                        alert();
                         console.error(error);
                     });
 
@@ -565,7 +571,6 @@
                         errorSpan.style.display = "none";
                         //$("#submit-btn").prop("disabled", false);
                     }
-
                     return errorMessage;
                 }
 

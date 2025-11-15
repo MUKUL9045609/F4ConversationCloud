@@ -217,6 +217,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.Footer = data.FooterText;
                 viewModel.TemplateId = data.TemplateId;
                 viewModel.TemplateTableId = id;
+                viewModel.FileUrl = data.HeaderMediaUrl;
 
                 viewModel.bodyVariables = new List<BodyVariable>();
                 if (!string.IsNullOrEmpty(data.BodyExample))
