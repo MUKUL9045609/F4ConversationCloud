@@ -43,17 +43,12 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody)
         {
-            var headerFile = requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString();
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
                 {
-
-                    //if(requestBody.TemplateHeader.Example.HeaderFile != null)
-                    //{
-                    //    requestBody.TemplateHeader.Example.HeaderFile = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.ToString());
-                    //}
-
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
@@ -78,10 +73,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 if (response.Status)
                 {
                     var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
+                    var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
                     messageTemplate.category = response.result.category;
 
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString());
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes);
 
                     return new APIResponse
                     {
@@ -115,6 +111,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
@@ -142,9 +140,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId);
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId,FileUrl);
 
                     return new APIResponse
                     {

@@ -113,7 +113,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         }
 
 
-        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID ,string HeaderFileUrl )
+        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID , string HeaderFileUrl , string TemplateTypes , string HeaderFileFilename)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
                 parameters.Add("@HeaderMediaUrl", HeaderFileUrl, DbType.String);
                 parameters.Add("@HeaderMediaId", null, DbType.String);
-                parameters.Add("@HeaderFileName", null, DbType.String);
+                parameters.Add("@HeaderFileName", HeaderFileFilename, DbType.String);
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);
                 parameters.Add("@HeaderLongitude", null, DbType.Decimal);
                 parameters.Add("@HeaderAddress", null, DbType.String);
@@ -147,7 +147,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@ClientInfoId", ClientInfoId, DbType.String);
                 parameters.Add("@Templateid", TemplateId, DbType.String);
                 parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(request.language, true, out var TemplateApprovalStatus) ? (int)TemplateApprovalStatus : (int)TemplateLanguages.English, DbType.Int32);
-                //parameters.Add("@TemplateStatus", Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? (int)cat : (int)TemplateApprovalStatus.Pending, DbType.Int32);
+                parameters.Add("@TemplateTypes", TemplateTypes);
 
 
                 return await _repository.InsertUpdateAsync("sp_InsertWhatsappTemplate", parameters);
@@ -189,7 +189,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             return await _repository.GetListByValuesAsync<TemplateModel>("sp_GetFilteredTemplatesByWABAId", parameters);
         }
 
-        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId)
+        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId, string HeaderFileUrl , string HeaderFileFilename)
         {
             try
             {
@@ -204,9 +204,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderFormat", data.HeaderFormat, DbType.String);
                 parameters.Add("@HeaderText", data.HeaderText, DbType.String);
                 parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
-                parameters.Add("@HeaderMediaUrl", data.HeaderMediaUrl, DbType.String);
+                parameters.Add("@HeaderMediaUrl", HeaderFileUrl, DbType.String);
                 parameters.Add("@HeaderMediaId", null, DbType.String);
-                parameters.Add("@HeaderFileName", null, DbType.String);
+                parameters.Add("@HeaderFileName", HeaderFileFilename, DbType.String);
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);
                 parameters.Add("@HeaderLongitude", null, DbType.Decimal);
                 parameters.Add("@HeaderAddress", null, DbType.String);
