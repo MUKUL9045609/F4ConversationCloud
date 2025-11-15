@@ -189,7 +189,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             return await _repository.GetListByValuesAsync<TemplateModel>("sp_GetFilteredTemplatesByWABAId", parameters);
         }
 
-        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId)
+        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId, string HeaderFileUrl)
         {
             try
             {
@@ -204,7 +204,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@HeaderFormat", data.HeaderFormat, DbType.String);
                 parameters.Add("@HeaderText", data.HeaderText, DbType.String);
                 parameters.Add("@HeaderExample", data.HeaderExample, DbType.String);
-                parameters.Add("@HeaderMediaUrl", data.HeaderMediaUrl, DbType.String);
+                parameters.Add("@HeaderMediaUrl", HeaderFileUrl, DbType.String);
                 parameters.Add("@HeaderMediaId", null, DbType.String);
                 parameters.Add("@HeaderFileName", null, DbType.String);
                 parameters.Add("@HeaderLatitude", null, DbType.Decimal);

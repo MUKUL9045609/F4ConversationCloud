@@ -42,7 +42,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody)
         {
-            var headerFile = requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString();
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
@@ -114,6 +115,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
@@ -141,6 +144,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
                     var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId);
