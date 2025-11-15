@@ -155,7 +155,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.WABAId = model.WABAId;
                 request.PageMode = model.PageMode;
                 request.TemplateId = model.TemplateId;
-                request.File = model.File;
                 
                 APIResponse result = new APIResponse();
                 if (request.PageMode == "Edit")
@@ -218,6 +217,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.TemplateId = data.TemplateId;
                 viewModel.TemplateTableId = id;
                 viewModel.FileUrl = data.HeaderMediaUrl;
+                viewModel.FileName = data.HeaderFileName;
 
                 viewModel.bodyVariables = new List<BodyVariable>();
                 if (!string.IsNullOrEmpty(data.BodyExample))
