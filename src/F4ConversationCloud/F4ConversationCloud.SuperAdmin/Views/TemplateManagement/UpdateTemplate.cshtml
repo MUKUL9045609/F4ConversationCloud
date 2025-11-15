@@ -22,6 +22,7 @@
     <input asp-for="ClientInfoId" type="hidden"/>
     <input asp-for="MetaConfigId" type="hidden"/>
     <input asp-for="TemplateId" type="hidden"/>
+    <input asp-for="TemplateTableId" type="hidden"/>
 
     <div class="content bg-light">
         <div class="main-content">
@@ -209,7 +210,7 @@
         var reqModel = @Html.Raw(Json.Serialize(Model));
         $(document).ready(function () {
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
-            console.log(storedData)
+            
             $('#ClientInfoId').val(storedData.ClientInfoId);
             $('#WABAId').val(storedData.WABAId);
             $('#MetaConfigId').val(storedData.MetaConfigId);
@@ -243,7 +244,6 @@
                 $('#message-body').html(reqModel.messageBody);
                 $('#footer-text').text(reqModel.footer);
 
-                console.log(reqModel.headerVariableValue)
                 if (reqModel.headerVariableValue != ''){
                     $('#variable-card-header').show();
                     $('#header-add-btn').prop("disabled", true);

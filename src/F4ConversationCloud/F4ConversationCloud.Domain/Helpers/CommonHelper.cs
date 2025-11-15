@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,19 @@ namespace F4ConversationCloud.Domain.Helpers
 
             
             return result;
+        }
+
+        public static async Task<string> GenerateFileToBase64String(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+                byte[] fileBytes = memoryStream.ToArray();
+                string base64String = Convert.ToBase64String(fileBytes);
+
+                string dataUri = $"data:{file.ContentType};base64,{base64String}";
+                return dataUri;
+            }
         }
     }
 }

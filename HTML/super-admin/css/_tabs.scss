@@ -72,8 +72,7 @@
             }
             &:hover {
                 border: 0px;
-                border-bottom: 1px solid transparent;
-                ;
+                border-bottom: 1px solid #9A9A9A;
             }
 
             &.active {
@@ -107,7 +106,7 @@
 
             &:focus {
                 border: 0px;
-                // border-bottom: 1px solid $tabs;
+                border-bottom: 1px solid #9A9A9A;
             }
         }
     }

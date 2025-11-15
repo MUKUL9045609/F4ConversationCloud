@@ -32,89 +32,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             _whatsAppTemplateService = whatsAppTemplateService;
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        //[HttpGet("create-template")]
-        //public IActionResult CreateTemplate()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost("create-template")]
-        //public IActionResult CreateTemplate(CreateTemplateViewModel Request)
-        //{
-        //    try
-        //    {
-        //        if(!ModelState.IsValid)
-        //        {
-        //            return View(Request);
-        //        }
-
-        //        var templateRequest = new WhatsAppTemplateRequest
-        //        {
-        //            Name = Request.TemplateName,
-        //            Language = Request.Language,
-        //            Category = Request.Category,
-        //            Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
-        //        };
-
-
-        //        var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
-
-        //        var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
-
-        //        return View(Request);
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        return View(Request);
-        //    }
-
-
-        //}
-
-        [HttpGet("update-template/{Template_id}")]
-        public async Task<IActionResult> UpdateTemplate(string Template_id)
-        {
-            try
-            {
-                var template = await _templateManagementService.GetTemplateByIdAsync(Template_id);
-                return View(template);
-            }
-            catch (Exception)
-            {
-                return View();
-            }
-        }
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteTemplate(string Template_id, int ClientInfoId, string TemplateName)
-        //{
-
-        //    try
-        //    {
-        //        dynamic isDeletedResponce = await _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
-        //        if (isDeletedResponce != null)
-        //        {
-        //            TempData["SuccessMessage"] = isDeletedResponce.message;
-        //            return Json(isDeletedResponce);
-        //        }
-        //        else
-        //        {
-        //            TempData["SuccessMessage"] = "Unknown error occurred.";
-        //            return Json(new DeleteTemplateResponse { success = false, message = "Unknown error occurred." });
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
-        //    }
-        //}
 
         public async Task<IActionResult> List(TemplatesListViewModel model)
         {
@@ -200,8 +117,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                     model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                     model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
-
-                    return View(model);
+                    if (model.PageMode == "Edit")
+                    {
+                        await UpdateTemplate(model.TemplateTableId);
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
                 }
 
                 var request = new TemplateViewRequestModel();
@@ -232,7 +155,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.WABAId = model.WABAId;
                 request.PageMode = model.PageMode;
                 request.TemplateId = model.TemplateId;
-
+                request.File = model.File;
+                
                 APIResponse result = new APIResponse();
                 if (request.PageMode == "Edit")
                 {
@@ -270,7 +194,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 var data = await _whatsAppTemplateService.GetTemplateByIdAsync(id);
-
+                var media = data.HeaderFormat;
                 var viewModel = new TemplateViewModel();
                 viewModel.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
                 viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
@@ -284,14 +208,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.TemplateCategory = 1;
                 viewModel.TemplateCategoryName = EnumExtensions.GetDisplayNameById<UtilityTemplateType>(1);
                 viewModel.TemplateName = data.TemplateName;
-                viewModel.VariableType = 1;
-                viewModel.MediaType = 0;
+                viewModel.VariableType = (int)VariableTypes.Number;
+                viewModel.MediaType = (int)Enum.Parse(typeof(MediaType), media);
                 viewModel.Header = data.RawHeader;
                 viewModel.HeaderVariableValue = data.HeaderExample;
                 viewModel.HeaderVariableName = "{{1}}";
                 viewModel.MessageBody = data.RawBody;
                 viewModel.Footer = data.FooterText;
                 viewModel.TemplateId = data.TemplateId;
+                viewModel.TemplateTableId = id;
+                viewModel.FileUrl = data.HeaderMediaUrl;
 
                 viewModel.bodyVariables = new List<BodyVariable>();
                 if (!string.IsNullOrEmpty(data.BodyExample))

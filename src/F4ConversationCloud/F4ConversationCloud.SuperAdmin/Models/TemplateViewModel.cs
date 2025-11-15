@@ -55,6 +55,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string WABAId { get; set; }
         public string PageMode { get; set; }
         public string TemplateId { get; set; }
+        public int TemplateTableId { get; set; }
 
         public class BodyVariable()
         {
@@ -65,7 +66,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!string.IsNullOrEmpty(Header) && Header.Contains("{{1}}") && !string.IsNullOrWhiteSpace(HeaderVariableName))
+            if (!string.IsNullOrEmpty(Header) && Header.Contains("{{1}}") && string.IsNullOrWhiteSpace(HeaderVariableValue))
             {
                 yield return new ValidationResult(
                     "Add sample text.",
