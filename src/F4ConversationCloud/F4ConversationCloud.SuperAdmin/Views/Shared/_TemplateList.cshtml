@@ -105,12 +105,11 @@
                                 
                                 <td>
                                     <div class="action">
-                                        <form method="get" action="@Url.Action("UpdateTemplate", "TemplateManagement", new { id = item.Id })">
-                                            <a method="get" class="edit-icon" asp-controller="TemplateManagement" asp-action="UpdateTemplate" asp-route-id="@item.Id"></a>
-                                        </form>
-                                       
                                         @if(item.IsActive == 1)
                                         {
+                                            <form method="get" action="@Url.Action("UpdateTemplate", "TemplateManagement", new { id = item.Id })">
+                                                <a method="get" class="edit-icon" asp-controller="TemplateManagement" asp-action="UpdateTemplate" asp-route-id="@item.Id"></a>
+                                            </form>
                                             <a class="delete-blue" data-bs-toggle="modal" href="#deleteModal" data-id="@item.Id" data-templatename="@item.TemplateName" role="button"></a>
                                            
                                         }

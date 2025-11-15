@@ -48,7 +48,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [StringLength(60, ErrorMessage = "Footer should be less than 60 characters.")]
         public string Footer { get; set; }
         public string HeaderVariableName { get; set; }
-        public string HeaderVariableValue { get; set; }
+        public string HeaderVariableValue { get; set; } = string.Empty;
         public List<BodyVariable> bodyVariables { get; set; } = new List<BodyVariable>();
         public int ClientInfoId { get; set; }
         public int MetaConfigId { get; set; }
@@ -60,12 +60,12 @@ namespace F4ConversationCloud.SuperAdmin.Models
         {
             [Required(ErrorMessage = "Please enter a sample for this variable.")]
             public string BodyVariableName { get; set; }
-            public string BodyVariableValue { get; set; }
+            public string BodyVariableValue { get; set; } = string.Empty;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!string.IsNullOrWhiteSpace(HeaderVariableName) && string.IsNullOrWhiteSpace(HeaderVariableValue))
+            if (!string.IsNullOrEmpty(Header) && Header.Contains("{{1}}") && !string.IsNullOrWhiteSpace(HeaderVariableName))
             {
                 yield return new ValidationResult(
                     "Add sample text.",

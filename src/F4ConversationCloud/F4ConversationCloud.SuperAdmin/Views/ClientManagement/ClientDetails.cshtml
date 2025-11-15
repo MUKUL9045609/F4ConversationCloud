@@ -952,9 +952,11 @@
         $(document).on('click', '.back', function () {
             commonHelper.showHideLoader(true);
         });
-         $(document).on("click", "#create-template-btn", function (e) {
-            var model = @Html.Raw(Json.Serialize(Model));
 
+        $(document).on("click", "#create-template-btn, .edit-icon", function (e) {
+            var model = @Html.Raw(Json.Serialize(Model));
+            console.log(model)
+            alert();
             var data = {
                 ClientInfoId: model.clientInfoId,
                 WABAId: model.wabaId,
