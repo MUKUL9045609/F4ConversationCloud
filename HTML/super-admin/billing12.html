@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune4 Conversation Cloud - Super Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="page">
+        
+        <!-- side Bar -->
+        <aside class="app-sidebar">
+            <div class="sidenav-content">
+                <a href="#" class="main-sidebar-header">
+                    <img src="images/logo.svg" />
+                </a>
+            
+                <div class="main-side-navigation">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="dashboard.html" class="home icon">Dashboard</a>
+                            </li>
+                            <li>
+                              <a href="client-registration.html" class="register icon">Register</a>
+                            </li>
+                            <li>
+                              <a href="buisness.html" class="buisness icon">Business Account</a>
+                            </li>
+                            <li>
+                                <a href="user-management.html" class="user icon">User Management</a>
+                            </li>
+                            <li>
+                                <a href="client-management.html" class="users icon">Client User Management</a>
+                            </li>
+                            <li>
+                                <a href="usages.html" class="usages icon">Usages</a>
+                            </li>
+                            <li class="active">
+                                <a href="billing.html" class="billing icon">Billing</a>
+                            </li>
+                             <li>
+                                <a href="activity-log.html" class="log icon">Activity Log</a>
+                            </li>
+                            <li>
+                                <a href="master-price.html" class="price icon">Master Price</a>
+                            </li>
+                             <li>
+                                <a href="master-tax.html" class="tax icon">Master Tax</a>
+                            </li>
+                            <li>
+                                <a href="configuration.html" class="cofig icon">Configuration</a>
+                            </li>  
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+          
+        </aside>
+        <!--End side Bar -->
+
+        <div class="main-content">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="appheader-wrap">
+                    
+                    <span class="burger" id="toggleButton">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                    
+                    <div class="profile-dropdown ms-auto"> 
+                        <div class="profile">
+                            <div class="dropdown">
+                                <a class="dropdown-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="profile-name">D</span> 
+                                <div>
+                                    <p>Dinesh Sharma</p>
+                                    <span class="profile-role">Super Admin</span>
+                                </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    
+                                    <li><a class="dropdown-item signout" href="login.html">Sign Out</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header Bar -->
+
+            <div class="content">
+                <div class="container-fluid">
+                    
+                    
+                    <div class="card padding">
+                        <div class="header-content">
+                            <h3 class="sub-heading">Billing</h3>
+                            <div class="d-flex form-wrapper align-items-end gap-2">
+                                <div>
+                                    
+                                    <div id="reportrange"  class="reportrange form-control date-form-control">
+                                            <i class="dateIcon"></i>&nbsp;
+                                            <span></span>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                                <table class="table user-table billing-table form-wrapper">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr. <br>No</th>
+                                                
+                                                <th>
+                                                    Organizations
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    WABA Phone No.
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    WhatsApp Display Name
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control srcIcon" placeholder="Search">
+                                                        <span class="searchIcon"></span>
+                                                    </div>
+                                                </th>
+                                                
+                                                <th>Conversation Type</th>
+                                                <th> Duration</th>
+                                                <th>Message</th>    
+                                                <th>Total Amount</th>
+                                                <th>Actions</th>    
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="9" align="center">01</td>
+                                                <td rowspan="9">
+                                                   
+                                                    <a href="buisness-waba-details.html" class="mb-1 d-block">Buldana Urban Co-op. Credit Society Ltd.</a>
+                                                    
+                                                    <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
+                                                    <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+                                            
+                                                </td>
+                                                <td rowspan="6"><a href="buisness-details.html">+91-9123456789</a></td>
+                                                <td rowspan="6">Buldana Urban Financial Services</td>
+                                                <td>Authentication</td>
+                                                <td class="no-wrap">01 Oct 2025 to 31 Oct 2025</td>
+                                                <td>68</td>
+                                                <td>&#8377;153.00</td>
+                                        
+                                                <td rowspan="3">
+                                                    <div class="action justify-content-center">
+                                                        <a href="invoice.html" class="eye-blue"></a>
+                                                        <a href="#" class="download" download></a>
+                                                    </div>
+                                                </td>
+                                            
+                                            </tr>
+                                           <tr>
+                                               
+                                                <td>Marketing</td>
+                                                <td class="no-wrap">01 Oct 2025 to 30 Oct 2025</td>
+                                                <td>54</td>
+                                                <td>&#8377;192.12</td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Utility</td>
+                                                <td class="no-wrap">01 Oct 2025 to 30 Oct 2025</td>
+                                                <td>68</td>
+                                                <td>&#8377;154.64</td>
+                                                
+                                            </tr>
+                                            <tr>
+                                               
+                                                <td>Marketing</td>
+                                                <td class="no-wrap">01 Sept 2025 to 30 Sept 2025</td>
+                                                <td>54</td>
+                                                <td>&#8377;192.12</td>
+                                                <td rowspan="3">
+                                                    <div class="action justify-content-center">
+                                                        <a href="invoice.html" class="eye-blue"></a>
+                                                        <a href="#" class="download" download></a>
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Authentication</td>
+                                                <td class="no-wrap">01 Sept 2025 to 30 Sept 2025</td>
+                                                <td>64</td>
+                                                <td>&#8377;153.00</td>
+                                                
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Utility</td>
+                                                <td class="no-wrap">01 Sept 2025 to 30 Sept 2025</td>
+                                                <td>68</td>
+                                                <td>&#8377;154.64</td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="3"><a href="buisness-details.html">+91-9123456685</a></td>
+                                                <td rowspan="3">ABC Bank Customer Support</td>
+                                                <td>Marketing</td>
+                                                <td class="no-wrap">01 Nov 2025 to 30 Nov 2025</td>
+                                                <td>54</td>
+                                                <td>&#8377;192.12</td>
+                                                <td rowspan="3" align="center">
+                                                    -
+                                                    <!-- <div class="action justify-content-center">
+                                                        <a href="invoice.html" class="eye-blue"></a>
+                                                        <a href="#" class="download" download></a>
+                                                    </div> -->
+                                                </td>
+                                           </tr>
+                                           <tr>
+                                               
+                                                
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Authentication</td>
+                                                <td class="no-wrap">01 Nov 2025 to 30 Nov 2025</td>
+                                                <td>68</td>
+                                                <td>&#8377;153.00</td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                
+                                            </tr>
+                                        </tbody>
+                                </table>
+                        </div>
+                        <nav aria-label="navigation example">
+                            <ul class="pagination mt-5 d-flex justify-content-center">
+                                <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">20</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <footer class="footer"> 
+                <div class="container"> 
+                    <span class="text-muted"> Copyright © <span id="year"> 2025 </span>. Designed by 
+                        <a href="#" target="_blank"> <span> Fortune4 Technogies. </span> </a> 
+                        All rights reserved 
+                    </span> 
+                </div> 
+		    </footer>
+
+
+        </div>
+    </div>
+
+    <div class="backdrop"></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script>
+        $('nav ul ul').hide();
+        $('nav > ul > li > a').on('click', function (e) {
+            e.stopPropagation();
+            $('nav ul ul').slideUp();
+            $(this).next().is(":visible") || $(this).next().slideDown();
+        });
+
+        $('li').has('ul').find('a').not('ul ul a').addClass('caret');
+    </script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <script>
+           
+            $(function() {
+
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+
+            function cb(start, end) {
+                $('.reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+
+            $('.reportrange').daterangepicker({
+                //timePicker: true,
+                //startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                showDropdowns: true, 
+                minYear: 1900,
+                maxYear: parseInt(moment().format('YYYY'), 10) + 10 ,
+                startDate: start,
+                endDate: end,
+                ranges: {
+                // 'Today': [moment(), moment()],
+                // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment().endOf('year')]
+                }
+            }, cb);
+
+            cb(start, end);
+
+            });
+            
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').on('click', function() {
+                $('body').toggleClass('sidemenutoggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

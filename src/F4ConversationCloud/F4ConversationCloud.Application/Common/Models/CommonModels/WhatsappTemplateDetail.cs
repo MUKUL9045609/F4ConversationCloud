@@ -34,5 +34,6 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
             public string TemplateId { get; set; }
             public string RawHeader { get; set; }
             public string RawBody { get; set; }
+            public int TemplateTableId { get; set; }
     }
 }

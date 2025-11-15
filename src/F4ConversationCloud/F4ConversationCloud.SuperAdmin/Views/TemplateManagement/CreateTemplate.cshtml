@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="swiper-card">
                                     <div class="template-slide-card">
-                                        @* <span><img src="images/card-img-03.png"></span> *@
+                                        <span id="image-preview" style="display:none;"><img src=""></span>
                                         <div class="description">
                                             <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
                                             <div id="message-body"></div>
@@ -362,61 +362,66 @@
                         editorInstance = editor;
                         var firstcontent = editor.getData();
                         $('#message-body').html(firstcontent);
-                        let previousVariables = [];
-                        let bodyValuesCache = {};
+                        var previousVariables = [];
+                        var bodyValuesCache = {};
 
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
-                            var content = editor.getData();
-                            $('#message-body').html(content);
-                            $("#submit-btn").prop("disabled", content === '');
-                            validateWhatsAppVariables(content);
-                            validateSubmitButton(editor);
+                            try{
+                                var content = editor.getData();
+                                $('#message-body').html(content);
+                                $("#submit-btn").prop("disabled", content === '');
+                                validateWhatsAppVariables(content);
+                                validateSubmitButton(editor);
 
-                            var variables = extractUniqueVariables(content);
+                                var variables = extractUniqueVariables(content);
 
-                            const variablesChanged =
-                            variables.length !== previousVariables.length ||
-                            variables.some((v, i) => v !== previousVariables[i]);
+                                var variablesChanged =
+                                variables.length !== previousVariables.length ||
+                                variables.some((v, i) => v !== previousVariables[i]);
 
-                            if (!variablesChanged) return;
+                                if (!variablesChanged) return;
 
-                            // Cache current values
-                            bodyValuesCache = {};
-                            document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
-                                const number = row.getAttribute('data-number');
-                                const input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
-                                if (input) {
-                                    bodyValuesCache[number] = input.value;
-                                }
-                            });
+                                // Cache current values
+                                bodyValuesCache = {};
+                                document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
+                                    var number = row.getAttribute('data-number');
+                                    var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                    if (input) {
+                                        bodyValuesCache[number] = input.value;
+                                    }
+                                });
 
-                            previousVariables = [...variables];
+                                previousVariables = [...variables];
 
-                            $.ajax({
-                                url: '/TemplateManagement/RenderBodyVariablesPartial', // your controller action
-                                type: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify(variables),
-                                success: function (html) {
-                                    $('#variable-card').show(); // show the whole card if needed
-                                    $('#variable-card-body').html(html).show();
+                                $.ajax({
+                                    url: '/TemplateManagement/RenderBodyVariablesPartial', // your controller action
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(variables),
+                                    success: function (html) {
+                                        $('#variable-card').show(); // show the whole card if needed
+                                        $('#variable-card-body').html(html).show();
 
-                                    document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
-                                        const number = row.getAttribute('data-number');
-                                        const input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
-                                        if (input && bodyValuesCache[number]) {
-                                            input.value = bodyValuesCache[number];
-                                        }
-                                    });
+                                        document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
+                                            var number = row.getAttribute('data-number');
+                                            var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                            if (input && bodyValuesCache[number]) {
+                                                input.value = bodyValuesCache[number];
+                                            }
+                                        });
 
-                                    bindBodyVariableInputListener(editor);
-                                    validateSubmitButton(editor);
-                                },
-                                error: function () {
-                                    commonHelper.showError("Failed to load variable partials.");
-                                }
-                            });
+                                        bindBodyVariableInputListener(editor);
+                                        validateSubmitButton(editor);
+                                    },
+                                    error: function () {
+                                        commonHelper.showError("Failed to load variable partials.");
+                                    }
+                                });
+                            }
+                            catch(err){
+
+                            }
                         });
 
                         // Emoji picker
@@ -438,44 +443,43 @@
                             }
 
                             // Use current editor content to determine the next available number
-                            const currentContent = editor.getData();
-                            const nextNumber = getNextAvailableVariableNumberFromContent(currentContent);
+                            var currentContent = editor.getData();
+                            var nextNumber = getNextAvailableVariableNumberFromContent(currentContent);
 
-                            const variableText = ` {{${nextNumber}}}`;
+                            var variableText = ` {{${nextNumber}}}`;
                             editor.model.change(writer => {
-                                const insertPosition = editor.model.document.selection.getFirstPosition();
+                                var insertPosition = editor.model.document.selection.getFirstPosition();
                                 writer.insertText(variableText, insertPosition);
                             });
 
                             // Trigger validation after insertion
-                            const updatedContent = editor.getData();
+                            var updatedContent = editor.getData();
                             validateWhatsAppVariables(updatedContent);
                         });
 
                         function getNextAvailableVariableNumberFromContent(content) {
-                            const regex = /{{\d+}}/g;
-                            const matches = [...content.matchAll(regex)];
-                            const usedNumbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, ''), 10));
+                            var regex = /{{\d+}}/g;
+                            var matches = [...content.matchAll(regex)];
+                            var usedNumbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, ''), 10));
 
                             if (usedNumbers.length === 0) return 1;
 
                             // Find the smallest missing positive integer starting at 1
-                            const set = new Set(usedNumbers);
-                            let i = 1;
+                            var set = new Set(usedNumbers);
+                            var i = 1;
                             while (set.has(i)) i++;
                             return i;
                         }
                     })
                     .catch(error => {
+                        alert();
                         console.error(error);
                     });
 
-                    
-
                     function extractUniqueVariables(content) {
-                        const regex = /\{\{(\d+)\}\}/g;
-                        const found = new Set();
-                        let match;
+                        var regex = /\{\{(\d+)\}\}/g;
+                        var found = new Set();
+                        var match;
                         while ((match = regex.exec(content)) !== null) {
                             found.add(match[1]); // only the number part
                         }
@@ -491,8 +495,8 @@
                     }
 
                     document.addEventListener('click', function (event) {
-                        const emojiBtn = document.getElementById('emoji-btn');
-                        const emojiCard = document.getElementById('emoji-card');
+                        var emojiBtn = document.getElementById('emoji-btn');
+                        var emojiCard = document.getElementById('emoji-card');
 
                         if (emojiBtn.contains(event.target)) {
                             // Toggle emoji picker
@@ -567,7 +571,6 @@
                         errorSpan.style.display = "none";
                         //$("#submit-btn").prop("disabled", false);
                     }
-
                     return errorMessage;
                 }
 
@@ -575,7 +578,7 @@
                     if (!text) return 0;
 
                     // 1) Normalize HTML entities that behave like spaces
-                    let clean = text.replace(/&nbsp;/gi, ' ').replace(/\u00A0/g, ' '); // non-breaking space
+                    var clean = text.replace(/&nbsp;/gi, ' ').replace(/\u00A0/g, ' '); // non-breaking space
                     
                     // 2) Remove HTML tags (CKEditor outputs real <tags>, not &lt; &gt;)
                     clean = clean.replace(/<[^>]*>/g, ' ');
@@ -588,9 +591,67 @@
 
                     // 5) Count word tokens (Unicode letters/digits/underscore)
                     // If your environment doesn't support \p{L} and \p{N}, fall back to /[A-Za-z0-9_]+/g
-                    const wordMatches = clean.match(/\b[\p{L}\p{N}_]+\b/gu) || [];
+                    var wordMatches = clean.match(/\b[\p{L}\p{N}_]+\b/gu) || [];
                     return wordMatches.length;
                 }
+
+                document.getElementById('UploadedFile').addEventListener('change', function (event) {
+                    var file = event.target.files[0];
+                    var fileNameSpan = document.getElementById('file-name');
+                    var imageTag = document.querySelector('.image img');
+                    var cardPreviewImg = document.querySelector('#image-preview img');
+                    var imagePreviewSpan = document.getElementById('image-preview');
+
+                    if (file && file.type.startsWith('image/')) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            var img = new Image();
+                            img.onload = function () {
+                                // if (img.width === 192 && img.height === 192) {
+                                    // Valid size — show previews
+                                    if (window.$) {
+                                        $('.image-upload').show();
+                                    } else {
+                                        document.querySelector('.image-upload').style.display = 'block';
+                                    }
+
+                                    if (imageTag) imageTag.src = e.target.result;
+                                    if (cardPreviewImg) cardPreviewImg.src = e.target.result;
+                                    if (fileNameSpan) fileNameSpan.textContent = file.name;
+                                    if (imagePreviewSpan) imagePreviewSpan.style.display = 'block';
+                                    $('#submit-btn').prop('disabled', false);
+                                // } else {
+                                //     commonHelper.showError("Please upload an image of exactly 192×192 pixels.");
+                                //     resetPreview();
+                                // }
+                            };
+                            img.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        resetPreview();
+                    }
+
+                    function resetPreview() {
+                        $('#submit-btn').prop('disabled', true);
+                        if (fileNameSpan) fileNameSpan.textContent = '';
+                        if (imageTag) imageTag.src = '';
+                        if (cardPreviewImg) cardPreviewImg.src = '';
+                        if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
+                        if (window.$) {
+                            $('.image-upload').hide();
+                        } else {
+                            document.querySelector('.image-upload').style.display = 'none';
+                        }
+                        document.getElementById('UploadedFile').value = '';
+                    }
+                });
+
+                document.getElementById('remove-file').addEventListener('click', function () {
+                    deleteImage();
+                });
 
                 commonHelper.showHideLoader(false);
             }, null);
@@ -636,12 +697,12 @@
             var $attachment = $('#attachment');
             var $existingFileLink = $('#existingFileLink');
             var $fileValidationMessage = $('[data-valmsg-for="File"]');
-
+            deleteImage();
             $fileInput.val('');
             $existingFileLink.html('');
             $fileInput.removeAttr('accept');
-
             var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+            $('#submit-btn').prop('disabled', true);
 
             if (selectedValue > 0 && selectedText != 'Location') {
                 $attachment.show();
@@ -703,27 +764,27 @@
         });
 
         function validateSubmitButton(editor) {
-            const content = editor.getData().trim();
-            const contentEmpty = content === '';
+            var content = editor.getData().trim();
+            var contentEmpty = content === '';
 
-            const messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
+            var messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
             //console.log(messageBodyErrorVisible);
-            const bodyInputs = document.querySelectorAll(
+            var bodyInputs = document.querySelectorAll(
                 '#variable-card-body input[name^="bodyVariables"][name$=".BodyVariableName"]'
             );
-            const anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
+            var anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
 
             // Header variable logic
-            const headerText = $('[name="Header"]').val()?.trim() || '';
-            const headerHasVariable = headerText.includes('{{1}}');
-            const headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
-            const headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
-            const headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
+            var headerText = $('[name="Header"]').val()?.trim() || '';
+            var headerHasVariable = headerText.includes('{{1}}');
+            var headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
+            var headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
+            var headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
 
             // Final check
-            const shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
-            
-            $('#submit-btn').prop('disabled', shouldDisable);
+            var shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
+
+            c
         }
 
         $(document).on('input', '[name="Header"]', function () {
@@ -809,5 +870,27 @@
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
+
+        function deleteImage() {
+            $('#submit-btn').prop('disabled', true);
+            var imageTag = document.querySelector('.image img');
+            var cardPreviewImg = document.querySelector('#image-preview img');
+            var imagePreviewSpan = document.getElementById('image-preview');
+            var fileNameSpan = document.getElementById('file-name');
+            var fileInput = document.getElementById('UploadedFile');
+
+            if (fileNameSpan) fileNameSpan.textContent = '';
+            if (fileInput) fileInput.value = '';
+            if (imageTag) imageTag.src = '';
+            if (cardPreviewImg) cardPreviewImg.src = '';
+            if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
+
+            if (window.$) {
+                $('.image-upload').hide();
+            } else {
+                document.querySelector('.image-upload').style.display = 'none';
+            }
+        }
+
     </script>
 }

@@ -6,6 +6,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -27,29 +28,27 @@ namespace F4ConversationCloud.Infrastructure.Repositories
         private IConfiguration _configuration { get; }
 
         private ITemplateService _templateService { get; }
+        private IFileUploadService _fileUploadService { get; }
 
         private IWhatsAppTemplateRepository _whatsAppTemplateRepository { get; }
         public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService, ITemplateService templateService,
-            IWhatsAppTemplateRepository whatsAppTemplateRepository, DbContext context)
+            IWhatsAppTemplateRepository whatsAppTemplateRepository, DbContext context, IFileUploadService fileUploadService)
         {
             _logService = logService;
             _templateService = templateService;
             _whatsAppTemplateRepository = whatsAppTemplateRepository;
             _context = context;
+            _fileUploadService = fileUploadService;
         }
 
         public async Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
                 {
-
-                    //if(requestBody.TemplateHeader.Example.HeaderFile != null)
-                    //{
-                    //    requestBody.TemplateHeader.Example.HeaderFile = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.ToString());
-                    //}
-
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
@@ -66,15 +65,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     }
                 }
 
+
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
 
                 var response = await _templateService.CreateTemplate(messageTemplate, requestBody.WABAID);
 
                 if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
+                    var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
                     messageTemplate.category = response.result.category;
+
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes, FileName);
 
                     return new APIResponse
                     {
@@ -108,6 +111,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
@@ -135,9 +140,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId);
+                    var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId,FileUrl, FileName);
 
                     return new APIResponse
                     {
@@ -240,7 +247,14 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.ClientInfoId = model.ClientInfoId.ToString();
                 templateRequest.WABAID = model.WABAId;
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
-
+                if (model.File != null)
+                {
+                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
+                }
                 APIResponse result = await MetaCreateTemplate(templateRequest);
 
                 return result;
@@ -331,6 +345,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.WABAID = model.WABAId;
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
                 templateRequest.TemplateId = model.TemplateId;
+                if (model.File != null)
+                {
+                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Format = "IMAGE";
+                }
 
                 APIResponse result = await MetaEditTemplate(templateRequest);
 

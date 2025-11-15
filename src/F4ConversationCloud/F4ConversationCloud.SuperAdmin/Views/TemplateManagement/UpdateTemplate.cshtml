@@ -22,6 +22,7 @@
     <input asp-for="ClientInfoId" type="hidden"/>
     <input asp-for="MetaConfigId" type="hidden"/>
     <input asp-for="TemplateId" type="hidden"/>
+    <input asp-for="TemplateTableId" type="hidden"/>
 
     <div class="content bg-light">
         <div class="main-content">
@@ -121,7 +122,7 @@
                                 </div>
                                 <div class="swiper-card">
                                     <div class="template-slide-card">
-                                        @* <span><img src="images/card-img-03.png"></span> *@
+                                        <span id="image-preview" style="display:none;"><img src=""></span>
                                         <div class="description">
                                             <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
                                             <div id="message-body"></div>
@@ -209,7 +210,7 @@
         var reqModel = @Html.Raw(Json.Serialize(Model));
         $(document).ready(function () {
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
-            console.log(storedData)
+            
             $('#ClientInfoId').val(storedData.ClientInfoId);
             $('#WABAId').val(storedData.WABAId);
             $('#MetaConfigId').val(storedData.MetaConfigId);
@@ -243,7 +244,6 @@
                 $('#message-body').html(reqModel.messageBody);
                 $('#footer-text').text(reqModel.footer);
 
-                console.log(reqModel.headerVariableValue)
                 if (reqModel.headerVariableValue != ''){
                     $('#variable-card-header').show();
                     $('#header-add-btn').prop("disabled", true);
@@ -251,6 +251,24 @@
                 $('input[name="MediaType"][value="' + reqModel.mediaType + '"]').prop('checked', true);
                 $('[name="MediaType"]').trigger('change');
 
+                if (reqModel.fileUrl !== '' && reqModel.fileName !== '') {
+                    // Show and set image-upload section
+                    var imageUploadDiv = document.querySelector('.image-upload');
+                    imageUploadDiv.style.display = 'block';
+
+                    var imgElement = imageUploadDiv.querySelector('img');
+                    imgElement.src = reqModel.fileUrl;
+
+                    var fileNameElement = document.getElementById('file-name');
+                    fileNameElement.textContent = reqModel.fileName;
+
+                    // Show and set image-preview section
+                    var imagePreview = document.getElementById('image-preview');
+                    imagePreview.style.display = 'block';
+                    var previewImg = imagePreview.querySelector('img');
+                    previewImg.src = reqModel.fileUrl;
+                }
+                $("#submit-btn").prop("disabled", false);
                 var variableCounter = 1;
                 var selectedVariableType = null;
 
@@ -375,8 +393,6 @@
                         console.error(error);
                     });
 
-
-
                     function extractUniqueVariables(content) {
                         const regex = /\{\{(\d+)\}\}/g;
                         const found = new Set();
@@ -497,6 +513,63 @@
                     return wordMatches.length;
                 }
 
+                document.getElementById('UploadedFile').addEventListener('change', function (event) {
+                    var file = event.target.files[0];
+                    var fileNameSpan = document.getElementById('file-name');
+                    var imageTag = document.querySelector('.image img');
+                    var cardPreviewImg = document.querySelector('#image-preview img');
+                    var imagePreviewSpan = document.getElementById('image-preview');
+
+                    if (file && file.type.startsWith('image/')) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            var img = new Image();
+                            img.onload = function () {
+                                // if (img.width === 192 && img.height === 192) {
+                                    // Valid size — show previews
+                                    if (window.$) {
+                                        $('.image-upload').show();
+                                    } else {
+                                        document.querySelector('.image-upload').style.display = 'block';
+                                    }
+
+                                    if (imageTag) imageTag.src = e.target.result;
+                                    if (cardPreviewImg) cardPreviewImg.src = e.target.result;
+                                    if (fileNameSpan) fileNameSpan.textContent = file.name;
+                                    if (imagePreviewSpan) imagePreviewSpan.style.display = 'block';
+                                    $('#submit-btn').prop('disabled', false);
+                                // } else {
+                                //     commonHelper.showError("Please upload an image of exactly 192×192 pixels.");
+                                //     resetPreview();
+                                // }
+                            };
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        resetPreview();
+                    }
+
+                    function resetPreview() {
+                        $('#submit-btn').prop('disabled', true);
+                        if (fileNameSpan) fileNameSpan.textContent = '';
+                        if (imageTag) imageTag.src = '';
+                        if (cardPreviewImg) cardPreviewImg.src = '';
+                        if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
+                        if (window.$) {
+                            $('.image-upload').hide();
+                        } else {
+                            document.querySelector('.image-upload').style.display = 'none';
+                        }
+                        document.getElementById('UploadedFile').value = '';
+                    }
+                });
+
+                document.getElementById('remove-file').addEventListener('click', function () {
+                    deleteImage();
+                });
+
                 commonHelper.showHideLoader(false);
             }, null);
         }
@@ -541,7 +614,7 @@
             var $attachment = $('#attachment');
             var $existingFileLink = $('#existingFileLink');
             var $fileValidationMessage = $('[data-valmsg-for="File"]');
-
+            deleteImage();                
             $fileInput.val('');
             $existingFileLink.html('');
             $fileInput.removeAttr('accept');
@@ -714,5 +787,26 @@
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
+
+        function deleteImage() {
+            $('#submit-btn').prop('disabled', true);
+            var imageTag = document.querySelector('.image img');
+            var cardPreviewImg = document.querySelector('#image-preview img');
+            var imagePreviewSpan = document.getElementById('image-preview');
+            var fileNameSpan = document.getElementById('file-name');
+            var fileInput = document.getElementById('UploadedFile');
+
+            if (fileNameSpan) fileNameSpan.textContent = '';
+            if (fileInput) fileInput.value = '';
+            if (imageTag) imageTag.src = '';
+            if (cardPreviewImg) cardPreviewImg.src = '';
+            if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
+
+            if (window.$) {
+                $('.image-upload').hide();
+            } else {
+                document.querySelector('.image-upload').style.display = 'none';
+            }
+        }
     </script>
 }

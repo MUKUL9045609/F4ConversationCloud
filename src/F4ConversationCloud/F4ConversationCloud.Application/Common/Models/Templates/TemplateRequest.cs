@@ -328,6 +328,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public List<string>? Header_Text { get; set; }
         public List<string>? HeaderFile { get; set; }
         public string? Format { get; set; }
+        public string? HeaderFileName { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
