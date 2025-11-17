@@ -421,7 +421,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             vm.buttons[index] = new TemplateViewModel.Button
             {
                 ButtonType = (int)ButtonCategory.Custom,
-                ButtonText = "Quick Reply"
+                ButtonText = "Quick Reply" + " " + index
             };
 
             ViewData["RowIndex"] = index;
