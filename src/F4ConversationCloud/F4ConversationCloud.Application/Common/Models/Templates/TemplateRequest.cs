@@ -252,8 +252,6 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
     {
         public string? Type { get; set; }
 
-        public string? Format { get; set; }
-        public string? Text { get; set; }
         public List<Button>? Buttons { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

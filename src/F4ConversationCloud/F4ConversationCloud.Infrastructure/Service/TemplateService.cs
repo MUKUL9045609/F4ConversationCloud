@@ -404,8 +404,8 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "footer")
                     {
-                        var FooterValue = JsonSerializer.Deserialize<FootersComponent>(Footerroot, options);
-                        if (!string.IsNullOrEmpty(FooterValue.text))
+                        var FooterValue = JsonSerializer.Deserialize<FooterComponent>(Footerroot, options);
+                        if (!string.IsNullOrEmpty(FooterValue.type))
                         {
                             messageTemplate.components.Add(FooterValue);
                         }
@@ -416,6 +416,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 //ButtonComponent
                 string ButtonsJson = JsonSerializer.Serialize(request.TemplateButton);
                 using var Buttonsdoc = JsonDocument.Parse(ButtonsJson);
+                var Buttonsnode = JsonNode.Parse(ButtonsJson);
                 var Buttonsroot = Buttonsdoc.RootElement;
 
                 if (Buttonsroot.TryGetProperty("type", out JsonElement ButtonsElement) || Buttonsroot.TryGetProperty("Type", out ButtonsElement))
@@ -424,9 +425,57 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "buttons")
                     {
-                        var Component = JsonSerializer.Deserialize<ButtonsComponent>(Buttonsroot, options);
-                        messageTemplate.components.Add(Component);
+                        var example = Buttonsnode?["Buttons"];
 
+                        JsonArray jsonArray = Buttonsnode?[1].AsArray();
+                        List<dynamic> Buttoncomponents = new List<dynamic>();
+                        for (int i =0; i <jsonArray.Count; i++)
+                        {
+                            JsonObject buttonObject = jsonArray[i].AsObject();
+                            var Type = buttonObject["Type"].ToString();
+
+
+                            if (Type == "QUICK_REPLY")
+                            {
+                                buttonObject?.AsObject().Remove("Phone_Number");
+                                buttonObject?.AsObject().Remove("Url");
+                                buttonObject?.AsObject().Remove("Example");
+
+                                var cleanJson = buttonObject?.ToJsonString();
+
+                                var Component = JsonSerializer.Deserialize<QuickReplyButtonComponent>(cleanJson, options);
+                                Buttoncomponents.Add(Component);
+                            }
+                            else if(Type == "PHONE_NUMBER")
+                            {
+                                buttonObject?.AsObject().Remove("Url");
+                                buttonObject?.AsObject().Remove("Example");
+
+                                var cleanJson = buttonObject?.ToJsonString();
+
+                                var Component = JsonSerializer.Deserialize<PhoneNumberButtonComponent>(cleanJson, options);
+                                Buttoncomponents.Add(Component);
+                            }
+                            else if(Type == "URL")
+                            {
+                                buttonObject?.AsObject().Remove("Phone_Number");
+
+                                var cleanJson = buttonObject?.ToJsonString();
+
+                                var Component = JsonSerializer.Deserialize<UrlButtonComponent>(cleanJson, options);
+                                Buttoncomponents.Add(Component);
+
+                            }
+
+                        }
+
+                        var buttons = new
+                        {
+                            type = "BUTTONS",
+                            buttons = Buttoncomponents
+                        };
+
+                        messageTemplate.components.Add(buttons);
                     }
                 }
 
