@@ -87,14 +87,19 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
 
                 ClientFormStage stage = (ClientFormStage)stageValue.Value;
 
-                if (stage == ClientFormStage.ClientRegistered)
+                
+                if (stage == ClientFormStage.ClientRegistered && response.Data.IsActive)
                 {
                     return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
                 }
-                else if (stage == ClientFormStage.MetaRegistered)
+                else if (stage == ClientFormStage.MetaRegistered && response.Data.IsActive)
                 {
                     return RedirectToAction("Index", "Home");
 
+                }
+                else if(stage == ClientFormStage.MetaRegistered && !response.Data.IsActive) {
+                        TempData["InfoMessage"] = "Your Account Has been Deactivated Please Contact To Admin.";
+                        return RedirectToAction("Login", "Auth");
                 }
                 else {
                     TempData["InfoMessage"] = "You have not registered yet, Please complete your registration.!";

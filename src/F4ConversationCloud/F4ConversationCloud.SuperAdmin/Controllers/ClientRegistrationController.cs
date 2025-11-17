@@ -1,4 +1,5 @@
 ﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
@@ -12,12 +13,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class ClientRegistrationController : BaseController
     {
+        private readonly ICurrentUserService _currentUserService;
         private readonly IClientRegistrationService _clientRegistrationService;
         private readonly IClientManagementService _clientManagement;
-        public ClientRegistrationController(IClientRegistrationService clientRegistrationService, IClientManagementService clientManagement)
+        public ClientRegistrationController(IClientRegistrationService clientRegistrationService, IClientManagementService clientManagement,ICurrentUserService currentUserService)
         {
             _clientRegistrationService = clientRegistrationService;
             _clientManagement = clientManagement;
+            _currentUserService = currentUserService;
         }
 
         public async Task<IActionResult> List(ClientRegistrationListViewModel model)
@@ -380,12 +383,18 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         }
 
 
-        public async Task<IActionResult> ActivateDeactivateClientAccount(int ClientId, int IsActivate)
+        public async Task<IActionResult> ActivateClientAccount(int ClientId)
         {
 
             try
             {
-                var isDeletedResponce = await _clientRegistrationService.ActivateDeactivateClientAccountAsync(ClientId, IsActivate);
+                var request = new ActivateDeactivateClientAccountRequest
+                {
+                    ClientId = ClientId,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                    AccountStatus = ClientRegistrationStatus.Active
+                };
+                var isDeletedResponce = await _clientRegistrationService.ActivateClientAccountAsync(request);
 
                 if (isDeletedResponce.success)
                 {
@@ -406,7 +415,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             try
             {
-                var isDeletedResponce = await _clientRegistrationService.DeactivateClientAccountAsync(ClientId);
+                var request  = new ActivateDeactivateClientAccountRequest
+                {
+                    ClientId = ClientId,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                    AccountStatus = ClientRegistrationStatus.Deactivated
+                };
+
+                var isDeletedResponce = await _clientRegistrationService.DeactivateClientAccountAsync(request);
                 if (isDeletedResponce.success)
                 {
                     return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });

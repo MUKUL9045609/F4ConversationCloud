@@ -13,7 +13,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string UpdatedOnFilter { get; set; } = string.Empty;
         public int RegistrationStatusFilter { get; set; }
         public string OrganizationsNameFilter { get; set; } = string.Empty;
-        public int AccountStatusFilter { get; set; }
+        public int AccountStatusFilter { get; set; } = 2;
         public int AccountStatus { get; set; }
         public int Stage { get; set; }
 

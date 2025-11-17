@@ -426,6 +426,8 @@ namespace F4ConversationCloud.Application.Common.Services
                         Email = ClientDetails.Email,
                         Stage = ClientDetails.Stage,
                         Password = ClientDetails.Password,
+                        IsActive = ClientDetails.IsActive,
+                        RegistrationStatus= ClientDetails.RegistrationStatus
                     }
                 };
 

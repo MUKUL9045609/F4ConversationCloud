@@ -1,12 +1,15 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
+using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
+using F4ConversationCloud.Infrastructure.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -22,8 +25,10 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         private readonly IConfiguration _configuration;
         private readonly IEmailSenderService _emailSenderService;
         private readonly ILogService _logService;
+        private readonly IF4AppCloudeService _whatsAppCloude;
+        private readonly IMetaService _metaService;
         public ClientRegistrationService(IClientRegistrationRepository clientRegistrationRepository, IWebHostEnvironment env,
-            IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IEmailSenderService emailSenderService, ILogService logService)
+            IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IEmailSenderService emailSenderService, ILogService logService, IF4AppCloudeService whatsAppCloude, IMetaService metaService)
         {
             _clientRegistrationRepository = clientRegistrationRepository;
             _env = env;
@@ -31,6 +36,8 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             _configuration = configuration;
             _emailSenderService = emailSenderService;
             _logService = logService;
+            _whatsAppCloude = whatsAppCloude;
+            _metaService = metaService;
         }
 
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
@@ -237,57 +244,37 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         }
 
 
-        public async Task<CommonSuperAdminServiceResponse> ActivateDeactivateClientAccountAsync(int clientId, int IsActive)
-        {
+        public async Task<CommonSuperAdminServiceResponse> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request)
+         {
+            var model = new LogModel();
+            model.Source = "ClientRegistration/ActivateClientAccountAsync";
+            model.AdditionalInfo =$"ClientAccountModelRequest :{JsonConvert.SerializeObject(request)}" ;
             try
             {
-                var tempRes = await _clientRegistrationRepository.ActivateDeactivateClientAccountAsync(clientId, IsActive);
+                var ClientMetaDetails = await _clientRegistrationRepository.GetClientsMetaConfigurationsList(request.ClientId);
 
-                if (tempRes == 0)
+                if (!ClientMetaDetails.Any())
+                {
                     return new CommonSuperAdminServiceResponse
                     {
                         success = false,
-                        message = "Failed to Disable Client Account."
+                        message = "Cannot Activate Client Account"
                     };
+                }
 
-                return new CommonSuperAdminServiceResponse
+                foreach (var item in ClientMetaDetails)
                 {
-                    success = true,
-                    message = "Client Account Disable successfully."
-                };
-            }
-            catch (Exception ex)
-            {
-                var log = new LogModel
-                {
-                    Source = "WhatsappTemplate/DeactivateTemplateAsync",
-                    AdditionalInfo = $"clientId: {clientId}",
-                    LogType = "Error",
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                };
+                    var registerPhoneNumber = await _metaService.RegisterPhone(new PhoneRegistrationOnMeta { PhoneNumberId = item.PhoneNumberId });
+                    var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(item.PhoneNumberId);
 
-                await _logService.InsertLogAsync(log);
+                    request.WhatsAppAccountStatus = businessInfo.WhatsAppStatus;
+                    request.PhoneNumberID = item.PhoneNumberId;
+                    var tempRes = await _clientRegistrationRepository.ActivateClientAccountAsync(request);
 
 
-                return new CommonSuperAdminServiceResponse
-                {
-                    success = false,
-                    message = "Technical Error."
-                };
-            }
-        }
-        public async Task<CommonSuperAdminServiceResponse> DeactivateClientAccountAsync(int clientId)
-        {
-            try
-            {
-                var tempRes = await _clientRegistrationRepository.ActivateClientAccountAsync(clientId);
-                if (!tempRes)
-                    return new CommonSuperAdminServiceResponse
-                    {
-                        success = false,
-                        message = "Failed to Enable Client Account."
-                    };
+                }
+                model.LogType = "Success";
+                model.Message = "Client Account Acctivate successfully.";
 
                 return new CommonSuperAdminServiceResponse
                 {
@@ -297,23 +284,71 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             catch (Exception ex)
             {
-                var log = new LogModel
-                {
-                    Source = "WhatsappTemplate/ActivateClientAccountAsync",
-                    AdditionalInfo = $"clientId: {clientId}",
-                    LogType = "Error",
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                };
-
-                await _logService.InsertLogAsync(log);
-
-
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
                 return new CommonSuperAdminServiceResponse
                 {
                     success = false,
                     message = "Technical Error."
                 };
+            }
+            finally {
+                await _logService.InsertLogAsync(model);
+            }
+        }
+      
+        
+        public async Task<CommonSuperAdminServiceResponse> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest request)
+        {
+            var model = new LogModel();
+            model.Source = "ClientRegistration/DeactivateClientAccountAsync";
+            model.AdditionalInfo =$"ClientAccountModelRequest :{JsonConvert.SerializeObject(request)}" ;
+            try
+            {
+                var ClientMetaDetails = await _clientRegistrationRepository.GetClientsMetaConfigurationsList(request.ClientId);
+
+                    if(!ClientMetaDetails.Any())
+                    {
+                        return new CommonSuperAdminServiceResponse
+                        {
+                            success = false,
+                            message = "Cannot Deactivate Client Account"
+                        };
+                    }
+
+                    foreach (var item in ClientMetaDetails) {
+                        var registerPhoneNumber = await _metaService.DeregisterPhone(new PhoneRegistrationOnMeta { PhoneNumberId = item.PhoneNumberId });
+                        var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(item.PhoneNumberId);
+
+                        request.WhatsAppAccountStatus = businessInfo.WhatsAppStatus;
+                        var tempRes = await _clientRegistrationRepository.DeactivateClientAccountAsync(request);
+
+
+                    }
+                    model.LogType = "Success";
+                    model.Message = "Client Account Deactivate successfully.";
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "Client Account Enable successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(model);
             }
 
         }

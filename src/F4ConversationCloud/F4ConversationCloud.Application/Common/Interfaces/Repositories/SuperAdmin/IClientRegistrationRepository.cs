@@ -19,8 +19,10 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id);
         Task<bool> CheckContactNumberExist(string contactNumber);
 
-        Task<int> ActivateDeactivateClientAccountAsync(int clientId , int isactive);
-        Task<bool> ActivateClientAccountAsync(int clientId);
+        Task<int> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request);
+        Task<int> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest  request);
+        Task<IEnumerable<ClientsMetaConfigurationsListItemModel>> GetClientsMetaConfigurationsList(int clientId);
+
 
     }
 }

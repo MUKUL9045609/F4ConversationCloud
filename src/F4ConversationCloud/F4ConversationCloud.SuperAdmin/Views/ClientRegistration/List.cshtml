@@ -79,8 +79,8 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Columns.AccountStatus)
-                                <select asp-for="AccountStatus" id="AccountStatusFilter" class="form-select" onchange="loadData()">
-                                    <option value="" selected>Select Status</option>
+                                <select asp-for="AccountStatusFilter" id="AccountStatusFilter" class="form-select" onchange="loadData()">
+                                    <option value="2" selected>Select Status</option>
                                     <option value="1">Enabled</option>
                                     <option value="0">Disabled</option>
                                   
@@ -153,26 +153,31 @@
                                     <td>
                                         <div class="action">
                                             <div class="form-check form-switch">
-                                            
-                                                @* <input asp-for="AccountStatus" class="form-check-input account-status-switch"
-                                                       type="checkbox"
-                                                       data-id="@item.Id"
-                                                       data-templatename="@item.OrganizationsName"
-                                                       id="flexSwitchCheckChecked_@item.Id"> *@
-
-                                                @* <input asp-for="AccountStatus"
-                                                       class="form-check-input account-status-switch"
-                                                       type="checkbox"
-                                                       data-id="@item.Id"
-                                                       data-currentstatus="@item.AccountStatus"
-                                                       id="flexSwitchCheckChecked_@item.Id" /> *@
-
-                                                <input type="checkbox"
-                                                       class="form-check-input account-status-switch"
-                                                       data-id="@item.Id"
-                                                       data-currentstatus="@item.AccountStatus"
-                                                       id="flexSwitchCheckChecked_@item.Id"
-                                                       @(item.AccountStatus == 1 ? "checked" : "") />
+                                                @if (item.RegistrationStatus == 2 || item.RegistrationStatus == 3)
+                                                {
+                                                    <input type="checkbox"
+                                                           class="form-check-input account-status-switch"
+                                                           data-id="@item.Id"
+                                                           data-currentstatus="@item.AccountStatus"
+                                                           data-bussinessName="@item.OrganizationsName"
+                                                           id="flexSwitchCheckChecked_@item.Id"
+                                                           @(item.AccountStatus == 1 ? "checked" : "") />
+                                                    
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox"
+                                                           class="form-check-input disabled-switch"
+                                                           data-id="@item.Id"
+                                                           data-currentstatus="@item.AccountStatus"
+                                                           data-bussinessName="@item.OrganizationsName"
+                                                           id="flexSwitchCheckChecked_@item.Id"
+                                                           @(item.AccountStatus == 1 ? "checked" : "")
+                                                           disabled="disabled"
+                                                           aria-disabled="true"
+                                                           tabindex="-1" />
+                                                }
+                                               
 
                                             </div>
                                         </div>
@@ -207,7 +212,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h3>Are You sure?</h3>
                 </div>
-                <p id="deleteModalText">Do you really want to Deactivate This Bussiness Account?</p>
+                <p id="deleteModalText">Do you really want to  Deactivate This Bussiness Account?</p>
 
                 <div class="d-flex justify-content-center gap-2 mt-3">
                     <button type="button" id="ConfirmDeleteBtn" class="btn primary-btn">Yes</button>
@@ -229,17 +234,21 @@
 
             selectedSwitch = this;
 
-                const id = $(this).data("id");
-                originalStatus = parseInt($(this).data("currentstatus"));
-                debugger;
-        $("#ConfirmDeleteBtn").data("id", id);
+            const id = $(this).data("id");
+            originalStatus = parseInt($(this).data("currentstatus"));
+            var BussinessName = $(this).data("bussinessname") || "this";
 
-         
+            $("#ConfirmDeleteBtn").data("id", id);
+
             $(this).prop("checked", originalStatus === 1);
 
+            var modalText = originalStatus === 1
+                ? "Do you really want to <b> Deactivate '" + BussinessName + "</b>' Bussiness Account?"
+                : "Do you really want to <b> Activate '" + BussinessName + "</b>' Bussiness Account?";
+
+            $("#deleteModalText").html(modalText);
             $("#AccountStatusModal").modal("show");
         });
-
 
 
 
@@ -253,8 +262,14 @@
                 ClientId: ClientId,
                 IsActivate: originalStatus === 1 ? 0 : 1  
             };
+            var url;
+            if(originalStatus === 0){
+                url = "@Url.ActionLink("ActivateClientAccount", "ClientRegistration")";
+            }
+            else if (originalStatus === 1){
+                url = "@Url.ActionLink("DeactivateClientAccount", "ClientRegistration")";
 
-            var url = "@Url.ActionLink("ActivateDeactivateClientAccount", "ClientRegistration")";
+            }
 
             ajaxHelper.ajaxPost(url, null, req, function (response) {
 
@@ -264,13 +279,14 @@
                         $(selectedSwitch).prop("checked", originalStatus === 1 ? false : true);
                     }
                     $("#AccountStatusModal").modal("hide");
+                     window.location.reload();
                     selectedSwitch = null;
-                    commonHelper.showToast(response.message);
-
+                    commonHelper.showSuccess(response.message);
+                   
                 } else {
                     $("#AccountStatusModal").modal("hide");
                     selectedSwitch = null;
-                    commonHelper.showToast(response.message);
+                    commonHelper.showError(response.message);
                 }
                 commonHelper.showHideLoader(false);
             });
@@ -286,6 +302,7 @@
             let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
             let registrationStatusFilter = $("[name=RegistrationStatusFilter]").val();
            let OrganizationsNameFilter = $("[name=OrganizationsNameFilter]").val();
+           let AccountStatusFilter =$("#AccountStatusFilter").val();
 
             let pageNumber = 1;
             location.href = '@Url.Action("List", "ClientRegistration")' +
@@ -297,6 +314,7 @@
                 '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
                 '&RegistrationStatusFilter=' + encodeURIComponent(registrationStatusFilter) +
                 '&OrganizationsNameFilter=' + encodeURIComponent(OrganizationsNameFilter) +
+                '&AccountStatusFilter=' + encodeURIComponent(AccountStatusFilter) +
                 '&PageNumber=' + pageNumber;
         }
 
@@ -317,6 +335,9 @@
                 let updatedOnFilter = $("[name=UpdatedOnFilter]").val();
                 let registrationStatusFilter = $("[name=RegistrationStatusFilter]").val();
                  let OrganizationsNameFilter = $("[name=OrganizationsNameFilter]").val();
+                 let AccountStatusFilter =$("#AccountStatusFilter").val();
+
+
                 location.href = '@Url.Action("List", "ClientRegistration")' +
                     '?NameFilter=' + nameFilter +
                     '&EmailFilter=' + encodeURIComponent(emailFilter) +
@@ -326,6 +347,7 @@
                     '&UpdatedOnFilter=' + encodeURIComponent(updatedOnFilter) +
                     '&RegistrationStatusFilter=' + encodeURIComponent(registrationStatusFilter) +
                     '&OrganizationsNameFilter=' + encodeURIComponent(OrganizationsNameFilter) +
+                    '&AccountStatusFilter=' + encodeURIComponent(AccountStatusFilter) +
                     '&PageNumber=' + pageNumber;
             }
         });

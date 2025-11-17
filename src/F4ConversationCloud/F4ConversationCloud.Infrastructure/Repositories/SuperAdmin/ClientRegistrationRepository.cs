@@ -107,16 +107,18 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             return await _repository.CheckExistAsync("sp_CheckRegisterContactNumberExist", parameters);
         }
 
-        public async Task<int> ActivateDeactivateClientAccountAsync(int clientId, int IsActive)
+        public async Task<int> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request)
         {
 
             try
             {
                 DynamicParameters Dp = new DynamicParameters();
-
-                Dp.Add("clientId", clientId);
-                Dp.Add("isActive", IsActive);
-                return await _repository.InsertUpdateAsync("sp_ActivateDeactivateClientAccount", Dp);
+                Dp.Add("@phoneNumberID", request.PhoneNumberID);
+                Dp.Add("clientId", request.ClientId);
+                Dp.Add("accountStatus", request.AccountStatus);
+                Dp.Add("deactivatedBy", request.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", request.WhatsAppAccountStatus);
+                return await _repository.InsertUpdateAsync("sp_ActivateClientAccount", Dp);
 
             }
             catch (Exception)
@@ -125,18 +127,42 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             }
 
         }
-        public async Task<bool> ActivateClientAccountAsync(int clientId)
+        public async Task<int> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest  accountRequest)
         {
             try
             {
                 DynamicParameters Dp = new DynamicParameters();
-                Dp.Add("clientId", clientId);
-                return await _repository.DeleteAsync("sp_ActivateClientAccount", Dp);
+                Dp.Add("@phoneNumberID", accountRequest.PhoneNumberID);
+                Dp.Add("clientId", accountRequest.ClientId);
+                Dp.Add("accountStatus", accountRequest.AccountStatus);
+                Dp.Add("deactivatedBy", accountRequest.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", accountRequest.WhatsAppAccountStatus);
+
+                return await _repository.InsertUpdateAsync("sp_DeactivateClientAccount", Dp);
             }
             catch (Exception)
             {
-                return false;
+                return 0;
             }
+
+        }
+       public async Task<IEnumerable<ClientsMetaConfigurationsListItemModel>> GetClientsMetaConfigurationsList(int clientId) {
+
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("@clientInfoId", clientId);
+
+                return await _repository.GetListByValuesAsync<ClientsMetaConfigurationsListItemModel>("sp_GetClientsMetaConfigurationsListById", parameters);
+            }
+            catch (Exception)
+            {
+
+               return Enumerable.Empty<ClientsMetaConfigurationsListItemModel>();   
+            }
+           
+
 
         }
     }
