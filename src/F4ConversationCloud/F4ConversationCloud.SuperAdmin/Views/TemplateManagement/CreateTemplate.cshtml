@@ -420,7 +420,7 @@
                                 });
                             }
                             catch(err){
-
+                                console.log(err)
                             }
                         });
 
@@ -436,7 +436,7 @@
                         // Variable insertion
                         $(document).on("click", "#add-body-variable", function () {
                             selectedVariableType = $('input[name="VariableType"]:checked').val();
-
+                            
                             if (!selectedVariableType) {
                                commonHelper.showError("Please select type of variable.");
                                return;
@@ -783,8 +783,7 @@
 
             // Final check
             var shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
-
-            c
+            $('#submit-btn').prop('disabled', shouldDisable);
         }
 
         $(document).on('input', '[name="Header"]', function () {
@@ -867,6 +866,7 @@
         });
 
         $(document).on('click', '#discard-btn', function (e) {
+            commonHelper.showHideLoader(true);
             var storedData = JSON.parse(localStorage.getItem('ClientData'));
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });

@@ -208,7 +208,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.TemplateCategoryName = EnumExtensions.GetDisplayNameById<UtilityTemplateType>(1);
                 viewModel.TemplateName = data.TemplateName;
                 viewModel.VariableType = (int)VariableTypes.Number;
-                viewModel.MediaType = (int)Enum.Parse(typeof(MediaType), media);
+                viewModel.MediaType = (int)Enum.Parse(typeof(MediaType), string.IsNullOrEmpty(media) ? "TEXT" : media);
                 viewModel.Header = data.RawHeader;
                 viewModel.HeaderVariableValue = data.HeaderExample;
                 viewModel.HeaderVariableName = "{{1}}";
