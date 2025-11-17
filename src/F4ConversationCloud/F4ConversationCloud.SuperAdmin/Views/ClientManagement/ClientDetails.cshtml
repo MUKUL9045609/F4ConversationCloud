@@ -954,6 +954,7 @@
         });
 
         $(document).on("click", "#create-template-btn, .edit-icon", function (e) {
+            commonHelper.showHideLoader(true);
             var model = @Html.Raw(Json.Serialize(Model));
 
             var data = {
