@@ -10,8 +10,10 @@ using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -75,9 +77,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
                     messageTemplate.category = response.result.category;
-
                     var resId = response.result.id?.ToString();
+
                     var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes, FileName);
+                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
+
+                    if (buttonObj != null)
+                    {
+                        dynamic newButtonObj = new ExpandoObject();
+                        newButtonObj.type = buttonObj.type;
+                        newButtonObj.buttons = buttonObj.buttons;
+                        newButtonObj.WhatsappTemplateId = id;
+                        newButtonObj.CategoryId = 1;
+
+                        var flag = AddMetTemplateButtons(newButtonObj);
+                    }
+
 
                     return new APIResponse
                     {
@@ -108,6 +123,57 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
             }
         }
+
+        public async Task<bool> AddMetTemplateButtons(dynamic requestBody)
+        {
+            MessageTemplateButtonDTO messageTemplateButtonDTO = new MessageTemplateButtonDTO();
+            try
+            {
+                foreach (var e in requestBody.buttons)
+                {
+                    if (e.type == "QUICK_REPLY")
+                    {
+                        messageTemplateButtonDTO.TemplateId = requestBody.WhatsappTemplateId;
+                        messageTemplateButtonDTO.ButtonCategory = requestBody.CategoryId;
+                        messageTemplateButtonDTO.ButtonType = e.type;
+                        messageTemplateButtonDTO.ButtonText = e.text;
+                        messageTemplateButtonDTO.ButtonUrl = string.Empty;
+                        messageTemplateButtonDTO.ButtonUrlExample = string.Empty;
+                        messageTemplateButtonDTO.ButtonPhoneNumber = string.Empty;
+
+                    }
+                    else if(e.type == "URL")
+                    {
+                        messageTemplateButtonDTO.TemplateId = requestBody.WhatsappTemplateId;
+                        messageTemplateButtonDTO.ButtonCategory = requestBody.CategoryId;
+                        messageTemplateButtonDTO.ButtonType = e.type;
+                        messageTemplateButtonDTO.ButtonText = e.text;
+                        messageTemplateButtonDTO.ButtonUrl = e.url;
+                        messageTemplateButtonDTO.ButtonUrlExample = e.example[0];
+                        messageTemplateButtonDTO.ButtonPhoneNumber = string.Empty;
+
+                    }
+                    else if(e.type == "PHONE_NUMBER")
+                    {
+                        messageTemplateButtonDTO.TemplateId = requestBody.WhatsappTemplateId;
+                        messageTemplateButtonDTO.ButtonCategory = requestBody.CategoryId;
+                        messageTemplateButtonDTO.ButtonType = e.type;
+                        messageTemplateButtonDTO.ButtonText = e.text;
+                        messageTemplateButtonDTO.ButtonUrl = string.Empty;
+                        messageTemplateButtonDTO.ButtonUrlExample = string.Empty;
+                        messageTemplateButtonDTO.ButtonPhoneNumber = e.phone_number;
+                    }
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesButtonAsync(messageTemplateButtonDTO);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
         {
@@ -144,7 +210,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId,FileUrl, FileName);
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId, FileUrl, FileName);
 
                     return new APIResponse
                     {
