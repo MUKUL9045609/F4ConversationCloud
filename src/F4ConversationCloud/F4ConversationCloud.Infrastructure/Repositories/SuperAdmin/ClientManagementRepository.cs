@@ -57,6 +57,34 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             return await _repository.GetListByValuesAsync<ClientManagementListItemModel>("sp_GetFilteredClients_v2", parameters);
         }
 
+        public async Task<(IEnumerable<BusinessAccountListItem>,int)> GetBusinessAccountListAsync(BusinessAccountListFilter filter)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("organizationsNameFilter", filter.OrganizationsFilter);
+                parameters.Add("createdOnFilter", filter.OnboardingOnFilter);
+                parameters.Add("phoneNumberFilter", filter.PhoneNumberFilter);
+                parameters.Add("pageNumber", filter.PageNumber);
+                parameters.Add("pageSize", filter.PageSize);
+
+                var List = await _repository.GetListByValuesAsync<BusinessAccountListItem>("sp_GetBusinessAccountList", parameters);
+                int Count = await _repository.GetCountAsync("sp_GetBusinessAccountListCount", parameters);
+
+                return (List, Count);
+            }
+            catch (Exception)
+            {
+
+               return (Enumerable.Empty<BusinessAccountListItem>(), 0);
+            }
+            
+        }
+
+
+
+
         public async Task<ClientDetails> GetClientDetailsById(int id)
         {
             DynamicParameters parameters = new DynamicParameters();

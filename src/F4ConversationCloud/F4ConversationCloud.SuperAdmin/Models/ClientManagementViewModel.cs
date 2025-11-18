@@ -27,6 +27,9 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
+            [Display(Name = "Organizations")]
+            public string Organizations { get; set; }
+
             [Display(Name = "WhatsApp Display Name")]
             public string ClientName { get; set; }
 

@@ -27,14 +27,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             _whatsAppTemplateService = whatsAppTemplateService;
         }
 
-        public async Task<IActionResult> List(ClientManagementViewModel model)
+        public async Task<IActionResult> List(BusinessAccountListViewModel model)
         {
             try
             {
-                var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+                var response = await _clientManagement.GetBusinessAccountList(new BusinessAccountListFilter
                 {
-                    ClientNameSearch = model.ClientNameSearch ?? String.Empty,
-                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    OrganizationsFilter = model.OrganizationsFilter ?? String.Empty,
                     OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
                     PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
                     PageNumber = model.PageNumber,
@@ -48,18 +47,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 }
 
                 model.TotalCount = response.Item2;
-                model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+                model.data = response.Item1.ToList().Select(x => new BusinessAccountListViewModel.BusinessAccountListItem()
                 {
                     Id = x.Id,
                     SrNo = x.SrNo,
-                    ClientName = x.ClientName,
-                    Status = x.Status,
-                    IsActive = x.IsActive,
-                    CreatedAt = x.CreatedAt,
+                    Organizations = x.OrganizationsName,
+                    PhoneNumber = x.PhoneNumber,
+                    CreatedAt = x.CreatedOn,
                     UpdatedOn = x.UpdatedOn,
-                    Category = x.Category,
                     ClientId = x.ClientId,
-                    PhoneNumber = x.PhoneNumber
+                    ClientWaBaAccCount=x.ClientWaBaAccCount
                 });
 
                 return View(model);
@@ -70,6 +67,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return View(new ClientManagementViewModel());
             }
         }
+        
 
         public async Task<IActionResult> ClientDetails(int Id)
         {
