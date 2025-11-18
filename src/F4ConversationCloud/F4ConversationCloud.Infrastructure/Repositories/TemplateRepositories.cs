@@ -116,6 +116,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             MessageTemplateButtonDTO messageTemplateButtonDTO = new MessageTemplateButtonDTO();
             try
             {
+                var result = await _whatsAppTemplateRepository.DeleteTemplatesButtonAsync(requestBody.TemplateId);
+
                 foreach (var e in requestBody.TemplateButton.Buttons)
                 {
                     messageTemplateButtonDTO.TemplateId = requestBody.TemplateId;
@@ -175,17 +177,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
                     var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId, FileUrl, FileName);
 
-                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
-
-                    if (buttonObj != null)
+                    if (requestBody.TemplateButton != null)
                     {
-                        dynamic newButtonObj = new ExpandoObject();
-                        newButtonObj.type = buttonObj.type;
-                        newButtonObj.buttons = buttonObj.buttons;
-                        newButtonObj.WhatsappTemplateId = id;
-                        newButtonObj.CategoryId = 1;
-
-                        var flag = AddMetTemplateButtons(newButtonObj);
+                        requestBody.TemplateId = id;
+                        var flag = AddMetTemplateButtons(requestBody);
                     }
 
                     return new APIResponse
