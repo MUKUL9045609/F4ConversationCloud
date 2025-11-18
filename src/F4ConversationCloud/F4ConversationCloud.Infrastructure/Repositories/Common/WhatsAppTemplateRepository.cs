@@ -1,22 +1,12 @@
-﻿using BuldanaUrban.Domain.Helpers;
-using Dapper;
+﻿using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
-using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Interfaces;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Twilio.Converters;
+
 
 namespace F4ConversationCloud.Infrastructure.Repositories.Common
 {
