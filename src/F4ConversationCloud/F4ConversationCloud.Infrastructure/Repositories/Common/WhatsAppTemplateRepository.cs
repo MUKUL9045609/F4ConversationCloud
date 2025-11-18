@@ -174,6 +174,29 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
+        public async Task<int> InsertTemplatesButtonAsync(MessageTemplateButtonDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@WhatsappTemplateId", request.TemplateId);
+                parameters.Add("@ButtonCategory", request.ButtonCategory);
+                parameters.Add("@ButtonType", request.ButtonType);
+                parameters.Add("@ButtonText", request.ButtonText);
+                parameters.Add("@ButtonUrl", request.ButtonUrl);
+                parameters.Add("@ButtonUrlExample", request.ButtonUrlExample);
+                parameters.Add("@ButtonPhoneNumber", request.ButtonPhoneNumber);
+                parameters.Add("@ButtonActionType", request.ButtonActionType);
+
+               
+                return await _repository.InsertUpdateAsync("sp_InsertwhatsappTemplatesButtons", parameters);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
         public async Task<int> GetCountAsync(TemplateListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();

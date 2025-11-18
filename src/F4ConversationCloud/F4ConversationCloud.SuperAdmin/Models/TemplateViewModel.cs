@@ -21,9 +21,12 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "Please select template type")]
         public int TemplateType { get; set; }
         public string TemplateTypeName { get; set; }
+        public int ButtonCategory { get; set; }
         public IEnumerable<SelectListItem> MarketingTemplateTypeList { get; set; }
         public IEnumerable<SelectListItem> UtilityTemplateTypeList { get; set; }
         public IEnumerable<SelectListItem> AuthenticationTemplateTypeList { get; set; }
+        public IEnumerable<SelectListItem> ButtonCategoryList { get; set; }
+        public IEnumerable<SelectListItem> CustomButtonTypeList { get; set; }
 
         [Required(ErrorMessage = "Please select language")]
         public int Language { get; set; }
@@ -56,12 +59,21 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string PageMode { get; set; }
         public string TemplateId { get; set; }
         public int TemplateTableId { get; set; }
+        public List<Button> buttons { get; set; } = new List<Button>();
 
         public class BodyVariable()
         {
             [Required(ErrorMessage = "Please enter a sample for this variable.")]
             public string BodyVariableName { get; set; }
             public string BodyVariableValue { get; set; } = string.Empty;
+        }
+
+        public class Button()
+        {
+            public int ButtonType { get; set; }
+            [Required(ErrorMessage = "This field is required")]
+            [StringLength(25, ErrorMessage = "Button text should be less than 25 characters.")]
+            public string ButtonText { get; set; }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -72,6 +84,27 @@ namespace F4ConversationCloud.SuperAdmin.Models
                     "Add sample text.",
                     new[] { nameof(HeaderVariableValue) }
                 );
+            }
+
+            var normalized = buttons
+               .Select((b, i) => new { Index = i, Text = (b?.ButtonText ?? "").Trim() })
+               .Where(x => !string.IsNullOrEmpty(x.Text))
+               .GroupBy(x => x.Text, StringComparer.OrdinalIgnoreCase)
+               .Where(g => g.Count() > 1);
+
+            foreach (var group in normalized)
+            {
+                // For each duplicate group, mark all but the first as invalid (or all if you prefer)
+                bool first = true;
+                foreach (var item in group)
+                {
+                    if (first) { first = false; continue; }
+                    // Target the exact field: buttons[i].ButtonText
+                    yield return new ValidationResult(
+                        $"You can't enter same text for multiple buttons.",
+                        new[] { $"buttons[{item.Index}].ButtonText" }
+                    );
+                }
             }
         }
     }

@@ -1,0 +1,29 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@{
+    this.ViewContext.FormContext = new FormContext();
+    var i = (int)(ViewData["RowIndex"] ?? 0);
+}
+
+<div class="button-row d-flex align-items-end gap-2" data-index="@i">
+    <div class="w-25">
+        <label>Type</label>
+        <select asp-for="buttons[@i].ButtonType"
+                asp-items="@Model.CustomButtonTypeList"
+                class="form-select"
+                aria-label="Default select example">
+        </select>
+    </div>
+
+    <div class="flex-grow-1">
+        <label>Button Text</label>
+        <div class="input-group">
+            <input asp-for="buttons[@i].ButtonText"
+                   type="text"
+                   class="form-control"
+                   placeholder="Quick Reply" maxlength="25" />
+        </div>
+        <span asp-validation-for="buttons[@i].ButtonText" class="button-text-validation" style="font-size: 12px !important;color: #D06464;"></span>
+    </div>
+
+    <a href="#" class="delete"></a>
+</div>

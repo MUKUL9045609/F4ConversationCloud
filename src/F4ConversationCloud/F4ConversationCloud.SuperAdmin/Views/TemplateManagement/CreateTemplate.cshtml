@@ -112,48 +112,6 @@
                         <div class="template-preview-card creation-card">
                             <h4>Template Preview</h4>
 
-                            <div class="template-preview" id="carousel-template-preview" style="display:none;">
-                                <div class="template-white-card">
-                                    <div class="swiper useCasesSwiper">
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide swiper-card">
-                                                <div class="template-slide-card">
-                                                    @* <span><img src="images/card-img-03.png"></span> *@
-                                                    <div class="description">
-                                                        <h6 class="variables-title">Hey {{customer_name}},</h6>
-                                                        <p>Dear {{1}}</p>
-                                                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
-                                                    </div>
-                                                    <div class="time">1:59 PM</div>
-                                                </div>
-                                                <div class="buy-link">
-                                                    <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                    <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide swiper-card">
-                                                <div class="template-slide-card">
-                                                    @* <span><img src="images/card-img-03.png"></span> *@
-                                                    <div class="description">
-                                                        <p>Dear {{1}}</p>
-                                                        <p>We are excited to present you with an exclusive offer ! {{}}</p>
-                                                    </div>
-                                                    <div class="time">1:59 PM</div>
-                                                </div>
-                                                <div class="buy-link">
-                                                    <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                                    <a href="#"><i class="forward"></i> My Account Balance</a>
-                                                    <!-- <a href="#"><i class="backward"></i> Yes </a>
-                                                    <a href="#"><i class="call"></i> Call Us </a> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-button-prev"></div>
-                                    <div class="swiper-button-next"></div>
-                                </div>
-                            </div>
-
                             <div class="template-preview" id="template-preview">
                                 <div class="message-chat d-none">
                                     <p>Check out our exclusive festival offers below</p>
@@ -161,6 +119,7 @@
                                 </div>
                                 <div class="swiper-card">
                                     <div class="template-slide-card">
+                                        <span class="default-image image-smaple" id="sample-image" style="display:none;"></span>
                                         <span id="image-preview" style="display:none;"><img src=""></span>
                                         <div class="description">
                                             <h6 class="variables-title" id="header-text-preview" style="display:none;"></h6>
@@ -169,46 +128,8 @@
                                         </div>
                                         <div class="time">1:59 PM</div>
                                     </div>
-                                    @* <div class="buy-link">
-                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                        <a href="#"><i class="forward"></i> My Account Balance</a>
-                                        <a href="#"><i class="backward"></i> Yes </a>
-                                        <a href="#"><i class="call"></i> Call Us </a>
-                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
-                                    </div> *@
-                                </div>
+                                    <div id="button-preview">
 
-                                <div class="swiper-card d-none">
-                                    <div class="template-slide-card">
-
-                                        <div class="description">
-                                            <h6 class="variables-title">Hey {{customer_name}},</h6>
-                                            <p>Discover our adorable new range of baby toys — safe, colorful, and fun for your little one! From rattles to learning blocks, there’s something special for every baby.</p>
-                                            <span class="description-small-text">Tap below to explore now</span>
-                                        </div>
-                                        <div class="time">1:59 PM</div>
-                                    </div>
-                                    <div class="buy-link">
-                                        <a href="#"><i class="buy-icon"></i> Shop Now</a>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-card d-none">
-                                    <div class="template-slide-card">
-                                        <span class="default-image image-smaple"></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="swiper-card d-none">
-                                    <div class="template-slide-card">
-                                        <span class="default-image location"></span>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-card d-none">
-                                    <div class="template-slide-card">
-                                        <span class="default-image video"></span>
                                     </div>
                                 </div>
 
@@ -295,7 +216,7 @@
         $(document).on('change', 'input[name="TemplateType"]', function () {
             var templateCategory = $('[name="TemplateCategory"]').val();
             var templateType = $('input[name="TemplateType"]:checked').val();
-            
+
             if ((templateCategory == @((int)TemplateModuleType.Marketing) && templateType == @((int)MarketingTemplateType.Carousel))
             || (templateCategory == @((int)TemplateModuleType.Utility) && templateType == @((int)UtilityTemplateType.Carousel))){
                 $('#carousel-template-preview').show();
@@ -395,12 +316,12 @@
                                 previousVariables = [...variables];
 
                                 $.ajax({
-                                    url: '/TemplateManagement/RenderBodyVariablesPartial', // your controller action
+                                    url: '/TemplateManagement/RenderBodyVariablesPartial',
                                     type: 'POST',
                                     contentType: 'application/json',
                                     data: JSON.stringify(variables),
                                     success: function (html) {
-                                        $('#variable-card').show(); // show the whole card if needed
+                                        $('#variable-card').show();
                                         $('#variable-card-body').html(html).show();
 
                                         document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
@@ -436,7 +357,7 @@
                         // Variable insertion
                         $(document).on("click", "#add-body-variable", function () {
                             selectedVariableType = $('input[name="VariableType"]:checked').val();
-                            
+
                             if (!selectedVariableType) {
                                commonHelper.showError("Please select type of variable.");
                                return;
@@ -561,7 +482,7 @@
                     }
 
                     var errorSpan = document.getElementById("messageBodyError");
-                    
+
                     if (errorMessage != '') {
                         errorSpan.innerText = errorMessage.trim();
                         errorSpan.style.display = "block";
@@ -579,7 +500,7 @@
 
                     // 1) Normalize HTML entities that behave like spaces
                     var clean = text.replace(/&nbsp;/gi, ' ').replace(/\u00A0/g, ' '); // non-breaking space
-                    
+
                     // 2) Remove HTML tags (CKEditor outputs real <tags>, not &lt; &gt;)
                     clean = clean.replace(/<[^>]*>/g, ' ');
 
@@ -621,6 +542,7 @@
                                     if (fileNameSpan) fileNameSpan.textContent = file.name;
                                     if (imagePreviewSpan) imagePreviewSpan.style.display = 'block';
                                     $('#submit-btn').prop('disabled', false);
+                                    $('#sample-image').hide();
                                 // } else {
                                 //     commonHelper.showError("Please upload an image of exactly 192×192 pixels.");
                                 //     resetPreview();
@@ -650,7 +572,8 @@
                 });
 
                 document.getElementById('remove-file').addEventListener('click', function () {
-                    deleteImage();
+                    $('#sample-image').show();
+                    deleteImage(true);
                 });
 
                 commonHelper.showHideLoader(false);
@@ -697,12 +620,18 @@
             var $attachment = $('#attachment');
             var $existingFileLink = $('#existingFileLink');
             var $fileValidationMessage = $('[data-valmsg-for="File"]');
-            deleteImage();
             $fileInput.val('');
             $existingFileLink.html('');
             $fileInput.removeAttr('accept');
             var hasValidationError = $fileValidationMessage.text().trim().length > 0;
-            $('#submit-btn').prop('disabled', true);
+            if (selectedText == 'Image'){
+                $('#sample-image').show();
+            }
+            else{
+                $('#sample-image').hide();
+            }
+            var isSubmitEnabled = (selectedValue > 0 && $fileInput.val() == '');
+            deleteImage(isSubmitEnabled);
 
             if (selectedValue > 0 && selectedText != 'Location') {
                 $attachment.show();
@@ -723,12 +652,16 @@
             }
 
             if (selectedValue > 0){
+                $('#Header').val('');
+                $('#HeaderVariableValue').val('');
+                $('#variable-card-header').hide();
                 $("#header-add-btn").attr("disabled", true);
-                $('#Header').attr('readonly', true);
+                $('#Header').attr('disabled', true);
+                $('#header-text-preview').text('');
             }
             else{
                 $("#header-add-btn").removeAttr("disabled");
-                $('#Header').removeAttr('readonly');
+                $('#Header').removeAttr('disabled');
             }
         });
 
@@ -767,8 +700,7 @@
             var content = editor.getData().trim();
             var contentEmpty = content === '';
 
-            var messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
-            //console.log(messageBodyErrorVisible);
+            var messageBodyErrorVisible = $('#messageBodyError').css('display') == 'block';
             var bodyInputs = document.querySelectorAll(
                 '#variable-card-body input[name^="bodyVariables"][name$=".BodyVariableName"]'
             );
@@ -780,10 +712,39 @@
             var headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
             var headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
             var headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
-
+            var buttonsInvalid = hasButtonValidationErrors();
+            // var con = {
+            //     contentEmpty: contentEmpty,
+            //     messageBodyErrorVisible: messageBodyErrorVisible,
+            //     anyBodyEmpty: anyBodyEmpty,
+            //     headerInvalid: headerInvalid,
+            //     buttonsInvalid: buttonsInvalid
+            // }
+            // console.log(con);
             // Final check
-            var shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
+            var shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid || buttonsInvalid;
             $('#submit-btn').prop('disabled', shouldDisable);
+        }
+
+        function hasButtonValidationErrors() {
+            // 1) If any button input has the 'is-invalid' class
+            var anyInvalidClass = $('#quick-reply-list input[name^="buttons"][name$=".ButtonText"]').is('.is-invalid');
+
+            // 2) Or any validation span for buttons has non-empty text
+            var anySpanError = false;
+            $('#quick-reply-list span.button-text-validation[data-valmsg-for]').each(function () {
+                var msg = $(this).text().trim();
+                if (msg.length) {
+                    // Optionally, limit to just buttons fields:
+                    var forName = $(this).attr('data-valmsg-for') || '';
+                    if (/^buttons\[\d+\]\.ButtonText$/.test(forName) && msg.length) {
+                        anySpanError = true;
+                        return false; // break .each
+                    }
+                }
+            });
+
+            return anyInvalidClass || anySpanError;
         }
 
         $(document).on('input', '[name="Header"]', function () {
@@ -856,7 +817,7 @@
 
             $('#footer-text').text(footerVal);
         });
-
+            
         $(document).on('submit', 'form', function (e) {
             if (this.checkValidity()) {
                 commonHelper.showHideLoader(true);
@@ -871,8 +832,13 @@
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
 
-        function deleteImage() {
-            $('#submit-btn').prop('disabled', true);
+        function deleteImage(isSubmitEnabled) {
+            if (isSubmitEnabled){
+                $('#submit-btn').prop('disabled', true);
+            }
+            else{
+                $('#submit-btn').prop('disabled', false);
+            }
             var imageTag = document.querySelector('.image img');
             var cardPreviewImg = document.querySelector('#image-preview img');
             var imagePreviewSpan = document.getElementById('image-preview');
@@ -892,5 +858,194 @@
             }
         }
 
+        (function ($) {
+            var MAX_CUSTOM_BUTTONS = 10;
+
+            function getNextIndex() {
+                var max = -1;
+                $('#quick-reply-list .button-row').each(function () {
+                    var idx = parseInt($(this).attr('data-index'), 10);
+                    if (!isNaN(idx) && idx > max) max = idx;
+                });
+                return max + 1;
+            }
+
+            function getCustomCount() {
+                return $('#quick-reply-list .button-row').length;
+            }
+
+            function ensureSectionVisibility() {
+                $('#quick-reply-section').toggle($('#quick-reply-list .button-row').length > 0);
+
+                var isMax = getCustomCount() >= MAX_CUSTOM_BUTTONS;
+                $('#buttonDrpDwnBtn').prop('disabled', isMax);
+                $('.add-btn-template').toggleClass('disabled', isMax);
+            }
+
+            // Dropdown click -> add row
+            $(document).on('click', '#template-btn a.dropdown-item', function (e) {
+                e.preventDefault();
+                var link = this;
+                var value = link.dataset.value;
+                var text  = link.dataset.text;
+
+                var customText = '@(ButtonCategory.Custom.Get<DisplayAttribute>().Name)';
+
+                // Only apply limit for Custom category
+                if (text === customText) {
+                    var current = getCustomCount();
+                    if (current >= MAX_CUSTOM_BUTTONS) {
+                        commonHelper.showError('You can add a maximum of ' + MAX_CUSTOM_BUTTONS + ' buttons.');
+                        return;
+                    }
+                } else {
+                    return;
+                }
+
+                var index = getNextIndex();
+                var currentCount = getCustomCount();
+                $.ajax({
+                    type: 'POST',
+                    url: '/TemplateManagement/GetButtonPartialView',
+                    data: { value: value, text: text, index: index, currentCount: currentCount },
+                    success: function (html) {
+                        var $html = $(html);
+                        if (!$html.attr('data-category')) {
+                            $html.attr('data-category', 'Custom');
+                        }
+                        $('#quick-reply-list').append($html);
+                        var previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         '<a href="#"><i class="backward"></i> Quick Reply</a>' +
+                            '</div>';
+                        $('#button-preview').append(previewHtml);
+                        ensureSectionVisibility();
+                    },
+                    error: function (xhr) {
+
+                    }
+                });
+            });
+
+            // Delete a row
+            $(document).on('click', '#quick-reply-list .button-row .delete', function (e) {
+                e.preventDefault();
+                var $row = $(this).closest('.button-row');
+                var idx = $row.data('index');
+                $row.remove();
+                $('#button-preview .buy-link[data-index="' + idx + '"]').remove();
+                ensureSectionVisibility();
+                validateDuplicateButtonTexts();
+            });
+
+            $(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"]', function () {
+                var $input = $(this);
+                validateDuplicateButtonTexts();
+                // Extract index from name: buttons[0].ButtonText -> 0
+                var name = $input.attr('name'); // e.g., "buttons[0].ButtonText"
+                var match = name.match(/^buttons\[(\d+)\]\.ButtonText$/);
+                if (!match) return;
+
+                var idx = match[1];
+                var text = $input.val().trim();
+
+                // Find the matching preview: prefer data-index, fallback to id
+                var $preview = $('#button-preview .buy-link[data-index="' + idx + '"]');
+                var $previewFallback = $('#preview-' + idx);
+
+                // Choose whichever exists
+                var $target = $preview.length ? $preview : $previewFallback;
+
+                if ($target.length) {
+                    // Update only the text inside the <a>, keep the icon intact
+                    var $anchor = $target.find('a');
+
+                    // If you want a placeholder when empty:
+                    var displayText = text.length ? text : 'Quick Reply';
+
+                    // Replace the text node after the icon
+                    // Safer approach: rebuild anchor contents
+                    $anchor.html('<i class="backward"></i> ' + displayText);
+                }
+            });
+
+            // On page load (edit mode), show/hide based on existing rows
+            $(function () {
+                ensureSectionVisibility();
+            });
+
+            function validateDuplicateButtonTexts() {
+                var FIXED_MSG = "You can't enter same text for multiple buttons.";
+
+                // Collect all ButtonText inputs
+                var $inputs = $('#quick-reply-list input[name^="buttons"][name$=".ButtonText"]');
+
+                // Group by normalized text (trim + lower)
+                var groups = new Map(); // key -> [{ $input, name }]
+                $inputs.each(function () {
+                    var $input = $(this);
+                    var name = $input.attr('name'); // e.g., buttons[3].ButtonText
+                    var match = name && name.match(/^buttons\[(\d+)\]\.ButtonText$/);
+                    if (!match) return;
+
+                    var raw = ($input.val() || '').trim();
+                    if (!raw) return; // ignore empty while typing
+
+                    var key = raw.toLowerCase();
+                    if (!groups.has(key)) groups.set(key, []);
+                    groups.get(key).push({ $input: $input, name: name });
+                });
+
+                // Determine duplicates: mark all but the first in each group
+                var duplicateNodes = new Set();
+                groups.forEach(function (entries) {
+                    if (entries.length > 1) {
+                        entries.slice(1).forEach(function (e) {
+                            duplicateNodes.add(e.$input.get(0));
+                        });
+                    }
+                });
+
+                // Apply/clear UI state and messages
+                $inputs.each(function () {
+                    var $input = $(this);
+                    var name = $input.attr('name') || '';
+                    var isDup = duplicateNodes.has(this);
+
+                    // Toggle Bootstrap invalid class
+                    $input.toggleClass('is-invalid', isDup);
+
+                    // Find the corresponding asp-validation-for span
+                    var selector = 'span.button-text-validation[data-valmsg-for="' + name.replace(/\./g, '\\.') + '"]';
+                    var $span = $(selector);
+
+                    if (isDup) {
+                        // Set the fixed duplicate message
+                        $span.text(FIXED_MSG);
+                    } else {
+                        // Clear only if our fixed message is currently shown
+                        var current = ($span.text() || '').trim();
+                        if (current === FIXED_MSG) {
+                            $span.text('');
+                        }
+                    }
+                });
+
+                // Re-evaluate submit button availability
+                if (typeof validateSubmitButton === 'function') {
+                    try { validateSubmitButton(editorInstance); } catch (_) {}
+                }
+
+                // Return true if there are no duplicates
+                return duplicateNodes.size === 0;
+            }
+
+            $(document).on('ajaxComplete', function (event, xhr, settings) {
+                if (settings && settings.url && settings.url.indexOf('/TemplateManagement/GetButtonPartialView') === 0) {
+                    // Allow DOM to update then validate
+                    setTimeout(validateDuplicateButtonTexts, 0);
+                }
+            });
+
+        })(jQuery);
     </script>
 }
