@@ -88,7 +88,10 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     
                 var templateModel = new TemplatesListViewModel
                 {
-                    templateDetail = templateDetails
+                    templateDetail = templateDetails,
+                    TemplateButtons = templateDetails.TemplateButtons
+
+
                 };
 
                 return PartialView("_TemplatePreviewModalPartial", templateModel);

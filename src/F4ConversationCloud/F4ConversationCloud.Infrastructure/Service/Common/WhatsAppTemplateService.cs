@@ -60,6 +60,8 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             try
             {
                 var templateDetail = await _templateRepository.GetTemplateByIdAsync(templateId);
+                var templateButtons = await _templateRepository.WhatsappTemplatesButtons(templateId);
+
                 templateDetail.RawHeader = templateDetail.HeaderText;
                 templateDetail.RawBody = templateDetail.BodyText;
                 if (templateDetail != null)
@@ -80,7 +82,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
                         );
                     }
                 }
-
+                templateDetail.TemplateButtons = templateButtons;
                 return templateDetail;
             }
             catch (Exception ex)

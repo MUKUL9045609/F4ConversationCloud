@@ -1,4 +1,5 @@
-﻿using System;
+﻿using F4ConversationCloud.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,10 +36,18 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public string RawHeader { get; set; }
         public string RawBody { get; set; }
         public int TemplateTableId { get; set; }
+
+        public IEnumerable<TemplatesButtonsListItem> TemplateButtons { get; set; }
     }
 
-    public class WhatsappTemplatesButtonsListItem{
+    public class TemplatesButtonsListItem{
 
+        public int ButtonCategory { get; set; }
+        public ButtonActionType ButtonActionType { get; set; }
+        public string ButtonText { get; set; }
+        public string ButtonUrl { get; set; }
+        public string ButtonUrlExample { get; set; }
+        public string ButtonPhoneNumber { get; set; }
 
     }
 }

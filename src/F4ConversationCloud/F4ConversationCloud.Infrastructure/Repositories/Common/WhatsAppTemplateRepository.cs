@@ -74,23 +74,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
 
         }
-            public async Task<WhatsappTemplateDetail> WhatsappTemplatesButtons(int Template_id)
+        public async Task<IEnumerable<TemplatesButtonsListItem>> WhatsappTemplatesButtons(int Template_id)
+        {
+            try
             {
-                try
-                {
-                    DynamicParameters Dp = new DynamicParameters();
-                    Dp.Add("@TemplateId", Template_id);
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@TemplateId", Template_id);
 
-                    var templateById = await _repository.GetByValuesAsync<WhatsappTemplateDetail>("sp_GetWhatsappTemplate", Dp);
-
-                    return templateById;
-                }
-                catch (Exception)
-                {
-                    return new WhatsappTemplateDetail();
-                }
+                return  await _repository.GetListByValuesAsync<TemplatesButtonsListItem>("sp_GetTemplatesButtons", Dp);
 
             }
+            catch (Exception)
+            {
+                return Enumerable.Empty<TemplatesButtonsListItem>();
+            }
+
+        }
         public async Task<int> DeactivateTemplateAsync(int templateId) {
 
             try
