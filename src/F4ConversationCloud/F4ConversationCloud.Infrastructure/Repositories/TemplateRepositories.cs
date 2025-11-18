@@ -9,17 +9,10 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using Org.BouncyCastle.Ocsp;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 
 namespace F4ConversationCloud.Infrastructure.Repositories
 {
@@ -76,18 +69,17 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 {
                     var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
-                    messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
 
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes, FileName);
-                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
+                    messageTemplate.category = response.result.category;
+                    
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(), requestBody.TemplateTypes, FileName);
 
-                    if (requestBody.TemplateButton != null)
+                    if (requestBody.TemplateButton != null && id > 0)
                     {
                         requestBody.TemplateId = id;
                         var flag = AddMetTemplateButtons(requestBody);
                     }
-
 
                     return new APIResponse
                     {

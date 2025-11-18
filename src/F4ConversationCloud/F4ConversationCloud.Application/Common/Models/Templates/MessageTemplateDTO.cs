@@ -1,12 +1,5 @@
-﻿using F4ConversationCloud.Domain.Enum;
-using F4ConversationCloud.WebUI.Handler;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Application.Common.Models.Templates
 {

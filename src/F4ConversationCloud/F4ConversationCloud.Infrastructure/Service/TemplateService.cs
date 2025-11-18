@@ -3,20 +3,13 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
-using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Response;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Net.Http.Headers;
-using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Twilio.TwiML;
-using Twilio.TwiML.Voice;
-using Twilio.Types;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace F4ConversationCloud.Infrastructure.Service
@@ -405,7 +398,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                     if (typeValue == "footer")
                     {
                         var FooterValue = JsonSerializer.Deserialize<FooterComponent>(Footerroot, options);
-                        if (!string.IsNullOrEmpty(FooterValue.type))
+                        if (!string.IsNullOrEmpty(FooterValue.text))
                         {
                             messageTemplate.components.Add(FooterValue);
                         }
