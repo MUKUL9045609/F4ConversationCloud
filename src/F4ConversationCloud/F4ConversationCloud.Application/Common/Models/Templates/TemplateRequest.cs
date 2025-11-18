@@ -35,7 +35,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
         [Required]
         public string CreatedBy { get; set; }
-        public string TemplateId { get; set; }
+        public int TemplateId { get; set; }
 
         [Required]
         public string TemplateTypes { get; set; }
@@ -380,7 +380,14 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
     public class Button : IValidatableObject
     {
         [Required]
-        public string Type { get; set; }
+        public string ButtonActionType { get; set; }
+
+        [Required]
+        public int ButtonType { get; set; }
+
+        [Required]
+        public int ButtonCategory { get; set; }
+
         [Required]
         public string Text { get; set; }
         public string? Phone_Number { get; set; }
@@ -389,7 +396,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            switch (Type?.ToUpper())
+            switch (ButtonActionType?.ToUpper())
             {
                 case "QUICK_REPLY":
                     break;
@@ -402,7 +409,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
                         yield return new ValidationResult("URL is required for URL button.");
                     break;
                 default:
-                    yield return new ValidationResult($"Unsupported button type: {Type}");
+                    yield return new ValidationResult($"Unsupported button type: {ButtonActionType}");
                     break;
             }
         }

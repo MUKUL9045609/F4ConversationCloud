@@ -25,10 +25,11 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public int? TemplateId { get; set; }
         public int? ButtonCategory { get; set; }
         public string? ButtonText { get; set; }
-        public string ButtonType { get; set; }
+        public int ButtonType { get; set; }
         public string? ButtonUrl { get; set; }
         public string? ButtonUrlExample { get; set; }
         public string ButtonPhoneNumber { get; set; }
+        public string ButtonActionType { get; set; }
 
 
     }
@@ -92,7 +93,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
     public class QuickReplyButtonComponent
     {
-        [JsonPropertyName("Type")]
+        [JsonPropertyName("ButtonActionType")]
         public string? type { get; set; } = null;
 
         [JsonPropertyName("Text")]
@@ -101,7 +102,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
     public class PhoneNumberButtonComponent
     {
-        [JsonPropertyName("Type")]
+        [JsonPropertyName("ButtonActionType")]
         public string? type { get; set; } = null;
 
         [JsonPropertyName("Text")]
@@ -114,7 +115,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
 
     public class UrlButtonComponent
     {
-        [JsonPropertyName("Type")]
+        [JsonPropertyName("ButtonActionType")]
         public string? type { get; set; } = null;
 
         [JsonPropertyName("Text")]

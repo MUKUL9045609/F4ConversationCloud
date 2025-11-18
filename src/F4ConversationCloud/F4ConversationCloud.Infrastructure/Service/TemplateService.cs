@@ -432,7 +432,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                         for (int i =0; i <jsonArray.Count; i++)
                         {
                             JsonObject buttonObject = jsonArray[i].AsObject();
-                            var Type = buttonObject["Type"].ToString();
+                            var Type = buttonObject["ButtonActionType"].ToString();
 
 
                             if (Type == "QUICK_REPLY")
