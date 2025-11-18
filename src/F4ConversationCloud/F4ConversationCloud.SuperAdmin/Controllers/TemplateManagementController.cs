@@ -155,11 +155,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.WABAId = model.WABAId;
                 request.PageMode = model.PageMode;
                 request.TemplateId = model.TemplateId;
-                request.ButtonCategory = model.ButtonCategory;
                 request.buttons = model.buttons.Select(x => new TemplateViewRequestModel.Button
                 {
                     ButtonText = x.ButtonText,
-                    ButtonType = x.ButtonType
+                    ButtonType = x.ButtonType,
+                    ButtonCategory = x.ButtonCategory
                 }).ToList();
 
                 APIResponse result = new APIResponse();
@@ -423,7 +423,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             vm.buttons[index] = new TemplateViewModel.Button
             {
                 ButtonType = (int)ButtonCategory.Custom,
-                ButtonText = "Quick Reply"
+                ButtonText = "Quick Reply",
+                ButtonCategory = Convert.ToInt32(value)
             };
 
             ViewData["RowIndex"] = index;

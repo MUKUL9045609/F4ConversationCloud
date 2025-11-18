@@ -2,6 +2,7 @@
 @using F4ConversationCloud.Domain.Enum
 @using System.ComponentModel.DataAnnotations
 @using System.Web
+@using Newtonsoft.Json
 @model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
 @{
     var m = Model;
@@ -667,10 +668,8 @@
                             </div>
                             <div class="time">1:59 PM</div>
                         </div>
-                        @* <div class="buy-link">
-                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                            <a href="#"><i class="forward"></i> My Account Balance</a>
-                        </div> *@
+                        <div class="buy-link" id="preview-button">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -974,7 +973,20 @@
             var templatebodyexample = $(this).data("templatebodyexample");
             var templatefooter = $(this).data("templatefooter");
             var templateheadermediaurl = $(this).data("headermediaurl");
+            var raw = $(this).attr("data-buttons");
+            var templatebuttons = [];
+            templatebuttons = raw ? JSON.parse(raw) : [];
 
+            var $preview = $("#preview-button");
+            $preview.empty();
+
+            templatebuttons.forEach(function(btn) {
+                var text = (btn.ButtonText || "").trim();
+                if (!text) return;
+
+                $preview.append(`<a href="#"><i class="backward"></i> ${text}</a>`);
+            });
+            
             if (templateheadertext.includes("{{1}}")) {
                 templateheadertext = templateheadertext.replace("{{1}}", templateheaderexample);
             }
@@ -1207,10 +1219,5 @@
                     }
                 });
             }
-
-
-
-
-
     </script>
 }

@@ -4,6 +4,7 @@
     var i = (int)(ViewData["RowIndex"] ?? 0);
 }
 
+<input asp-for="buttons[@i].ButtonCategory" type="hidden" />
 <div class="button-row d-flex align-items-end gap-2" data-index="@i">
     <div class="w-25">
         <label>Type</label>

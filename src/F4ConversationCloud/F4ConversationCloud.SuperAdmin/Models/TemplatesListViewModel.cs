@@ -43,7 +43,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Status")]
             public string Status { get; set; }
 
-            
+
             public string HeaderText { get; set; }
             public string HeaderExample { get; set; }
             public string BodyText { get; set; }
@@ -53,6 +53,13 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public int IsActive { get; set; }
             public string HeaderMediaUrl { get; set; }
             public string HeaderMediaName { get; set; }
+            public List<Button> buttons { get; set; } = new List<Button>();
+            public class Button
+            {
+                public int ButtonType { get; set; }
+                public string ButtonText { get; set; }
+                public int ButtonCategory { get; set; }
+            }
         }
     }
 }
