@@ -21,7 +21,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "Please select template type")]
         public int TemplateType { get; set; }
         public string TemplateTypeName { get; set; }
-        public int ButtonCategory { get; set; }
+        //public int ButtonCategory { get; set; }
         public IEnumerable<SelectListItem> MarketingTemplateTypeList { get; set; }
         public IEnumerable<SelectListItem> UtilityTemplateTypeList { get; set; }
         public IEnumerable<SelectListItem> AuthenticationTemplateTypeList { get; set; }
@@ -74,6 +74,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Required(ErrorMessage = "This field is required")]
             [StringLength(25, ErrorMessage = "Button text should be less than 25 characters.")]
             public string ButtonText { get; set; }
+            public int ButtonCategory { get; set; }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

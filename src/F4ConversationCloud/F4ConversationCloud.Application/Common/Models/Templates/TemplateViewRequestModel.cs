@@ -29,7 +29,6 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string TemplateId { get; set; }
         public int TemplateTableId { get; set; }
         public List<Button> buttons { get; set; } = new List<Button>();
-        public int ButtonCategory { get; set; }
 
         public class BodyVariable()
         {
@@ -40,6 +39,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         {
             public int ButtonType { get; set; }
             public string ButtonText { get; set; }
+            public int ButtonCategory { get; set; }
         }
     }
 }

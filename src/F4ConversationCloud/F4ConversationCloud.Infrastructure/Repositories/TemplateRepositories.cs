@@ -244,7 +244,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
                 templateRequest.TemplateBody.Type = "BODY";
                 templateRequest.TemplateBody.Text = model.MessageBody;
-                string messageBody = model.MessageBody ?? string.Empty; ;
+                string messageBody = model.MessageBody ?? string.Empty;
                 var matches = Regex.Matches(messageBody, @"\{\{(\d+)\}\}");
 
                 if (matches.Count > 0)
@@ -280,7 +280,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     }
 
                     // Finally set the Body_Example with one inner list aligned by {{1}}, {{2}}, ...
-                    templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
+                    templateRequest.TemplateBody.Body_Example = new F4ConversationCloud.Application.Common.Models.Templates.BodyExample
                     {
                         Body_Text = new List<List<string>> { orderedSamples }
                     };
@@ -306,13 +306,21 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
                 }
                 templateRequest.TemplateButton.Type = "BUTTONS";
-                
-                templateRequest.TemplateButton.Buttons.Select(x => new F4ConversationCloud.Application.Common.Models.Templates.Buttons
-                { 
-                    type = model.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "" ,
-                    text = x.Text
-                }).ToList();
 
+                var buttons = new List<Application.Common.Models.Templates.Button>();
+
+                foreach (var b in model.buttons)
+                {
+                    var button = new Application.Common.Models.Templates.Button();
+
+                    button.ButtonActionType = b.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "";
+                    button.ButtonCategory = b.ButtonCategory;
+                    button.ButtonType = b.ButtonType;
+                    button.Text = b.ButtonText;
+
+                    buttons.Add(button);
+                }
+                templateRequest.TemplateButton.Buttons = buttons;
 
                 APIResponse result = await MetaCreateTemplate(templateRequest);
 

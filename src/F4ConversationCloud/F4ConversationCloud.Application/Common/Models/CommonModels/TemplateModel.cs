@@ -24,5 +24,12 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public int IsActive { get; set; }
         public string HeaderMediaUrl { get; set; }
         public string HeaderMediaName { get; set; }
+        public List<Button> buttons { get; set; } = new List<Button>();
+        public class Button
+        {
+            public int ButtonType { get; set; }
+            public string ButtonText { get; set; }
+            public int ButtonCategory { get; set; }
+        }
     }
 }
