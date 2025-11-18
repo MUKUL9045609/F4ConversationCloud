@@ -9,6 +9,8 @@
     <h5 class="modal-title">@Model.templateDetail.TemplateName</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
+
+
 <div class="modal-body">
     <div class="template-preview">
         <div class="swiper-card">
@@ -51,13 +53,13 @@
 
                         }
                     </div>
-                </div>
+                
                 <div class="time">@Model.templateDetail.ModifiedOn?.ToString("hh:mm tt")</div>
             </div>
-            @* <div class="buy-link">
+            <div class="buy-link">
                 <a href="#"><i class="buy-icon"></i> Buy Now</a>
                 <a href="#"><i class="forward"></i> My Account Balance</a>
-            </div> *@
+            </div>      
         </div>
     </div>
 </div>
