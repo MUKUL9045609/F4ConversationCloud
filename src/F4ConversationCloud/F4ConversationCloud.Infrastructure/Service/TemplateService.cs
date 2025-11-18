@@ -398,7 +398,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                     if (typeValue == "footer")
                     {
                         var FooterValue = JsonSerializer.Deserialize<FooterComponent>(Footerroot, options);
-                        if (!string.IsNullOrEmpty(FooterValue.type))
+                        if (!string.IsNullOrEmpty(FooterValue.text))
                         {
                             messageTemplate.components.Add(FooterValue);
                         }
