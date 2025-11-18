@@ -155,6 +155,12 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.WABAId = model.WABAId;
                 request.PageMode = model.PageMode;
                 request.TemplateId = model.TemplateId;
+                request.ButtonCategory = model.ButtonCategory;
+                request.buttons = model.buttons.Select(x => new TemplateViewRequestModel.Button
+                {
+                    ButtonText = x.ButtonText,
+                    ButtonType = x.ButtonType
+                }).ToList();
 
                 APIResponse result = new APIResponse();
                 if (request.PageMode == "Edit")

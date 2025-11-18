@@ -27,11 +27,19 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string WABAId { get; set; }
         public string PageMode { get; set; }
         public string TemplateId { get; set; }
+        public int TemplateTableId { get; set; }
+        public List<Button> buttons { get; set; } = new List<Button>();
+        public int ButtonCategory { get; set; }
 
         public class BodyVariable()
         {
             public string BodyVariableName { get; set; }
             public string BodyVariableValue { get; set; }
+        }
+        public class Button()
+        {
+            public int ButtonType { get; set; }
+            public string ButtonText { get; set; }
         }
     }
 }

@@ -321,6 +321,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     templateRequest.TemplateHeader.Format = "IMAGE";
                     templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
                 }
+                templateRequest.TemplateButton.Type = "BUTTONS";
+                
+                templateRequest.TemplateButton.Buttons.Select(x => new F4ConversationCloud.Application.Common.Models.Templates.Buttons
+                { 
+                    type = model.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "" ,
+                    text = x.Text
+                }).ToList();
+
+
                 APIResponse result = await MetaCreateTemplate(templateRequest);
 
                 return result;
