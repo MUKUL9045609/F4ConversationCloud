@@ -11,10 +11,6 @@ using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using static F4ConversationCloud.Application.Common.Models.Templates.TemplateViewRequestModel;
-using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -421,7 +417,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             vm.buttons[index] = new TemplateViewModel.Button
             {
                 ButtonType = (int)ButtonCategory.Custom,
-                ButtonText = "Quick Reply" + " " + index
+                ButtonText = "Quick Reply"
             };
 
             ViewData["RowIndex"] = index;

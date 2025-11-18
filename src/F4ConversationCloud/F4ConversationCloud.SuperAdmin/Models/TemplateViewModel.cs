@@ -85,6 +85,27 @@ namespace F4ConversationCloud.SuperAdmin.Models
                     new[] { nameof(HeaderVariableValue) }
                 );
             }
+
+            var normalized = buttons
+               .Select((b, i) => new { Index = i, Text = (b?.ButtonText ?? "").Trim() })
+               .Where(x => !string.IsNullOrEmpty(x.Text))
+               .GroupBy(x => x.Text, StringComparer.OrdinalIgnoreCase)
+               .Where(g => g.Count() > 1);
+
+            foreach (var group in normalized)
+            {
+                // For each duplicate group, mark all but the first as invalid (or all if you prefer)
+                bool first = true;
+                foreach (var item in group)
+                {
+                    if (first) { first = false; continue; }
+                    // Target the exact field: buttons[i].ButtonText
+                    yield return new ValidationResult(
+                        $"You can't enter same text for multiple buttons.",
+                        new[] { $"buttons[{item.Index}].ButtonText" }
+                    );
+                }
+            }
         }
     }
 }
