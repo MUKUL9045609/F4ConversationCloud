@@ -723,6 +723,8 @@
 @section Scripts {
     @* <script src="~/js/unobtrusiveHelper.js"></script> *@
     <script>
+        var model = @Html.Raw(Json.Serialize(Model));
+       
         $(document).ready(function() {
             $('#save-btn').hide();
             // var approvalStatus = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ApprovalStatus))';
@@ -954,7 +956,6 @@
 
         $(document).on("click", "#create-template-btn, .edit-icon", function (e) {
             commonHelper.showHideLoader(true);
-            var model = @Html.Raw(Json.Serialize(Model));
 
             var data = {
                 ClientInfoId: model.clientInfoId,
@@ -1044,6 +1045,7 @@
 
                 WABAId: wabaId,
                 PageNumber: currentPageNumber,
+                MetaConfigId: model.id
             };
 
 
@@ -1076,7 +1078,8 @@
                     StatusFilter: $("[name=StatusFilter]").val(),
                     IsActivate: $("#templateStatusFilter").val(),
                     WABAId: wabaId,
-                    PageNumber: currentPageNumber
+                    PageNumber: currentPageNumber,
+                    MetaConfigId: model.id
                 };
 
                 $.ajax({
@@ -1196,7 +1199,8 @@
                     StatusFilter: $("[name=StatusFilter]").val(),
                     IsActivate: $("#templateStatusFilter").val(),
                     WABAId: wabaId,
-                    PageNumber: currentPageNumber
+                    PageNumber: currentPageNumber,
+                    MetaConfigId: model.id
                 };
 
                 $.ajax({
