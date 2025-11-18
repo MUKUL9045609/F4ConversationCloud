@@ -242,7 +242,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
-
         public async Task<dynamic> GetMetaUsersConfiguration()
         {
             try
@@ -260,7 +259,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         {
             try
             {
-
                 var parameters = new DynamicParameters();
                 parameters.Add("@TemplateId", TemplateId);
                 parameters.Add("@TemplateStatus", (int)(Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? status : TemplateApprovalStatus.Pending) , DbType.Int32);
@@ -272,6 +270,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
                 return 0;
             }
+        }
+
+        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("MetaConfigId", id);
+
+            return await _repository.GetListByValuesAsync<TemplateModel.Button>("sp_GetTemplateButtonsById", parameters);
         }
     }
 }

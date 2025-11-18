@@ -27,6 +27,7 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public List<Button> buttons { get; set; } = new List<Button>();
         public class Button
         {
+            public int WhatsAppTemplateId { get; set; }
             public int ButtonType { get; set; }
             public string ButtonText { get; set; }
             public int ButtonCategory { get; set; }
