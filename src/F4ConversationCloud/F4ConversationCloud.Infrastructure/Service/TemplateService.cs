@@ -117,19 +117,19 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 if (result.error != null)
                 {
-                    return new
+                    return new APIResponse
                     {
-                        Success = false,
-                        result = result.error,
+                        Status = false,
+                        result = result,
                         Message = result.error.error_user_msg
 
                     };
                 }
                 else
                 {
-                    return new
+                    return new APIResponse
                     {
-                        Success = true,
+                        Status = true,
                         result = result.data,
                         Message = "Template edited successFully."
                     };
@@ -139,10 +139,10 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
             catch (Exception ex)
             {
-                return new
+                return new APIResponse
                 {
                     Message = "Error occured while editing template.",
-                    Success = false,
+                    Status = false,
                     Error = ex.Message,
                     StackTrace = ex.StackTrace
                 };
@@ -309,13 +309,32 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                             if (_typeValue == "image")
                             {
+
                                 var example = Json?["Example"];
-                                if (example == null ||
-                                    (example["HeaderFile"]?.GetValue<string>() == null &&
-                                     example["Format"]?.GetValue<string>() == null))
+
+                                if (example is not JsonObject exObj)
                                 {
                                     Json?.AsObject().Remove("Example");
                                 }
+                                else
+                                {
+                                    bool headerFileEmpty = exObj["HeaderFile"] switch
+                                    {
+                                        JsonArray arr => arr.All(a => a is null),
+                                        JsonValue val => string.IsNullOrEmpty(val.GetValue<string>()),
+                                        _ => true
+                                    };
+
+                                    bool formatEmpty = exObj["Format"] is not JsonValue fv ||
+                                                       string.IsNullOrEmpty(fv.GetValue<string>());
+
+                                    if (headerFileEmpty && formatEmpty)
+                                    {
+                                        Json?.AsObject().Remove("Example");
+                                    }
+                                }
+
+
 
                                 var cleanJson = Json?.ToJsonString();
                                 var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(cleanJson, options);
@@ -385,8 +404,8 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "footer")
                     {
-                        var FooterValue = JsonSerializer.Deserialize<FootersComponent>(Footerroot, options);
-                        if (!string.IsNullOrEmpty(FooterValue.text))
+                        var FooterValue = JsonSerializer.Deserialize<FooterComponent>(Footerroot, options);
+                        if (!string.IsNullOrEmpty(FooterValue.type))
                         {
                             messageTemplate.components.Add(FooterValue);
                         }
@@ -397,6 +416,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 //ButtonComponent
                 string ButtonsJson = JsonSerializer.Serialize(request.TemplateButton);
                 using var Buttonsdoc = JsonDocument.Parse(ButtonsJson);
+                var Buttonsnode = JsonNode.Parse(ButtonsJson);
                 var Buttonsroot = Buttonsdoc.RootElement;
 
                 if (Buttonsroot.TryGetProperty("type", out JsonElement ButtonsElement) || Buttonsroot.TryGetProperty("Type", out ButtonsElement))
@@ -405,9 +425,57 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                     if (typeValue == "buttons")
                     {
-                        var Component = JsonSerializer.Deserialize<ButtonsComponent>(Buttonsroot, options);
-                        messageTemplate.components.Add(Component);
+                        var example = Buttonsnode?["Buttons"];
 
+                        JsonArray jsonArray = Buttonsnode?[1].AsArray();
+                        List<dynamic> Buttoncomponents = new List<dynamic>();
+                        for (int i =0; i <jsonArray.Count; i++)
+                        {
+                            JsonObject buttonObject = jsonArray[i].AsObject();
+                            var Type = buttonObject["ButtonActionType"].ToString();
+
+
+                            if (Type == "QUICK_REPLY")
+                            {
+                                buttonObject?.AsObject().Remove("Phone_Number");
+                                buttonObject?.AsObject().Remove("Url");
+                                buttonObject?.AsObject().Remove("Example");
+
+                                var cleanJson = buttonObject?.ToJsonString();
+
+                                var Component = JsonSerializer.Deserialize<QuickReplyButtonComponent>(cleanJson, options);
+                                Buttoncomponents.Add(Component);
+                            }
+                            else if(Type == "PHONE_NUMBER")
+                            {
+                                buttonObject?.AsObject().Remove("Url");
+                                buttonObject?.AsObject().Remove("Example");
+
+                                var cleanJson = buttonObject?.ToJsonString();
+
+                                var Component = JsonSerializer.Deserialize<PhoneNumberButtonComponent>(cleanJson, options);
+                                Buttoncomponents.Add(Component);
+                            }
+                            else if(Type == "URL")
+                            {
+                                buttonObject?.AsObject().Remove("Phone_Number");
+
+                                var cleanJson = buttonObject?.ToJsonString();
+
+                                var Component = JsonSerializer.Deserialize<UrlButtonComponent>(cleanJson, options);
+                                Buttoncomponents.Add(Component);
+
+                            }
+
+                        }
+
+                        var buttons = new
+                        {
+                            type = "BUTTONS",
+                            buttons = Buttoncomponents
+                        };
+
+                        messageTemplate.components.Add(buttons);
                     }
                 }
 
@@ -547,6 +615,52 @@ namespace F4ConversationCloud.Infrastructure.Service
                         Response = secondResponseString
                     };
                 }
+
+                //// Step 4: Extract Media ID
+                //var secondJson = JObject.Parse(secondResponseString);
+                //string mediaId = null;
+
+                //var hValue = secondJson["h"]?.ToString();
+                //if (!string.IsNullOrEmpty(hValue))
+                //{
+                //    var parts = hValue.Split(':');
+                //    if (parts.Length >= 3)
+                //    {
+                //        // WhatsApp media ID is ALWAYS 3rd last element
+                //        mediaId = parts[^3];  // ^3 = third item from end
+                //    }
+                //}
+
+
+                //if (string.IsNullOrEmpty(mediaId))
+                //{
+                //    return new
+                //    {
+                //        Success = false,
+                //        Message = "Media ID not found after second upload.",
+                //        Response = secondResponseString
+                //    };
+                //}
+
+                //// Step 5: GET Media URL (this gives the final image path)
+                //string mediaUrlApi = $"https://graph.facebook.com/v23.0/{mediaId}?fields=url";
+
+                //var mediaUrlResponse = await client.GetAsync(mediaUrlApi);
+                //var mediaUrlResponseString = await mediaUrlResponse.Content.ReadAsStringAsync();
+
+                //if (!mediaUrlResponse.IsSuccessStatusCode)
+                //{
+                //    return new
+                //    {
+                //        Success = false,
+                //        Message = "Failed to fetch media URL.",
+                //        StatusCode = mediaUrlResponse.StatusCode,
+                //        Response = mediaUrlResponseString
+                //    };
+                //}
+
+                //var mediaJson = JObject.Parse(mediaUrlResponseString);
+                //var finalImageUrl = mediaJson["url"]?.ToString();
 
                 return secondResponseString;
 

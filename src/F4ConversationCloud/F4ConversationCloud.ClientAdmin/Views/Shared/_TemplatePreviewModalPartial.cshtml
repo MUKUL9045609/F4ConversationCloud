@@ -1,4 +1,5 @@
-﻿@model F4ConversationCloud.ClientAdmin.Models.TemplateModel.TemplatesListViewModel;
+﻿@using F4ConversationCloud.Domain.Enum
+@model F4ConversationCloud.ClientAdmin.Models.TemplateModel.TemplatesListViewModel;
 @{
     ViewData["Title"] = "template preview  List";
 }
@@ -9,6 +10,8 @@
     <h5 class="modal-title">@Model.templateDetail.TemplateName</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
+
+
 <div class="modal-body">
     <div class="template-preview">
         <div class="swiper-card">
@@ -19,6 +22,7 @@
                     {   @if (Model.templateDetail.HeaderFormat == "IMAGE" )
                         {
                             <span>
+
                                 <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
                             </span>
                         }
@@ -32,7 +36,7 @@
                             @if (Model.templateDetail.HeaderFormat == "DOCUMENT")
                             {
                                 <span>
-                                    <img src="@Model.templateDetail.HeaderMediaUrl" alt="Header Image">
+                                    <img src="@Html.Raw(Model.templateDetail.HeaderMediaUrl)" alt="Header Image">
                                 </span>
                             }
                         </div>
@@ -51,13 +55,49 @@
 
                         }
                     </div>
-                </div>
+                
                 <div class="time">@Model.templateDetail.ModifiedOn?.ToString("hh:mm tt")</div>
             </div>
-            @* <div class="buy-link">
-                <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                <a href="#"><i class="forward"></i> My Account Balance</a>
-            </div> *@
+            @if (Model.templateDetail.TemplateButtons.Any())
+            {
+                <div class="buy-link">
+                    
+                    @foreach (var button in Model.templateDetail.TemplateButtons)
+                    {
+                        if (button.ButtonActionType == ButtonActionType.URL)
+                        {
+                            <a href="@button.ButtonUrl" target="_blank">
+                                <i class="buy-icon"></i> @button.ButtonText
+                            </a>
+                        }
+
+                        if (button.ButtonActionType == ButtonActionType.PHONE_NUMBER)
+                        {
+                            <a href="tel:@button.ButtonPhoneNumber">
+                                <i class="call"></i> @button.ButtonText
+                            </a>
+                        }
+
+                        if (button.ButtonActionType == ButtonActionType.QUICK_REPLY)
+                        {
+                            <a href="#">
+                                <i class="backward"></i> @button.ButtonText
+                            </a>
+                        }
+                        @* <div class="buy-link">
+                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
+                            <a href="#"><i class="forward"></i> My Account Balance</a>
+                           
+                            
+                            <a href="#"><i class="copy-code"></i> Copy Code </a>
+                        </div> *@
+                    }
+
+                </div>
+                
+
+            }
+            
         </div>
     </div>
 </div>

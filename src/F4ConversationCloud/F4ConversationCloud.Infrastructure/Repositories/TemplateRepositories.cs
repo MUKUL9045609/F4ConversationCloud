@@ -6,11 +6,14 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -27,29 +30,27 @@ namespace F4ConversationCloud.Infrastructure.Repositories
         private IConfiguration _configuration { get; }
 
         private ITemplateService _templateService { get; }
+        private IFileUploadService _fileUploadService { get; }
 
         private IWhatsAppTemplateRepository _whatsAppTemplateRepository { get; }
         public TemplateRepositories(IClientManagementService clientManagement, IAPILogService logService, ITemplateService templateService,
-            IWhatsAppTemplateRepository whatsAppTemplateRepository, DbContext context)
+            IWhatsAppTemplateRepository whatsAppTemplateRepository, DbContext context, IFileUploadService fileUploadService)
         {
             _logService = logService;
             _templateService = templateService;
             _whatsAppTemplateRepository = whatsAppTemplateRepository;
             _context = context;
+            _fileUploadService = fileUploadService;
         }
 
         public async Task<dynamic> MetaCreateTemplate(TemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
                 {
-
-                    //if(requestBody.TemplateHeader.Example.HeaderFile != null)
-                    //{
-                    //    requestBody.TemplateHeader.Example.HeaderFile = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.ToString());
-                    //}
-
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
@@ -66,15 +67,27 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     }
                 }
 
+
                 MessageTemplateDTO messageTemplate = _templateService.TryDeserializeAndAddComponent(requestBody);
 
                 var response = await _templateService.CreateTemplate(messageTemplate, requestBody.WABAID);
 
                 if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
+                    var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID);
+
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes, FileName);
+                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
+
+                    if (requestBody.TemplateButton != null)
+                    {
+                        requestBody.TemplateId = id;
+                        var flag = AddMetTemplateButtons(requestBody);
+                    }
+
 
                     return new APIResponse
                     {
@@ -106,8 +119,37 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             }
         }
 
+        public async Task<bool> AddMetTemplateButtons(dynamic requestBody)
+        {
+            MessageTemplateButtonDTO messageTemplateButtonDTO = new MessageTemplateButtonDTO();
+            try
+            {
+                foreach (var e in requestBody.TemplateButton.Buttons)
+                {
+                    messageTemplateButtonDTO.TemplateId = requestBody.TemplateId;
+                    messageTemplateButtonDTO.ButtonCategory = e.ButtonCategory;
+                    messageTemplateButtonDTO.ButtonType = e.ButtonType;
+                    messageTemplateButtonDTO.ButtonText = e.Text;
+                    messageTemplateButtonDTO.ButtonUrl = e.Url;
+                    messageTemplateButtonDTO.ButtonUrlExample = e.Example?[0];
+                    messageTemplateButtonDTO.ButtonPhoneNumber = e.Phone_Number;
+                    messageTemplateButtonDTO.ButtonActionType = e.ButtonActionType;
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesButtonAsync(messageTemplateButtonDTO);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
         {
+            var headerFile = requestBody.TemplateHeader?.Example?.HeaderFile?.FirstOrDefault().ToString();
+
             try
             {
                 if (requestBody != null)
@@ -133,15 +175,30 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
                 var response = await _templateService.EditTemplate(messageTemplate, requestBody.TemplateId);
 
-                if (response.Status == true)
+                if (response.Status)
                 {
+                    var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId);
+                    var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId, FileUrl, FileName);
+
+                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
+
+                    if (buttonObj != null)
+                    {
+                        dynamic newButtonObj = new ExpandoObject();
+                        newButtonObj.type = buttonObj.type;
+                        newButtonObj.buttons = buttonObj.buttons;
+                        newButtonObj.WhatsappTemplateId = id;
+                        newButtonObj.CategoryId = 1;
+
+                        var flag = AddMetTemplateButtons(newButtonObj);
+                    }
 
                     return new APIResponse
                     {
-                        Message = "Template created successFully.",
+                        Message = response.Message?.ToString().Trim('{', '}'),
                         Status = true
                     };
 
@@ -240,8 +297,25 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.ClientInfoId = model.ClientInfoId.ToString();
                 templateRequest.WABAID = model.WABAId;
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
+                if (model.File != null)
+                {
+                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
+                }
+                templateRequest.TemplateButton.Type = "BUTTONS";
+                
+                templateRequest.TemplateButton.Buttons.Select(x => new F4ConversationCloud.Application.Common.Models.Templates.Buttons
+                { 
+                    type = model.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "" ,
+                    text = x.Text
+                }).ToList();
+
 
                 APIResponse result = await MetaCreateTemplate(templateRequest);
+
                 return result;
             }
             catch (Exception ex)
@@ -255,6 +329,105 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
             }
         }
+
+        public async Task<dynamic> BuildAndEditTemplate(TemplateViewRequestModel model)
+        {
+            try
+            {
+                var templateRequest = new EditTemplateRequest();
+
+                templateRequest.Name = model.TemplateName;
+                templateRequest.Language = EnumExtensions.GetDisplayNameById<TemplateLanguages>(model.Language);
+                //templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
+                templateRequest.Category = "UTILITY";
+                templateRequest.TemplateHeader.Type = "HEADER";
+                templateRequest.TemplateHeader.Format = "TEXT";
+                templateRequest.TemplateHeader.Text = model.Header;
+                templateRequest.TemplateHeader.Example = new HeaderExample
+                {
+                    Header_Text = new List<string> { model.HeaderVariableValue },
+                    Format = "TEXT"
+                };
+                templateRequest.TemplateBody.Type = "BODY";
+                templateRequest.TemplateBody.Text = model.MessageBody;
+                string messageBody = model.MessageBody ?? string.Empty; ;
+                var matches = Regex.Matches(messageBody, @"\{\{(\d+)\}\}");
+
+                if (matches.Count > 0)
+                {
+                    // Get distinct variable numbers found in the body
+                    var variableNumbers = matches
+                        .Select(m => int.Parse(m.Groups[1].Value))
+                        .Distinct()
+                        .OrderBy(n => n)
+                        .ToList();
+
+                    // Build a map from BodyVariableValue ("{{1}}") to BodyVariableName ("the end of August")
+                    // Ensure model.bodyVariables is populated from your partial before POST.
+                    var valueToName = model.bodyVariables
+                        .Where(v => !string.IsNullOrWhiteSpace(v.BodyVariableValue))
+                        .ToDictionary(
+                            v => v.BodyVariableValue.Trim(), // key: "{{1}}"
+                            v => (v.BodyVariableName ?? string.Empty).Trim() // value: sample text
+                        );
+
+                    // Determine the max variable number present
+                    int maxVar = variableNumbers.Max();
+
+                    // Prepare the ordered samples: index 0 => {{1}}, index 1 => {{2}}, ...
+                    var orderedSamples = new List<string>(capacity: maxVar);
+                    for (int n = 1; n <= maxVar; n++)
+                    {
+                        string key = $"{{{{{n}}}}}"; // "{{n}}"
+                        if (valueToName.TryGetValue(key, out var sample) && !string.IsNullOrEmpty(sample))
+                        {
+                            orderedSamples.Add(sample);
+                        }
+                    }
+
+                    // Finally set the Body_Example with one inner list aligned by {{1}}, {{2}}, ...
+                    templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
+                    {
+                        Body_Text = new List<List<string>> { orderedSamples }
+                    };
+                }
+                else
+                {
+                    // No variables in body; omit Body_Example or set null
+                    templateRequest.TemplateBody.Body_Example = null;
+                }
+                //templateRequest.TemplateBody.Text = "Shop now through {{1}} and use code {{2}} to get {{3}} off of all merchandise.\r\n";
+
+                templateRequest.TemplateFooter.type = "FOOTER";
+                templateRequest.TemplateFooter.text = model.Footer;
+                templateRequest.ClientInfoId = model.ClientInfoId.ToString();
+                templateRequest.WABAID = model.WABAId;
+                templateRequest.CreatedBy = _context.SessionUserId.ToString();
+                templateRequest.TemplateId = model.TemplateId;
+                if (model.File != null)
+                {
+                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
+                    templateRequest.TemplateHeader.Format = "IMAGE";
+                }
+
+                APIResponse result = await MetaEditTemplate(templateRequest);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse
+                {
+                    Message = "Error occured while creating template",
+                    Status = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
+
         public async Task<bool> MetaSyncTemplate()
         {
             try

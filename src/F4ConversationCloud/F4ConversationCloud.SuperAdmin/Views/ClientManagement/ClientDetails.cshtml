@@ -659,7 +659,7 @@
                 <div class="template-preview">
                     <div class="swiper-card">
                         <div class="template-slide-card">
-                            @* <span><img src="images/card-img-03.png"></span> *@
+                            <span id="header-image-preview"><img src=""></span>
                             <div class="description">
                                 <p id="template-preview-header" style="font-weight: 500;"></p>
                                 <p id="template-preview-body"></p>
@@ -952,7 +952,9 @@
         $(document).on('click', '.back', function () {
             commonHelper.showHideLoader(true);
         });
-         $(document).on("click", "#create-template-btn", function (e) {
+
+        $(document).on("click", "#create-template-btn, .edit-icon", function (e) {
+            commonHelper.showHideLoader(true);
             var model = @Html.Raw(Json.Serialize(Model));
 
             var data = {
@@ -971,6 +973,7 @@
             var templatebodytext = $(this).data("templatebodytext");
             var templatebodyexample = $(this).data("templatebodyexample");
             var templatefooter = $(this).data("templatefooter");
+            var templateheadermediaurl = $(this).data("headermediaurl");
 
             if (templateheadertext.includes("{{1}}")) {
                 templateheadertext = templateheadertext.replace("{{1}}", templateheaderexample);
@@ -983,33 +986,37 @@
                     templatebodytext = templatebodytext.replace(placeholder, value.trim());
                 });
             }
-
+            $('#header-image-preview img').attr('src', templateheadermediaurl);
             $('#template-preview-Label').text(templateName);
             $('#template-preview-header').text(templateheadertext);
             $('#template-preview-body').html(templatebodytext);
             $('#template-preview-footer').text(templatefooter);
-
         });
 
+            var currentPageNumber = 1;
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('activeTab');
+            const openCollapse = urlParams.get('openCollapse');
 
+            if (activeTab) {
+                if (activeTab === "client-tab") {
+                    $('.nav-link').removeClass('active');
+                    $('.tab-pane').removeClass('show active');
+                    $('#client-tab').addClass('active');
+                    $('#client').addClass('show active');
+                }
+            }
 
-       var currentPageNumber = 1;
-         const urlParams = new URLSearchParams(window.location.search);
-         const activeTab = urlParams.get('activeTab');
-         const openCollapse = urlParams.get('openCollapse');
-
-        if (activeTab) {
-              
-               if (activeTab === "client-tab") {
-                $('.nav-link').removeClass('active');
-                $('.tab-pane').removeClass('show active');
-                $('#client-tab').addClass('active');
-                $('#client').addClass('show active');
-             }
-        }
-        if (activeTab && openCollapse) {
-            refreshTemplateList();
-        }
+            if (activeTab && openCollapse) {
+               commonHelper.showHideLoader(true);
+               refreshTemplateList();
+                setTimeout(function () {
+                    $(window).scrollTop(700);
+                    commonHelper.showHideLoader(false);
+                }, 500);
+            } else {
+                commonHelper.showHideLoader(false);
+            }
 
         function loadData() {
             var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
@@ -1021,7 +1028,7 @@
                 LanguageFilter: $("[name=LanguageFilter]").val(),
                 CreatedOnFilter: $("[name=CreatedOnFilter]").val(),
                 StatusFilter: $("[name=StatusFilter]").val(),
-                IsActivate: $("#templateStatusFilter").val(), 
+                IsActivate: $("#templateStatusFilter").val(),
 
                 WABAId: wabaId,
                 PageNumber: currentPageNumber,
@@ -1082,7 +1089,7 @@
             }
         });
 
-       
+
           // deactivate template
             $(document).on("click", ".delete-blue", function () {
 
@@ -1166,7 +1173,7 @@
                 });
             });
             function refreshTemplateList() {
-                
+
                 var wabaId = @Html.Raw(Json.Serialize(Model.WABAId));
 
                 var filter = {
@@ -1201,7 +1208,7 @@
                 });
             }
 
-        
+
 
 
 

@@ -162,7 +162,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     BodyText = x.BodyText,
                     BodyExample = x.BodyExample,
                     FooterText = x.FooterText,
-                     IsActive = x.IsActive
+                    IsActive = x.IsActive,
+                    HeaderMediaUrl = x.HeaderMediaUrl,
+                    HeaderMediaName = x.HeaderMediaName
                 });
 
                 return View(model);
@@ -310,7 +312,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 BodyText = x.BodyText,
                 BodyExample = x.BodyExample,
                 FooterText = x.FooterText,
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
+                HeaderMediaUrl = x.HeaderMediaUrl,
+                HeaderMediaName = x.HeaderMediaName
             });
 
             return PartialView("_TemplateList", model);

@@ -56,7 +56,9 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         Category = ((TemplateModuleType)Convert.ToInt32(t.Category)).GetDisplayName(),
                         LanguageCode = ((TemplateLanguages)Convert.ToInt32(t.LanguageCode)).GetDisplayName(),
                         ModifiedOn = t.ModifiedOn,
-                        TemplateStatus = ((TemplateApprovalStatus)Convert.ToInt32(t.Category)).GetDisplayName()
+                        TemplateStatus = ((TemplateApprovalStatus)Convert.ToInt32(t.TemplateStatus)).GetDisplayName()
+
+
                     }).ToList(),
                     TemplateName = request.TemplateName,
                     Category = request.Category,
@@ -86,7 +88,10 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     
                 var templateModel = new TemplatesListViewModel
                 {
-                    templateDetail = templateDetails
+                    templateDetail = templateDetails,
+                    TemplateButtons = templateDetails.TemplateButtons
+
+
                 };
 
                 return PartialView("_TemplatePreviewModalPartial", templateModel);

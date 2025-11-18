@@ -11,8 +11,6 @@ using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
-using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -31,89 +29,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             _whatsAppTemplateService = whatsAppTemplateService;
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        //[HttpGet("create-template")]
-        //public IActionResult CreateTemplate()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost("create-template")]
-        //public IActionResult CreateTemplate(CreateTemplateViewModel Request)
-        //{
-        //    try
-        //    {
-        //        if(!ModelState.IsValid)
-        //        {
-        //            return View(Request);
-        //        }
-
-        //        var templateRequest = new WhatsAppTemplateRequest
-        //        {
-        //            Name = Request.TemplateName,
-        //            Language = Request.Language,
-        //            Category = Request.Category,
-        //            Components = TemplateComponentsRequestHandler.ComponetRequest(Request).Result,
-        //        };
-
-
-        //        var jsoneserialiazer = JsonSerializer.Serialize(templateRequest);
-
-        //        var createTemplate = _templateManagementService.CreateTemplate(templateRequest);
-
-        //        return View(Request);
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        return View(Request);
-        //    }
-
-
-        //}
-
-        [HttpGet("update-template/{Template_id}")]
-        public async Task<IActionResult> UpdateTemplate(string Template_id)
-        {
-            try
-            {
-                var template = await _templateManagementService.GetTemplateByIdAsync(Template_id);
-                return View(template);
-            }
-            catch (Exception)
-            {
-                return View();
-            }
-        }
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteTemplate(string Template_id, int ClientInfoId, string TemplateName)
-        //{
-
-        //    try
-        //    {
-        //        dynamic isDeletedResponce = await _templateManagementService.DeleteTemplateById(Template_id, ClientInfoId, TemplateName);
-        //        if (isDeletedResponce != null)
-        //        {
-        //            TempData["SuccessMessage"] = isDeletedResponce.message;
-        //            return Json(isDeletedResponce);
-        //        }
-        //        else
-        //        {
-        //            TempData["SuccessMessage"] = "Unknown error occurred.";
-        //            return Json(new DeleteTemplateResponse { success = false, message = "Unknown error occurred." });
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
-        //    }
-        //}
 
         public async Task<IActionResult> List(TemplatesListViewModel model)
         {
@@ -175,6 +90,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
 
                 return View(viewModel);
             }
@@ -199,8 +115,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                     model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                     model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                    model.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
 
-                    return View(model);
+                    if (model.PageMode == "Edit")
+                    {
+                        await UpdateTemplate(model.TemplateTableId);
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
                 }
 
                 var request = new TemplateViewRequestModel();
@@ -229,8 +153,24 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.ClientInfoId = model.ClientInfoId;
                 request.MetaConfigId = model.MetaConfigId;
                 request.WABAId = model.WABAId;
+                request.PageMode = model.PageMode;
+                request.TemplateId = model.TemplateId;
+                request.ButtonCategory = model.ButtonCategory;
+                request.buttons = model.buttons.Select(x => new TemplateViewRequestModel.Button
+                {
+                    ButtonText = x.ButtonText,
+                    ButtonType = x.ButtonType
+                }).ToList();
 
-                APIResponse result = await _templateRepositories.BuildAndCreateTemplate(request);
+                APIResponse result = new APIResponse();
+                if (request.PageMode == "Edit")
+                {
+                    result = await _templateRepositories.BuildAndEditTemplate(request);
+                }
+                else
+                {
+                    result = await _templateRepositories.BuildAndCreateTemplate(request);
+                }
 
                 if (result.Status)
                 {
@@ -259,7 +199,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             try
             {
                 var data = await _whatsAppTemplateService.GetTemplateByIdAsync(id);
-
+                var media = data.HeaderFormat;
                 var viewModel = new TemplateViewModel();
                 viewModel.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
                 viewModel.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
@@ -268,9 +208,40 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
+                viewModel.TemplateType = Convert.ToInt32(data.Category);
+                viewModel.TemplateTypeName = EnumExtensions.GetDisplayNameById<TemplateModuleType>(Convert.ToInt32(data.Category));
+                viewModel.TemplateCategory = 1;
+                viewModel.TemplateCategoryName = EnumExtensions.GetDisplayNameById<UtilityTemplateType>(1);
                 viewModel.TemplateName = data.TemplateName;
-                viewModel.Header = data.HeaderText;
+                viewModel.VariableType = (int)VariableTypes.Number;
+                viewModel.MediaType = (int)Enum.Parse(typeof(MediaType), string.IsNullOrEmpty(media) ? "TEXT" : media);
+                viewModel.Header = data.RawHeader;
+                viewModel.HeaderVariableValue = data.HeaderExample;
+                viewModel.HeaderVariableName = "{{1}}";
+                viewModel.MessageBody = data.RawBody;
+                viewModel.Footer = data.FooterText;
+                viewModel.TemplateId = data.TemplateId;
+                viewModel.TemplateTableId = id;
+                viewModel.FileUrl = data.HeaderMediaUrl;
+                viewModel.FileName = data.HeaderFileName;
 
+                viewModel.bodyVariables = new List<TemplateViewModel.BodyVariable>();
+                if (!string.IsNullOrEmpty(data.BodyExample))
+                {
+                    var examples = data.BodyExample.Split(',');
+
+                    for (int i = 0; i < examples.Length; i++)
+                    {
+                        var bodyVariable = new TemplateViewModel.BodyVariable
+                        {
+                            BodyVariableName = examples[i],
+                            BodyVariableValue = $"{{{{{i + 1}}}}}"
+                        };
+
+                        viewModel.bodyVariables.Add(bodyVariable);
+                    }
+                }
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -317,8 +288,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> GetTemplateTypePartialView(TemplateViewModel model)
@@ -405,36 +374,19 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                model.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
                 ModelState.Clear();
             }
             ViewData["Index"] = 0;
             return PartialView(viewName, model);
         }
 
-        //public IActionResult AddMessageVariable(int index)
-        //{
-        //    var model = new TemplateViewModel();
-
-        //    // Ensure the list is initialized
-        //    if (model.bodyVariables == null)
-        //        model.bodyVariables = new List<BodyVariable>();
-
-        //    // Add empty items until the list has the required index
-        //    while (model.bodyVariables.Count <= index)
-        //    {
-        //        model.bodyVariables.Add(new BodyVariable());
-        //    }
-
-        //    ViewData["Index"] = index;
-        //    return PartialView("_MessageVariableBody", model);
-        //}
-
         [HttpPost]
         public IActionResult RenderBodyVariablesPartial([FromBody] List<string> variableNumbers)
         {
             var model = new TemplateViewModel
             {
-                bodyVariables = variableNumbers.Select(v => new BodyVariable
+                bodyVariables = variableNumbers.Select(v => new TemplateViewModel.BodyVariable
                 {
                     BodyVariableValue = $"{{{{{v}}}}}",
                     BodyVariableName = ""
@@ -442,6 +394,41 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             };
 
             return PartialView("_MessageVariableBody", model);
+        }
+
+        [HttpPost]
+        public IActionResult GetButtonPartialView(string value, string text, int index, int currentCount = 0)
+        {
+            var isCustom = string.Equals(
+                text,
+                ButtonCategory.Custom.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            if (!isCustom)
+                return BadRequest("Unsupported button category");
+
+            if (currentCount >= 10)
+                return BadRequest($"You can add a maximum of 10 quick reply buttons.");
+
+            var vm = new TemplateViewModel
+            {
+                CustomButtonTypeList = EnumExtensions.ToSelectList<CustomButtonType>(),
+                buttons = new List<TemplateViewModel.Button>()
+            };
+
+            while (vm.buttons.Count <= index)
+                vm.buttons.Add(new TemplateViewModel.Button());
+
+            vm.buttons[index] = new TemplateViewModel.Button
+            {
+                ButtonType = (int)ButtonCategory.Custom,
+                ButtonText = "Quick Reply"
+            };
+
+            ViewData["RowIndex"] = index;
+
+            return PartialView("_CustomButtonPartialView", vm);
         }
     }
 }

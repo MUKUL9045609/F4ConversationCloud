@@ -22,5 +22,7 @@ namespace F4ConversationCloud.Application.Common.Models.CommonModels
         public string BodyExample { get; set; }
         public string FooterText { get; set; }
         public int IsActive { get; set; }
+        public string HeaderMediaUrl { get; set; }
+        public string HeaderMediaName { get; set; }
     }
 }

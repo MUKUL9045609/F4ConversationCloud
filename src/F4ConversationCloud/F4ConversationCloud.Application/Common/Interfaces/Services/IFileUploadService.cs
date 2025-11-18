@@ -14,5 +14,11 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
         Task<bool> CheckFileExist(string folderPath, string fileName);
         Task<string> UploadFile(Stream fileStream, string filePath, string contentType);
         Task<Stream> GetFile(string blobName);
+        Task<string> SaveFileFromBase64Async(string base64String);
+        Task<bool> DeleteFileFromRoot(string folderName, string fileUrl);
+        Task<byte[]> GetFileAsync(string folderName, string fileName);
+
+
     }
+
 }

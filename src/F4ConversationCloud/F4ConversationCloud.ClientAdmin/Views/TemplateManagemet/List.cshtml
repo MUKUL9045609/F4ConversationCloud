@@ -74,7 +74,19 @@
                                     <td>@item.Category</td>
                                     <td>@item.LanguageCode</td>
                                     <td>@item.ModifiedOn.ToString("dd MMM yyyy hh:mm tt")</td>
-                                    <td><span class="badge @(item.TemplateStatus == "Approved" ? "success" : item.TemplateStatus == "Rejected" ? "danger" : "warning")">@item.TemplateStatus</span></td>
+                                    <td>
+                                        @{
+                                            string badgeClass = item.TemplateStatus switch
+                                            {
+                                                "PENDING" => "warning",
+                                                "APPROVED" => "success",
+                                                "REJECTED" => "danger",
+                                                _ => "secondary"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass">@Html.DisplayFor(modelItem => item.TemplateStatus)</span>
+                                    </td>
+                                   
                                     <td>
                                         <div class="action">
                                             <a href="javascript:void(0);"

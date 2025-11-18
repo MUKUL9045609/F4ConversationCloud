@@ -236,6 +236,7 @@ body {
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 12px;
+   
     .back-btn{
         background-image: url("data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 -6.5 36 36' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3Eleft-arrow%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='icons' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='ui-gambling-website-lined-icnos-casinoshunter' transform='translate(-342.000000, -159.000000)' fill='%23252528' fill-rule='nonzero'%3E%3Cg id='square-filled' transform='translate(50.000000, 120.000000)'%3E%3Cpath d='M317.108012,39.2902857 L327.649804,49.7417043 L327.708994,49.7959169 C327.889141,49.9745543 327.986143,50.2044182 328,50.4382227 L328,50.5617773 C327.986143,50.7955818 327.889141,51.0254457 327.708994,51.2040831 L327.6571,51.2479803 L317.108012,61.7097143 C316.717694,62.0967619 316.084865,62.0967619 315.694547,61.7097143 C315.30423,61.3226668 315.30423,60.6951387 315.694547,60.3080911 L324.702666,51.3738496 L292.99947,51.3746291 C292.447478,51.3746291 292,50.9308997 292,50.3835318 C292,49.8361639 292.447478,49.3924345 292.99947,49.3924345 L324.46779,49.3916551 L315.694547,40.6919089 C315.30423,40.3048613 315.30423,39.6773332 315.694547,39.2902857 C316.084865,38.9032381 316.717694,38.9032381 317.108012,39.2902857 Z M327.115357,50.382693 L316.401279,61.0089027 L327.002151,50.5002046 L327.002252,50.4963719 L326.943142,50.442585 L326.882737,50.382693 L327.115357,50.382693 Z' id='left-arrow' transform='translate(310.000000, 50.500000) scale(-1, 1) translate(-310.000000, -50.500000) '%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         background-size: 75%;
@@ -246,6 +247,9 @@ body {
     }
     .sub-heading{
         margin-bottom: 0px!important;
+        // @media (max-width:480px) {
+        //     margin-bottom: 10px!important;
+        // }
         a{color: #000;text-decoration: none;}
         .back{margin-right: 10px;}
     }
@@ -334,7 +338,8 @@ body {
     justify-content: center;
     @media (max-width:667px) {
         position: absolute;
-        right:15px
+        right:15px;
+        border-radius: 50%;
     }
     .bar{
         background-color: #000;
@@ -437,6 +442,9 @@ body {
 .reportrange{
     white-space: nowrap;
     padding: 0.475rem 1.95rem 0.475rem 0.75rem !important;
+    @media (max-width:480px) {
+        margin-top: 8px;
+    }
 }
 .toastWrap {
     position: fixed;
@@ -894,7 +902,65 @@ body {
                 border-radius: 4px;
                 
             }
-
+            .vertical-wrap{
+                display: flex;
+                border-radius: 5px;
+                overflow: hidden;
+                    span{
+                        img{
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 0px;
+                        }
+                    }
+               
+                .vertical-description{
+                    background-color: #F2F2F2;
+                    padding: 10px;
+                    h6{
+                        font-size: 14px;
+                        margin-bottom: 3px;
+                    }
+                    p{
+                        font-size: 13px;
+                        margin-bottom: 0px;
+                        line-height: 19px;
+                    }
+                }
+               
+            }
+             .marketing-call{
+                    background-color: #F2F2F2;
+                    padding: 8px;
+                    margin-bottom: 4px;
+                    display: flex;
+                    border-radius: 5px;
+                    .phone-icon{
+                        
+                        height: 32px;width: 32px;display: block;
+                        margin-right: 10px;
+                        &::after{
+                            content:"";
+                            background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='32' height='32' rx='16' fill='white'/%3E%3Cpath d='M23.9995 19.9791V22.3877C24.0004 22.6113 23.9545 22.8327 23.8648 23.0375C23.775 23.2424 23.6434 23.4263 23.4783 23.5775C23.3132 23.7286 23.1183 23.8437 22.906 23.9154C22.6938 23.987 22.4689 24.0136 22.2457 23.9935C19.7702 23.725 17.3923 22.8808 15.3031 21.5286C13.3594 20.2959 11.7114 18.6512 10.4763 16.7113C9.11669 14.6168 8.27059 12.2321 8.00653 9.75036C7.98643 9.52834 8.01286 9.30457 8.08416 9.0933C8.15546 8.88203 8.27005 8.6879 8.42065 8.52325C8.57124 8.35861 8.75454 8.22706 8.95886 8.13699C9.16319 8.04691 9.38407 8.00029 9.60744 8.00008H12.0209C12.4113 7.99624 12.7898 8.13422 13.0858 8.3883C13.3818 8.64237 13.5752 8.99521 13.6298 9.38103C13.7317 10.1519 13.9206 10.9087 14.1929 11.6371C14.3012 11.9245 14.3246 12.2368 14.2604 12.5371C14.1963 12.8373 14.0472 13.1129 13.8309 13.3312L12.8092 14.3509C13.9545 16.3609 15.6221 18.0252 17.6361 19.1682L18.6578 18.1485C18.8765 17.9326 19.1527 17.7839 19.4535 17.7198C19.7544 17.6558 20.0673 17.6792 20.3552 17.7872C21.0851 18.059 21.8435 18.2476 22.6158 18.3492C23.0066 18.4042 23.3635 18.6007 23.6186 18.9012C23.8737 19.2017 24.0093 19.5853 23.9995 19.9791Z' fill='black'/%3E%3C/svg%3E%0A");
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            display: block;
+                            height: 28px;width: 28px;
+                        }
+                    }
+                    .marketing-description{
+                        h6{
+                            font-size: 14px;
+                            margin-bottom: 3px;
+                        }
+                        p{
+                            font-size: 13px;
+                            margin-bottom: 0px;
+                            line-height: 19px;
+                        }
+                    }
+                }
             .description {
                 // margin-top: 10px;
                   padding: 8px 8px 0px 8px;
@@ -978,7 +1044,9 @@ body {
     background-color: transparent!important;
     border: 0px!important;
 }
-
+.daterangepicker td.active, .daterangepicker td.active:hover{
+    background-color: #03a9f5!important;
+}
 .ui-datepicker-prev .ui-icon.ui-icon-circle-triangle-w{
     background-image: url("data:image/svg+xml,%3Csvg fill='%23fff' width='800px' height='800px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24'%3E%3Cpath d='M8.5,12.8l5.7,5.6c0.4,0.4,1,0.4,1.4,0c0,0,0,0,0,0c0.4-0.4,0.4-1,0-1.4l-4.9-5l4.9-5c0.4-0.4,0.4-1,0-1.4c-0.2-0.2-0.4-0.3-0.7-0.3c-0.3,0-0.5,0.1-0.7,0.3l-5.7,5.6C8.1,11.7,8.1,12.3,8.5,12.8C8.5,12.7,8.5,12.7,8.5,12.8z'/%3E%3C/svg%3E")!important;
     background-size: cover;
@@ -1361,6 +1429,9 @@ padding-left: 61px !important;
     ease-in-out, margin-right 0.35s 
     ease-in-out, right 0.35s 
     ease-in-out;
+    @media (max-width:480px) {
+        margin-left: 0px;
+    }
     .bottom-container{
         padding: 10px;
         display: flex;
@@ -1473,6 +1544,13 @@ padding-left: 61px !important;
         background-position: center;
         height: 15px;width: 15px;display: block;
         background-color: transparent;border: 0px;
+    }
+    .image{
+        img{
+            width: 32px;
+            height: 48px;
+            border-radius: 5px;
+        }
     }
 }
 .error-star{color: red;}
@@ -1619,6 +1697,9 @@ padding-left: 61px !important;
         li{
             width: 33.33%;
             margin-bottom: 15px!important;
+            @media (max-width:480px) {
+                width: 50%
+            }
         }
     }
     hr{
