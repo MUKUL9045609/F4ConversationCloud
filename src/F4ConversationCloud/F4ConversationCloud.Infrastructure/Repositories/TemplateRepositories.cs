@@ -69,18 +69,17 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 {
                     var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
-                    messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
 
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes, FileName);
-                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
+                    messageTemplate.category = response.result.category;
+                    
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(), requestBody.TemplateTypes, FileName);
 
-                    if (requestBody.TemplateButton != null)
+                    if (requestBody.TemplateButton != null && id > 0)
                     {
                         requestBody.TemplateId = id;
                         var flag = AddMetTemplateButtons(requestBody);
                     }
-
 
                     return new APIResponse
                     {
