@@ -36,6 +36,16 @@
                         <option value="Offline">Offline</option>
                     </select>
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Columns.WabaAccountStatus)
+                    <select asp-for="WabaAccountStatusFilter" id="WabaAccountStatusFilter" class="form-select" onchange="loadData()">
+                        <option value="2" selected>Account Status</option>
+                        <option value="1">Enabled</option>
+                        <option value="0">Disabled</option>
+
+                    </select>
+
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -56,7 +66,7 @@
                                 <a method="get" asp-controller="ClientManagement" asp-action="ClientDetails" asp-route-id="@item.Id" id="name-link">@Html.DisplayFor(modelItem => item.PhoneNumber)</a>
                             </form>
                             <span class="buisness-category"><span class="fw-medium">Category :</span> @Html.DisplayFor(modelItem => item.Category)</span>
-                            <span class="buisness-category"><span class="fw-medium">Client Id :</span> @Html.DisplayFor(modelItem => item.ClientId)</span>
+                            @* <span class="buisness-category"><span class="fw-medium">Client Id :</span> @Html.DisplayFor(modelItem => item.ClientId)</span> *@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ClientName)
@@ -66,10 +76,48 @@
                             <span class="datetime">at @item.CreatedAt.ToString("hh:mm tt")</span>
                         </td>
                         <td><span class="badge @(item.Status == "CONNECTED" ? "success" : "warning")">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                        <td>
+                            <div class="action">
+                                <div class="form-check form-switch">
+                                   
+                                        <input type="checkbox"
+                                               class="form-check-input account-status-switch"
+                                               data-id="@item.Id"
+                                               data-currentstatus="@item.IsActive"
+                                                data-bussinessName="@item.ClientName"
+                                               id="flexSwitchCheckChecked_@item.Id"
+                                                @(item.IsActive ==1 ? "checked" : "") />
+
+                                   
+                                   
+
+
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
+</div>
+<div class="modal fade confirmation-modal" id="AccountStatusModal" aria-labelledby="AccountStatusModalLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span class="delete-icon"></span>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3>Are You sure?</h3>
+                </div>
+                <p id="deleteModalText">Do you really want to  Deactivate This Bussiness Account?</p>
+
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="button" id="ConfirmDeleteBtn" class="btn primary-btn">Yes</button>
+                    <button type="button" class="btn danger-btn" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <partial name="_Pagination" model="new PaginationViewModel { PageNumber = Model.PageNumber, PageSize = Model.PageSize, TotalCount = Model.TotalCount }" />

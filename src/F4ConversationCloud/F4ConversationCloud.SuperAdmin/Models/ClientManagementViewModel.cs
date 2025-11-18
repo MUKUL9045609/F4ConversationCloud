@@ -8,6 +8,8 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string ClientNameSearch { get; set; } = string.Empty;
         public string OnboardingOnFilter { get; set; } = string.Empty;
         public string StatusFilter { get; set; } = string.Empty;
+        public int WabaAccountStatusFilter { get; set; } = 2;
+
         public string PhoneNumberFilter { get; set; } = string.Empty;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
@@ -30,8 +32,11 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "WhatsApp Account Status")]
             public string Status { get; set; }
+
+            [Display(Name = "Account Status")]
+            public int WabaAccountStatus { get; set; }
             public string Category { get; set; }
-            public bool IsActive { get; set; }
+            public int IsActive { get; set; }
 
             [Display(Name = "Onboarding Date")]
             public DateTime CreatedAt { get; set; }

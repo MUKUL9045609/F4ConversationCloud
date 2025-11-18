@@ -165,5 +165,63 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
 
         }
+        public async Task<ClientsMetaConfigurationsListItemModel> GetWaBaDetailsById(int Id)
+        {
+            try
+            {
+                DynamicParameters DP = new DynamicParameters();
+                DP.Add("Id", Id);
+
+                return  await _repository.GetByValuesAsync<ClientsMetaConfigurationsListItemModel>("sp_GetWaBaDetailsById", DP);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        
+        
+        }
+
+        public async Task<int> ActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request)
+        {
+
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@phoneNumberID", request.PhoneNumberID);
+                Dp.Add("Id", request.Id);
+                Dp.Add("deactivatedBy", request.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", request.WhatsAppAccountStatus);
+                return await _repository.InsertUpdateAsync("sp_ActivateWabaAccount", Dp);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+        public async Task<int> DeActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request)
+        {
+
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@phoneNumberID", request.PhoneNumberID);
+                Dp.Add("Id", request.Id);
+                Dp.Add("deactivatedBy", request.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", request.WhatsAppAccountStatus);
+                return await _repository.InsertUpdateAsync("sp_DeActivateWabaAccount", Dp);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+
+
     }
 }

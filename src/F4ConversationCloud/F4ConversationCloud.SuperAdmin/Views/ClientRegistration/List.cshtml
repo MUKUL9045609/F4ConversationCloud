@@ -112,11 +112,11 @@
                                         </form>
 
 
-                                        <span class="buisness-category">
+                                       @*  <span class="buisness-category">
                                             <span class="fw-medium">Category : </span>
                                             @if (item.Category != null){ @Html.DisplayFor(modelItem => item.Category)}
                                             else {<span>-</span>}
-                                        </span>
+                                        </span> *@
                                         <span class="buisness-category">
                                             <span class="fw-medium">Client Id :</span>
                                             @if (item.ClientId != null){ @Html.DisplayFor(modelItem => item.ClientId)}
@@ -259,8 +259,7 @@
             const ClientId = $(this).data("id");
 
             var req = {
-                ClientId: ClientId,
-                IsActivate: originalStatus === 1 ? 0 : 1  
+                ClientId: ClientId
             };
             var url;
             if(originalStatus === 0){

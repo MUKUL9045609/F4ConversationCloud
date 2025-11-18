@@ -332,6 +332,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 StatusFilter = model.StatusFilter ?? String.Empty,
                 OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
                 PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
+                WabaAccountStatusFilter=model.WabaAccountStatusFilter,
                 PageNumber = model.PageNumber,
                 PageSize = model.PageSize,
                 RegistrationId = model.RegistrationId,
@@ -439,5 +440,66 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
 
         }
+
+
+        public async Task<IActionResult> ActivateWaBaAccount(int Id)
+        {
+
+            try
+            {
+                var request = new ActivateDeactivateWaBaAccountRequest
+                {
+                    Id = Id,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                };
+                var isDeletedResponce = await _clientRegistrationService.ActivateWaBaAccountAsync(request);
+
+                if (isDeletedResponce.success)
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new CommonSuperAdminServiceResponse { success = false, message = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> DeactivateWaBaAccount(int Id)
+        {
+            try
+            {
+                var request = new ActivateDeactivateWaBaAccountRequest
+                {
+                    Id = Id,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                };
+
+                var isDeletedResponce = await _clientRegistrationService.DeactivateWaBaAccountAsync(request);
+                if (isDeletedResponce.success)
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new CommonSuperAdminServiceResponse { success = false, message = ex.Message });
+            }
+
+
+        }
+
+
+
+
+
     }
 }

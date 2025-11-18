@@ -44,9 +44,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     PageNumber = request.PageNumber,
                     PageSize = request.PageSize
                 };
-
-
-
                 var templatesData = await _whatsAppTemplate.GetTemplatesListAsync(filter);
 
                 var templateResponse = new TemplatesListViewModel
@@ -60,8 +57,6 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         LanguageCode = ((TemplateLanguages)Convert.ToInt32(t.LanguageCode)).GetDisplayName(),
                         ModifiedOn = t.ModifiedOn,
                         TemplateStatus = ((TemplateApprovalStatus)Convert.ToInt32(t.Category)).GetDisplayName()
-
-
                     }).ToList(),
                     TemplateName = request.TemplateName,
                     Category = request.Category,

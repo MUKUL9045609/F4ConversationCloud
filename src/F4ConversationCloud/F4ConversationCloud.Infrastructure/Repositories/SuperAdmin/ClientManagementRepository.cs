@@ -37,8 +37,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("onboardingOnFilter", filter.OnboardingOnFilter);
             parameters.Add("phoneNumberFilter", filter.PhoneNumberFilter);
             parameters.Add("registrationId", filter.RegistrationId);
+            parameters.Add("wabaAccountStatusFilter", filter.WabaAccountStatusFilter);
 
-            return await _repository.GetCountAsync("sp_GetClientsCount", parameters);
+            return await _repository.GetCountAsync("sp_GetClientsCount_v2", parameters);
         }
 
         public async Task<IEnumerable<ClientManagementListItemModel>> GetFilteredAsync(ClientManagementListFilter filter)
@@ -52,8 +53,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
             parameters.Add("registrationId", filter.RegistrationId);
-
-            return await _repository.GetListByValuesAsync<ClientManagementListItemModel>("sp_GetFilteredClients", parameters);
+            parameters.Add("wabaAccountStatusFilter", filter.WabaAccountStatusFilter);  
+            return await _repository.GetListByValuesAsync<ClientManagementListItemModel>("sp_GetFilteredClients_v2", parameters);
         }
 
         public async Task<ClientDetails> GetClientDetailsById(int id)

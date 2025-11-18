@@ -22,7 +22,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
         Task<int> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request);
         Task<int> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest  request);
         Task<IEnumerable<ClientsMetaConfigurationsListItemModel>> GetClientsMetaConfigurationsList(int clientId);
-
-
+        Task<ClientsMetaConfigurationsListItemModel> GetWaBaDetailsById(int Id);
+        Task<int> ActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request);
+        Task<int> DeActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request);
     }
 }
