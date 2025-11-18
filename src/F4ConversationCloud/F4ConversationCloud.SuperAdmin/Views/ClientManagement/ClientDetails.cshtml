@@ -983,9 +983,25 @@
 
             templatebuttons.forEach(function(btn) {
                 var text = (btn.ButtonText || "").trim();
+                var buttonLogo = '';
                 if (!text) return;
-
-                $preview.append(`<a href="#"><i class="backward"></i> ${text}</a>`);
+                if (btn.ButtonType == @((int)ButtonCategory.Custom)){
+                    buttonLogo = 'backward';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.VisitWebsite)){
+                    buttonLogo = 'buy-icon';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.CallOnWhatsApp) ||
+                         btn.ButtonType == @((int)ButtonCategory.CallPhoneNumber)){
+                    buttonLogo = 'call';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.CompleteFlow)){
+                    buttonLogo = 'forward';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.CopyOfferCode)){
+                    buttonLogo = 'copy-code';
+                }
+                $preview.append(`<a href="#"><i class="${buttonLogo}"></i> ${text}</a>`);
             });
             
             if (templateheadertext.includes("{{1}}")) {
