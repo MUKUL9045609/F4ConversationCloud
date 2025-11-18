@@ -397,11 +397,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
         public async Task<LoginResponse> ClientLogin(Loginrequest request) 
         {
-            var log = new ClientAdminLogsModel
-            {
-                Source = "Onboarding/OnboardingLogin",
-                Data = $"Model: {JsonConvert.SerializeObject(request)}",
-            };
+            
 
             try
             {
@@ -435,18 +431,23 @@ namespace F4ConversationCloud.Application.Common.Services
             }
             catch (Exception ex)
             {
-                log.LogType = "Error";
-                log.Message = ex.Message;
-                log.StackTrace = ex.StackTrace;
+                var log = new ClientAdminLogsModel
+                {
+                    Source = "Onboarding/OnboardingLogin",
+                    Data = $"Model: {JsonConvert.SerializeObject(request)}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                };
+                
+                await _logService.InsertClientAdminLogsAsync(log);
                 return new LoginResponse
                 {
                     Message = "Technical Error",
                     IsSuccess = false,
                 };
             }
-            finally {
-                await _logService.InsertClientAdminLogsAsync(log);
-            }
+       
 
 
         }
