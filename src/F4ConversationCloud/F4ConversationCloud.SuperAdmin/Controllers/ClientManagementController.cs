@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
@@ -169,7 +170,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     IsActive = x.IsActive,
                     HeaderMediaUrl = x.HeaderMediaUrl,
                     HeaderMediaName = x.HeaderMediaName,
-                    buttons = buttons.Where(r => r.WhatsAppTemplateId == x.Id) 
+                    buttons = buttons.Where(r => r.WhatsAppTemplateId == x.Id)
                                 .Select(r => new TemplatesListViewModel.TemplateListViewItem.Button
                                 {
                                     ButtonType = r.ButtonType,
@@ -309,6 +310,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             model.TotalCount = templateListResponse.Item2;
             model.PageNumber = filter.PageNumber;
             model.PageSize = filter.PageSize;
+            var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(filter.MetaConfigId);
             model.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
             {
                 Id = x.Id,
@@ -325,7 +327,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 FooterText = x.FooterText,
                 IsActive = x.IsActive,
                 HeaderMediaUrl = x.HeaderMediaUrl,
-                HeaderMediaName = x.HeaderMediaName
+                HeaderMediaName = x.HeaderMediaName,
+                buttons = buttons.Where(r => r.WhatsAppTemplateId == x.Id)
+                                .Select(r => new TemplatesListViewModel.TemplateListViewItem.Button
+                                {
+                                    ButtonType = r.ButtonType,
+                                    ButtonText = r.ButtonText,
+                                    ButtonCategory = r.ButtonCategory
+                                }).ToList()
             });
 
             return PartialView("_TemplateList", model);
