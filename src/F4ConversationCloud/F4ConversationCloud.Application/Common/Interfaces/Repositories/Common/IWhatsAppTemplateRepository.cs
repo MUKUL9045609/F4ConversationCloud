@@ -13,6 +13,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
     {
         Task<(IEnumerable<WhatsappTemplateListItem> Templates, int TotalCount)> GetTemplatesListAsync(WhatsappTemplateListFilter filter);
         Task<WhatsappTemplateDetail> GetTemplateByIdAsync(int Template_id);
+        Task<IEnumerable<TemplatesButtonsListItem>> WhatsappTemplatesButtons(int Template_id);
         Task<IEnumerable<TemplateModel>> GetFilteredAsync(TemplateListFilter filter);
         Task<int> GetCountAsync(TemplateListFilter filter);
         //Task<int> InsertTemplatesListAsync(MessageTemplateDTO request, string TemplateId, string ClientInfoId, string CreatedBy, string WABAID);
@@ -23,6 +24,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
         Task<int> DeactivateTemplateAsync(int templateId);
         Task<int> ActivateTemplateAsync(int templateId);
         Task<int> InsertTemplatesButtonAsync(MessageTemplateButtonDTO request);
+        Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId);
         Task<bool> DeleteTemplatesButtonAsync(int WhatsappTemplateId);
     }
 }

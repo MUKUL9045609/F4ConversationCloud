@@ -17,7 +17,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding
 
         Task<RegisterUserModel> GetCustomerByIdAsync(int UserId);
 
-        Task<LoginResponse> OnboardingLogin(Loginrequest request);
+        Task<LoginResponse> ClientLogin(Loginrequest request);
 
         Task <bool> ValidateClientEmailAsync(string EmailId);
         Task SendResetPasswordLink(string EmailId);

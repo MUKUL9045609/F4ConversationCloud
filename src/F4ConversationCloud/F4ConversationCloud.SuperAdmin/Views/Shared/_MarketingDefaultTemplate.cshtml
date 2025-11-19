@@ -2,6 +2,7 @@
 @using F4ConversationCloud.Domain.Enum
 @model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
 @{
+    this.ViewContext.FormContext = new FormContext();
     var templateTypeName = EnumExtensions.GetDisplayNameById<MarketingTemplateType>(Model.TemplateType);
 }
 
@@ -24,18 +25,14 @@
                     <input asp-for="TemplateName" type="text"
                            class="form-control" placeholder="Enter a template name" maxlength="512" />
                 </div>
-                <div class="invalid-feedback mt-0">
-                    <span asp-validation-for="TemplateName"></span>
-                </div>
+                <span asp-validation-for="TemplateName"></span>
             </div>
             <div class="mb-2 w-25">
                 <label>Select language</label>
                 <select asp-for="Language" asp-items="Model.LanguageList" class="form-select" aria-label="Default select example">
                 </select>
             </div>
-            <div class="invalid-feedback mt-0">
-                <span asp-validation-for="Language"></span>
-            </div>
+            <span asp-validation-for="Language"></span>
         </div>
         <hr>
 
@@ -179,51 +176,42 @@
                     <span asp-validation-for="Footer"></span>
                 </div>
             </div>
-            @* <div class="mb-3 flex-grow-1">
-                <label>Button </label>
-                <div class="button-note">
-                    <i class="info"></i>Only one button is supported for this type of template and the button text is not editable.
-                </div>
-            </div>
             <div class="mb-2 flex-grow-1">
                 <div class="d-flex align-items-center mb-1">
                     <label class="mb-0">Button<span class="light-text">(Optional)</span> </label>
                     <div class="dropdown add-btn-template">
-                        <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn dropdown-toggle secondary-btn add-btn d-flex" type="button" id="buttonDrpDwnBtn" data-bs-toggle="dropdown" aria-expanded="false">
                             Add button
                         </button>
-                        <ul class="dropdown-menu" id="template-btn" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#" id="custom"><span class=""></span> Custom</a></li>
-                            <li><a class="dropdown-item" href="#" id="visit-website">Visit Website</a></li>
+                        <ul class="dropdown-menu" id="template-btn" aria-labelledby="buttonDrpDwnBtn">
+                            @foreach (var t in Model.ButtonCategoryList)
+                            {
+                                <li><a class="dropdown-item" href="#" id="custom" data-value="@t.Value" data-text="@t.Text"><span class=""></span> @t.Text</a></li>
+                            }
                         </ul>
 
                     </div>
                 </div>
                 <p>Create buttons that let customers respond to your message or take action. You can add up to 10 buttons. If you add more than 3 buttons, they will appear in a list.</p>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Enter Text">
-                </div>
             </div>
-            <div class="custom-btn mt-4">
+            <div class="custom-btn mt-4" id="quick-reply-section" style="display:none;">
                 <h6>Quick Reply</h6>
-                <div class="d-flex align-items-end gap-2">
-                    <div class="w-25">
-                        <label>Type</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="1">Custom</option>
-
-                        </select>
-                    </div>
-                    <div class="flex-grow-1">
-                        <label>Button Text</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Quick Reply">
-                        </div>
-                    </div>
-                    <a href="#" class="delete"></a>
+                <div id="quick-reply-list">
+                    @{
+                        //var index = 0;
+                        if (Model?.buttons != null)
+                        {
+                            for (int i = 1; i <= Model.buttons.Count; i++)
+                            //foreach (var btn in Model.buttons)
+                            {
+                                ViewData["RowIndex"] = i;
+                                <partial name="_CustomButtonPartialView" model="Model.buttons[i]" />
+                            }
+                        }
+                    }
                 </div>
             </div>
-            <div class="custom-btn mt-3">
+            @* <div class="custom-btn mt-3">
                 <h6>Call to Action</h6>
                 <div class="actionbtn d-flex align-items-end gap-2">
                     <div class="w-25 flex-grow-1">

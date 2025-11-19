@@ -3,6 +3,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.SuperAdmin.Models;
@@ -27,14 +28,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             _whatsAppTemplateService = whatsAppTemplateService;
         }
 
-        public async Task<IActionResult> List(ClientManagementViewModel model)
+        public async Task<IActionResult> List(BusinessAccountListViewModel model)
         {
             try
             {
-                var response = await _clientManagement.GetFilteredUsers(new ClientManagementListFilter
+                var response = await _clientManagement.GetBusinessAccountList(new BusinessAccountListFilter
                 {
-                    ClientNameSearch = model.ClientNameSearch ?? String.Empty,
-                    StatusFilter = model.StatusFilter ?? String.Empty,
+                    OrganizationsFilter = model.OrganizationsFilter ?? String.Empty,
                     OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
                     PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
                     PageNumber = model.PageNumber,
@@ -48,18 +48,16 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 }
 
                 model.TotalCount = response.Item2;
-                model.data = response.Item1.ToList().Select(x => new ClientManagementViewModel.ClientManagementListViewItem()
+                model.data = response.Item1.ToList().Select(x => new BusinessAccountListViewModel.BusinessAccountListItem()
                 {
                     Id = x.Id,
                     SrNo = x.SrNo,
-                    ClientName = x.ClientName,
-                    Status = x.Status,
-                    IsActive = x.IsActive,
-                    CreatedAt = x.CreatedAt,
+                    Organizations = x.OrganizationsName,
+                    PhoneNumber = x.PhoneNumber,
+                    CreatedAt = x.CreatedOn,
                     UpdatedOn = x.UpdatedOn,
-                    Category = x.Category,
                     ClientId = x.ClientId,
-                    PhoneNumber = x.PhoneNumber
+                    ClientWaBaAccCount=x.ClientWaBaAccCount
                 });
 
                 return View(model);
@@ -70,6 +68,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return View(new ClientManagementViewModel());
             }
         }
+        
 
         public async Task<IActionResult> ClientDetails(int Id)
         {
@@ -135,10 +134,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 model.TemplatesList.StatusList = EnumExtensions.ToSelectList<TemplateApprovalStatus>();
                 model.TemplatesList.LanguageList = EnumExtensions.ToSelectList<TemplateLanguages>();
                 model.TemplatesList.TemplateCategoryList = EnumExtensions.ToSelectList<TemplateModuleType>();
-                
+
                 var templateListResponse = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
                 {
-                    
+
                     WABAId = model.WABAId,
                     TemplateNameFilter = model.TemplatesList.TemplateNameFilter ?? String.Empty,
                     TemplateCategoryFilter = model.TemplatesList.TemplateCategoryFilter,
@@ -150,6 +149,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 });
 
                 model.TemplatesList.TotalCount = templateListResponse.Item2;
+
+                var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(Id, 0);
                 model.TemplatesList.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
                 {
                     Id = x.Id,
@@ -166,7 +167,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     FooterText = x.FooterText,
                     IsActive = x.IsActive,
                     HeaderMediaUrl = x.HeaderMediaUrl,
-                    HeaderMediaName = x.HeaderMediaName
+                    HeaderMediaName = x.HeaderMediaName,
+                    buttons = buttons.Where(r => r.WhatsAppTemplateId == x.Id)
+                                .Select(r => new TemplatesListViewModel.TemplateListViewItem.Button
+                                {
+                                    ButtonType = r.ButtonType,
+                                    ButtonText = r.ButtonText,
+                                    ButtonCategory = r.ButtonCategory
+                                }).ToList()
                 });
 
                 return View(model);
@@ -287,7 +295,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             var templateListResponse = await _whatsAppTemplateService.GetFilteredTemplatesByWABAId(new TemplateListFilter
             {
                 WABAId = filter.WABAId,
-                IsActivate= filter.IsActivate,
+                IsActivate = filter.IsActivate,
                 TemplateNameFilter = filter.TemplateNameFilter ?? String.Empty,
                 TemplateCategoryFilter = filter.TemplateCategoryFilter,
                 LanguageFilter = filter.LanguageFilter,
@@ -300,6 +308,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             model.TotalCount = templateListResponse.Item2;
             model.PageNumber = filter.PageNumber;
             model.PageSize = filter.PageSize;
+            var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(filter.MetaConfigId, 0);
             model.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
             {
                 Id = x.Id,
@@ -316,7 +325,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 FooterText = x.FooterText,
                 IsActive = x.IsActive,
                 HeaderMediaUrl = x.HeaderMediaUrl,
-                HeaderMediaName = x.HeaderMediaName
+                HeaderMediaName = x.HeaderMediaName,
+                buttons = buttons.Where(r => r.WhatsAppTemplateId == x.Id)
+                                .Select(r => new TemplatesListViewModel.TemplateListViewItem.Button
+                                {
+                                    ButtonType = r.ButtonType,
+                                    ButtonText = r.ButtonText,
+                                    ButtonCategory = r.ButtonCategory
+                                }).ToList()
             });
 
             return PartialView("_TemplateList", model);

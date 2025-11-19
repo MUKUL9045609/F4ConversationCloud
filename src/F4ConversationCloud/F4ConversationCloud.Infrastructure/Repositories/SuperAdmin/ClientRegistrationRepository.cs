@@ -43,11 +43,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("emailFilter", filter.EmailFilter);
             parameters.Add("contactNumberFilter", filter.ContactNumberFilter);
             parameters.Add("roleFilter", filter.RoleFilter);
+            parameters.Add("organizationsNameFilter", filter.OrganizationsNameFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
             parameters.Add("registrationStatusFilter", filter.RegistrationStatusFilter);
+            parameters.Add("accountStatusFilter", filter.AccountStatusFilter);
 
-            return await _repository.GetCountAsync("sp_GetClientRegistrationCount", parameters);
+            return await _repository.GetCountAsync("sp_GetClientRegistrationCount_v2", parameters);
         }
 
         public async Task<IEnumerable<ClientRegistrationListItemModel>> GetFilteredAsync(ClientRegistrationListFilter filter)
@@ -59,12 +61,14 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("contactNumberFilter", filter.ContactNumberFilter);
             parameters.Add("roleFilter", filter.RoleFilter);
             parameters.Add("createdOnFilter", filter.CreatedOnFilter);
+            parameters.Add("organizationsNameFilter", filter.OrganizationsNameFilter);
             parameters.Add("updatedOnFilter", filter.UpdatedOnFilter);
             parameters.Add("registrationStatusFilter", filter.RegistrationStatusFilter);
+            parameters.Add("accountStatusFilter", filter.AccountStatusFilter);
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
 
-            return await _repository.GetListByValuesAsync<ClientRegistrationListItemModel>("sp_GetFilteredClientRegistrations", parameters);
+            return await _repository.GetListByValuesAsync<ClientRegistrationListItemModel>("sp_GetFilteredClientRegistrations_v2", parameters);
         }
 
         public async Task<ClientRegistration> GetByIdAsync(int id)
@@ -102,5 +106,122 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
             return await _repository.CheckExistAsync("sp_CheckRegisterContactNumberExist", parameters);
         }
+
+        public async Task<int> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request)
+        {
+
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@phoneNumberID", request.PhoneNumberID);
+                Dp.Add("clientId", request.ClientId);
+                Dp.Add("accountStatus", request.AccountStatus);
+                Dp.Add("deactivatedBy", request.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", request.WhatsAppAccountStatus);
+                return await _repository.InsertUpdateAsync("sp_ActivateClientAccount", Dp);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+        public async Task<int> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest  accountRequest)
+        {
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@phoneNumberID", accountRequest.PhoneNumberID);
+                Dp.Add("clientId", accountRequest.ClientId);
+                Dp.Add("accountStatus", accountRequest.AccountStatus);
+                Dp.Add("deactivatedBy", accountRequest.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", accountRequest.WhatsAppAccountStatus);
+
+                return await _repository.InsertUpdateAsync("sp_DeactivateClientAccount", Dp);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+       public async Task<IEnumerable<ClientsMetaConfigurationsListItemModel>> GetClientsMetaConfigurationsList(int clientId) {
+
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("@clientInfoId", clientId);
+
+                return await _repository.GetListByValuesAsync<ClientsMetaConfigurationsListItemModel>("sp_GetClientsMetaConfigurationsListById", parameters);
+            }
+            catch (Exception)
+            {
+
+               return Enumerable.Empty<ClientsMetaConfigurationsListItemModel>();   
+            }
+           
+
+
+        }
+        public async Task<ClientsMetaConfigurationsListItemModel> GetWaBaDetailsById(int Id)
+        {
+            try
+            {
+                DynamicParameters DP = new DynamicParameters();
+                DP.Add("Id", Id);
+
+                return  await _repository.GetByValuesAsync<ClientsMetaConfigurationsListItemModel>("sp_GetWaBaDetailsById", DP);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        
+        
+        }
+
+        public async Task<int> ActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request)
+        {
+
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@phoneNumberID", request.PhoneNumberID);
+                Dp.Add("Id", request.Id);
+                Dp.Add("deactivatedBy", request.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", request.WhatsAppAccountStatus);
+                return await _repository.InsertUpdateAsync("sp_ActivateWabaAccount", Dp);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+        public async Task<int> DeActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request)
+        {
+
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@phoneNumberID", request.PhoneNumberID);
+                Dp.Add("Id", request.Id);
+                Dp.Add("deactivatedBy", request.DeactivatedBy);
+                Dp.Add("whatsAppAccountStatus", request.WhatsAppAccountStatus);
+                return await _repository.InsertUpdateAsync("sp_DeActivateWabaAccount", Dp);
+
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
+        }
+
+
     }
 }

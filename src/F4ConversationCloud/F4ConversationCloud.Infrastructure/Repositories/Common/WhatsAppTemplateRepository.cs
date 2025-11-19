@@ -64,6 +64,21 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
 
         }
+        public async Task<IEnumerable<TemplatesButtonsListItem>> WhatsappTemplatesButtons(int Template_id)
+        {
+            try
+            {
+                DynamicParameters Dp = new DynamicParameters();
+                Dp.Add("@TemplateId", Template_id);
+
+                return await _repository.GetListByValuesAsync<TemplatesButtonsListItem>("sp_GetTemplatesButtons", Dp);
+
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<TemplatesButtonsListItem>();
+            }
+        }
 
         public async Task<int> DeactivateTemplateAsync(int templateId)
         {
@@ -257,7 +272,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
-
         public async Task<dynamic> GetMetaUsersConfiguration()
         {
             try
@@ -275,7 +289,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         {
             try
             {
-
                 var parameters = new DynamicParameters();
                 parameters.Add("@TemplateId", TemplateId);
                 parameters.Add("@TemplateStatus", (int)(Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? status : TemplateApprovalStatus.Pending), DbType.Int32);
@@ -287,6 +300,16 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
                 return 0;
             }
+        }
+
+        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("MetaConfigId", MetaConfigId);
+            parameters.Add("TemplateId", TemplateId);
+
+            return await _repository.GetListByValuesAsync<TemplateModel.Button>("sp_GetTemplateButtonsById", parameters);
         }
     }
 }

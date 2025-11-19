@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace F4ConversationCloud.Domain.Enum
 {
@@ -16,6 +17,12 @@ namespace F4ConversationCloud.Domain.Enum
 
         [Description("Active")]
         [Display(Name = "Active")]
-        Active = 2
+        Active = 2,
+
+        [Description("Deactivated")]
+        [Display(Name = "Deactivated")]
+        Deactivated = 3
+
+
     }
 }

@@ -11,9 +11,6 @@ using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using static F4ConversationCloud.SuperAdmin.Models.TemplateViewModel;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
@@ -93,6 +90,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
 
                 return View(viewModel);
             }
@@ -117,6 +115,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                     model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                     model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                    model.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
+
                     if (model.PageMode == "Edit")
                     {
                         await UpdateTemplate(model.TemplateTableId);
@@ -155,7 +155,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 request.WABAId = model.WABAId;
                 request.PageMode = model.PageMode;
                 request.TemplateId = model.TemplateId;
-                
+                request.buttons = model.buttons.Select(x => new TemplateViewRequestModel.Button
+                {
+                    ButtonText = x.ButtonText,
+                    ButtonType = x.ButtonType,
+                    ButtonCategory = x.ButtonCategory
+                }).ToList();
+
                 APIResponse result = new APIResponse();
                 if (request.PageMode == "Edit")
                 {
@@ -202,6 +208,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 viewModel.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 viewModel.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                viewModel.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
                 viewModel.TemplateType = Convert.ToInt32(data.Category);
                 viewModel.TemplateTypeName = EnumExtensions.GetDisplayNameById<TemplateModuleType>(Convert.ToInt32(data.Category));
                 viewModel.TemplateCategory = 1;
@@ -219,14 +226,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewModel.FileUrl = data.HeaderMediaUrl;
                 viewModel.FileName = data.HeaderFileName;
 
-                viewModel.bodyVariables = new List<BodyVariable>();
+                viewModel.bodyVariables = new List<TemplateViewModel.BodyVariable>();
                 if (!string.IsNullOrEmpty(data.BodyExample))
                 {
                     var examples = data.BodyExample.Split(',');
 
                     for (int i = 0; i < examples.Length; i++)
                     {
-                        var bodyVariable = new BodyVariable
+                        var bodyVariable = new TemplateViewModel.BodyVariable
                         {
                             BodyVariableName = examples[i],
                             BodyVariableValue = $"{{{{{i + 1}}}}}"
@@ -235,6 +242,17 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         viewModel.bodyVariables.Add(bodyVariable);
                     }
                 }
+                var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(0, id);
+                var viewbuttons = new List<TemplateViewModel.Button>();
+                foreach (var b in buttons)
+                {
+                    var viewbtn = new TemplateViewModel.Button();
+                    viewbtn.ButtonText = b.ButtonText;
+                    viewbtn.ButtonType = b.ButtonType;
+                    viewbtn.ButtonCategory = b.ButtonCategory;
+                    viewbuttons.Add(viewbtn);
+                }
+                viewModel.buttons = viewbuttons;
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -281,8 +299,6 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> GetTemplateTypePartialView(TemplateViewModel model)
@@ -369,6 +385,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 model.MarketingTemplateTypeList = EnumExtensions.ToSelectList<MarketingTemplateType>();
                 model.UtilityTemplateTypeList = EnumExtensions.ToSelectList<UtilityTemplateType>();
                 model.AuthenticationTemplateTypeList = EnumExtensions.ToSelectList<AuthenticationTemplateType>();
+                model.ButtonCategoryList = EnumExtensions.ToSelectList<ButtonCategory>();
                 ModelState.Clear();
             }
             ViewData["Index"] = 0;
@@ -380,7 +397,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         {
             var model = new TemplateViewModel
             {
-                bodyVariables = variableNumbers.Select(v => new BodyVariable
+                bodyVariables = variableNumbers.Select(v => new TemplateViewModel.BodyVariable
                 {
                     BodyVariableValue = $"{{{{{v}}}}}",
                     BodyVariableName = ""
@@ -388,6 +405,42 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             };
 
             return PartialView("_MessageVariableBody", model);
+        }
+
+        [HttpPost]
+        public IActionResult GetButtonPartialView(string value, string text, int index, int currentCount = 0)
+        {
+            var isCustom = string.Equals(
+                text,
+                ButtonCategory.Custom.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            if (!isCustom)
+                return BadRequest("Unsupported button category");
+
+            if (currentCount >= 10)
+                return BadRequest($"You can add a maximum of 10 quick reply buttons.");
+
+            var vm = new TemplateViewModel
+            {
+                CustomButtonTypeList = EnumExtensions.ToSelectList<CustomButtonType>(),
+                buttons = new List<TemplateViewModel.Button>()
+            };
+
+            while (vm.buttons.Count <= index)
+                vm.buttons.Add(new TemplateViewModel.Button());
+
+            vm.buttons[index] = new TemplateViewModel.Button
+            {
+                ButtonType = (int)ButtonCategory.Custom,
+                ButtonText = "Quick Reply",
+                ButtonCategory = Convert.ToInt32(value)
+            };
+
+            ViewData["RowIndex"] = index;
+
+            return PartialView("_CustomButtonPartialView", vm);
         }
     }
 }

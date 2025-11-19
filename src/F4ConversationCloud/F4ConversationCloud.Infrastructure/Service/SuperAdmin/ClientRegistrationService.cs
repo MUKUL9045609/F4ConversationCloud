@@ -1,11 +1,15 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAdmin;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
 using F4ConversationCloud.Domain.Extension;
+using F4ConversationCloud.Infrastructure.Repositories.SuperAdmin;
+using F4ConversationCloud.Infrastructure.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +25,10 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         private readonly IConfiguration _configuration;
         private readonly IEmailSenderService _emailSenderService;
         private readonly ILogService _logService;
+        private readonly IF4AppCloudeService _whatsAppCloude;
+        private readonly IMetaService _metaService;
         public ClientRegistrationService(IClientRegistrationRepository clientRegistrationRepository, IWebHostEnvironment env,
-            IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IEmailSenderService emailSenderService, ILogService logService)
+            IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IEmailSenderService emailSenderService, ILogService logService, IF4AppCloudeService whatsAppCloude, IMetaService metaService)
         {
             _clientRegistrationRepository = clientRegistrationRepository;
             _env = env;
@@ -30,6 +36,8 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             _configuration = configuration;
             _emailSenderService = emailSenderService;
             _logService = logService;
+            _whatsAppCloude = whatsAppCloude;
+            _metaService = metaService;
         }
 
         public async Task<int> CreateUpdateAsync(ClientRegistration clientRegistration)
@@ -233,6 +241,241 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
 
             }
             return response;
+        }
+
+
+        public async Task<CommonSuperAdminServiceResponse> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request)
+         {
+            var model = new LogModel();
+            model.Source = "ClientRegistration/ActivateClientAccountAsync";
+            model.AdditionalInfo =$"ClientAccountModelRequest :{JsonConvert.SerializeObject(request)}" ;
+            try
+            {
+                var ClientMetaDetails = await _clientRegistrationRepository.GetClientsMetaConfigurationsList(request.ClientId);
+
+                if (!ClientMetaDetails.Any())
+                {
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Cannot Activate Client Account"
+                    };
+                }
+
+                foreach (var item in ClientMetaDetails)
+                {
+                    var registerPhoneNumber = await _metaService.RegisterPhone(new PhoneRegistrationOnMeta { PhoneNumberId = item.PhoneNumberId });
+                    var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(item.PhoneNumberId);
+
+                    request.WhatsAppAccountStatus = businessInfo.WhatsAppStatus;
+                    request.PhoneNumberID = item.PhoneNumberId;
+                    //request.WhatsAppAccountStatus = "Offline";
+                    //request.PhoneNumberID = "984252398094633";
+                    var tempRes = await _clientRegistrationRepository.ActivateClientAccountAsync(request);
+
+
+                }
+                model.LogType = "Success";
+                model.Message = "Client Account Acctivate successfully.";
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "Client Account Acctivate successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+            finally {
+                await _logService.InsertLogAsync(model);
+            }
+        }
+      
+        
+        public async Task<CommonSuperAdminServiceResponse> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest request)
+        {
+            var model = new LogModel();
+            model.Source = "ClientRegistration/DeactivateClientAccountAsync";
+            model.AdditionalInfo =$"ClientAccountModelRequest :{JsonConvert.SerializeObject(request)}" ;
+            try
+            {
+                var ClientMetaDetails = await _clientRegistrationRepository.GetClientsMetaConfigurationsList(request.ClientId);
+
+                    if(!ClientMetaDetails.Any())
+                    {
+                        return new CommonSuperAdminServiceResponse
+                        {
+                            success = false,
+                            message = "Cannot Deactivate Client Account"
+                        };
+                    }
+
+                    foreach (var item in ClientMetaDetails) {
+                    var registerPhoneNumber = await _metaService.DeregisterPhone(new PhoneRegistrationOnMeta { PhoneNumberId = item.PhoneNumberId });
+                    var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(item.PhoneNumberId);
+
+                    request.WhatsAppAccountStatus = businessInfo.WhatsAppStatus;
+                    request.PhoneNumberID = item.PhoneNumberId;
+
+                    //request.WhatsAppAccountStatus = "Offline";
+                    //request.PhoneNumberID = "984252398094633";
+                    var tempRes = await _clientRegistrationRepository.DeactivateClientAccountAsync(request);
+
+
+                    }
+                    model.LogType = "Success";
+                    model.Message = "Client Account Deactivate successfully.";
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "Client Account Enable successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(model);
+            }
+
+        }
+
+
+
+        public async Task<CommonSuperAdminServiceResponse> ActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request)
+        {
+            var model = new LogModel();
+            model.Source = "ClientRegistration/ActivateWaBaAccountAsync";
+            model.AdditionalInfo = $"WaBaAccountModelRequest :{JsonConvert.SerializeObject(request)}";
+            try
+            {
+                var WabaDetails= await _clientRegistrationRepository.GetWaBaDetailsById(request.Id);
+
+                if (WabaDetails is null)
+                {
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Cannot Activate WaBa Account"
+                    };
+                }
+                var registerPhoneNumber = await _metaService.RegisterPhone(new PhoneRegistrationOnMeta { PhoneNumberId = WabaDetails.PhoneNumberId });
+                var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(WabaDetails.PhoneNumberId);
+
+                request.WhatsAppAccountStatus = businessInfo.WhatsAppStatus;
+                request.PhoneNumberID = WabaDetails.PhoneNumberId;
+
+                var tempRes = await _clientRegistrationRepository.ActivateWaBaAccountAsync(request);
+                if (tempRes < 1) {
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Cannot Activate WaBa Account"
+                    };
+                }
+                model.LogType = "Success";
+                model.Message = "WaBa Account Acctivate successfully.";
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "Waba Account Acctivate successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(model);
+            }
+        }
+
+                                                                                                                                                                  
+        public async Task<CommonSuperAdminServiceResponse> DeactivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request)
+        {
+            var model = new LogModel();
+            model.Source = "ClientRegistration/DeactivateWaBaAccountAsync";
+            model.AdditionalInfo = $"WaBaAccountRequest :{JsonConvert.SerializeObject(request)}";
+            try
+            {
+                var WabaDetails = await _clientRegistrationRepository.GetWaBaDetailsById(request.Id);
+
+                if (WabaDetails is null)
+                {
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Cannot DeActivate WaBa Account"
+                    };
+                }
+                var registerPhoneNumber = await _metaService.DeregisterPhone(new PhoneRegistrationOnMeta { PhoneNumberId = WabaDetails.PhoneNumberId });
+                var businessInfo = await _whatsAppCloude.GetWhatsAppPhoneNumberDetailsAsync(WabaDetails.PhoneNumberId);
+
+                request.WhatsAppAccountStatus = businessInfo.WhatsAppStatus;
+                request.PhoneNumberID = WabaDetails.PhoneNumberId;
+
+                var tempRes = await _clientRegistrationRepository.DeActivateWaBaAccountAsync(request);
+                if (tempRes < 1)
+                {
+                    return new CommonSuperAdminServiceResponse
+                    {
+                        success = false,
+                        message = "Cannot DeActivate WaBa Account"
+                    };
+                }
+                model.LogType = "Success";
+                model.Message = "WaBa Account Deactivate successfully.";
+
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = true,
+                    message = "WaBa Account DeActivate successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                model.LogType = "Error";
+                model.Message = ex.Message;
+                model.StackTrace = ex.StackTrace;
+                return new CommonSuperAdminServiceResponse
+                {
+                    success = false,
+                    message = "Technical Error."
+                };
+            }
+            finally
+            {
+                await _logService.InsertLogAsync(model);
+            }
+
         }
     }
 }

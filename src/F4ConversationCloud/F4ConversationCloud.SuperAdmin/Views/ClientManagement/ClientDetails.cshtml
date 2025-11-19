@@ -2,6 +2,7 @@
 @using F4ConversationCloud.Domain.Enum
 @using System.ComponentModel.DataAnnotations
 @using System.Web
+@using Newtonsoft.Json
 @model F4ConversationCloud.SuperAdmin.Models.ClientDetailsViewModel
 @{
     var m = Model;
@@ -667,10 +668,8 @@
                             </div>
                             <div class="time">1:59 PM</div>
                         </div>
-                        @* <div class="buy-link">
-                            <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                            <a href="#"><i class="forward"></i> My Account Balance</a>
-                        </div> *@
+                        <div class="buy-link" id="preview-button">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -724,6 +723,8 @@
 @section Scripts {
     @* <script src="~/js/unobtrusiveHelper.js"></script> *@
     <script>
+        var model = @Html.Raw(Json.Serialize(Model));
+       
         $(document).ready(function() {
             $('#save-btn').hide();
             // var approvalStatus = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.ApprovalStatus))';
@@ -954,7 +955,7 @@
         });
 
         $(document).on("click", "#create-template-btn, .edit-icon", function (e) {
-            var model = @Html.Raw(Json.Serialize(Model));
+            commonHelper.showHideLoader(true);
 
             var data = {
                 ClientInfoId: model.clientInfoId,
@@ -973,7 +974,36 @@
             var templatebodyexample = $(this).data("templatebodyexample");
             var templatefooter = $(this).data("templatefooter");
             var templateheadermediaurl = $(this).data("headermediaurl");
+            var raw = $(this).attr("data-buttons");
+            var templatebuttons = [];
+            templatebuttons = raw ? JSON.parse(raw) : [];
 
+            var $preview = $("#preview-button");
+            $preview.empty();
+
+            templatebuttons.forEach(function(btn) {
+                var text = (btn.ButtonText || "").trim();
+                var buttonLogo = '';
+                if (!text) return;
+                if (btn.ButtonType == @((int)ButtonCategory.Custom)){
+                    buttonLogo = 'backward';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.VisitWebsite)){
+                    buttonLogo = 'buy-icon';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.CallOnWhatsApp) ||
+                         btn.ButtonType == @((int)ButtonCategory.CallPhoneNumber)){
+                    buttonLogo = 'call';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.CompleteFlow)){
+                    buttonLogo = 'forward';
+                }
+                else if (btn.ButtonType == @((int)ButtonCategory.CopyOfferCode)){
+                    buttonLogo = 'copy-code';
+                }
+                $preview.append(`<a href="#"><i class="${buttonLogo}"></i> ${text}</a>`);
+            });
+            
             if (templateheadertext.includes("{{1}}")) {
                 templateheadertext = templateheadertext.replace("{{1}}", templateheaderexample);
             }
@@ -1031,6 +1061,7 @@
 
                 WABAId: wabaId,
                 PageNumber: currentPageNumber,
+                MetaConfigId: model.id
             };
 
 
@@ -1063,7 +1094,8 @@
                     StatusFilter: $("[name=StatusFilter]").val(),
                     IsActivate: $("#templateStatusFilter").val(),
                     WABAId: wabaId,
-                    PageNumber: currentPageNumber
+                    PageNumber: currentPageNumber,
+                    MetaConfigId: model.id
                 };
 
                 $.ajax({
@@ -1183,7 +1215,8 @@
                     StatusFilter: $("[name=StatusFilter]").val(),
                     IsActivate: $("#templateStatusFilter").val(),
                     WABAId: wabaId,
-                    PageNumber: currentPageNumber
+                    PageNumber: currentPageNumber,
+                    MetaConfigId: model.id
                 };
 
                 $.ajax({
@@ -1206,10 +1239,5 @@
                     }
                 });
             }
-
-
-
-
-
     </script>
 }

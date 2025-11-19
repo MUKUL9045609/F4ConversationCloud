@@ -1,4 +1,5 @@
-﻿@model F4ConversationCloud.SuperAdmin.Models.TemplatesListViewModel
+﻿@using Newtonsoft.Json
+@model F4ConversationCloud.SuperAdmin.Models.TemplatesListViewModel
 
 <h2 class="accordion-header" id="headingThirtyTwo">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -22,7 +23,6 @@
                 </div>
                
                 <a href="@Url.Action("CreateTemplate", "TemplateManagement")" class="btn primary-btn d-flex" id="create-template-btn">Create Templates</a>
-                </a>
             </div>
         </div>
         <div class="table-responsive">
@@ -77,6 +77,9 @@
                     {
                         @foreach (var item in Model.data)
                         {
+                            var buttonsJson = Html.Raw(JsonConvert.SerializeObject(
+                            item.buttons ?? new List<F4ConversationCloud.SuperAdmin.Models.TemplatesListViewModel.TemplateListViewItem.Button>()
+                            ));
                             <tr>
                                 <td align="center">@Html.DisplayFor(modelItem => item.SrNo)</td>
                                 <td>
@@ -126,14 +129,15 @@
 
 
 
-                                        <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#template-preview-modal" id="template-view"
+                                       <a href="#" class="view" data-bs-toggle="modal" data-bs-target="#template-preview-modal" id="template-view"
                                            data-templatename="@item.TemplateName"
                                            data-templateheadertext="@item.HeaderText"
                                            data-templateheaderexample="@item.HeaderExample"
                                            data-templatebodytext="@item.BodyText"
                                            data-templatebodyexample="@item.BodyExample"
                                            data-templatefooter="@item.FooterText" 
-                                           data-headermediaurl="@item.HeaderMediaUrl">
+                                           data-headermediaurl="@item.HeaderMediaUrl"
+                                           data-buttons="@buttonsJson.ToString()">
                                        </a>
                                     </div>
                                 </td>

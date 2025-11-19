@@ -68,6 +68,7 @@
             var clientNameSearch = $("[name=ClientNameSearch]").val();
             var onboardingFilter = $("[name=OnboardingOnFilter]").val();
             var statusFilter = $("[name=StatusFilter]").val();
+            var WabaAccountStatusFilter=$("#WabaAccountStatusFilter").val();
             var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
             var pageNumber = 1;
 
@@ -76,6 +77,7 @@
                 OnboardingOnFilter: onboardingFilter,
                 StatusFilter: statusFilter,
                 PhoneNumberFilter: PhoneNumberFilter,
+                WabaAccountStatusFilter:WabaAccountStatusFilter,
                 PageNumber: pageNumber,
                 RegistrationId: regId
             };
@@ -96,12 +98,14 @@
                 var onboardingFilter = $("[name=OnboardingOnFilter]").val();
                 var statusFilter = $("[name=StatusFilter]").val();
                 var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+                var WabaAccountStatusFilter=$("#WabaAccountStatusFilter").val();
 
                 var req = {
                     ClientNameSearch: clientNameSearch,
                     OnboardingOnFilter: onboardingFilter,
                     StatusFilter: statusFilter,
                     PhoneNumberFilter: PhoneNumberFilter,
+                    WabaAccountStatusFilter:WabaAccountStatusFilter,
                     PageNumber: pageNumber,
                     RegistrationId: regId
                 };
@@ -129,5 +133,73 @@
         $(document).on('click', '.back', function () {
             commonHelper.showHideLoader(true);
         });
+
+
+
+        let selectedSwitch = null;
+        let originalStatus = 0;
+
+        $(document).on("click", ".account-status-switch", function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            selectedSwitch = this;
+
+            const id = $(this).data("id");
+            originalStatus = parseInt($(this).data("currentstatus"));
+            var BussinessName = $(this).data("bussinessname") || "this";
+
+            debugger;
+            $("#ConfirmDeleteBtn").data("id", id);
+
+            $(this).prop("checked", originalStatus === 1);
+
+            var modalText = originalStatus === 1
+                ? "Do you really want to <b> Deactivate '" + BussinessName + "'</b> Business Account?"
+                : "Do you really want to <b> Activate '" + BussinessName + "'</b> Business Account?";
+                debugger;
+            $("#deleteModalText").html(modalText);
+            $("#AccountStatusModal").modal("show");
+        });
+
+        $(document).on('click', '#ConfirmDeleteBtn', function (e) {
+            e.preventDefault();
+            commonHelper.showHideLoader(true);
+
+            const Id = $(this).data("id");
+
+            var req = {
+                Id: Id
+            };
+            var url;
+            if (originalStatus === 0) {
+                url = "@Url.ActionLink("ActivateWaBaAccount", "ClientRegistration")";
+            }  else if (originalStatus === 1) {
+                url = "@Url.ActionLink("DeactivateWaBaAccount", "ClientRegistration")";
+            }
+
+            ajaxHelper.ajaxPost(url, null, req, function (response) {
+
+                if (response.success) {
+
+                    if (selectedSwitch) {
+                        $(selectedSwitch).prop("checked", !originalStatus);
+                        $(selectedSwitch).data("currentstatus", !originalStatus ? 1 : 0);
+                    }
+                    $("#AccountStatusModal").modal("hide");
+                    
+                    window.location.reload();
+                    selectedSwitch = null;
+                    commonHelper.showSuccess(response.message);
+
+                } else {
+                    $("#AccountStatusModal").modal("hide");
+                    selectedSwitch = null;
+                    commonHelper.showError(response.message);
+                }
+                commonHelper.showHideLoader(false);
+            });
+        });
     </script>
+
 }

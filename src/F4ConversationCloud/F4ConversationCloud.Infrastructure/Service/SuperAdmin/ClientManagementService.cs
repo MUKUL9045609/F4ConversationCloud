@@ -40,7 +40,28 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             return response;
         }
+        public async Task<Tuple<IEnumerable<BusinessAccountListItem>, int>> GetBusinessAccountList(BusinessAccountListFilter filter)
+        {
+            Tuple<IEnumerable<BusinessAccountListItem>, int> response = Tuple.Create(Enumerable.Empty<BusinessAccountListItem>(), 0);
 
+            try
+            {
+                var AccountList = await _clientManagementRepository.GetBusinessAccountListAsync(filter);
+                response = Tuple.Create(AccountList.Item1.Cast<BusinessAccountListItem>(), AccountList.Item2);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "ClientManagement/GetBusinessAccountList";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(filter)}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+                return response;
+            }
+        }
         public async Task<ClientDetails> GetClientDetailsById(int id)
         {
             var response = new ClientDetails();

@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.SqlClient;
@@ -15,14 +16,16 @@ namespace F4ConversationCloud.Infrastructure.Persistence;
 
 public class DbContext
 {
+    private readonly ICurrentUserService _currentUser;
     private readonly IConfiguration _configuration;
     private readonly string _connectionString;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public DbContext(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    public DbContext(IConfiguration configuration, IHttpContextAccessor httpContextAccessor,ICurrentUserService currentUser)
     {
         _configuration = configuration;
         _connectionString = _configuration.GetConnectionString("SqlConnection") ?? throw new ArgumentNullException(nameof(configuration));
         _httpContextAccessor = httpContextAccessor;
+        _currentUser = currentUser;
     }
     public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
     //public int SessionUserId => Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);

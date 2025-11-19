@@ -15,5 +15,9 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
         Task<bool> CheckEmailExist(string email);
         Task<RegisteredBusinessDetail> GetRegisteredBusinessDetail(int id);
         Task<bool> CheckContactNumberExist(string contactNumber);
+        Task<CommonSuperAdminServiceResponse> DeactivateClientAccountAsync(ActivateDeactivateClientAccountRequest request);
+        Task<CommonSuperAdminServiceResponse> ActivateClientAccountAsync(ActivateDeactivateClientAccountRequest request);
+        Task<CommonSuperAdminServiceResponse> ActivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request);
+        Task<CommonSuperAdminServiceResponse> DeactivateWaBaAccountAsync(ActivateDeactivateWaBaAccountRequest request);
     }
 }

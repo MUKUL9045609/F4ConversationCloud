@@ -84,6 +84,8 @@ namespace F4ConversationCloud.Application.Common.Models.OnBoardingRequestRespose
         public string Message { get; set; }
         public ClientFormStage Stage { get; set; }
         public string Password { get; set; }
+        public bool IsActive { get; set; }
+        public int RegistrationStatus { get; set; }
 
     }
     public class LoginResponse

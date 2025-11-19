@@ -468,7 +468,10 @@ namespace F4ConversationCloud.Infrastructure.Service
                             buttons = Buttoncomponents
                         };
 
-                        messageTemplate.components.Add(buttons);
+                        if (Buttoncomponents.Count > 0)
+                        {
+                            messageTemplate.components.Add(buttons);
+                        }
                     }
                 }
 

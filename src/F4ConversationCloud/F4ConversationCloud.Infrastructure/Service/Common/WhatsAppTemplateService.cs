@@ -29,7 +29,6 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             try
             {
                 var (templates, totalCount) = await _templateRepository.GetTemplatesListAsync(filter);
-
                 return new WhatsAppTemplateResponse
                 {
                     Templates = templates,
@@ -60,6 +59,8 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             try
             {
                 var templateDetail = await _templateRepository.GetTemplateByIdAsync(templateId);
+                var templateButtons = await _templateRepository.WhatsappTemplatesButtons(templateId);
+
                 templateDetail.RawHeader = templateDetail.HeaderText;
                 templateDetail.RawBody = templateDetail.BodyText;
                 if (templateDetail != null)
@@ -80,7 +81,7 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
                         );
                     }
                 }
-
+                templateDetail.TemplateButtons = templateButtons;
                 return templateDetail;
             }
             catch (Exception ex)
@@ -121,16 +122,16 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
             catch (Exception ex)
             {
-                var log = new ClientAdminLogsModel
+                var log = new LogModel
                 {
                     Source = "WhatsappTemplate/DeactivateTemplateAsync",
-                    Data = $"TemplateId: {templateId}",
+                    AdditionalInfo = $"TemplateId: {templateId}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
 
-                await _logService.InsertClientAdminLogsAsync(log);
+                await _logService.InsertLogAsync(log);
 
                
                 return new DeleteTemplateResponse
@@ -164,16 +165,16 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             }
             catch (Exception ex)
             {
-                var log = new ClientAdminLogsModel
+                var log = new LogModel
                 {
                     Source = "WhatsappTemplate/ActivateTemplateAsync",
-                    Data = $"TemplateId: {templateId}",
+                    AdditionalInfo = $"TemplateId: {templateId}",
                     LogType = "Error",
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 };
 
-                await _logService.InsertClientAdminLogsAsync(log);
+                await _logService.InsertLogAsync(log);
 
                 return new DeleteTemplateResponse
                 {
@@ -227,6 +228,11 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
 
             }
             return response;
+        }
+
+        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId)
+        {
+            return await _templateRepository.GetTemplateButtonsAsync(MetaConfigId, TemplateId);
         }
     }
 }
