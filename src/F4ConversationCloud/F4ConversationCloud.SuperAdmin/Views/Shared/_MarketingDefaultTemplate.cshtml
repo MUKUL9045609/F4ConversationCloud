@@ -198,14 +198,14 @@
                 <h6>Quick Reply</h6>
                 <div id="quick-reply-list">
                     @{
-                        var index = 0;
+                        //var index = 0;
                         if (Model?.buttons != null)
                         {
-                            foreach (var btn in Model.buttons)
+                            for (int i = 1; i <= Model.buttons.Count; i++)
+                            //foreach (var btn in Model.buttons)
                             {
-                                ViewData["RowIndex"] = index;
-                                <partial name="_MessageVariableBody" model="btn" />
-                                index++;
+                                ViewData["RowIndex"] = i;
+                                <partial name="_CustomButtonPartialView" model="Model.buttons[i]" />
                             }
                         }
                     }

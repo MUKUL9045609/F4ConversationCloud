@@ -242,6 +242,17 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         viewModel.bodyVariables.Add(bodyVariable);
                     }
                 }
+                var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(0, id);
+                var viewbuttons = new List<TemplateViewModel.Button>();
+                foreach (var b in buttons)
+                {
+                    var viewbtn = new TemplateViewModel.Button();
+                    viewbtn.ButtonText = b.ButtonText;
+                    viewbtn.ButtonType = b.ButtonType;
+                    viewbtn.ButtonCategory = b.ButtonCategory;
+                    viewbuttons.Add(viewbtn);
+                }
+                viewModel.buttons = viewbuttons;
                 return View(viewModel);
             }
             catch (Exception ex)
