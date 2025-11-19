@@ -272,11 +272,12 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
-        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int id)
+        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId)
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("MetaConfigId", id);
+            parameters.Add("MetaConfigId", MetaConfigId);
+            parameters.Add("TemplateId", TemplateId);
 
             return await _repository.GetListByValuesAsync<TemplateModel.Button>("sp_GetTemplateButtonsById", parameters);
         }

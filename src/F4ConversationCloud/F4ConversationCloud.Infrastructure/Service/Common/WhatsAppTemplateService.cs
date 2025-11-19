@@ -229,9 +229,9 @@ namespace F4ConversationCloud.Infrastructure.Service.Common
             return response;
         }
 
-        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int id)
+        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId)
         {
-            return await _templateRepository.GetTemplateButtonsAsync(id);
+            return await _templateRepository.GetTemplateButtonsAsync(MetaConfigId, TemplateId);
         }
     }
 }
