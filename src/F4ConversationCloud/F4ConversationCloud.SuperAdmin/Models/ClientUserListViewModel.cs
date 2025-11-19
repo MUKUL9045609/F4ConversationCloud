@@ -43,6 +43,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Last Updated")]
             public DateTime? UpdatedOn { get; set; }
+
             [Display(Name = "Client Name")]
             public string BusinessName { get; set; }
             [Display(Name = "Category")]

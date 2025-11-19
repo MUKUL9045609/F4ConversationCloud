@@ -31,6 +31,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("contactNumber", clientRegistration.ContactNumber);
             parameters.Add("role", clientRegistration.Role);
             parameters.Add("registrationStatus", clientRegistration.RegistrationStatus);
+            parameters.Add("organizationsName", clientRegistration.OrganizationsName);
 
             return await _repository.InsertUpdateAsync("sp_CreateUpdateClientRegistration", parameters);
         }

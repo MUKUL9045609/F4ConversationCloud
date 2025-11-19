@@ -55,6 +55,15 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-2">
+                            <label>Organization Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input asp-for="OrganizationsName" type="text" class="form-control" placeholder="Enter Organization Name" />
+                            </div>
+                            <span asp-validation-for="OrganizationsName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-2">
                             <label>Role <span class="text-danger">*</span></label>
                             <select asp-for="Role" asp-items="(IEnumerable<SelectListItem>)ViewBag.Roles" class="form-control">
                                 <option value="" disabled selected>Select Role</option>

@@ -131,7 +131,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
+                    OrganizationsName=model.OrganizationsName,
                     RegistrationStatus = (int)ClientRegistrationStatus.Pending
+                    
                 });
 
                 if (id > 0)
@@ -175,6 +177,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     LastName = cr.LastName,
                     Email = cr.Email,
                     ContactNumber = cr.ContactNumber,
+                    OrganizationsName = cr.OrganizationsName,
                     Role = cr.Role
                 };
 
@@ -199,7 +202,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 var cr = await _clientRegistrationService.GetByIdAsync(model.Id);
 
                 if (cr.FirstName == model.FirstName && cr.LastName == model.LastName
-                    && cr.ContactNumber == model.ContactNumber && cr.Role == model.Role)
+                    && cr.ContactNumber == model.ContactNumber && cr.Role == model.Role && cr.OrganizationsName == model.OrganizationsName)
                 {
                     var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
 
@@ -211,7 +214,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 }
 
                 if (cr.FirstName == model.FirstName && cr.LastName == model.LastName
-                    && cr.Email == model.Email && cr.Role == model.Role)
+                    && cr.Email == model.Email && cr.Role == model.Role && cr.OrganizationsName == model.OrganizationsName)
                 {
                     var contactExist = await _clientRegistrationService.CheckContactNumberExist(model.ContactNumber);
 
@@ -230,6 +233,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     Email = model.Email,
                     ContactNumber = model.ContactNumber,
                     Role = model.Role,
+                    OrganizationsName = model.OrganizationsName,
                     RegistrationStatus = (int)ClientRegistrationStatus.Pending
                 });
 
