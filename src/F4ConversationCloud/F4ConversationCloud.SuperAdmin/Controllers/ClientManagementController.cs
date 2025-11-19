@@ -150,7 +150,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 model.TemplatesList.TotalCount = templateListResponse.Item2;
 
-                var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(Id);
+                var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(Id, 0);
                 model.TemplatesList.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
                 {
                     Id = x.Id,
@@ -308,7 +308,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             model.TotalCount = templateListResponse.Item2;
             model.PageNumber = filter.PageNumber;
             model.PageSize = filter.PageSize;
-            var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(filter.MetaConfigId);
+            var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(filter.MetaConfigId, 0);
             model.data = templateListResponse.Item1.ToList().Select(x => new TemplatesListViewModel.TemplateListViewItem()
             {
                 Id = x.Id,
