@@ -251,6 +251,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     viewbtn.ButtonType = b.ButtonType;
                     viewbtn.ButtonCategory = b.ButtonCategory;
                     viewbuttons.Add(viewbtn);
+                    if (viewbtn.ButtonCategory == (int)ButtonCategory.Custom)
+                    {
+                        viewbtn.buttonTypes = EnumExtensions.ToSelectList<CustomButtonType>();
+                    }
                 }
                 viewModel.buttons = viewbuttons;
                 return View(viewModel);
@@ -437,6 +441,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 ButtonText = "Quick Reply",
                 ButtonCategory = Convert.ToInt32(value)
             };
+
+            if (vm.buttons[index].ButtonCategory == (int)ButtonCategory.Custom)
+            {
+                vm.buttons[index].buttonTypes = EnumExtensions.ToSelectList<CustomButtonType>();
+            }
 
             ViewData["RowIndex"] = index;
 

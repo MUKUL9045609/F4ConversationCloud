@@ -75,6 +75,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [StringLength(25, ErrorMessage = "Button text should be less than 25 characters.")]
             public string ButtonText { get; set; }
             public int ButtonCategory { get; set; }
+            public IEnumerable<SelectListItem> buttonTypes { get; set; }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

@@ -9,7 +9,7 @@
     <div class="w-25">
         <label>Type</label>
         <select asp-for="buttons[@i].ButtonType"
-                asp-items="@Model.CustomButtonTypeList"
+                asp-items="Model.buttons[@i].buttonTypes"
                 class="form-select"
                 aria-label="Default select example">
         </select>
