@@ -22,5 +22,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
         Task<int> SyncAndUpdateWhatsappTemplate(string TemplateId, string Templatecategory, string TemplateStatus);
         Task<int> DeactivateTemplateAsync(int templateId);
         Task<int> ActivateTemplateAsync(int templateId);
+        Task<int> InsertTemplatesButtonAsync(MessageTemplateButtonDTO request);
+        Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int id);
     }
 }

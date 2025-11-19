@@ -15,5 +15,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Common
         Task<Tuple<IEnumerable<TemplateModel>, int>> GetFilteredTemplatesByWABAId(TemplateListFilter filter);
         Task<DeleteTemplateResponse> DeactivateTemplateAsync(int templateId);
         Task<DeleteTemplateResponse> ActivateTemplateAsync(int templateId);
+        Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int id);
     }
 }

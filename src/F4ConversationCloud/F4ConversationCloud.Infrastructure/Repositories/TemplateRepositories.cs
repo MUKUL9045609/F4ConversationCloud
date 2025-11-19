@@ -9,15 +9,10 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
+using System.Dynamic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 
 namespace F4ConversationCloud.Infrastructure.Repositories
 {
@@ -74,10 +69,17 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 {
                     var FileUrl = _fileUploadService.SaveFileFromBase64Async(headerFile).Result;
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
-                    messageTemplate.category = response.result.category;
-
                     var resId = response.result.id?.ToString();
-                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(),requestBody.TemplateTypes, FileName);
+
+                    messageTemplate.category = response.result.category;
+                    
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(), requestBody.TemplateTypes, FileName);
+
+                    if (requestBody.TemplateButton != null && id > 0)
+                    {
+                        requestBody.TemplateId = id;
+                        var flag = AddMetTemplateButtons(requestBody);
+                    }
 
                     return new APIResponse
                     {
@@ -108,6 +110,33 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
             }
         }
+
+        public async Task<bool> AddMetTemplateButtons(dynamic requestBody)
+        {
+            MessageTemplateButtonDTO messageTemplateButtonDTO = new MessageTemplateButtonDTO();
+            try
+            {
+                foreach (var e in requestBody.TemplateButton.Buttons)
+                {
+                    messageTemplateButtonDTO.TemplateId = requestBody.TemplateId;
+                    messageTemplateButtonDTO.ButtonCategory = e.ButtonCategory;
+                    messageTemplateButtonDTO.ButtonType = e.ButtonType;
+                    messageTemplateButtonDTO.ButtonText = e.Text;
+                    messageTemplateButtonDTO.ButtonUrl = e.Url;
+                    messageTemplateButtonDTO.ButtonUrlExample = e.Example?[0];
+                    messageTemplateButtonDTO.ButtonPhoneNumber = e.Phone_Number;
+                    messageTemplateButtonDTO.ButtonActionType = e.ButtonActionType;
+                    var id = await _whatsAppTemplateRepository.InsertTemplatesButtonAsync(messageTemplateButtonDTO);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         public async Task<dynamic> MetaEditTemplate(EditTemplateRequest requestBody)
         {
@@ -144,7 +173,20 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplate.category = response.result.category;
                     var resId = response.result.id?.ToString();
                     var FileName = requestBody.TemplateHeader.Example.HeaderFileName;
-                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId,FileUrl, FileName);
+                    var id = await _whatsAppTemplateRepository.UpdateTemplatesAsync(messageTemplate, resId, FileUrl, FileName);
+
+                    var buttonObj = messageTemplate.components.FirstOrDefault(x => x.type == "BUTTONS");
+
+                    if (buttonObj != null)
+                    {
+                        dynamic newButtonObj = new ExpandoObject();
+                        newButtonObj.type = buttonObj.type;
+                        newButtonObj.buttons = buttonObj.buttons;
+                        newButtonObj.WhatsappTemplateId = id;
+                        newButtonObj.CategoryId = 1;
+
+                        var flag = AddMetTemplateButtons(newButtonObj);
+                    }
 
                     return new APIResponse
                     {
@@ -183,7 +225,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.Name = model.TemplateName;
                 templateRequest.Language = EnumExtensions.GetDisplayNameById<TemplateLanguages>(model.Language);
                 //templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
-                templateRequest.Category = "UTILITY";
+                templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory).ToUpper();
                 templateRequest.TemplateHeader.Type = "HEADER";
                 templateRequest.TemplateHeader.Format = "TEXT";
                 templateRequest.TemplateHeader.Text = model.Header;
@@ -194,7 +236,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 };
                 templateRequest.TemplateBody.Type = "BODY";
                 templateRequest.TemplateBody.Text = model.MessageBody;
-                string messageBody = model.MessageBody ?? string.Empty; ;
+                string messageBody = model.MessageBody ?? string.Empty;
                 var matches = Regex.Matches(messageBody, @"\{\{(\d+)\}\}");
 
                 if (matches.Count > 0)
@@ -230,7 +272,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     }
 
                     // Finally set the Body_Example with one inner list aligned by {{1}}, {{2}}, ...
-                    templateRequest.TemplateBody.Body_Example = new Application.Common.Models.Templates.BodyExample
+                    templateRequest.TemplateBody.Body_Example = new F4ConversationCloud.Application.Common.Models.Templates.BodyExample
                     {
                         Body_Text = new List<List<string>> { orderedSamples }
                     };
@@ -255,6 +297,23 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     templateRequest.TemplateHeader.Format = "IMAGE";
                     templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
                 }
+                templateRequest.TemplateButton.Type = "BUTTONS";
+
+                var buttons = new List<Application.Common.Models.Templates.Button>();
+
+                foreach (var b in model.buttons)
+                {
+                    var button = new Application.Common.Models.Templates.Button();
+
+                    button.ButtonActionType = b.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "";
+                    button.ButtonCategory = b.ButtonCategory;
+                    button.ButtonType = b.ButtonType;
+                    button.Text = b.ButtonText;
+
+                    buttons.Add(button);
+                }
+                templateRequest.TemplateButton.Buttons = buttons;
+
                 APIResponse result = await MetaCreateTemplate(templateRequest);
 
                 return result;

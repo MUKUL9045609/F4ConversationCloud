@@ -1,22 +1,12 @@
-﻿using BuldanaUrban.Domain.Helpers;
-using Dapper;
+﻿using Dapper;
 using F4ConversationCloud.Application.Common.Interfaces.Repositories.Common;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
-using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Interfaces;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Twilio.Converters;
+
 
 namespace F4ConversationCloud.Infrastructure.Repositories.Common
 {
@@ -158,6 +148,29 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
+        public async Task<int> InsertTemplatesButtonAsync(MessageTemplateButtonDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@WhatsappTemplateId", request.TemplateId);
+                parameters.Add("@ButtonCategory", request.ButtonCategory);
+                parameters.Add("@ButtonType", request.ButtonType);
+                parameters.Add("@ButtonText", request.ButtonText);
+                parameters.Add("@ButtonUrl", request.ButtonUrl);
+                parameters.Add("@ButtonUrlExample", request.ButtonUrlExample);
+                parameters.Add("@ButtonPhoneNumber", request.ButtonPhoneNumber);
+                parameters.Add("@ButtonActionType", request.ButtonActionType);
+
+               
+                return await _repository.InsertUpdateAsync("sp_InsertwhatsappTemplatesButtons", parameters);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
         public async Task<int> GetCountAsync(TemplateListFilter filter)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -229,7 +242,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
-
         public async Task<dynamic> GetMetaUsersConfiguration()
         {
             try
@@ -247,7 +259,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         {
             try
             {
-
                 var parameters = new DynamicParameters();
                 parameters.Add("@TemplateId", TemplateId);
                 parameters.Add("@TemplateStatus", (int)(Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? status : TemplateApprovalStatus.Pending) , DbType.Int32);
@@ -259,6 +270,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
                 return 0;
             }
+        }
+
+        public async Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("MetaConfigId", id);
+
+            return await _repository.GetListByValuesAsync<TemplateModel.Button>("sp_GetTemplateButtonsById", parameters);
         }
     }
 }

@@ -3,17 +3,12 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
-using F4ConversationCloud.Domain.Entities;
-using F4ConversationCloud.Infrastructure.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using Twilio.TwiML.Voice;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
-    //[Authorize(Roles = "1")]
+    [Authorize(Roles = "1")]
     [ApiController]
     [Route("MessageTemplates")]
     public class TemplateController : Controller
@@ -30,7 +25,7 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("[action]")]
         [Consumes("application/json")]
-        //[HasPermission("IsCreateTemplate")]
+        [HasPermission("IsCreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)
