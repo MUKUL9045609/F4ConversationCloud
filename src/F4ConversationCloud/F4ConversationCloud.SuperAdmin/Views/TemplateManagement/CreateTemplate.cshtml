@@ -750,18 +750,16 @@
         $(document).on('input', '[name="Header"]', function () {
             var headerVal = $(this).val().trim();
 
-            // Enable the button only if the input is empty
             $('#header-add-btn').attr('disabled', headerVal !== '' && headerVal.includes("{{1}}"));
 
-            // Trigger validation and store result
             var isValid = $(this).valid();
-
-            // Show/hide variable card based on validity
-            if (isValid && headerVal != '' && headerVal.includes("{{1}}")) {
-                $('#variable-card').show();
-                $('#variable-card-header').show();
-                // Update the readonly input with asp-for="HeaderVariableName"
-                $('[name="HeaderVariableName"]').val("{{1}}");
+            
+            if (isValid && headerVal != '') {
+                if (headerVal.includes("{{1}}")){
+                    $('#variable-card').show();
+                    $('#variable-card-header').show();
+                    $('[name="HeaderVariableName"]').val("{{1}}");
+                }
                 $('#header-text-preview').show();
                 $('#header-text-preview').text(headerVal);
                 $("#submit-btn").prop("disabled", true);

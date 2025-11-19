@@ -225,7 +225,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.Name = model.TemplateName;
                 templateRequest.Language = EnumExtensions.GetDisplayNameById<TemplateLanguages>(model.Language);
                 //templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory);
-                templateRequest.Category = "UTILITY";
+                templateRequest.Category = EnumExtensions.GetDisplayNameById<TemplateModuleType>(model.TemplateCategory).ToUpper();
                 templateRequest.TemplateHeader.Type = "HEADER";
                 templateRequest.TemplateHeader.Format = "TEXT";
                 templateRequest.TemplateHeader.Text = model.Header;
