@@ -5,6 +5,7 @@ using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.ClientAdmin.Models;
 using F4ConversationCloud.Domain.Enum;
+using F4ConversationCloud.Infrastructure.Service.Client;
 using Microsoft.AspNetCore.Mvc;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
@@ -15,11 +16,13 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
         private readonly IOnboardingService _onboardingService;
         private readonly IAuthRepository _authRepository;
         private readonly IAddPhoneNumberService _addPhoneNumberService;
-        public MetaOnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository, IAddPhoneNumberService addPhoneNumberService)
+        private readonly ICurrentUserService _currentUser;
+        public MetaOnboardingController(IOnboardingService onboardingService, IAuthRepository authRepository, IAddPhoneNumberService addPhoneNumberService,ICurrentUserService currentUser)
         {
             _onboardingService = onboardingService;
             _authRepository = authRepository;
             _addPhoneNumberService = addPhoneNumberService;
+            _currentUser = currentUser;
         }
 
         [HttpGet("client-onboarding-list")]
@@ -76,11 +79,11 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
             {
                 if (command.PhoneNumberId != null && command.WabaId != null && command.BusinessId != null)
                 {
-                    var clientEmail = HttpContext.Session.GetString("Username");
-                    var userId = HttpContext.Session.GetInt32("UserId");
-                    if (userId.HasValue && !string.IsNullOrEmpty(clientEmail))
+                    var clientEmail = _currentUser.CurrentUserEmail;
+                    var userId = _currentUser.ClientInfoId;
+                    if (!string.IsNullOrEmpty(userId)  && !string.IsNullOrEmpty(clientEmail))
                     {
-                        command.ClientInfoId = userId.Value;
+                        command.ClientInfoId = Convert.ToInt32(userId);
 
                         var metaresult = await _onboardingService.InsertMetaUsersConfigurationAsync(command);
 

@@ -9,6 +9,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
     public interface IClientManagementService
     {
         Task<Tuple<IEnumerable<ClientManagementListItemModel>, int>> GetFilteredUsers(ClientManagementListFilter filter);
+        Task<Tuple<IEnumerable<BusinessAccountListItem>, int>> GetBusinessAccountList(BusinessAccountListFilter filter);
         Task<ClientDetails> GetClientDetailsById(int Id);
         Task<int> SaveClientPermission(ClientDetails clientDetails);
         Task<IEnumerable<ClientDetails>> GetClientDetailsByPhoneNumberId(string PhoneNumberId);

@@ -37,8 +37,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("onboardingOnFilter", filter.OnboardingOnFilter);
             parameters.Add("phoneNumberFilter", filter.PhoneNumberFilter);
             parameters.Add("registrationId", filter.RegistrationId);
+            parameters.Add("wabaAccountStatusFilter", filter.WabaAccountStatusFilter);
 
-            return await _repository.GetCountAsync("sp_GetClientsCount", parameters);
+            return await _repository.GetCountAsync("sp_GetClientsCount_v2", parameters);
         }
 
         public async Task<IEnumerable<ClientManagementListItemModel>> GetFilteredAsync(ClientManagementListFilter filter)
@@ -52,9 +53,37 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
             parameters.Add("pageNumber", filter.PageNumber);
             parameters.Add("pageSize", filter.PageSize);
             parameters.Add("registrationId", filter.RegistrationId);
-
-            return await _repository.GetListByValuesAsync<ClientManagementListItemModel>("sp_GetFilteredClients", parameters);
+            parameters.Add("wabaAccountStatusFilter", filter.WabaAccountStatusFilter);  
+            return await _repository.GetListByValuesAsync<ClientManagementListItemModel>("sp_GetFilteredClients_v2", parameters);
         }
+
+        public async Task<(IEnumerable<BusinessAccountListItem>,int)> GetBusinessAccountListAsync(BusinessAccountListFilter filter)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("organizationsNameFilter", filter.OrganizationsFilter);
+                parameters.Add("createdOnFilter", filter.OnboardingOnFilter);
+                parameters.Add("phoneNumberFilter", filter.PhoneNumberFilter);
+                parameters.Add("pageNumber", filter.PageNumber);
+                parameters.Add("pageSize", filter.PageSize);
+
+                var List = await _repository.GetListByValuesAsync<BusinessAccountListItem>("sp_GetBusinessAccountList", parameters);
+                int Count = await _repository.GetCountAsync("sp_GetBusinessAccountListCount", parameters);
+
+                return (List, Count);
+            }
+            catch (Exception)
+            {
+
+               return (Enumerable.Empty<BusinessAccountListItem>(), 0);
+            }
+            
+        }
+
+
+
 
         public async Task<ClientDetails> GetClientDetailsById(int id)
         {
