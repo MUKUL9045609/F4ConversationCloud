@@ -27,6 +27,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public IEnumerable<SelectListItem> AuthenticationTemplateTypeList { get; set; }
         public IEnumerable<SelectListItem> ButtonCategoryList { get; set; }
         public IEnumerable<SelectListItem> CustomButtonTypeList { get; set; }
+        public IEnumerable<SelectListItem> CallToActionButtonTypeList { get; set; }
 
         [Required(ErrorMessage = "Please select language")]
         public int Language { get; set; }

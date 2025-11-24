@@ -242,31 +242,35 @@
                 var $preview = $("#button-preview");
                 $preview.empty();
 
+                var index = 0;
                 templatebuttons.forEach(function(btn) {
-                var text = (btn.buttonText || "").trim();
-                var buttonLogo = '';
+                    var text = (btn.buttonText || "").trim();
+                    var buttonLogo = '';
                 
-                if (!text) return;
-                if (btn.buttonType == @((int)ButtonCategory.Custom)){
-                    buttonLogo = 'backward';
-                }
-                else if (btn.buttonType == @((int)ButtonCategory.VisitWebsite)){
-                    buttonLogo = 'buy-icon';
-                }
-                else if (btn.buttonType == @((int)ButtonCategory.CallOnWhatsApp) ||
-                         btn.buttonType == @((int)ButtonCategory.CallPhoneNumber)){
-                    buttonLogo = 'call';
-                }
-                else if (btn.buttonType == @((int)ButtonCategory.CompleteFlow)){
-                    buttonLogo = 'forward';
-                }
-                else if (btn.buttonType == @((int)ButtonCategory.CopyOfferCode)){
-                    buttonLogo = 'copy-code';
-                }
-                console.log('btn-',buttonLogo, 't-',text)
-                $preview.append(`<a href="#"><i class="${buttonLogo}"></i> ${text}</a>`);
-                console.log($preview);
-            });
+                    if (!text) return;
+                    if (btn.buttonType == @((int)ButtonCategory.Custom)){
+                        buttonLogo = 'backward';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.VisitWebsite)){
+                        buttonLogo = 'buy-icon';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.CallOnWhatsApp) ||
+                        btn.buttonType == @((int)ButtonCategory.CallPhoneNumber)){
+                        buttonLogo = 'call';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.CompleteFlow)){
+                        buttonLogo = 'forward';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.CopyOfferCode)){
+                        buttonLogo = 'copy-code';
+                    }
+
+                    var previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         `<a href="#"><i class="${buttonLogo}"></i> ${text}</a>` +
+                            '</div>';
+                    $preview.append(previewHtml);
+                    index++;
+                });
 
                 if (reqModel.headerVariableValue != ''){
                     $('#variable-card-header').show();
@@ -1062,6 +1066,31 @@
                 }
             });
 
+            document.addEventListener('change', function (e) {
+                var target = e.target;
+                if (target.matches('.button-row select[asp-for], .button-row select.form-select')) {
+                    var row = target.closest('.button-row');
+                    var index = row?.dataset.index;
+                    var selectedValue = target.value;
+                    var btnText = '';
+                    if (selectedValue == @((int)CustomButtonType.Custom)){
+                        btnText = 'Quick Reply';
+                        $('[name="buttons[' + index + '].ButtonText"]').val(btnText);
+                    }
+                    else{
+                        btnText = 'Preconfigured Response';
+                        $('[name="buttons[' + index + '].ButtonText"]').val(btnText);
+                    }
+
+                    var newHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         '<a href="#"><i class="backward"></i>' + btnText + '</a>' +
+                            '</div>';
+
+                    $('#preview-' + index).replaceWith(newHtml);
+
+                    validateDuplicateButtonTexts();
+                }
+            });
         })(jQuery);
     </script>
 }

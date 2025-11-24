@@ -129,7 +129,6 @@
                                         <div class="time">1:59 PM</div>
                                     </div>
                                     <div id="button-preview">
-
                                     </div>
                                 </div>
 
@@ -753,7 +752,7 @@
             $('#header-add-btn').attr('disabled', headerVal !== '' && headerVal.includes("{{1}}"));
 
             var isValid = $(this).valid();
-            
+
             if (isValid && headerVal != '') {
                 if (headerVal.includes("{{1}}")){
                     $('#variable-card').show();
@@ -815,7 +814,7 @@
 
             $('#footer-text').text(footerVal);
         });
-            
+
         $(document).on('submit', 'form', function (e) {
             if (this.checkValidity()) {
                 commonHelper.showHideLoader(true);
@@ -887,16 +886,9 @@
                 var value = link.dataset.value;
                 var text  = link.dataset.text;
 
-                var customText = '@(ButtonCategory.Custom.Get<DisplayAttribute>().Name)';
-
-                // Only apply limit for Custom category
-                if (text === customText) {
-                    var current = getCustomCount();
-                    if (current >= MAX_CUSTOM_BUTTONS) {
-                        commonHelper.showError('You can add a maximum of ' + MAX_CUSTOM_BUTTONS + ' buttons.');
-                        return;
-                    }
-                } else {
+                var current = getCustomCount();
+                if (current >= MAX_CUSTOM_BUTTONS) {
+                    commonHelper.showError('You can add a maximum of ' + MAX_CUSTOM_BUTTONS + ' buttons.');
                     return;
                 }
 
@@ -1041,6 +1033,32 @@
                 if (settings && settings.url && settings.url.indexOf('/TemplateManagement/GetButtonPartialView') === 0) {
                     // Allow DOM to update then validate
                     setTimeout(validateDuplicateButtonTexts, 0);
+                }
+            });
+
+            document.addEventListener('change', function (e) {
+                var target = e.target;
+                if (target.matches('.button-row select[asp-for], .button-row select.form-select')) {
+                    var row = target.closest('.button-row');
+                    var index = row?.dataset.index;
+                    var selectedValue = target.value;
+                    var btnText = '';
+                    if (selectedValue == @((int)CustomButtonType.Custom)){
+                        btnText = 'Quick Reply';
+                        $('[name="buttons[' + index + '].ButtonText"]').val(btnText);
+                    }
+                    else{
+                        btnText = 'Preconfigured Response';
+                        $('[name="buttons[' + index + '].ButtonText"]').val(btnText);
+                    }
+
+                    var newHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         '<a href="#"><i class="backward"></i>' + btnText + '</a>' +
+                            '</div>';
+
+                    $('#preview-' + index).replaceWith(newHtml);
+
+                    validateDuplicateButtonTexts();
                 }
             });
 

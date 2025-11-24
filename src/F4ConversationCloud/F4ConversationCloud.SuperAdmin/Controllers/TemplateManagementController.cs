@@ -414,17 +414,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         [HttpPost]
         public IActionResult GetButtonPartialView(string value, string text, int index, int currentCount = 0)
         {
-            var isCustom = string.Equals(
-                text,
-                ButtonCategory.Custom.Get<DisplayAttribute>().Name,
-                StringComparison.OrdinalIgnoreCase
-            );
+            var isCustom = string.Equals(text, ButtonCategory.Custom.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
 
-            if (!isCustom)
-                return BadRequest("Unsupported button category");
+            var isVisitWebsite = string.Equals(text, ButtonCategory.VisitWebsite.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
 
             if (currentCount >= 10)
-                return BadRequest($"You can add a maximum of 10 quick reply buttons.");
+                return BadRequest("You can add a maximum of 10 buttons.");
 
             var vm = new TemplateViewModel
             {
