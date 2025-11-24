@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.Templates;
 
 namespace F4ConversationCloud.Infrastructure.Service
 {
@@ -21,27 +22,27 @@ namespace F4ConversationCloud.Infrastructure.Service
             _logservice = logService;
         }
 
-        public async Task SendTemplateMessageAsync(string userId, string templateName, Dictionary<string, string> parameters)
+        public async Task SendTemplateMessageAsync(SendTemplateDTO sendTemplateDTO)
         {
             try
             {
-                var parameterList = parameters
-                       .Select(kv => new
-                       {
-                           type = "text",
-                           parameter_name = kv.Key,
-                           text = kv.Value
-                       })
+                var parameterList = sendTemplateDTO.TemplateValues
+                    .Select(kv => new
+                    {
+                        type = "text",
+                        parameter_name = kv.Key,
+                        text = kv.Value
+                    })
                     .ToArray();
 
                 var payload = new
                 {
                     messaging_product = "whatsapp",
-                    to = userId,
+                    to = sendTemplateDTO.SendTo,
                     type = "template",
                     template = new
                     {
-                        name = templateName,
+                        name = sendTemplateDTO.TemplateName,
                         language = new { code = "en" },
                         components = new[]
                         {
