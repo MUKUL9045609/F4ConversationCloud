@@ -1,14 +1,10 @@
 ﻿using F4ConversationCloud.Application.Common.Models.MetaCloudApiModel.Templates;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Text;
 using Microsoft.Extensions.Configuration;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
-using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Application.Common.Models;
-using F4ConversationCloud.Application.Common.Interfaces.Services.Common;
 
 namespace F4ConversationCloud.Infrastructure.Service
 {
@@ -24,7 +20,6 @@ namespace F4ConversationCloud.Infrastructure.Service
             _configuration = configuration;
             _logservice = logService;
         }
-
 
         public async Task SendTemplateMessageAsync(string userId, string templateName, Dictionary<string, string> parameters)
         {
@@ -50,16 +45,16 @@ namespace F4ConversationCloud.Infrastructure.Service
                         language = new { code = "en" },
                         components = new[]
                         {
-                new
-                {
-                    type = "body",
-                    parameters = parameterList
-                }
-            }
+                            new
+                            {
+                                type = "body",
+                                parameters = parameterList
+                            }
+                        }
                     }
                 };
 
-                await PostToMetaApi(payload);
+                await MetaSendMessageTemplateAPICall(payload);
             }
             catch (Exception ex)
             {
@@ -80,59 +75,15 @@ namespace F4ConversationCloud.Infrastructure.Service
                     text = new { body = message }
                 };
 
-                await PostToMetaApi(payload);
+                await MetaSendMessageTemplateAPICall(payload);
             }
             catch(Exception ex)
             {
 
             }
         }
-        public async Task PostToMetaApi(object payload)
-        {
-            try
-            {
-                var FacebookGraphMessageEndpoint = _configuration["WhatsAppAPISettings:FacebookGraphMessageEndpoint"]; // Correct ID
-                var accessToken = _configuration["WhatsAppAPISettings:AccessToken"]; // Correct token
-
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{FacebookGraphMessageEndpoint}");
-
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                request.Content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
-
-                var handler = new HttpClientHandler();
-                using (var client = new HttpClient(handler, disposeHandler: false))
-                {
-                    var response = await client.SendAsync(request);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        var errorContent = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine("Meta API Error: " + errorContent);
-
-                        var payloadJson = JsonConvert.DeserializeObject<JObject>(JsonConvert.SerializeObject(payload));
-                        var to = payloadJson?["to"]?.ToString();
-
-                        if (!string.IsNullOrEmpty(to))
-                        {
-                            await SendTextMessageAsync(
-                                to,
-                                ""
-                            );
-                        }
-
-                        return;
-                    }
-
-                    response.EnsureSuccessStatusCode();
-                }
-            }
-            catch (Exception ex) { 
-            
-            }
-        }
-
-
-        public async Task<dynamic> PostToMetaApi(object requestBody, string PhoneID)
+       
+        public async Task<dynamic> MetaSendMessageTemplateAPICall(object requestBody, string PhoneID = null)
         {
             string apiUrl = string.Empty;
             string methodType = "POST";
@@ -193,6 +144,85 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
+        public Dictionary<string, string> BuildParameterDictionaryFromObject(List<string> parameterKeys, Object Details)
+        {
+            try
+            {
+                var parameterDict = new Dictionary<string, string>();
+
+                if (Details == null)
+                    return parameterDict;
+
+                var type = Details.GetType();
+
+                foreach (var key in parameterKeys)
+                {
+                    var prop = type.GetProperty(key,
+                        System.Reflection.BindingFlags.IgnoreCase |
+                        System.Reflection.BindingFlags.Public |
+                        System.Reflection.BindingFlags.Instance);
+
+                    if (prop != null)
+                    {
+                        var value = prop.GetValue(Details)?.ToString() ?? string.Empty;
+                        parameterDict[key.ToLower()] = value;  // always use lower keys in dict
+                    }
+                    else
+                    {
+                        parameterDict[key.ToLower()] = string.Empty; // fallback if not found
+                    }
+                }
+
+                return parameterDict;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task SendOfferCarouselAsync(string userId, string TemplateName)
+        {
+            var payload = new
+            {
+                messaging_product = "whatsapp",
+                to = userId,
+                type = "template",
+                template = new
+                {
+                    name = TemplateName,
+                    language = new { code = "en" },
+                    components = new object[]
+                    {
+                    new
+                    {
+                        type = "carousel",
+                        cards = new object[]
+                        {
+                            new
+                            {
+                                card_index = 0,
+                                components = new object[]
+                                {
+                                    new
+                                    {
+                                        type = "header",
+                                        parameters = new object[]
+                                        {
+                                            new { type = "image", image = new { id = "" } }
+                                        }
+                                    }
+                                }
+                            },
+                        }
+                    }
+                    }
+                }
+            };
+
+            await MetaSendMessageTemplateAPICall(payload);
+
+        }
 
     }
 
