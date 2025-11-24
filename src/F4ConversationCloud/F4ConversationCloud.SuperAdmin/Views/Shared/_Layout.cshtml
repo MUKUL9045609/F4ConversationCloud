@@ -142,6 +142,11 @@
                     commonHelper.showError(toastMsg.message);
             }
             commonHelper.showHideLoader(false);
+
+            window.onbeforeunload = function() { 
+               commonHelper.showHideLoader(false);
+            };
+
         });
 
         $(document).on('click', '.signout', function () {
