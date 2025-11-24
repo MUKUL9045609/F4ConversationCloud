@@ -860,19 +860,32 @@
 
             function getNextIndex() {
                 var max = -1;
-                $('#quick-reply-list .button-row').each(function () {
-                    var idx = parseInt($(this).attr('data-index'), 10);
-                    if (!isNaN(idx) && idx > max) max = idx;
+
+                var $rows = $('#quick-reply-list .button-row, #call-to-action-list .actionbtn');
+
+                $rows.each(function () {
+                    // Prefer jQuery's data() API; falls back to attribute parsing
+                    var raw = $(this).data('index');
+                    var idx = Number.isFinite(raw) ? raw : parseInt($(this).attr('data-index'), 10);
+
+                    if (Number.isFinite(idx) && idx > max) {
+                        max = idx;
+                    }
                 });
-                return max + 1;
+
+                return max + 1; 
             }
 
             function getCustomCount() {
-                return $('#quick-reply-list .button-row').length;
+                var customCount = $('#quick-reply-list .button-row').length;
+                var callToActionCount = $('#call-to-action-list .actionbtn').length;
+                
+                return customCount + callToActionCount;
             }
 
             function ensureSectionVisibility() {
                 $('#quick-reply-section').toggle($('#quick-reply-list .button-row').length > 0);
+                $('#call-to-action-section').toggle($('#call-to-action-list .actionbtn').length > 0);
 
                 var isMax = getCustomCount() >= MAX_CUSTOM_BUTTONS;
                 $('#buttonDrpDwnBtn').prop('disabled', isMax);
@@ -886,14 +899,14 @@
                 var value = link.dataset.value;
                 var text  = link.dataset.text;
 
-                var current = getCustomCount();
-                if (current >= MAX_CUSTOM_BUTTONS) {
+                var currentCount = getCustomCount();
+
+                if (currentCount >= MAX_CUSTOM_BUTTONS) {
                     commonHelper.showError('You can add a maximum of ' + MAX_CUSTOM_BUTTONS + ' buttons.');
                     return;
                 }
 
                 var index = getNextIndex();
-                var currentCount = getCustomCount();
                 $.ajax({
                     type: 'POST',
                     url: '/TemplateManagement/GetButtonPartialView',
@@ -903,10 +916,42 @@
                         if (!$html.attr('data-category')) {
                             $html.attr('data-category', 'Custom');
                         }
-                        $('#quick-reply-list').append($html);
-                        var previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
-                         '<a href="#"><i class="backward"></i> Quick Reply</a>' +
+                        var previewHtml = '';
+                        if (value == @((int)ButtonCategory.Custom)){
+                            $('#quick-reply-list').append($html);
+                            previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                            '<a href="#"><i class="backward"></i> Quick Reply</a>' +
                             '</div>';
+                        }
+                        else {
+                             $('#call-to-action-list').append($html);
+                             if (value == @((int)ButtonCategory.VisitWebsite)){
+                                 previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                                 '<a href="#"><i class="buy-icon"></i> Visit Website</a>' +
+                                 '</div>';
+                             }
+                             else if (value == @((int)ButtonCategory.CallOnWhatsApp)){
+                                 previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                                 '<a href="#"><i class="call"></i> Call on WhatsApp</a>' +
+                                 '</div>';
+                             }
+                             else if (value == @((int)ButtonCategory.CallPhoneNumber)){
+                                 previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                                 '<a href="#"><i class="call"></i> Call phone number</a>' +
+                                 '</div>';
+                             }
+                             else if (value == @((int)ButtonCategory.CopyOfferCode)){
+                                 previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                                 '<a href="#"><i class="copy-code"></i> Copy offer code</a>' +
+                                 '</div>';
+                             }
+                             else if (value == @((int)ButtonCategory.CompleteFlow)){
+                                 previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                                 '<a href="#"><i class="forward"></i> Complete flow</a>' +
+                                 '</div>';
+                             }
+                        }
+                        
                         $('#button-preview').append(previewHtml);
                         ensureSectionVisibility();
                     },
@@ -927,7 +972,18 @@
                 validateDuplicateButtonTexts();
             });
 
-            $(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"]', function () {
+            $(document).on('click', '#call-to-action-list .actionbtn .delete', function (e) {
+                e.preventDefault();
+                var $row = $(this).closest('.actionbtn');
+                var idx = $row.data('index');
+                $row.remove();
+                $('#button-preview .buy-link[data-index="' + idx + '"]').remove();
+                ensureSectionVisibility();
+                validateDuplicateButtonTexts();
+            });
+
+            $(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"], #call-to-action-list input[name^="buttons"][name$=".ButtonText"]', function () {
+            //$(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"]', function () {
                 var $input = $(this);
                 validateDuplicateButtonTexts();
                 // Extract index from name: buttons[0].ButtonText -> 0
@@ -937,7 +993,8 @@
 
                 var idx = match[1];
                 var text = $input.val().trim();
-
+                var buttonType = $('[name="buttons['+idx+'].ButtonType"] option:selected').text();
+                
                 // Find the matching preview: prefer data-index, fallback to id
                 var $preview = $('#button-preview .buy-link[data-index="' + idx + '"]');
                 var $previewFallback = $('#preview-' + idx);
@@ -948,13 +1005,36 @@
                 if ($target.length) {
                     // Update only the text inside the <a>, keep the icon intact
                     var $anchor = $target.find('a');
-
+                    var inputText = '';
+                    var btnLogo = '';
+                    if (buttonType == 'Custom'){
+                        inputText = 'Quick Reply';
+                        btnLogo = 'backward'
+                    }else if(buttonType == 'Preconfigured Response'){
+                        inputText = buttonType;
+                        btnLogo = 'backward'
+                    }else if(buttonType == 'Visit website'){
+                        inputText = buttonType;
+                        btnLogo = 'buy-icon'
+                    }else if(buttonType == 'Call on WhatsApp'){
+                        inputText = buttonType;
+                        btnLogo = 'call'
+                    }else if(buttonType == 'Call phone number'){
+                        inputText = buttonType;
+                        btnLogo = 'call'
+                    }else if(buttonType == 'Copy offer code'){
+                        inputText = buttonType;
+                        btnLogo = 'copy-code'
+                    }else if(buttonType == 'View Flow'){
+                        inputText = buttonType;
+                        btnLogo = 'forward'
+                    }
                     // If you want a placeholder when empty:
-                    var displayText = text.length ? text : 'Quick Reply';
+                    var displayText = text.length ? text : inputText;
 
                     // Replace the text node after the icon
                     // Safer approach: rebuild anchor contents
-                    $anchor.html('<i class="backward"></i> ' + displayText);
+                    $anchor.html('<i class="'+btnLogo+'"></i> ' + displayText);
                 }
             });
 
@@ -962,76 +1042,76 @@
             $(function () {
                 ensureSectionVisibility();
             });
-
+           
             function validateDuplicateButtonTexts() {
                 var FIXED_MSG = "You can't enter same text for multiple buttons.";
+                var selectors = [
+                    '#quick-reply-list input[name^="buttons"][name$=".ButtonText"]',
+                    '#call-to-action-list input[name^="buttons"][name$=".ButtonText"]'
+                ];
 
-                // Collect all ButtonText inputs
-                var $inputs = $('#quick-reply-list input[name^="buttons"][name$=".ButtonText"]');
+                var $inputs = $(selectors.join(','));
 
-                // Group by normalized text (trim + lower)
-                var groups = new Map(); // key -> [{ $input, name }]
+                // Group by normalized text
+                var groups = new Map();
                 $inputs.each(function () {
                     var $input = $(this);
-                    var name = $input.attr('name'); // e.g., buttons[3].ButtonText
+                    var name = $input.attr('name');
                     var match = name && name.match(/^buttons\[(\d+)\]\.ButtonText$/);
                     if (!match) return;
 
                     var raw = ($input.val() || '').trim();
-                    if (!raw) return; // ignore empty while typing
-
+                    if (!raw) return;
+ 
                     var key = raw.toLowerCase();
                     if (!groups.has(key)) groups.set(key, []);
-                    groups.get(key).push({ $input: $input, name: name });
+                    groups.get(key).push($input);
                 });
 
-                // Determine duplicates: mark all but the first in each group
-                var duplicateNodes = new Set();
-                groups.forEach(function (entries) {
-                    if (entries.length > 1) {
-                        entries.slice(1).forEach(function (e) {
-                            duplicateNodes.add(e.$input.get(0));
+                var duplicatesSet = new Set();
+                groups.forEach(function (arr) {
+                    if (arr.length > 1) {
+                        arr.slice(1).forEach(function ($inp) {
+                            duplicatesSet.add($inp.get(0));
                         });
                     }
                 });
 
-                // Apply/clear UI state and messages
+                // Apply/clear invalid state and messages in both lists
                 $inputs.each(function () {
                     var $input = $(this);
                     var name = $input.attr('name') || '';
-                    var isDup = duplicateNodes.has(this);
+                    var isDup = duplicatesSet.has(this);
 
-                    // Toggle Bootstrap invalid class
                     $input.toggleClass('is-invalid', isDup);
 
-                    // Find the corresponding asp-validation-for span
-                    var selector = 'span.button-text-validation[data-valmsg-for="' + name.replace(/\./g, '\\.') + '"]';
-                    var $span = $(selector);
+                    // Lookup a validation span nearest in the DOM tree; fallback by global query
+                    var $span = $input
+                        .closest('.button-row')
+                        .find('span.button-text-validation[data-valmsg-for="' + name.replace(/\./g, '\\.') + '"]');
+
+                    if (!$span.length) {
+                        $span = $('span.button-text-validation[data-valmsg-for="' + name.replace(/\./g, '\\.') + '"]');
+                    }
 
                     if (isDup) {
-                        // Set the fixed duplicate message
                         $span.text(FIXED_MSG);
                     } else {
-                        // Clear only if our fixed message is currently shown
-                        var current = ($span.text() || '').trim();
-                        if (current === FIXED_MSG) {
+                        if (($span.text() || '').trim() === FIXED_MSG) {
                             $span.text('');
                         }
                     }
                 });
 
-                // Re-evaluate submit button availability
                 if (typeof validateSubmitButton === 'function') {
                     try { validateSubmitButton(editorInstance); } catch (_) {}
                 }
 
-                // Return true if there are no duplicates
-                return duplicateNodes.size === 0;
+                return duplicatesSet.size === 0;
             }
 
             $(document).on('ajaxComplete', function (event, xhr, settings) {
                 if (settings && settings.url && settings.url.indexOf('/TemplateManagement/GetButtonPartialView') === 0) {
-                    // Allow DOM to update then validate
                     setTimeout(validateDuplicateButtonTexts, 0);
                 }
             });

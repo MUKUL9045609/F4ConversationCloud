@@ -77,6 +77,15 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public string ButtonText { get; set; }
             public int ButtonCategory { get; set; }
             public IEnumerable<SelectListItem> buttonTypes { get; set; }
+            public string UrlType { get; set; }
+            [StringLength(2000, ErrorMessage = "Website Url should be less than 2000 characters.")]
+            public string WebsiteUrl { get; set; }
+            public int ActiveFor { get; set; }
+            public string CountryCode { get; set; }
+            [StringLength(20, ErrorMessage = "Phone number should be less than 20 characters.")]
+            public string PhoneNumber { get; set; }
+            [StringLength(20, ErrorMessage = "Offer code should be less than 20 characters.")]
+            public string OfferCode { get; set; }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

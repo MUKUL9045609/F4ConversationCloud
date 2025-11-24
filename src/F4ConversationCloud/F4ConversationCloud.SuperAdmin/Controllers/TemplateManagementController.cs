@@ -414,39 +414,85 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         [HttpPost]
         public IActionResult GetButtonPartialView(string value, string text, int index, int currentCount = 0)
         {
-            var isCustom = string.Equals(text, ButtonCategory.Custom.Get<DisplayAttribute>().Name,
-                StringComparison.OrdinalIgnoreCase);
-
-            var isVisitWebsite = string.Equals(text, ButtonCategory.VisitWebsite.Get<DisplayAttribute>().Name,
-                StringComparison.OrdinalIgnoreCase);
-
             if (currentCount >= 10)
                 return BadRequest("You can add a maximum of 10 buttons.");
+
+            var isCustom = string.Equals(text, ButtonCategory.Custom.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
+            var isVisitWebsite = string.Equals(text, ButtonCategory.VisitWebsite.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
+            var isCallOnWhatsApp = string.Equals(text, ButtonCategory.CallOnWhatsApp.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
+            var isCallPhoneNumber = string.Equals(text, ButtonCategory.CallPhoneNumber.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
+            var isCompleteFlow = string.Equals(text, ButtonCategory.CompleteFlow.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
+            var isCopyOfferCode = string.Equals(text, ButtonCategory.CopyOfferCode.Get<DisplayAttribute>().Name,
+                StringComparison.OrdinalIgnoreCase);
 
             var vm = new TemplateViewModel
             {
                 CustomButtonTypeList = EnumExtensions.ToSelectList<CustomButtonType>(),
+                CallToActionButtonTypeList = EnumExtensions.ToSelectList<CallToActionButtonTypes>(),
                 buttons = new List<TemplateViewModel.Button>()
             };
 
             while (vm.buttons.Count <= index)
                 vm.buttons.Add(new TemplateViewModel.Button());
 
-            vm.buttons[index] = new TemplateViewModel.Button
+            var viewName = "";
+            if (isCustom)
             {
-                ButtonType = (int)ButtonCategory.Custom,
-                ButtonText = "Quick Reply",
-                ButtonCategory = Convert.ToInt32(value)
-            };
+                viewName = "_CustomButtonPartialView";
+                vm.buttons[index] = new TemplateViewModel.Button
+                {
+                    ButtonType = (int)CustomButtonType.Custom,
+                    ButtonText = "Quick Reply",
+                    ButtonCategory = Convert.ToInt32(value)
+                };
 
-            if (vm.buttons[index].ButtonCategory == (int)ButtonCategory.Custom)
+                if (vm.buttons[index].ButtonCategory == (int)ButtonCategory.Custom)
+                {
+                    vm.buttons[index].buttonTypes = EnumExtensions.ToSelectList<CustomButtonType>();
+                }
+            }
+            else
             {
-                vm.buttons[index].buttonTypes = EnumExtensions.ToSelectList<CustomButtonType>();
+                viewName = "_CallToActionButtonPartialView";
+                vm.buttons[index] = new TemplateViewModel.Button();
+                vm.buttons[index].buttonTypes = EnumExtensions.ToSelectList<CallToActionButtonTypes>();
+                vm.buttons[index].ButtonCategory = Convert.ToInt32(value);
+
+                if (isVisitWebsite)
+                {
+                    vm.buttons[index].ButtonType = (int)CallToActionButtonTypes.VisitWebsite;
+                    vm.buttons[index].ButtonText = "Visit website";
+                }
+                else if (isCallOnWhatsApp)
+                {
+                    vm.buttons[index].ButtonType = (int)CallToActionButtonTypes.CallOnWhatsApp;
+                    vm.buttons[index].ButtonText = "Call on WhatsApp";
+                }
+                else if (isCallPhoneNumber)
+                {
+                    vm.buttons[index].ButtonType = (int)CallToActionButtonTypes.CallPhoneNumber;
+                    vm.buttons[index].ButtonText = "Call phone number";
+                }
+                else if (isCompleteFlow)
+                {
+                    vm.buttons[index].ButtonType = (int)CallToActionButtonTypes.CompleteFlow;
+                    vm.buttons[index].ButtonText = "Complete Flow";
+                }
+                else if (isCopyOfferCode)
+                {
+                    vm.buttons[index].ButtonType = (int)CallToActionButtonTypes.CopyOfferCode;
+                    vm.buttons[index].ButtonText = "Copy offer code";
+                }
             }
 
             ViewData["RowIndex"] = index;
 
-            return PartialView("_CustomButtonPartialView", vm);
+            return PartialView(viewName, vm);
         }
     }
 }
