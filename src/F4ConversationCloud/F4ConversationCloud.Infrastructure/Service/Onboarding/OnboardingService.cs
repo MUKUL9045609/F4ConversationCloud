@@ -5,6 +5,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services.Meta;
 using F4ConversationCloud.Application.Common.Interfaces.Services.Onboarding;
 using F4ConversationCloud.Application.Common.Meta.BussinessProfile;
 using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingModel;
 using F4ConversationCloud.Application.Common.Models.OnBoardingRequestResposeModel;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
@@ -182,10 +183,10 @@ namespace F4ConversationCloud.Application.Common.Services
 
         public async Task<MetaUsersConfigurationResponse> InsertMetaUsersConfigurationAsync(MetaUsersConfiguration request)
         {
-            var model = new OnBoardingLogsModel
+            var model = new ClientAdminLogsModel
             {
                 Source = "Onboarding/InsertMetaUsersConfigurationAsync",
-                AdditionalInfo = $"Data: {JsonConvert.SerializeObject(request)}"
+                Data = $"Data: {JsonConvert.SerializeObject(request)}"
             };
             try
             {
@@ -227,7 +228,7 @@ namespace F4ConversationCloud.Application.Common.Services
 
                     if (response > 0)
                     {
-                        model.AdditionalInfo = $"Data: {JsonConvert.SerializeObject(insertConfig)}";
+                        model.Data = $"Data: {JsonConvert.SerializeObject(insertConfig)}";
                         model.LogType = "Success";
                         model.Message = "Meta User Configuration Inserted Successfully";
                         return new MetaUsersConfigurationResponse
@@ -236,7 +237,7 @@ namespace F4ConversationCloud.Application.Common.Services
                             Message = "Meta User Configuration Inserted Successfully"
                         };
                     }
-                model.AdditionalInfo = $"Data: {JsonConvert.SerializeObject(insertConfig)}";
+                model.Data = $"Data: {JsonConvert.SerializeObject(insertConfig)}";
                 model.LogType = "Failure";
                 model.Message = "Meta User Configuration Insertion Failed";
 
@@ -260,7 +261,7 @@ namespace F4ConversationCloud.Application.Common.Services
             }
             finally
             {
-                await _logService.InsertOnboardingLogs(model);
+                await _logService.InsertClientAdminLogsAsync(model);
             }
         }
 
@@ -394,13 +395,9 @@ namespace F4ConversationCloud.Application.Common.Services
         
         }
 
-        public async Task<LoginResponse> OnboardingLogin(Loginrequest request) 
+        public async Task<LoginResponse> ClientLogin(Loginrequest request) 
         {
-            var log = new OnBoardingLogsModel
-            {
-                Source = "Onboarding/OnboardingLogin",
-                AdditionalInfo = $"Model: {JsonConvert.SerializeObject(request)}",
-            };
+            
 
             try
             {
@@ -425,6 +422,8 @@ namespace F4ConversationCloud.Application.Common.Services
                         Email = ClientDetails.Email,
                         Stage = ClientDetails.Stage,
                         Password = ClientDetails.Password,
+                        IsActive = ClientDetails.IsActive,
+                        RegistrationStatus= ClientDetails.RegistrationStatus
                     }
                 };
 
@@ -432,28 +431,33 @@ namespace F4ConversationCloud.Application.Common.Services
             }
             catch (Exception ex)
             {
-                log.LogType = "Error";
-                log.Message = ex.Message;
-                log.StackTrace = ex.StackTrace;
+                var log = new ClientAdminLogsModel
+                {
+                    Source = "Onboarding/OnboardingLogin",
+                    Data = $"Model: {JsonConvert.SerializeObject(request)}",
+                    LogType = "Error",
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                };
+                
+                await _logService.InsertClientAdminLogsAsync(log);
                 return new LoginResponse
                 {
                     Message = "Technical Error",
                     IsSuccess = false,
                 };
             }
-            finally {
-                await _logService.InsertOnboardingLogs(log);
-            }
+       
 
 
         }
 
         public async Task<bool> ValidateClientEmailAsync(string EmailId)
         {
-            var Log = new OnBoardingLogsModel
+            var Log = new ClientAdminLogsModel
             {
                 Source = "Onboarding/ValidateClientEmailAsync",
-                AdditionalInfo = $"EmailId: {EmailId}",
+                Data = $"EmailId: {EmailId}",
                
             };
 
@@ -476,7 +480,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 return false;
             }
             finally {
-                await _logService.InsertOnboardingLogs(Log);
+                await _logService.InsertClientAdminLogsAsync(Log);
             }
            
 
@@ -484,10 +488,10 @@ namespace F4ConversationCloud.Application.Common.Services
 
         public async Task SendResetPasswordLink(string EmailId)
         {
-            var Log = new OnBoardingLogsModel
+            var Log = new ClientAdminLogsModel
             {
                 Source = "Onboarding/SendResetPasswordLink",
-                AdditionalInfo = $"EmailId: {EmailId}"
+                Data = $"EmailId: {EmailId}"
             };
             try
             {
@@ -518,7 +522,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 };
 
                 await _emailService.Send(emailRequest);
-                Log.AdditionalInfo = $"EmailSendRequest: {emailRequest}";
+                Log.Data = $"EmailSendRequest: {emailRequest}";
                 Log.LogType = "Success";
                 Log.Message = "Password Reset email sent successfully";
 
@@ -530,7 +534,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 Log.StackTrace = ex.StackTrace;
             }
             finally {
-                await _logService.InsertOnboardingLogs(Log);
+                await _logService.InsertClientAdminLogsAsync(Log);
             }
             
 
@@ -539,17 +543,17 @@ namespace F4ConversationCloud.Application.Common.Services
         public async Task<bool> SetNewPassword(ConfirmPasswordModel model)
         {
 
-            var Log = new OnBoardingLogsModel
+            var Log = new ClientAdminLogsModel
             {
                 Source = "Onboarding/SetNewPassword",
-                AdditionalInfo = $"Model: {JsonConvert.SerializeObject(model)}"
+                Data = $"Model: {JsonConvert.SerializeObject(model)}"
             };
             try
             {
                
                 int result = await _authRepository.UpdatePasswordAsync(model);
 
-                Log.AdditionalInfo = $"EmailSendRequest:{JsonConvert.SerializeObject(model)}";
+                Log.Data = $"EmailSendRequest:{JsonConvert.SerializeObject(model)}";
                 Log.LogType = "Success";
                 Log.Message = "Password Reset email sent successfully";
                 return result is not 0;
@@ -562,7 +566,7 @@ namespace F4ConversationCloud.Application.Common.Services
                 return false;
             }
             finally {
-                await _logService.InsertOnboardingLogs(Log);
+                await _logService.InsertClientAdminLogsAsync(Log);
             }
            
         }

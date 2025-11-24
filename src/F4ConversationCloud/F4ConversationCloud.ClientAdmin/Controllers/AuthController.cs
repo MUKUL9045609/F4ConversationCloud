@@ -43,7 +43,7 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     return View(request);
                 }
 
-                var response = await _onboardingService.OnboardingLogin(new Loginrequest()
+                var response = await _onboardingService.ClientLogin(new Loginrequest()
                 {
                     Email = request.Email,
                     PassWord = request.Password
@@ -74,31 +74,32 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                         new Claim(ClaimTypes.NameIdentifier, clientdetails.UserId.ToString()),
                         new Claim("BusinessId", clientdetails.BusinessId),
                         new Claim("ClientInfoId", clientdetails.ClientInfoId.ToString())
-
+                        
                     };
                 var claimsIdentity = new ClaimsIdentity(userClaims, "CookieAuthentication");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
 
                 await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
-
-                HttpContext.Session.SetString("Username", clientdetails.Email);
-                HttpContext.Session.SetString("ClientMobileNO", clientdetails.PhoneNumber);
-                HttpContext.Session.SetInt32("UserId", clientdetails.UserId);
                 HttpContext.Session.SetInt32("StageId", (int)clientdetails.Stage);
                 
                 var stageValue = HttpContext.Session.GetInt32("StageId");
 
                 ClientFormStage stage = (ClientFormStage)stageValue.Value;
 
-                if (stage == ClientFormStage.ClientRegistered)
+                
+                if (stage == ClientFormStage.ClientRegistered && response.Data.IsActive)
                 {
                     return RedirectToAction("ClientOnboardingList", "MetaOnboarding");
                 }
-                else if (stage == ClientFormStage.MetaRegistered)
+                else if (stage == ClientFormStage.MetaRegistered && response.Data.IsActive)
                 {
                     return RedirectToAction("Index", "Home");
 
+                }
+                else if(stage == ClientFormStage.MetaRegistered && !response.Data.IsActive) {
+                        TempData["InfoMessage"] = "Your Account Has been Deactivated Please Contact To Admin.";
+                        return RedirectToAction("Login", "Auth");
                 }
                 else {
                     TempData["InfoMessage"] = "You have not registered yet, Please complete your registration.!";

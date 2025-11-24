@@ -12,6 +12,11 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string CreatedOnFilter { get; set; } = string.Empty;
         public string UpdatedOnFilter { get; set; } = string.Empty;
         public int RegistrationStatusFilter { get; set; }
+        public string OrganizationsNameFilter { get; set; } = string.Empty;
+        public int AccountStatusFilter { get; set; } = 2;
+        public int AccountStatus { get; set; }
+        public int Stage { get; set; }
+
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public int TotalCount { get; set; } = 0;
@@ -27,7 +32,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             [Display(Name = "Sr. No.")]
             public int SrNo { get; set; }
 
-            [Display(Name = "Name")]
+            [Display(Name = "Full Name")]
             public string Name { get; set; }
 
             [Display(Name = "Email Address")]
@@ -51,6 +56,22 @@ namespace F4ConversationCloud.SuperAdmin.Models
 
             [Display(Name = "Last Update")]
             public DateTime? UpdatedOn { get; set; }
+
+            [Display(Name = "Account Status")]
+            public int AccountStatus { get; set; }
+
+            [Display(Name = "Organizations")]
+            public string OrganizationsName { get; set; }
+
+            [Display(Name = "Category")]
+            public string Category { get; set; }
+
+            [Display(Name = "Client ID")]
+            public string ClientId { get; set; }
+
+            public int Stage { get; set; }
+
+
         }
     }
 }

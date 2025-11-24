@@ -1,4 +1,4 @@
-﻿@model F4ConversationCloud.SuperAdmin.Models.ClientManagementViewModel
+﻿@model F4ConversationCloud.SuperAdmin.Models.BusinessAccountListViewModel
 @{
     ViewData["Title"] = "Client List";
 }
@@ -9,7 +9,75 @@
             <div class="header-content">
                 <h3 class="sub-heading">Business Accounts <span class="light-text ms-1">(@Model.TotalCount)</span> </h3>
             </div>
-            <partial name="_BusinessAccountsListPartial" model="@Model" />
+
+            <div class="table-responsive">
+                <table class="table user-table form-wrapper">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Columns.SrNo)</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.Organizations)
+                                <div class="input-group">
+                                    <input type="text" asp-for="OrganizationsFilter" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.PhoneNumber)
+                                <div class="input-group">
+                                    <input type="text" asp-for="PhoneNumberFilter" class="form-control srcIcon" placeholder="Search" id="searchInput">
+                                    <span class="searchIcon" onclick="loadData()"></span>
+                                </div>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Columns.CreatedAt)
+                                <label class="datewrap" for="datepicker">
+                                    <input type="date" asp-for="OnboardingOnFilter"
+                                           class="form-control search-form-control"
+                                           placeholder="Select Date" onchange="loadData()" />
+                                </label>
+                            </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.data.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">No Records Found</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.data)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.SrNo)</td>
+                                    <td>
+                                        <form method="get" action="@Url.Action("RegisteredBusinessDetails", "ClientRegistration", new { id = item.Id })">
+                                            <a method="get" asp-controller="ClientRegistration" asp-action="RegisteredBusinessDetails" asp-route-id="@item.Id" id="name-link">@Html.DisplayFor(modelItem => item.Organizations)</a>
+                                        </form>
+
+                                        @* <span class="buisness-category"><span class="fw-medium">Category :</span> @Html.DisplayFor(modelItem => item.Category)</span> *@
+                                        <span class="buisness-category"><span class="fw-medium">Client Id :</span> @Html.DisplayFor(modelItem => item.ClientId)</span>
+                                        <a href="@Url.Action("RegisteredBusinessDetails", "ClientRegistration", new { id = item.Id })" class="text-decoration-none"><span>WABA Accounts :@Html.DisplayFor(modelItem => item.ClientWaBaAccCount)</span></a>
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    </td>
+                                    <td>
+                                        <span class="date">@item.CreatedAt.ToString("dd MMM yyyy")</span>
+                                        <span class="datetime">at @item.CreatedAt.ToString("hh:mm tt")</span>
+                                    </td>
+                                   
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>
@@ -30,15 +98,13 @@
 @section Scripts {
     <script>  
         function loadData() {
-            var clientNameSearch = $("[name=ClientNameSearch]").val();
-            var onboardingFilter = $("[name=OnboardingOnFilter]").val();
-            var statusFilter = $("[name=StatusFilter]").val();
+            var OrganizationsFilter = $("[name=OrganizationsFilter]").val();
             var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+            var onboardingFilter = $("[name=OnboardingOnFilter]").val();
             var pageNumber = 1;
             location.href = '@Url.Action("List", "ClientManagement")' +
-                '?clientNameSearch=' + clientNameSearch +
+                '?OrganizationsFilter=' + OrganizationsFilter +
                 '&onboardingOnFilter=' + encodeURIComponent(onboardingFilter) +
-                '&statusFilter=' + encodeURIComponent(statusFilter) +
                 '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
                 '&PageNumber=' + pageNumber;
         }
@@ -46,15 +112,13 @@
         $(".page-link").click(function () {
             var pageNumber = $(this).data("page-number");
             if (pageNumber !== undefined && pageNumber !== null) {
-                var clientNameSearch = $("[name=ClientNameSearch]").val();
-                var onboardingFilter = $("[name=OnboardingOnFilter]").val();
-                var statusFilter = $("[name=StatusFilter]").val();
-                var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+                    var OrganizationsFilter = $("[name=OrganizationsFilter]").val();
+                   var PhoneNumberFilter = $("[name=PhoneNumberFilter]").val();
+                   var onboardingFilter = $("[name=OnboardingOnFilter]").val();
 
                 location.href = '@Url.Action("List", "ClientManagement")' +
-                    '?clientNameSearch=' + clientNameSearch +
+                     '?OrganizationsFilter=' + OrganizationsFilter +
                     '&onboardingOnFilter=' + encodeURIComponent(onboardingFilter) +
-                    '&statusFilter=' + encodeURIComponent(statusFilter) +
                     '&PhoneNumberFilter=' + encodeURIComponent(PhoneNumberFilter) +
                     '&PageNumber=' + pageNumber;
             }

@@ -1,4 +1,5 @@
 ﻿using BuldanaUrban.Domain.Helpers;
+using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.Domain.Entities.SuperAdmin;
@@ -12,12 +13,14 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class ClientRegistrationController : BaseController
     {
+        private readonly ICurrentUserService _currentUserService;
         private readonly IClientRegistrationService _clientRegistrationService;
         private readonly IClientManagementService _clientManagement;
-        public ClientRegistrationController(IClientRegistrationService clientRegistrationService, IClientManagementService clientManagement)
+        public ClientRegistrationController(IClientRegistrationService clientRegistrationService, IClientManagementService clientManagement,ICurrentUserService currentUserService)
         {
             _clientRegistrationService = clientRegistrationService;
             _clientManagement = clientManagement;
+            _currentUserService = currentUserService;
         }
 
         public async Task<IActionResult> List(ClientRegistrationListViewModel model)
@@ -29,6 +32,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var response = await _clientRegistrationService.GetFilteredRegistrations(new ClientRegistrationListFilter
                 {
+                    OrganizationsNameFilter = model.OrganizationsNameFilter ?? String.Empty,
+                    AccountStatusFilter = model.AccountStatusFilter,
                     NameFilter = model.NameFilter ?? String.Empty,
                     EmailFilter = model.EmailFilter ?? String.Empty,
                     ContactNumberFilter = model.ContactNumberFilter ?? String.Empty,
@@ -62,6 +67,11 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     RegistrationStatusName = x.RegistrationStatus == 0 ? "" : ((ClientRegistrationStatus)x.RegistrationStatus).GetDisplayName(),
                     CreatedOn = x.CreatedOn,
                     UpdatedOn = x.UpdatedOn,
+                    AccountStatus = x.AccountStatus,
+                    OrganizationsName = x.OrganizationsName,
+                    ClientId = x.ClientId,
+                    Category = x.Category,
+
                     RoleName = ((ClientRole)x.Role).GetDisplayName()
                 });
 
@@ -188,7 +198,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
                 var cr = await _clientRegistrationService.GetByIdAsync(model.Id);
 
-                if (cr.FirstName == model.FirstName && cr.LastName == model.LastName 
+                if (cr.FirstName == model.FirstName && cr.LastName == model.LastName
                     && cr.ContactNumber == model.ContactNumber && cr.Role == model.Role)
                 {
                     var emailExist = await _clientRegistrationService.CheckEmailExist(model.Email);
@@ -211,7 +221,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         return View(model);
                     }
                 }
-                    
+
                 int id = await _clientRegistrationService.CreateUpdateAsync(new ClientRegistration()
                 {
                     Id = model.Id,
@@ -322,6 +332,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 StatusFilter = model.StatusFilter ?? String.Empty,
                 OnboardingOnFilter = model.OnboardingOnFilter ?? String.Empty,
                 PhoneNumberFilter = model.PhoneNumberFilter ?? String.Empty,
+                WabaAccountStatusFilter=model.WabaAccountStatusFilter,
                 PageNumber = model.PageNumber,
                 PageSize = model.PageSize,
                 RegistrationId = model.RegistrationId,
@@ -371,5 +382,124 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return Ok(false);
             }
         }
+
+
+        public async Task<IActionResult> ActivateClientAccount(int ClientId)
+        {
+
+            try
+            {
+                var request = new ActivateDeactivateClientAccountRequest
+                {
+                    ClientId = ClientId,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                    AccountStatus = ClientRegistrationStatus.Active
+                };
+                var isDeletedResponce = await _clientRegistrationService.ActivateClientAccountAsync(request);
+
+                if (isDeletedResponce.success)
+                {
+                    return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new DeleteTemplateResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> DeactivateClientAccount(int ClientId)
+        {
+            try
+            {
+                var request  = new ActivateDeactivateClientAccountRequest
+                {
+                    ClientId = ClientId,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                    AccountStatus = ClientRegistrationStatus.Deactivated
+                };
+
+                var isDeletedResponce = await _clientRegistrationService.DeactivateClientAccountAsync(request);
+                if (isDeletedResponce.success)
+                {
+                    return Json(new DeleteTemplateResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new DeleteTemplateResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new DeleteTemplateResponse { success = false, message = ex.Message });
+            }
+
+
+        }
+
+
+        public async Task<IActionResult> ActivateWaBaAccount(int Id)
+        {
+
+            try
+            {
+                var request = new ActivateDeactivateWaBaAccountRequest
+                {
+                    Id = Id,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                };
+                var isDeletedResponce = await _clientRegistrationService.ActivateWaBaAccountAsync(request);
+
+                if (isDeletedResponce.success)
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new CommonSuperAdminServiceResponse { success = false, message = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> DeactivateWaBaAccount(int Id)
+        {
+            try
+            {
+                var request = new ActivateDeactivateWaBaAccountRequest
+                {
+                    Id = Id,
+                    DeactivatedBy = Convert.ToInt32(_currentUserService.UserId),
+                };
+
+                var isDeletedResponce = await _clientRegistrationService.DeactivateWaBaAccountAsync(request);
+                if (isDeletedResponce.success)
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = true, message = isDeletedResponce.message });
+                }
+                else
+                {
+                    return Json(new CommonSuperAdminServiceResponse { success = false, message = isDeletedResponce.message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new CommonSuperAdminServiceResponse { success = false, message = ex.Message });
+            }
+
+
+        }
+
+
+
+
+
     }
 }

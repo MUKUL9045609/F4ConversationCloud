@@ -49,13 +49,13 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         public async Task<int> InsertClientAdminLogsAsync(ClientAdminLogsModel clientAdminLogs)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("userId", clientAdminLogs.SessionUserId);
+            parameters.Add("userId", clientAdminLogs.ClientInfoId);
             parameters.Add("Source", clientAdminLogs.Source);
             parameters.Add("LogDate", clientAdminLogs.LogDate);
             parameters.Add("LogType", clientAdminLogs.LogType);
             parameters.Add("Message", clientAdminLogs.Message);
             parameters.Add("StackTrace", clientAdminLogs.StackTrace);
-            parameters.Add("AdditionalInfo", clientAdminLogs.Data);
+            parameters.Add("Data", clientAdminLogs.Data);
             return await _repository.InsertUpdateAsync("sp_InsertClientAdminLogs", parameters);
         }
     }

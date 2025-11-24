@@ -15,6 +15,6 @@ namespace F4ConversationCloud.Application.Common.Models.ClientModel
         public string StackTrace { get; set; }
         public string Data { get; set; }
 
-        public int? SessionUserId { get; set; }
+        public int ClientInfoId { get; set; }
     }
 }

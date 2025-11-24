@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+using F4ConversationCloud.Domain.Entities.SuperAdmin;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
 namespace F4ConversationCloud.ClientAdmin.Controllers
 {
     public class BaseController : Controller
     {
-        public BaseController()
+        
+        public BaseController( )
         {
-
+           
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -48,10 +52,10 @@ namespace F4ConversationCloud.ClientAdmin.Controllers
                     base.OnActionExecuting(context);
                     return;
                 }
+                var user = context.HttpContext.User;
+                string? userEmail= user.FindFirstValue(ClaimTypes.Email);
 
-                var username = context.HttpContext.Session.GetString("Username");
-
-                if (string.IsNullOrEmpty(username))
+                if (string.IsNullOrEmpty(userEmail))
                 {
                     context.Result = new RedirectToActionResult("Login", "Auth", null);
                     return;

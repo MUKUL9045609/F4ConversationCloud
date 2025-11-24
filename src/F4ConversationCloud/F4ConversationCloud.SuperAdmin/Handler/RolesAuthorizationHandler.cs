@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
+﻿using F4ConversationCloud.Application.Common.Interfaces.Services.Client;
+using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
@@ -8,9 +9,11 @@ namespace F4ConversationCloud.SuperAdmin.Handler
     public class RolesAuthorizationHandler : AuthorizationHandler<RolesAuthorizationRequirement>, IAuthorizationHandler
     {
         private readonly ISuperAdminAuthService _superAdminAuthService;
-        public RolesAuthorizationHandler(ISuperAdminAuthService superAdminAuthService)
+        private readonly ICurrentUserService _currentUserService;
+        public RolesAuthorizationHandler(ISuperAdminAuthService superAdminAuthService,ICurrentUserService currentUserService)
         {
             _superAdminAuthService = superAdminAuthService;
+            _currentUserService = currentUserService;
         }
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                        RolesAuthorizationRequirement requirement)
@@ -28,9 +31,8 @@ namespace F4ConversationCloud.SuperAdmin.Handler
             }
             else
             {
-                var claims = context.User.Claims;
-                var roles = requirement.AllowedRoles;
-                var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+                var roles = requirement.AllowedRoles; 
+                var email = _currentUserService.CurrentUserEmail;
 
                 validRole = _superAdminAuthService.CheckValidRole(roles, email).Result;
             }
