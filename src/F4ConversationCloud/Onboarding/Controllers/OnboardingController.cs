@@ -82,7 +82,8 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     LastName = clientdetails.LastName,
                     Email = clientdetails.Email,
                     PhoneNumber = clientdetails.PhoneNumber,
-                    Stage = clientdetails.Stage
+                    Stage = clientdetails.Stage,
+                    OrganizationsName = clientdetails.OrganizationsName,
                 };
 
                 TempData.Put("registrationform", command);
@@ -149,6 +150,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     FirstName = step1form.FirstName + " " + step1form.LastName,
                     Email = step1form.Email,
                     PhoneNumber = step1form.PhoneNumber,
+                    OrganizationsName = step1form.OrganizationsName,
 
                 };
                 ViewBag.IsReadOnly = true;
@@ -187,6 +189,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                         command.LastName = ClientTempData.LastName;
                         command.Email = ClientTempData.Email;
                         command.PhoneNumber = ClientTempData.PhoneNumber;
+                        command.OrganizationsName = ClientTempData.OrganizationsName;
                         command.TimeZones = await _authRepository.GetTimeZonesAsync();
                         command.Cities = await _authRepository.GetCitiesAsync();
                         command.States = await _authRepository.GetStatesAsync();
@@ -207,7 +210,6 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     StateId= command.StateId,
                     ZipCode= command.ZipCode,
                     OptionalAddress = command.OptionalAddress,
-                    OrganizationsName = command.OrganizationsName,
                     PassWord = command.PassWord.Encrypt(),
                     IsActive = command.IsActive,
                     Stage = ClientFormStage.ClientRegistered,
@@ -234,6 +236,7 @@ namespace F4ConversationCloud.Onboarding.Controllers
                     command.LastName = ClientTempData.LastName;
                     command.Email = ClientTempData.Email;
                     command.PhoneNumber = ClientTempData.PhoneNumber;
+                    command.OrganizationsName = ClientTempData.OrganizationsName;
                     command.TimeZones = await _authRepository.GetTimeZonesAsync();
                     command.Cities = await _authRepository.GetCitiesAsync();
                     command.States = await _authRepository.GetStatesAsync();

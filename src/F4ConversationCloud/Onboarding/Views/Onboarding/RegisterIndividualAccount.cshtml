@@ -131,7 +131,7 @@
                 <div class="group-form">
                     <label for="OrganizationsName" class="form-label">Organizations Name <sup class="error">*</sup></label>
                     <input asp-for="OrganizationsName" type="text" class="form-control" placeholder="Enter your organizations name"
-                           id="email">
+                       id="organizationsNameInputeId">
                     <span asp-validation-for="OrganizationsName" class="error-message text-danger small"></span>
                 </div>
 
@@ -146,11 +146,11 @@
                         var settimean = item.name + item.current_utc_offset;
                         if (Model.Timezone == settimean)
                         {
-                                                <option value="@settimean" selected>@settimean</option>
+                          <option value="@settimean" selected>@settimean</option>
                         }
                         else
                         {
-                                                <option value="@settimean">@settimean</option>
+                            <option value="@settimean">@settimean</option>
                         }
                     }
 
@@ -182,21 +182,20 @@
                         <select id="StateSelect" class="form-control select2" asp-for="StateId" >
                     @if (ViewBag.DisableButtons)
                     {
-                                        <option value="@Model.StateId" selected>@Model.StateId</option>
+                         <option value="@Model.StateId" selected>@Model.StateId</option>
                     }
                     else
                     {
-                                        <option value="" selected disabled>Select State</option>
+                         <option value="" selected disabled>Select State</option>
                         @foreach (var item in Model.States)
                         {
-                                                    <option value="@item.Id">@item.Name</option>
+                          <option value="@item.Id">@item.Name</option>
                         }
                     }
                         </select>
 
                 @if (!ViewBag.DisableButtons)
-                {
-                                    <span asp-validation-for="StateId" class="error-message text-danger small"></span>
+                { <span asp-validation-for="StateId" class="error-message text-danger small"></span>
                 }
                 </div>
 
@@ -206,16 +205,16 @@
                             <select id="CitySelect" class="form-control select2" asp-for="CityId">
                         @if (ViewBag.DisableButtons)
                         {
-                                            <option value="@Model.CityId" selected>@Model.CityId</option>
+                             <option value="@Model.CityId" selected>@Model.CityId</option>
                         }
                         else
                         {
-                                            <option value="" selected disabled>Select City</option>
+                             <option value="" selected disabled>Select City</option>
                         }
                             </select>
                     @if (!ViewBag.DisableButtons)
                     {
-                                        <span asp-validation-for="CityId" class="error-message text-danger small"></span>
+                       <span asp-validation-for="CityId" class="error-message text-danger small"></span>
                     }
 
                     </div>
@@ -229,7 +228,7 @@
                         </label>
                         <input asp-for ="ZipCode" type="text" class="form-control" id="postal_code" 
                                placeholder="Enter your postal or ZIP code" >
-                    <span asp-validation-for="ZipCode" class="error-message text-danger small"></span>
+                        <span asp-validation-for="ZipCode" class="error-message text-danger small"></span>
 
                 </div>
 
@@ -464,7 +463,7 @@
                         var disableButtons = @Json.Serialize(ViewBag.DisableButtons);
 
                         if (isReadOnly) {
-                            $('#fullName, #emailid, #PhoneNumber').prop("disabled", true);
+                    $('#fullName, #emailid, #PhoneNumber,#organizationsNameInputeId').prop("disabled", true);
                         }
 
                     if ($form.hasClass("readonly-mode")) {

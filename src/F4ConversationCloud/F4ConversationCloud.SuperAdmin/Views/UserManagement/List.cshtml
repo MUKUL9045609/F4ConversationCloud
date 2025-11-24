@@ -92,10 +92,15 @@
                                         @Html.DisplayFor(modelItem => item.RoleName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                                        <span class="date"> @item.CreatedOn.ToString("dd MMM yyy")</span>
+                                        <span class="datetime">at @item.CreatedOn.ToString("h:mm tt")</span>
+                                        @* @Html.DisplayFor(modelItem => item.CreatedOn) *@
+                                       
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.UpdatedOn)
+                                        <span class="date"> @item.UpdatedOn?.ToString("dd MMM yyy")</span>
+                                        <span class="datetime">at @item.UpdatedOn?.ToString("h:mm tt")</span>
+                                        @* @Html.DisplayFor(modelItem => item.UpdatedOn) *@
                                     </td>
                                     <td>
                                         @{
