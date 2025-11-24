@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
-    //[Authorize(Roles = "1")]
+    [Authorize(Roles = "1")]
     [ApiController]
     [Route("MessageTemplates")]
     public class TemplateController : Controller
@@ -25,7 +25,7 @@ namespace F4ConversationCloud.WebUI.Controllers
 
         [HttpPost("[action]")]
         [Consumes("application/json")]
-        //[HasPermission("IsCreateTemplate")]
+        [HasPermission("IsCreateTemplate")]
         public async Task<IActionResult> CreateTemplate([FromBody] TemplateRequest request)
         {
             if (!ModelState.IsValid)
@@ -47,7 +47,7 @@ namespace F4ConversationCloud.WebUI.Controllers
         }
 
         [HttpPost("[action]")]
-        //[HasPermission("IsEditTemplate")]
+        [HasPermission("IsEditTemplate")]
         public async Task<IActionResult> EditTemplate(EditTemplateRequest request)
         {
 
