@@ -15,7 +15,7 @@ namespace F4ConversationCloud.Infrastructure.Service
         private IConfiguration _configuration { get; }
         private IAPILogService _logservice { get; }
 
-        public SendTemplateMessageService(HttpClient httpClient, IConfiguration configuration , IAPILogService logService)
+        public SendTemplateMessageService(HttpClient httpClient, IConfiguration configuration, IAPILogService logService)
         {
             _httpClient = httpClient;
             _configuration = configuration;
@@ -30,7 +30,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                     .Select(kv => new
                     {
                         type = "text",
-                        parameter_name = kv.Key,
+                        //parameter_name = kv.Key,
                         text = kv.Value
                     })
                     .ToArray();
@@ -44,18 +44,36 @@ namespace F4ConversationCloud.Infrastructure.Service
                     {
                         name = sendTemplateDTO.TemplateName,
                         language = new { code = "en" },
-                        components = new[]
+                        components = new object[]
                         {
                             new
                             {
-                                type = "body",
-                                parameters = parameterList
+                                type = "header",
+                                parameters = new object[]
+                                {
+                                    new
+                                    {
+                                        type = "image",
+                                        image = new
+                                        {
+                                            link = sendTemplateDTO.TemplateUrl
+                                        }
+                                    }
+                                }
                             }
+                            
+                            //,
+                            //new
+                            //{
+                            //    type = "body",
+                            //    parameters = parameterList
+                            //}
                         }
                     }
                 };
+                
 
-                await MetaSendMessageTemplateAPICall(payload);
+                await MetaSendMessageTemplateAPICall(payload, sendTemplateDTO.PhoneId);
             }
             catch (Exception ex)
             {
@@ -78,12 +96,12 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 await MetaSendMessageTemplateAPICall(payload);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
         }
-       
+
         public async Task<dynamic> MetaSendMessageTemplateAPICall(object requestBody, string PhoneID = null)
         {
             string apiUrl = string.Empty;
@@ -176,7 +194,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 return parameterDict;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }

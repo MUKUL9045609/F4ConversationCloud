@@ -17,5 +17,11 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         [Required]
         public Dictionary<string, string> TemplateValues { get; set; }
 
+        [Required]
+        public string TemplateUrl { get; set; }
+
+        [Required]
+        public string PhoneId { get; set; }
+
     }
 }

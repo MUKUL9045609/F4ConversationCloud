@@ -1,6 +1,5 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models.Templates;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace F4ConversationCloud.WebUI.Controllers
