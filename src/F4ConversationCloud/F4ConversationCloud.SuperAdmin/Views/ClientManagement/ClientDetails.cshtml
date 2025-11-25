@@ -410,8 +410,8 @@
                                                 </li>
 
                                                 <li>
-                                                    <span class="formkey">Created At</span>
-                                                    <span class="formvalue">@Model.CreatedAt</span>
+                                                    <span class="formkey">Date of Onboarding</span>
+                                                    <span class="formvalue">@Model.CreatedAt.ToString("dd MMMM yyyy 'at' hh:mm tt")</span>
                                                 </li>
                                             </ul>
 
@@ -737,9 +737,9 @@
             // }
 
             function updateSections() {
-                const isMarketing = $('#checkbox-marketing').is(':checked');
-                const isAuthentication = $('#checkbox-authentication').is(':checked');
-                const isUtility = $('#checkbox-utility').is(':checked');
+                var isMarketing = $('#checkbox-marketing').is(':checked');
+                var isAuthentication = $('#checkbox-authentication').is(':checked');
+                var isUtility = $('#checkbox-utility').is(':checked');
 
                 // Show/hide individual sections based on their checkbox
                 $('#marketing').toggle(isMarketing);
@@ -1023,9 +1023,9 @@
         });
 
             var currentPageNumber = 1;
-            const urlParams = new URLSearchParams(window.location.search);
-            const activeTab = urlParams.get('activeTab');
-            const openCollapse = urlParams.get('openCollapse');
+            var urlParams = new URLSearchParams(window.location.search);
+            var activeTab = urlParams.get('activeTab');
+            var openCollapse = urlParams.get('openCollapse');
 
             if (activeTab) {
                 if (activeTab === "client-tab") {

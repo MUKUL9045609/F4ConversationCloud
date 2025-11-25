@@ -13,8 +13,9 @@
         <select asp-for="buttons[@i].ButtonType"
                 asp-items="Model.buttons[@i].buttonTypes"
                 class="form-select"
-                aria-label="Default select example">
+                aria-label="Default select example" disabled>
         </select>
+        <input type="hidden" asp-for="buttons[@i].ButtonType" />
     </div>
     <div class="w-25 flex-grow-1">
         <label>Button Text</label>

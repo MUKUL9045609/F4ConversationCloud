@@ -462,7 +462,7 @@
 
                     for (var match of matches) {
                         var index = match.index;
-                        const varLen = match[0].length;
+                        var varLen = match[0].length;
 
                         var before = content.substring(0, index);
                         var after = content.substring(index + varLen);
@@ -892,12 +892,31 @@
                 $('.add-btn-template').toggleClass('disabled', isMax);
             }
 
-            // Dropdown click -> add row
             $(document).on('click', '#template-btn a.dropdown-item', function (e) {
                 e.preventDefault();
                 var link = this;
                 var value = link.dataset.value;
                 var text  = link.dataset.text;
+
+                var limits = {
+                    'Visit website': 2,
+                    'Call on WhatsApp': 1,
+                    'Call phone number': 1,
+                    'Complete Flow': 1,
+                    'Copy offer code': 1
+                };
+
+                if (limits[text]) {
+                    var count = $('#call-to-action-list .actionbtn select[name*="ButtonType"] option:selected')
+                    .filter(function() {
+                        return $(this).text() === text;
+                    }).length;
+
+                    if (count >= limits[text]) {
+                        commonHelper.showError(`You can add a maximum of ${limits[text]} ${text} button${limits[text] > 1 ? 's' : ''}.`);
+                        return;
+                    }
+                }
 
                 var currentCount = getCustomCount();
 
@@ -983,7 +1002,6 @@
             });
 
             $(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"], #call-to-action-list input[name^="buttons"][name$=".ButtonText"]', function () {
-            //$(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"]', function () {
                 var $input = $(this);
                 validateDuplicateButtonTexts();
                 // Extract index from name: buttons[0].ButtonText -> 0
@@ -1009,31 +1027,29 @@
                     var btnLogo = '';
                     if (buttonType == 'Custom'){
                         inputText = 'Quick Reply';
-                        btnLogo = 'backward'
+                        btnLogo = 'backward';
                     }else if(buttonType == 'Preconfigured Response'){
                         inputText = buttonType;
-                        btnLogo = 'backward'
+                        btnLogo = 'backward';
                     }else if(buttonType == 'Visit website'){
                         inputText = buttonType;
-                        btnLogo = 'buy-icon'
+                        btnLogo = 'buy-icon';
                     }else if(buttonType == 'Call on WhatsApp'){
                         inputText = buttonType;
-                        btnLogo = 'call'
+                        btnLogo = 'call';
                     }else if(buttonType == 'Call phone number'){
                         inputText = buttonType;
-                        btnLogo = 'call'
+                        btnLogo = 'call';
                     }else if(buttonType == 'Copy offer code'){
                         inputText = buttonType;
-                        btnLogo = 'copy-code'
+                        btnLogo = 'copy-code';
                     }else if(buttonType == 'View Flow'){
                         inputText = buttonType;
-                        btnLogo = 'forward'
+                        btnLogo = 'forward';
                     }
-                    // If you want a placeholder when empty:
+
                     var displayText = text.length ? text : inputText;
 
-                    // Replace the text node after the icon
-                    // Safer approach: rebuild anchor contents
                     $anchor.html('<i class="'+btnLogo+'"></i> ' + displayText);
                 }
             });
