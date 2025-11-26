@@ -25,5 +25,6 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
         Task<int> ActivateTemplateAsync(int templateId);
         Task<int> InsertTemplatesButtonAsync(MessageTemplateButtonDTO request);
         Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId);
+        Task<bool> DeleteTemplatesButtonAsync(int WhatsappTemplateId);
     }
 }
