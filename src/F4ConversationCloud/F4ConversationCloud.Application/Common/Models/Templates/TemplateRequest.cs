@@ -393,6 +393,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string? Phone_Number { get; set; }
         public string? Url { get; set; }
         public List<string>? Example { get; set; }
+        public int ButtonUrlType { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

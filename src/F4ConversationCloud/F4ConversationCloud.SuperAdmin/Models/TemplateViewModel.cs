@@ -78,7 +78,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public int ButtonCategory { get; set; }
             public IEnumerable<SelectListItem> buttonTypes { get; set; }
             public IEnumerable<SelectListItem> UrlTypes { get; set; }
-            public string UrlType { get; set; }
+            public int UrlType { get; set; }
             [StringLength(2000, ErrorMessage = "Website Url should be less than 2000 characters.")]
             public string WebsiteUrl { get; set; }
             public int ActiveFor { get; set; }

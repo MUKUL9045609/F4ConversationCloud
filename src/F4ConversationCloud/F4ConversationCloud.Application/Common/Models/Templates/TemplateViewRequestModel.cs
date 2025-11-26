@@ -40,7 +40,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
             public int ButtonType { get; set; }
             public string ButtonText { get; set; }
             public int ButtonCategory { get; set; }
-            public string UrlType { get; set; }
+            public int UrlType { get; set; }
             public string WebsiteUrl { get; set; }
             public int ActiveFor { get; set; }
             public string CountryCode { get; set; }
