@@ -10,6 +10,7 @@ using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Persistence;
 using F4ConversationCloud.SuperAdmin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace F4ConversationCloud.SuperAdmin.Controllers
@@ -248,6 +249,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                         viewModel.bodyVariables.Add(bodyVariable);
                     }
                 }
+
                 var buttons = await _whatsAppTemplateService.GetTemplateButtonsAsync(0, id);
                 var viewbuttons = new List<TemplateViewModel.Button>();
                 foreach (var b in buttons)
@@ -256,11 +258,17 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     viewbtn.ButtonText = b.ButtonText;
                     viewbtn.ButtonType = b.ButtonType;
                     viewbtn.ButtonCategory = b.ButtonCategory;
+                    viewbtn.buttonTypes = EnumExtensions.ToSelectList<CustomButtonType>();
+                    viewbtn.UrlTypes = EnumExtensions.ToSelectList<VisitwebsiteUrlType>();
+                    viewbtn.CountryCodes = EnumExtensions.ToSelectList<CountryCode>();
+                    viewbtn.UrlType = b.UrlType;
+                    viewbtn.WebsiteUrl = b.WebsiteUrl;
+                    viewbtn.ActiveFor = b.ActiveFor;
+                    viewbtn.CountryCode = b.CountryCode;
+                    viewbtn.PhoneNumber = b.PhoneNumber;
+                    viewbtn.OfferCode = b.OfferCode;
+
                     viewbuttons.Add(viewbtn);
-                    if (viewbtn.ButtonCategory == (int)ButtonCategory.Custom)
-                    {
-                        viewbtn.buttonTypes = EnumExtensions.ToSelectList<CustomButtonType>();
-                    }
                 }
                 viewModel.buttons = viewbuttons;
                 return View(viewModel);

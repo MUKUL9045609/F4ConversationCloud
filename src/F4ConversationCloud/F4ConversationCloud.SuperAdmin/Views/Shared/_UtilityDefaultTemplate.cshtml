@@ -198,14 +198,33 @@
                 <h6>Quick Reply</h6>
                 <div id="quick-reply-list">
                     @{
-                        var index = 0;
                         if (Model?.buttons != null)
                         {
-                            foreach (var btn in Model.buttons)
+                            for (var i = 0; i < Model.buttons.Count; i++)
                             {
-                                ViewData["RowIndex"] = index;
-                                <partial name="_MessageVariableBody" model="btn" />
-                                index++;
+                                if (Model.buttons[i].ButtonCategory == (int)ButtonCategory.Custom)
+                                {
+                                    ViewData["RowIndex"] = i;
+                                    <partial name="_CustomButtonPartialView" model="Model" />
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <div class="custom-btn mt-3" id="call-to-action-section" style="display:none;">
+                <h6>Call to Action</h6>
+                <div id="call-to-action-list">
+                    @{
+                        if (Model?.buttons != null)
+                        {
+                            for (var i = 0; i < Model.buttons.Count; i++)
+                            {
+                                if (Model.buttons[i].ButtonCategory != (int)ButtonCategory.Custom)
+                                {
+                                    ViewData["RowIndex"] = i;
+                                    <partial name="_CallToActionButtonPartialView" model="Model" />
+                                }
                             }
                         }
                     }
