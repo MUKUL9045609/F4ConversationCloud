@@ -131,6 +131,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplateButtonDTO.ButtonPhoneNumber = e.Phone_Number;
                     messageTemplateButtonDTO.ButtonActionType = e.ButtonActionType;
                     messageTemplateButtonDTO.ButtonUrlType = e.ButtonUrlType;
+                    messageTemplateButtonDTO.CountryCode = e.CountryCode;
+                    messageTemplateButtonDTO.ButtonActiveForDays = e.ActiveForDays;
+                    messageTemplateButtonDTO.CopyCode = e.CopyCode;
                     var id = await _whatsAppTemplateRepository.InsertTemplatesButtonAsync(messageTemplateButtonDTO);
                 }
 
