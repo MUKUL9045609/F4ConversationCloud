@@ -326,6 +326,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                             button.Phone_Number = code + b.PhoneNumber;
                         }
                     }
+                    else if (b.ButtonCategory == (int)ButtonCategory.CallOnWhatsApp)
+                    {
+                        button.ButtonActionType = "CALL_ON_WHATSAPP";
+                        button.ActiveForDays = b.ActiveFor;
+                    }
                     button.ButtonType = b.ButtonType;
                     button.Text = b.ButtonText;
 
