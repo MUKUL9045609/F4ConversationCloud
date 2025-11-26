@@ -9,6 +9,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
 {
     public interface IUsageAndBillingService
     {
-        Task<UsageModelResponse> GetUsageDetailsAsync(UsageListFilter filter);
+        Task<UsageModelResponse> GetUsageListAsync(UsageListFilter filter);
+        Task<BillingListModelResponse> GetBillingListAsync(BillingListFilter filter);
+        Task<IEnumerable<TemplateMessageInsightsListViewItem>> GetTemplateMessageInsightsListAsync(TemplateMessageInsightsFilter filter);
     }
 }

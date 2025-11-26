@@ -64,8 +64,30 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
                 return Enumerable.Empty<TemplateMessageInsightsListViewItem>();
             }
         }
+        public async Task<(IEnumerable<BillingListItem>, int)> GetBillingListAsync(BillingListFilter filter)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("organizationsNameFilter", filter.OrganizationsNameFilter);
+                parameters.Add("wabaPhoneNumberFilter", filter.WabaPhoneNumberFilter);
+                parameters.Add("WhatsAppDisplayName", filter.WhatsAppDisplayNameFilter);
+                parameters.Add("PageNumber", filter.PageNumber);
+                parameters.Add("PageSize", filter.PageSize);
+
+                var list = await _repository.GetListByValuesAsync<BillingListItem>("sp_GetUsageClientList", parameters);
+                int count = await _repository.GetCountAsync("sp_GetUsageClientCount", parameters);
+
+                return (list, count);
+            }
+            catch (Exception)
+            {
+
+                return (Enumerable.Empty<BillingListItem>(), 0);
+            }
 
 
+        }
 
     }
 }

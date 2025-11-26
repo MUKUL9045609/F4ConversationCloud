@@ -1,0 +1,178 @@
+﻿@model F4ConversationCloud.SuperAdmin.Models.BillingDetailsViewModel
+@{
+    ViewData["Title"] = "Billing Details";
+}
+@{
+    var organizationName = Model.data.Select(x => x.OrganizationsName).FirstOrDefault();
+    int totalMessageSentCount = Model.data.Sum(x => x.TotalMessageSentCount);
+    decimal totalAmount = Model.data.Sum(x => x.TotalAmount);
+}
+<div class="content">
+    <div class="container-fluid">
+
+
+        <div class="card padding">
+            <div class="header-content">
+                <h3 class="sub-heading">
+                    <a href="billing-1.html" class="d-flex align-items-center">
+                        <span class="back"></span>
+                        <div>
+                            <small class="light-text d-block fw-normal">Billing </small>
+                            @organizationName
+                        </div>
+                    </a>
+                </h3>
+                <div class="d-flex form-wrapper align-items-end gap-2">
+                    <div>
+
+                        <div id="reportrange" class="reportrange form-control date-form-control">
+                            <i class="dateIcon"></i>&nbsp;
+                            <span></span>
+                        </div>
+                        <input asp-for="StartDate" type="hidden" id="fromDate" class="form-control" />
+                        <input asp-for="EndDate" type="hidden" class="form-control" id="toDate" />
+                        <input asp-for="PhoneNumberId" type="hidden" class="form-control" id="phoneNumberId" />
+
+                    </div>
+                    <div class="d-flex gap-2">
+                        @* <button class="btn primary-btn" id="filterbtn" disabled>Filter</button> *@
+
+                        <button class="btn secondary-btn" onclick="clearQueryParams()"><i class="reset"></i></button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table user-table billing-table form-wrapper">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sr. No</th>
+                            <th>@Html.DisplayNameFor(model => model.Columns.ConversationType)</th>
+                            <th>@Html.DisplayNameFor(model => model.Columns.Duration)</th>
+                            <th>@Html.DisplayNameFor(model => model.Columns.Message)</th>
+                            <th>@Html.DisplayNameFor(model => model.Columns.Amount)	</th>
+                            <!-- <th>Actions</th>     -->
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.data)
+                        {
+                            <tr>
+                                <td align="center">@item.SrNo</td>
+                                <td>@item.ConversationType</td>
+
+                                <td>
+                                    @item.StartDate.ToString("dd MMM yyyy")
+                                    to
+                                    @item.EndDate.ToString("dd MMM yyyy")
+                                </td>
+                                <td>@item.TotalMessageSentCount</td>
+                                <td>₹@item.TotalAmount</td>
+
+
+
+                            </tr>
+                           
+                        }
+                            <tr>
+                                <td colspan="3" align="right">
+                                    <span class="fw-semibold text-black">Total</span>
+                                </td>
+                            <td><span class="fw-semibold text-black">@totalMessageSentCount</span></td>
+                            <td><span class="fw-semibold text-black">₹@totalAmount</span></td>
+                            </tr>
+
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="invoice.html" class="btn primary-btn">Generate Invoice</a>
+                </div>
+            </div>
+          
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+         function clearQueryParams() {
+
+            document.getElementById('fromDate').value = '';
+            document.getElementById('toDate').value = '';
+
+            let phoneNumberId = $("#phoneNumberId").val(); 
+
+            window.location.href = '@Url.Action("billingDetails", "Billing")'
+                + '?phoneNumberId=' + encodeURIComponent(phoneNumberId);
+        }
+
+             function loadData() {
+                let phoneNumberId = $("#phoneNumberId").val();
+                let StartDate = $("#fromDate").val();
+                let EndDate = $("#toDate").val();
+
+            location.href = '@Url.Action("billingDetails", "Billing")' +
+                '?StartDate=' + encodeURIComponent(StartDate) +
+                '&EndDate=' + encodeURIComponent(EndDate) +
+                '&phoneNumberId=' + encodeURIComponent(phoneNumberId);
+             }
+
+          
+          $(document).ready(function () {
+                  function cb(start, end) {
+                      if (start && end) {
+                          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                          var startDate = start.format('YYYY-MM-DD');
+                          var endDate = end.format('YYYY-MM-DD');
+                          $("[name=StartDate]").val(startDate);
+                          $("[name=EndDate]").val(endDate);
+                          $('#startDateInput').val(startDate);
+                          $('#endDateInput').val(endDate);
+                      } else {
+                          $('#reportrange span').html('Select Date Range');
+                          $("[name=StartDate]").val('');
+                          $("[name=EndDate]").val('');
+                          $('#startDateInput').val('');
+                          $('#endDateInput').val('');
+                      }
+                  }
+                   var modelData = {
+                      StartDate: "@(Model.StartDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "")",
+                      EndDate: "@(Model.EndDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "")"
+                  };
+                          var start = modelData.StartDate ? moment(modelData.StartDate, 'YYYY-MM-DD ') : null;
+                          var end = modelData.EndDate ? moment(modelData.EndDate, 'YYYY-MM-DD') : null;
+
+                  $('.reportrange').daterangepicker({
+                          timePicker: false,
+                          autoUpdateInput: false,
+                           maxDate: moment(),
+                          ranges: {
+                              'Today': [moment().startOf('day'), moment().endOf('day')],
+                              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                              'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                              'This Month': [moment().startOf('month'), moment().endOf('month')],
+                              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                          }
+                      }, function (start, end) {
+                          cb(start, end);
+
+                          loadData();
+                  });
+                  $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+
+                      cb(picker.startDate, picker.endDate);
+                          loadData();
+                  });
+                  $('#reportrange span').html('Select Date');
+                          cb(start, end);
+
+
+          });
+
+    </script>
+}
