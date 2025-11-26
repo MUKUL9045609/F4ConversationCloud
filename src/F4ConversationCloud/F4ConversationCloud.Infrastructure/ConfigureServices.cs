@@ -96,6 +96,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IWhatsAppTemplateParser, WhatsAppTemplateParser>();
             services.AddScoped<IUsageAndBillingService, UsageAndBillingService>();
             services.AddScoped<IUsageAndBillingRepository, UsageAndBillingRepository>();
+            services.AddScoped<ISendTemplateMessageService, SendTemplateMessageService>();
             return services;
         }
 

@@ -18,7 +18,6 @@ namespace F4ConversationCloud.Domain.Enum
         [Description("Visit website")]
         [Display(Name = "URL")]
         URL = 2,
-             
             
         [Description("Phone Number")]
         [Display(Name = "PHONE_NUMBER")]

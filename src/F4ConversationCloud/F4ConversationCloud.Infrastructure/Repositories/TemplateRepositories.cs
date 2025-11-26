@@ -5,10 +5,12 @@ using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
+using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -72,7 +74,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     var resId = response.result.id?.ToString();
 
                     messageTemplate.category = response.result.category;
-                    
+
                     var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(), requestBody.TemplateTypes, FileName);
 
                     if (requestBody.TemplateButton != null && id > 0)
@@ -128,6 +130,10 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplateButtonDTO.ButtonUrlExample = e.Example?[0];
                     messageTemplateButtonDTO.ButtonPhoneNumber = e.Phone_Number;
                     messageTemplateButtonDTO.ButtonActionType = e.ButtonActionType;
+                    messageTemplateButtonDTO.ButtonUrlType = e.ButtonUrlType;
+                    messageTemplateButtonDTO.CountryCode = e.CountryCode;
+                    messageTemplateButtonDTO.ButtonActiveForDays = e.ActiveForDays;
+                    messageTemplateButtonDTO.CopyCode = e.CopyCode;
                     var id = await _whatsAppTemplateRepository.InsertTemplatesButtonAsync(messageTemplateButtonDTO);
                 }
 
@@ -300,8 +306,37 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 {
                     var button = new Application.Common.Models.Templates.Button();
 
-                    button.ButtonActionType = b.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "";
                     button.ButtonCategory = b.ButtonCategory;
+                    if (b.ButtonCategory == (int)ButtonCategory.Custom)
+                    {
+                        button.ButtonActionType = "QUICK_REPLY";
+                    }
+                    else if (b.ButtonCategory == (int)ButtonCategory.VisitWebsite)
+                    {
+                        button.ButtonActionType = "URL";
+                        button.Url = b.WebsiteUrl;
+                        button.ButtonUrlType = b.UrlType;
+                    }
+                    else if (b.ButtonCategory == (int)ButtonCategory.CallPhoneNumber)
+                    {
+                        button.ButtonActionType = "PHONE_NUMBER";
+                        button.CountryCode = b.CountryCode;
+                        if (button.CountryCode > 0)
+                        {
+                            var code = EnumExtensions.GetEnumDescription((CountryCode)b.CountryCode);
+                            button.Phone_Number = code + b.PhoneNumber;
+                        }
+                    }
+                    else if (b.ButtonCategory == (int)ButtonCategory.CallOnWhatsApp)
+                    {
+                        button.ButtonActionType = "CALL_ON_WHATSAPP";
+                        button.ActiveForDays = b.ActiveFor;
+                    }
+                    else if (b.ButtonCategory == (int)ButtonCategory.CopyOfferCode)
+                    {
+                        button.ButtonActionType = "COPY_CODE";
+                        button.CopyCode = b.OfferCode;
+                    }
                     button.ButtonType = b.ButtonType;
                     button.Text = b.ButtonText;
 
@@ -406,6 +441,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     templateRequest.TemplateHeader.Example.Format = "IMAGE";
                     templateRequest.TemplateHeader.Format = "IMAGE";
                 }
+                templateRequest.TemplateButton.Type = "BUTTONS";
+
+                var buttons = new List<Application.Common.Models.Templates.Button>();
+
+                foreach (var b in model.buttons)
+                {
+                    var button = new Application.Common.Models.Templates.Button();
+
+                    button.ButtonActionType = b.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "";
+                    button.ButtonCategory = b.ButtonCategory;
+                    button.ButtonType = b.ButtonType;
+                    button.Text = b.ButtonText;
+
+                    buttons.Add(button);
+                }
+                templateRequest.TemplateButton.Buttons = buttons;
 
                 APIResponse result = await MetaEditTemplate(templateRequest);
 
