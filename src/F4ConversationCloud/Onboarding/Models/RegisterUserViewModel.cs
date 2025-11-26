@@ -51,7 +51,7 @@ namespace Onboarding.Models
             
             public string? OptionalAddress { get; set; }
 
-            [Required(ErrorMessage = "Organization Name is required. ")]
+            //[Required(ErrorMessage = "Organization Name is required. ")]
             public string OrganizationsName { get; set; }
 
             [Required(ErrorMessage = "Password is required")]

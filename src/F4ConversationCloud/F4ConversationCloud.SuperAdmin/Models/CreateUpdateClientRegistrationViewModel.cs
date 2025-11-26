@@ -16,6 +16,11 @@ namespace F4ConversationCloud.SuperAdmin.Models
         [RegularExpression(@"^[a-zA-Z]+(?:'[a-zA-Z]+)?$", ErrorMessage = "Please enter valid Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "Organization Name")]
+        [Required(ErrorMessage = "Organization Name is required. ")]
+        public string OrganizationsName { get; set; }
+
+
         [Display(Name = "Email")]
         [Required]
         [EmailAddress(ErrorMessage = "Please enter valid Email")]
