@@ -88,6 +88,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
 
 
         }
+        public async Task<InvoiceViewItem> GetInvoiceDetailsAsync(InvoiceRequest request)
+        {
+            try
+            {
+                DynamicParameters dp = new DynamicParameters();
+                dp.Add("@MetaConfigid", request.MetaConfigid);
+
+                return await _repository.GetByValuesAsync<InvoiceViewItem>("sp_GetInvoiceDetailsByMetaConfigId", dp);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+          
+        }
 
     }
 }

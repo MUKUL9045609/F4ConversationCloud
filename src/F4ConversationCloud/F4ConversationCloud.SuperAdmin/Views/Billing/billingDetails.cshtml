@@ -33,6 +33,7 @@
                         <input asp-for="StartDate" type="hidden" id="fromDate" class="form-control" />
                         <input asp-for="EndDate" type="hidden" class="form-control" id="toDate" />
                         <input asp-for="PhoneNumberId" type="hidden" class="form-control" id="phoneNumberId" />
+                        <input asp-for="MetaConfigid" type="hidden" class="form-control" id="metaConfigid" />
 
                     </div>
                     <div class="d-flex gap-2">
@@ -86,9 +87,10 @@
                             </tr>
 
                     </tbody>
-                </table>
+                </table> Invoice
                 <div class="d-flex justify-content-end mt-3">
-                    <a href="invoice.html" class="btn primary-btn">Generate Invoice</a>
+                    <a href="@Url.Action("GenerateInvoice", "Billing", new { PhoneNumberId = Model.PhoneNumberId, MetaConfigId = Model.MetaConfigid, StartDate = Model.StartDate, EndDate = Model.EndDate })" class="btn primary-btn">Generate Invoice</a>
+                   
                 </div>
             </div>
           

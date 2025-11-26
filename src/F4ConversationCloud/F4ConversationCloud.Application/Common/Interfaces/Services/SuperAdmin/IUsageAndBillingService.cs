@@ -12,5 +12,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin
         Task<UsageModelResponse> GetUsageListAsync(UsageListFilter filter);
         Task<BillingListModelResponse> GetBillingListAsync(BillingListFilter filter);
         Task<IEnumerable<TemplateMessageInsightsListViewItem>> GetTemplateMessageInsightsListAsync(TemplateMessageInsightsFilter filter);
+
+        Task<InvoiceResponse> GenerateInvoiceAsync(InvoiceRequest request);    
     }
 }

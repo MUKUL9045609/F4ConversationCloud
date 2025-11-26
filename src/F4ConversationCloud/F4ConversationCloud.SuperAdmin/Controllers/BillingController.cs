@@ -1,17 +1,22 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;
+using IronPdf;
 using Microsoft.AspNetCore.Mvc;
-using static F4ConversationCloud.SuperAdmin.Models.BillingDetailsViewModel;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class BillingController : BaseController
     {
         private readonly IUsageAndBillingService _usageAndBillingservice;
-        public BillingController(IUsageAndBillingService usageAndBillingService)
+        private readonly ICompositeViewEngine _viewEngine;
+
+        public BillingController(IUsageAndBillingService usageAndBillingService, ICompositeViewEngine compositeView)
         {
             _usageAndBillingservice = usageAndBillingService;
+            _viewEngine = compositeView;
         }
         [HttpGet("billing-list")]
         public async Task<IActionResult> List(BillingListViewModel request)
@@ -56,7 +61,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 var response = await _usageAndBillingservice.GetTemplateMessageInsightsListAsync(request);
 
                 var billingDetailsViewModel = new BillingDetailsViewModel
-                {
+                {   MetaConfigid = request.MetaConfigid,
                     PhoneNumberId = request.PhoneNumberId,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
@@ -69,5 +74,80 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 return View(new BillingDetailsViewModel());
             }
         }
-    }
+
+        [HttpGet("Invoice")]
+        public async Task<IActionResult> GenerateInvoice(InvoiceViewModel model)
+        {
+            try
+            {
+                var request = new InvoiceRequest
+                {
+                    PhoneNumberId = model.PhoneNumberId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    MetaConfigid=model.MetaConfigid
+                };
+                var response = await _usageAndBillingservice.GenerateInvoiceAsync(request);
+
+                var invoiceViewModel = new InvoiceViewModel
+                {
+                    MetaConfigid = model.MetaConfigid,
+                    PhoneNumberId = model.PhoneNumberId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    InvoiceData = response.InvoiceDetails,
+                    TemplateMessageInsights = response.TemplateMessageInsights
+
+
+                };
+                return View(invoiceViewModel);
+            }
+            catch (Exception)
+            {
+                return View(new BillingDetailsViewModel());
+            }
+        }
+
+        protected async Task<string> RenderViewAsync(string viewName, object model, bool partial = false)
+        {
+            ViewData.Model = model;
+            using var writer = new StringWriter();
+            var viewResult = _viewEngine.FindView(ControllerContext, viewName, !partial);
+
+            var viewContext = new ViewContext(
+                 ControllerContext,
+                 viewResult.View,
+                 ViewData,
+                 TempData,
+                 writer,
+                 new HtmlHelperOptions()
+            );
+
+            await viewResult.View.RenderAsync(viewContext);
+            return writer.ToString();
+        }
+
+
+        public async Task<IActionResult> DownloadInvoice(InvoiceViewModel model)
+            {
+                try
+                {
+                    string html = await this.RenderViewAsync("InvoiceTemplate", model, true);
+
+                    var renderer = new ChromePdfRenderer();
+                    var pdf = renderer.RenderHtmlAsPdf(html);
+
+                    var fileName = $"Invoice_{model.InvoiceData.WhatsAppDisplayName}.pdf";
+
+                    return File(pdf.BinaryData, "application/pdf", fileName);
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = "Failed to generate invoice PDF";
+                    return RedirectToAction("BillingDetails");
+                }
+            }
+
+
+}
 }

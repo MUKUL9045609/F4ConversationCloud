@@ -187,6 +187,41 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
             }
             
         }
+
+
+        public async Task<InvoiceResponse> GenerateInvoiceAsync(InvoiceRequest request) {
+            try
+            {
+                var filter = new TemplateMessageInsightsFilter
+                {
+                    PhoneNumberId = request.PhoneNumberId,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate
+                };
+                var templateMessageInsights = await _usageAndBillingRepository.GetTemplateMessageInsightsListAsync(filter);
+                var invoiceDetails = await _usageAndBillingRepository.GetInvoiceDetailsAsync(request);
+                
+                return  new InvoiceResponse
+                {
+                    InvoiceDetails = invoiceDetails,
+                    TemplateMessageInsights = templateMessageInsights
+                };
+            }
+            catch (Exception ex)
+            {
+                var logModel = new LogModel();
+                logModel.Source = "UsageAndBilling/GenerateInvoiceAsync";
+                logModel.AdditionalInfo = $"Model: {JsonConvert.SerializeObject(request)}";
+                logModel.LogType = "Error";
+                logModel.Message = ex.Message;
+                logModel.StackTrace = ex.StackTrace;
+                await _logService.InsertLogAsync(logModel);
+
+                return new InvoiceResponse();
+            }
+        
+        }
+
     }
 }
 

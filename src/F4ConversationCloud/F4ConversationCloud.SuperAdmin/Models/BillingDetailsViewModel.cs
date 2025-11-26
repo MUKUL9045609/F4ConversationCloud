@@ -8,6 +8,7 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string PhoneNumberId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string MetaConfigid { get; set; }
 
         public BillingDetailsViewItem Columns { get; set; } = new BillingDetailsViewItem();
         public IEnumerable<TemplateMessageInsightsListViewItem> data { get; set; } = new List<TemplateMessageInsightsListViewItem>();
