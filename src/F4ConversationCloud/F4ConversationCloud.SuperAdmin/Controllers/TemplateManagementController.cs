@@ -159,7 +159,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 {
                     ButtonText = x.ButtonText,
                     ButtonType = x.ButtonType,
-                    ButtonCategory = x.ButtonCategory
+                    ButtonCategory = x.ButtonCategory,
+                    UrlType = x.UrlType,
+                    WebsiteUrl = x.WebsiteUrl,
+                    ActiveFor = x.ActiveFor,
+                    CountryCode = x.CountryCode,
+                    PhoneNumber = x.PhoneNumber,
+                    OfferCode = x.OfferCode
                 }).ToList();
 
                 APIResponse result = new APIResponse();
@@ -461,6 +467,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 viewName = "_CallToActionButtonPartialView";
                 vm.buttons[index] = new TemplateViewModel.Button();
                 vm.buttons[index].buttonTypes = EnumExtensions.ToSelectList<CallToActionButtonTypes>();
+                vm.buttons[index].UrlTypes = EnumExtensions.ToSelectList<VisitwebsiteUrlType>();
                 vm.buttons[index].ButtonCategory = Convert.ToInt32(value);
 
                 if (isVisitWebsite)
