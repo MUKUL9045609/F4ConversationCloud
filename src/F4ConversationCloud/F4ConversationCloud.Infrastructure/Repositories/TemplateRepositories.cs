@@ -331,6 +331,11 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                         button.ButtonActionType = "CALL_ON_WHATSAPP";
                         button.ActiveForDays = b.ActiveFor;
                     }
+                    else if (b.ButtonCategory == (int)ButtonCategory.CopyOfferCode)
+                    {
+                        button.ButtonActionType = "COPY_CODE";
+                        button.CopyCode = b.OfferCode;
+                    }
                     button.ButtonType = b.ButtonType;
                     button.Text = b.ButtonText;
 
