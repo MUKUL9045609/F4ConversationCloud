@@ -23,6 +23,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string? ButtonUrlExample { get; set; }
         public string ButtonPhoneNumber { get; set; }
         public string ButtonActionType { get; set; }
+        public int ButtonUrlType { get; set; }
 
 
     }

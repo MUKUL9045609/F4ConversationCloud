@@ -177,6 +177,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@ButtonUrlExample", request.ButtonUrlExample);
                 parameters.Add("@ButtonPhoneNumber", request.ButtonPhoneNumber);
                 parameters.Add("@ButtonActionType", request.ButtonActionType);
+                parameters.Add("@ButtonUrlType", request.ButtonUrlType);
 
 
                 return await _repository.InsertUpdateAsync("sp_InsertwhatsappTemplatesButtons", parameters);
