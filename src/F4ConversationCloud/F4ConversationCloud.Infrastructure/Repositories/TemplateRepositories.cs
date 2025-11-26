@@ -5,10 +5,12 @@ using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
+using F4ConversationCloud.Domain.Entities;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Domain.Helpers;
 using F4ConversationCloud.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -316,8 +318,12 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     else if (b.ButtonCategory == (int)ButtonCategory.CallPhoneNumber)
                     {
                         button.ButtonActionType = "PHONE_NUMBER";
-                        button.Phone_Number = b.PhoneNumber;
                         button.CountryCode = b.CountryCode;
+                        if (button.CountryCode > 0)
+                        {
+                            var code = EnumExtensions.GetEnumDescription((CountryCode)b.CountryCode);
+                            button.Phone_Number = code + b.PhoneNumber;
+                        }
                     }
                     button.ButtonType = b.ButtonType;
                     button.Text = b.ButtonText;
