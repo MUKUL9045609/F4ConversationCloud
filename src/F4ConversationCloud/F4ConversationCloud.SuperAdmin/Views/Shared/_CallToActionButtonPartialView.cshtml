@@ -68,8 +68,10 @@
         <div class="w-25 flex-grow-1">
             <label>Country</label>
             <div class="input-group">
-                <select class="form-select" asp-for="buttons[@i].CountryCode" aria-label="Default select example">
-                    <option value="India">IN +91</option>
+                <select asp-for="buttons[@i].CountryCode"
+                        asp-items="Model.buttons[@i].CountryCodes"
+                        class="form-select"
+                        aria-label="Default select example">
                 </select>
             </div>
         </div>

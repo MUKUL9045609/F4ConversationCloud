@@ -309,10 +309,17 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     else if (b.ButtonCategory == (int)ButtonCategory.VisitWebsite)
                     {
                         button.ButtonActionType = "URL";
+                        button.Url = b.WebsiteUrl;
+                        button.ButtonUrlType = b.UrlType;
+                    }
+                    else if (b.ButtonCategory == (int)ButtonCategory.CallPhoneNumber)
+                    {
+                        button.ButtonActionType = "PHONE_NUMBER";
+                        button.Phone_Number = b.PhoneNumber;
+                        button.CountryCode = b.CountryCode;
                     }
                     button.ButtonType = b.ButtonType;
                     button.Text = b.ButtonText;
-                    button.Url = b.WebsiteUrl;
 
                     buttons.Add(button);
                 }

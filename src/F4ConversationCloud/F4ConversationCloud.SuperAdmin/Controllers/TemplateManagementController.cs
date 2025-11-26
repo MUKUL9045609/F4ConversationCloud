@@ -468,6 +468,7 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 vm.buttons[index] = new TemplateViewModel.Button();
                 vm.buttons[index].buttonTypes = EnumExtensions.ToSelectList<CallToActionButtonTypes>();
                 vm.buttons[index].UrlTypes = EnumExtensions.ToSelectList<VisitwebsiteUrlType>();
+                vm.buttons[index].CountryCodes = EnumExtensions.ToSelectList<CountryCode>();
                 vm.buttons[index].ButtonCategory = Convert.ToInt32(value);
 
                 if (isVisitWebsite)
