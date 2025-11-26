@@ -395,6 +395,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public List<string>? Example { get; set; }
         public int ButtonUrlType { get; set; }
         public int CountryCode { get; set; } 
+        public int ActiveForDays { get; set; } 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
