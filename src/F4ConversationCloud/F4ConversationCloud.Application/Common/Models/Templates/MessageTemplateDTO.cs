@@ -124,6 +124,25 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public List<string>? example { get; set; }
     }
 
+
+    public class CallToWhatsappButtonComponent
+    {
+        [JsonPropertyName("ButtonActionType")]
+        public string? type { get; set; } = null;
+
+        [JsonPropertyName("Text")]
+        public string? text { get; set; } = null;
+    }
+
+    public class CopyCodeButtonComponent
+    {
+        [JsonPropertyName("ButtonActionType")]
+        public string? type { get; set; } = null;
+
+        [JsonPropertyName("Example")]
+        public string? example { get; set; } = null;
+    }
+
     public class HeadersExample
     {
         [JsonPropertyName("Header_Text")]

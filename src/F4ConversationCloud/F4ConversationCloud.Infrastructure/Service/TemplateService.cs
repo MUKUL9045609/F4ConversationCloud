@@ -458,6 +458,18 @@ namespace F4ConversationCloud.Infrastructure.Service
                                 var Component = JsonSerializer.Deserialize<UrlButtonComponent>(cleanJson, options);
                                 Buttoncomponents.Add(Component);
 
+                            } 
+                            else if(Type == "CALL_ON_WHATSAPP")
+                            {
+                                var Component = JsonSerializer.Deserialize<CallToWhatsappButtonComponent>(buttonObject, options);
+                                Buttoncomponents.Add(Component);
+
+                            } 
+                            else if(Type == "COPY_CODE")
+                            {
+                                var Component = JsonSerializer.Deserialize<CopyCodeButtonComponent  >(buttonObject, options);
+                                Buttoncomponents.Add(Component);
+
                             }
 
                         }
