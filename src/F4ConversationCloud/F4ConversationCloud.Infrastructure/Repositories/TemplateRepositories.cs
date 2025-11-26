@@ -132,7 +132,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     messageTemplateButtonDTO.ButtonActionType = e.ButtonActionType;
                     messageTemplateButtonDTO.ButtonUrlType = e.ButtonUrlType;
                     messageTemplateButtonDTO.CountryCode = e.CountryCode;
-                    messageTemplateButtonDTO.ButtonActiveForDays = e.ButtonActiveForDays;
+                    messageTemplateButtonDTO.ButtonActiveForDays = e.ActiveForDays;
                     var id = await _whatsAppTemplateRepository.InsertTemplatesButtonAsync(messageTemplateButtonDTO);
                 }
 
