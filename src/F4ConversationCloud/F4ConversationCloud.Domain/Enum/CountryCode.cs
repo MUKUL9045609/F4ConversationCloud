@@ -10,7 +10,7 @@ namespace F4ConversationCloud.Domain.Enum
 {
     public enum CountryCode
     {
-        [Description("India")]
+        [Description("+91")]
         [Display(Name = "IN +91")]
         India = 1
     }
