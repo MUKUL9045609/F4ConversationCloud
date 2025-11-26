@@ -26,6 +26,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public int ButtonUrlType { get; set; }
         public int CountryCode { get; set; }
         public int ButtonActiveForDays { get; set; }
+        public string CopyCode { get; set; }
 
 
     }
@@ -139,7 +140,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         [JsonPropertyName("ButtonActionType")]
         public string? type { get; set; } = null;
 
-        [JsonPropertyName("Example")]
+        [JsonPropertyName("CopyCode")]
         public string? example { get; set; } = null;
     }
 
