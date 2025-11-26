@@ -46,9 +46,10 @@
         <div class="w-25 flex-grow-1">
             <label>URL Type</label>
             <div class="input-group">
-                <select class="form-select" asp-for="buttons[@i].UrlType" aria-label="Default select example">
-                    <option value="Static">Static</option>
-                    <option value="Dynamic">Dynamic</option>
+                <select asp-for="buttons[@i].UrlType"
+                        asp-items="Model.buttons[@i].UrlTypes"
+                        class="form-select"
+                        aria-label="Default select example">
                 </select>
             </div>
         </div>

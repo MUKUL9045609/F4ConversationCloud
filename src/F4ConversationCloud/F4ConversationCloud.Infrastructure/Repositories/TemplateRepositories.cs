@@ -72,7 +72,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     var resId = response.result.id?.ToString();
 
                     messageTemplate.category = response.result.category;
-                    
+
                     var id = await _whatsAppTemplateRepository.InsertTemplatesListAsync(messageTemplate, resId, requestBody.ClientInfoId, requestBody.CreatedBy, requestBody.WABAID, FileUrl?.ToString(), requestBody.TemplateTypes, FileName);
 
                     if (requestBody.TemplateButton != null && id > 0)
@@ -301,10 +301,18 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 {
                     var button = new Application.Common.Models.Templates.Button();
 
-                    button.ButtonActionType = b.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "";
                     button.ButtonCategory = b.ButtonCategory;
+                    if (b.ButtonCategory == (int)ButtonCategory.Custom)
+                    {
+                        button.ButtonActionType = "QUICK_REPLY";
+                    }
+                    else if (b.ButtonCategory == (int)ButtonCategory.VisitWebsite)
+                    {
+                        button.ButtonActionType = "URL";
+                    }
                     button.ButtonType = b.ButtonType;
                     button.Text = b.ButtonText;
+                    button.Url = b.WebsiteUrl;
 
                     buttons.Add(button);
                 }
