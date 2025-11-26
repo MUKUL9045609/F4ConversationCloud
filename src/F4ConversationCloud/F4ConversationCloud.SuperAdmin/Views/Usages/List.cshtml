@@ -1,70 +1,136 @@
-﻿<div class="content">
+﻿@model F4ConversationCloud.SuperAdmin.Models.UsageViewModel
+@{
+    ViewData["Title"] = "Usages";
+}
+<div class="content">
     <div class="container-fluid">
-        <div class="d-flex justify-content-between mb-3 ">
-            <h3 class="sub-heading mb-0">Usages </h3>
-            <div class="d-flex form-wrapper align-items-end gap-2">
-                <div>
-                    <div id="reportrange" class="reportrange form-control date-form-control">
-                        <i class="dateIcon"></i>&nbsp;
-                        <span></span>
+
+        <div class="card padding">
+            <div class="header-content">
+                <h3 class="sub-heading">Usages</h3>
+                <div class="d-flex form-wrapper align-items-end gap-2">
+                    <div>
+
+                        <div id="reportrange" class="reportrange form-control date-form-control">
+                            <i class="dateIcon"></i>&nbsp;
+                            <span>October 26, 2025 - November 24, 2025</span>
+                        </div>
                     </div>
+
                 </div>
             </div>
-        </div>
-        <div class="card padding">
+
             <div class="table-responsive">
-                <table class="table user-table form-wrapper">
+                <table id="example" class="table user-table billing-table form-wrapper">
                     <thead>
                         <tr>
-                            <th>Sr.No</th>
+                            <th>Sr. <br>No</th>
+
                             <th>
-                                Client Name
+                                Organizations
+
                                 <div class="input-group">
                                     <input type="text" class="form-control srcIcon" placeholder="Search">
                                     <span class="searchIcon"></span>
                                 </div>
                             </th>
                             <th>
-                                App Name
+                                WABA Phone No.
                                 <div class="input-group">
                                     <input type="text" class="form-control srcIcon" placeholder="Search">
                                     <span class="searchIcon"></span>
                                 </div>
                             </th>
                             <th>
-                                Conversation Type
+                                WhatsApp Display Name
+                                <div class="input-group">
+                                    <input type="text" class="form-control srcIcon" placeholder="Search">
+                                    <span class="searchIcon"></span>
+                                </div>
                             </th>
-                            <th>
-                                Message
-                            </th>
+
+                            <th> Conversation Type</th>
+                            <!-- <th>Duration</th> -->
+                            <th>Message</th>
+                            <th>Total Amount</th>
                             <th>Actions</th>
                         </tr>
 
                     </thead>
                     <tbody>
                         <tr>
-                            <td rowspan="4">1</td>
-                            <td rowspan="4">
-                                <span class="text-black fw-semibold d-block">Buldana Urban</span>
+                            <td rowspan="6" align="center">01</td>
+
+                            <td rowspan="6">
+
+                                <a href="buisness-waba-details.html" class="mb-1 d-block">Buldana Urban Co-op. Credit Society Ltd.</a>
+
                                 <span class="buisness-category"><span class="fw-medium">Category :</span>  Bank</span>
                                 <span class="buisness-category"><span class="fw-medium">Client Id :</span> Cl-00001</span>
+
                             </td>
-                            <td rowspan="4">CustomerSupportBot</td>
+                            <td rowspan="3"><a href="buisness-details.html">+91-9123456789</a></td>
+                            <td rowspan="3">Buldana Urban Credit Society</td>
                             <td>Marketing</td>
+                            <!-- <td class="no-wrap">23 May 2025 to 31 Dec 9999</td> -->
                             <td>54</td>
-                            <td rowspan="4">
+                            <td>₹192.12</td>
+
+                            <td rowspan="3">
                                 <div class="action justify-content-center">
-                                    <a href="#" class="download"></a>
+
+                                    <a href="#" class="download" download=""></a>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <!-- <tr>
+
+                            <td>Marketing</td>
+                            <td class="no-wrap">22 march 2025 to 31 Dec 9999</td>
+                            <td>54</td>
+                            <td>&#8377;192.12</td>
+
+                        </tr> -->
+                        <tr>
+                            <td>Authentication</td>
+                            <!-- <td class="no-wrap">22 March 2025 to 22 May 2025</td> -->
+                            <td>64</td>
+                            <td>₹153.00</td>
+
+                        </tr>
+                        <tr>
+                            <td>Utility</td>
+                            <!-- <td class="no-wrap">22 March 2025 to 31 Dec 9999</td> -->
+                            <td>68</td>
+                            <td>₹154.64</td>
+
+                        </tr>
+                        <tr>
+                            <td rowspan="3"><a href="buisness-details.html"> +91-9123456756</a> </td>
+                            <td rowspan="3">Buldana Urban Co-op Society HQ</td>
+                            <td>Marketing</td>
+                            <!-- <td class="no-wrap">22 March 2025 to 31 Dec 9999</td> -->
+                            <td>54</td>
+                            <td>₹192.12</td>
+                            <td rowspan="3">
+                                <div class="action justify-content-center">
+
+                                    <a href="#" class="download" download=""></a>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>Authentication</td>
-                            <td>64</td>
                         </tr>
                         <tr>
-                            <td>Utility</td>
-                            <td>68</td>
+                            <td>Authentication</td>
+                            <!-- <td class="no-wrap">22 March 2025 to 22 May 2025</td> -->
+                            <td>64</td>
+                            <td>₹153.00</td>
+
+                        </tr>
+                        <tr>
                         </tr>
                     </tbody>
                 </table>
@@ -84,9 +150,9 @@
                 </ul>
             </nav>
         </div>
+
     </div>
 </div>
-
 @section Scripts{
 
     <script>

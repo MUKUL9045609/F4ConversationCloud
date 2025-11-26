@@ -14,7 +14,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
     {
         private readonly IGenericRepository<string> _repository;
         private readonly IWhatsAppTemplateParser _parser;
-        public WhatsAppTemplateRepository(IGenericRepository<string> repository , IWhatsAppTemplateParser whatsAppTemplateParser)
+        public WhatsAppTemplateRepository(IGenericRepository<string> repository, IWhatsAppTemplateParser whatsAppTemplateParser)
         {
             _repository = repository;
             _parser = whatsAppTemplateParser;
@@ -53,9 +53,9 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             {
                 DynamicParameters Dp = new DynamicParameters();
                 Dp.Add("@TemplateId", Template_id);
-                
+
                 var templateById = await _repository.GetByValuesAsync<WhatsappTemplateDetail>("sp_GetWhatsappTemplate", Dp);
-                
+
                 return templateById;
             }
             catch (Exception)
@@ -71,33 +71,34 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 DynamicParameters Dp = new DynamicParameters();
                 Dp.Add("@TemplateId", Template_id);
 
-                return  await _repository.GetListByValuesAsync<TemplatesButtonsListItem>("sp_GetTemplatesButtons", Dp);
+                return await _repository.GetListByValuesAsync<TemplatesButtonsListItem>("sp_GetTemplatesButtons", Dp);
 
             }
             catch (Exception)
             {
                 return Enumerable.Empty<TemplatesButtonsListItem>();
             }
-
         }
-        public async Task<int> DeactivateTemplateAsync(int templateId) {
+
+        public async Task<int> DeactivateTemplateAsync(int templateId)
+        {
 
             try
             {
                 DynamicParameters dp = new DynamicParameters();
                 dp.Add("@TemplateId", templateId);
 
-                    await _repository.InsertUpdateAsync("sp_DeleteWhatsappTemplate", dp);
+                await _repository.InsertUpdateAsync("sp_DeleteWhatsappTemplate", dp);
                 return 1;
             }
             catch (Exception)
             {
                 return 0;
-                
+
             }
-            
+
         }
-        
+
         public async Task<int> ActivateTemplateAsync(int templateId)
         {
             try
@@ -105,7 +106,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 DynamicParameters dp = new DynamicParameters();
                 dp.Add("@TemplateId", templateId);
 
-                 await _repository.InsertUpdateAsync("sp_ActivateWhatsappTemplate", dp);
+                await _repository.InsertUpdateAsync("sp_ActivateWhatsappTemplate", dp);
                 return 1;
 
             }
@@ -118,7 +119,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
         }
 
 
-        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request , string TemplateId, string ClientInfoId, string CreatedBy, string WABAID , string HeaderFileUrl , string TemplateTypes , string HeaderFileFilename)
+        public async Task<int> InsertTemplatesListAsync(MessageTemplateDTO request, string TemplateId, string ClientInfoId, string CreatedBy, string WABAID, string HeaderFileUrl, string TemplateTypes, string HeaderFileFilename)
         {
             try
             {
@@ -176,13 +177,28 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
                 parameters.Add("@ButtonUrlExample", request.ButtonUrlExample);
                 parameters.Add("@ButtonPhoneNumber", request.ButtonPhoneNumber);
                 parameters.Add("@ButtonActionType", request.ButtonActionType);
+                parameters.Add("@ButtonUrlType", request.ButtonUrlType);
 
-               
+
                 return await _repository.InsertUpdateAsync("sp_InsertwhatsappTemplatesButtons", parameters);
             }
             catch (Exception ex)
             {
                 return 0;
+            }
+        }
+        public async Task<bool> DeleteTemplatesButtonAsync(int WhatsappTemplateId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@WhatsappTemplateId", WhatsappTemplateId);
+
+                return await _repository.DeleteAsync("sp_deletewhatsappTemplatesButtons", parameters);
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
@@ -217,7 +233,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             return await _repository.GetListByValuesAsync<TemplateModel>("sp_GetFilteredTemplatesByWABAId", parameters);
         }
 
-        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request , string TemplateId, string HeaderFileUrl , string HeaderFileFilename)
+        public async Task<int> UpdateTemplatesAsync(MessageTemplateDTO request, string TemplateId, string HeaderFileUrl, string HeaderFileFilename)
         {
             try
             {
@@ -270,15 +286,15 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             }
         }
 
-        public async Task<int> SyncAndUpdateWhatsappTemplate(string TemplateId , string Templatecategory, string TemplateStatus)
+        public async Task<int> SyncAndUpdateWhatsappTemplate(string TemplateId, string Templatecategory, string TemplateStatus)
         {
             try
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@TemplateId", TemplateId);
-                parameters.Add("@TemplateStatus", (int)(Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? status : TemplateApprovalStatus.Pending) , DbType.Int32);
-                parameters.Add("@Category", (int)(Enum.TryParse<TemplateModuleType>(Templatecategory, true, out var cat) ? cat : TemplateModuleType.Utility) , DbType.Int32);
-                
+                parameters.Add("@TemplateStatus", (int)(Enum.TryParse<TemplateApprovalStatus>(TemplateStatus, true, out var status) ? status : TemplateApprovalStatus.Pending), DbType.Int32);
+                parameters.Add("@Category", (int)(Enum.TryParse<TemplateModuleType>(Templatecategory, true, out var cat) ? cat : TemplateModuleType.Utility), DbType.Int32);
+
                 return await _repository.InsertUpdateAsync("sp_SyncAndUpdateWhatsappTemplate", parameters);
             }
             catch (Exception ex)
