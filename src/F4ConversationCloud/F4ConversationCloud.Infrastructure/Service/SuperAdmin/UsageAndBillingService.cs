@@ -22,42 +22,47 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
         {
             var (list, count) = await _usageAndBillingRepository.GetUsageDetailsAsync(filter);
 
-            var result = new UsageModelResponse
+            var usageModels = new List<UsageModel>();
+
+            foreach (var item in list)
+            {
+                var phoneNumbers = (item.phoneNumberId ?? "")
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim())
+                    .ToList();
+
+                var templateResults = new List<TemplateMessageInsightsListViewItem>();
+                foreach (var phone in phoneNumbers)
+                {
+                    var result = await _usageAndBillingRepository.GetTemplateMessageInsightsListAsync(new TemplateMessageInsightsFilter
+                    {
+                        StartDate = filter.StartDate,
+                        EndDate = filter.EndDate,
+                        PhoneNumberId = phone
+                    });
+
+                    templateResults.AddRange(result);
+                }
+                var phoneIds = string.Join(",", phoneNumbers);
+                usageModels.Add(new UsageModel
+                {
+                    SrNo = item.SrNo,
+                    OrganizationsName = item.OrganizationsName,
+                    ClientInfoId = item.ClientInfoId,
+                    ClientId = item.ClientId,
+                    WabaPhoneNumber = string.Join(",", (item.WabaPhoneNumber ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim())),
+                    WhatsAppDisplayName = string.Join(",", (item.WhatsAppDisplayName ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim())),
+                    phoneNumberId = phoneIds,
+                    TemplateInsightsList = templateResults
+                });
+            }
+            return new UsageModelResponse
             {
                 TotalCount = count,
-                usageModelsItems = list.Select(item => new UsageModel
-                {
-                    OrganizationName = item.OrganizationName,
-                    ClientId = item.ClientId,
-
-                    items = (item.items ?? new List<UsageMetaConfigurationsListItemModel>())
-                        .Select(t => new UsageMetaConfigurationsListItemModel
-                        {
-                            MetaConfigIds = string.Join(",",
-                                (t.MetaConfigIds ?? "")
-                                .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                .Select(x => x.Trim())
-                            ),
-
-                            WhatsAppDisplayName = string.Join(",",
-                                (t.WhatsAppDisplayName ?? "")
-                                .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                .Select(x => x.Trim())
-                            ),
-
-                            WabaPhoneNumber = string.Join(",",
-                                (t.WabaPhoneNumber ?? "")
-                                .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                .Select(x => x.Trim())
-                            ),
-                        })
-                        .ToList()
-
-                }).ToList(),
+                usageModelsItems = usageModels
             };
-
-            return result;
         }
+
 
     }
 }

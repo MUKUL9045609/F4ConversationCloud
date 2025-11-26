@@ -47,5 +47,26 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
            
 
         }
+
+        public async Task<IEnumerable<TemplateMessageInsightsListViewItem>>GetTemplateMessageInsightsListAsync(TemplateMessageInsightsFilter filter)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@phoneNumberId", filter.PhoneNumberId);
+                parameters.Add("@startDate", filter.StartDate);
+                parameters.Add("@endDate", filter.EndDate);
+
+                return await _repository.GetListByValuesAsync<TemplateMessageInsightsListViewItem>( "sp_GetTemplateMessageInsightsList", parameters);
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<TemplateMessageInsightsListViewItem>();
+            }
+        }
+
+
+
     }
 }
+

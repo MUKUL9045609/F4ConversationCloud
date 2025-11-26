@@ -9,18 +9,19 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
 {
     public class UsageModel
     {
-        public string OrganizationName { get; set; }
+        public int SrNo { get; set; }
+        public string OrganizationsName { get; set; }
+        public int ClientInfoId { get; set; }
         public string ClientId { get; set; }
         public string WhatsAppDisplayName { get; set; }
         public string WabaPhoneNumber { get; set; }
-        public string MetaConfigIds { get; set; }
+        public string phoneNumberId { get; set; }
 
-        public List<UsageMetaConfigurationsListItemModel> items { get; set; }
-
+        public List<TemplateMessageInsightsListViewItem> TemplateInsightsList { get; set; }
     }
     public class UsageModelResponse
     {
-        public string OrganizationName { get; set; }
+        public string OrganizationsName { get; set; }
         public string ClientId { get; set; }
         public string WhatsAppDisplayName { get; set; }
         public string WabaPhoneNumber { get; set; }
@@ -29,26 +30,33 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public List<UsageModel>  usageModelsItems { get; set; }
 
     }
-    public class UsageMetaConfigurationsListItemModel
+    
+    public class TemplateMessageInsightsListViewItem
     {
-        public string MetaConfigIds { get; set; }
-        public string WhatsAppDisplayName { get; set; }
-        public string WabaPhoneNumber { get; set; }
-       
+        public string ConversationType { get; set; }  
+        public int TotalMessageSentCount { get; set; }
+        public decimal TotalAmount { get; set; }
     }
-    public class TemplateInsightsListViewItem
-    { 
-        public string ConversationType { get; set; }
-        public string MessageSentCount { get; set; }
-        public string MessageSentAmount { get; set; }
-    }
+
+
     public class UsageListFilter
     {
         public string OrganizationsNameFilter { get; set; }
         public string WabaPhoneNumberFilter { get; set; }
         public string WhatsAppDisplayNameFilter { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public int PageNumber { get; set; }=1;
         public int PageSize { get; set; }=10;
+
+
+    }
+    public class TemplateMessageInsightsFilter
+    {
+        public string PhoneNumberId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        
 
 
     }
