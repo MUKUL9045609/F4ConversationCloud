@@ -370,10 +370,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     {
 
                     }
-                    else if (model.TemplateType == (int)MarketingTemplateType.Carousel)
-                    {
-                        viewName = "_MarketingCarouselTemplate";
-                    }
+                    //else if (model.TemplateType == (int)MarketingTemplateType.Carousel)
+                    //{
+                    //    viewName = "_MarketingCarouselTemplate";
+                    //}
                 }
                 else if (templateCategoryName == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
                 {
@@ -385,10 +385,10 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     {
 
                     }
-                    else if (model.TemplateType == (int)UtilityTemplateType.Carousel)
-                    {
-                        viewName = "_UtilityCarouselTemplate";
-                    }
+                    //else if (model.TemplateType == (int)UtilityTemplateType.Carousel)
+                    //{
+                    //    viewName = "_UtilityCarouselTemplate";
+                    //}
                 }
                 else if (templateCategoryName == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
                 && model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)

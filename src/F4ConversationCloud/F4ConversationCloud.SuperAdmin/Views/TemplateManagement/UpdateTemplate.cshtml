@@ -43,10 +43,10 @@
                             {
                                 <partial name="_MarketingCallingPermissionsRequestTemplate" model="@Model" />
                             }
-                            else if (Model.TemplateType == (int)MarketingTemplateType.Carousel)
+                            @* else if (Model.TemplateType == (int)MarketingTemplateType.Carousel)
                             {
                                 <partial name="_MarketingCarouselTemplate" model="@Model" />
-                            }
+                            } *@
                         }
                         else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
                         {
@@ -58,10 +58,10 @@
                             {
                                 <partial name="_UtilityCallingPermissionsRequestTemplate" model="@Model" />
                             }
-                            else if (Model.TemplateType == (int)UtilityTemplateType.Carousel)
+                            @* else if (Model.TemplateType == (int)UtilityTemplateType.Carousel)
                             {
                                 <partial name="_UtilityCarouselTemplate" model="@Model" />
-                            }
+                            } *@
                         }
                         else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
                         && Model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)

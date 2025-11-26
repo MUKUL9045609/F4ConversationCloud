@@ -82,10 +82,10 @@
                             {
                                 <partial name="_MarketingCallingPermissionsRequestTemplate" model="@Model" />
                             }
-                            else if (Model.TemplateType == (int)MarketingTemplateType.Carousel)
+                           @*  else if (Model.TemplateType == (int)MarketingTemplateType.Carousel)
                             {
                                 <partial name="_MarketingCarouselTemplate" model="@Model" />
-                            }
+                            } *@
                         }
                         else if (categoryType == TemplateModuleType.Utility.Get<DisplayAttribute>().Name)
                         {
@@ -97,10 +97,10 @@
                             {
                                 <partial name="_UtilityCallingPermissionsRequestTemplate" model="@Model" />
                             }
-                            else if (Model.TemplateType == (int)UtilityTemplateType.Carousel)
+                           @*  else if (Model.TemplateType == (int)UtilityTemplateType.Carousel)
                             {
                                 <partial name="_UtilityCarouselTemplate" model="@Model" />
-                            }
+                            } *@
                         }
                         else if (categoryType == TemplateModuleType.Authentication.Get<DisplayAttribute>().Name
                         && Model.TemplateType == (int)AuthenticationTemplateType.OneTimePasscode)
@@ -117,7 +117,78 @@
                                     <p>Check out our exclusive festival offers below</p>
                                     <div class="time">11:59</div>
                                 </div>
-                                <div class="swiper-card">
+                                <div class="swiper-card" id="marketing-default">
+                                    <div class="template-slide-card">
+                                        <span><img src="/images/card-img-03.png"></span>
+                                        <div class="description">
+                                            <p>Hey there! Check out our fresh groceries now!</p>
+                                            <p>Use code HEALTH to get additional 10% off on your entire purchase.</p>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"><i class="buy-icon"></i> Shop Now</a>
+                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
+                                    </div>
+                                </div>
+                                <div class="swiper-card" id="marketing-catalog" style="display:none;">
+                                    <div class="template-slide-card">
+                                        <div class="vertical-wrap">
+                                            <span><img src="/images/card-img-03.png"></span>
+                                            <div class="vertical-description">
+                                                <h6>Floral Dress</h6>
+                                                <p>Browse pictures and details of our offerings.</p>
+                                            </div>
+                                        </div>
+                                        <div class="description">
+                                            <h6 class="variables-title">New Arrival — Trend Collection 2025</h6>
+                                            <p>Refresh your wardrobe with our latest designs. Tap below to explore styles you'll love</p>
+
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"> View Catalog </a>
+                                    </div>
+                                </div>
+                                <div class="swiper-card" id="marketing-calling-permission" style="display:none;">
+                                    <div class="template-slide-card">
+                                        <div class="marketing-call">
+                                            <span class="phone-icon"></span>
+                                            <div class="marketing-description">
+                                                <h6>Can John’s Market call you?</h6>
+                                                <p>You can update your preference anytime in the business profile.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"> Choose preference <i class="arrow"></i></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-card" id="utility-default" style="display:none;">
+                                    <div class="template-slide-card">
+                                        <div class="description">
+                                            <p>Good news! Your order 23KFEJJ2312 has shipped!</p>
+                                            <p>Here's your tracking information please click link below.</p>
+
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                    <div class="buy-link">
+                                        <a href="#"> Track shipment </a>
+                                    </div>
+                                </div>
+                                <div class="swiper-card" id="authentication" style="display:none;">
+                                    <div class="template-slide-card">
+                                        <div class="description">
+                                            <p>123456 is your verification code. For your security, do not share this code.</p>
+                                        </div>
+                                        <div class="time">1:59 PM</div>
+                                    </div>
+                                </div>
+                                <div class="swiper-card" id="og-card" style="display:none;">
                                     <div class="template-slide-card">
                                         <span class="default-image image-smaple" id="sample-image" style="display:none;"></span>
                                         <span id="image-preview" style="display:none;"><img src=""></span>
@@ -131,15 +202,56 @@
                                     <div id="button-preview">
                                     </div>
                                 </div>
-
                             </div>
-                            <div class="mt-3 guidline">
-                                <h4 class="mb-1">This template is good for</h4>
-                                <p>Welcome messages, promotions, offers, coupons, newsletters, announcements</p>
+                            <div id="marketing-default-guidline">
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">This template is good for</h4>
+                                    <p>Welcome messages, promotions, offers, coupons, newsletters, announcements</p>
+                                </div>
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">Template areas you can customize</h4>
+                                    <p>Media, header, body, footer, button</p>
+                                </div>
                             </div>
-                            <div class="mt-3 guidline">
-                                <h4 class="mb-1">Template areas you can customize</h4>
-                                <p>Media, header, body, footer, button</p>
+                            <div id="utility-default-guidline" style="display:none;">
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">This template is good for</h4>
+                                    <p>Order confirmations, account update, receipts, appointment reminders, billing</p>
+                                </div>
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">Template areas you can customize</h4>
+                                    <p>Media, header, body, footer, button</p>
+                                </div>
+                            </div>
+                            <div id="marketing-catalog-guidline" style="display:none;">
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">This template is good for</h4>
+                                    <p>Product/service discovery, sales, offers, targeted marketing, personalised shopping</p>
+                                </div>
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">Template areas you can customize</h4>
+                                    <p>Connect a catalog, body</p>
+                                </div>
+                            </div>
+                            <div id="marketing-calling-guidline" style="display:none;">
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">This template is good for</h4>
+                                    <p>When you wish to call your customer</p>
+                                </div>
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">Template areas you can customize</h4>
+                                    <p>Header, body, footer</p>
+                                </div>
+                            </div>
+                            <div id="authentication-guidline" style="display:none;">
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">This template is good for</h4>
+                                    <p>One-time password, account recovery code, account verification, integrity challenges</p>
+                                </div>
+                                <div class="mt-3 guidline">
+                                    <h4 class="mb-1">Template areas you can customize</h4>
+                                    <p>Code delivery method</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -194,6 +306,46 @@
                         break;
                 }
 
+                if(categoryName == "@(TemplateModuleType.Marketing.Get<DisplayAttribute>().Name)"){
+                    $('#marketing-default').show();
+                    $('#marketing-catalog').hide();
+                    $('#utility-default').hide();
+                    $('#marketing-calling-permission').hide();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').show();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').hide();
+                }
+                else if(categoryName == "@(TemplateModuleType.Utility.Get<DisplayAttribute>().Name)"){
+                    $('#marketing-default').hide();
+                    $('#marketing-catalog').hide();
+                    $('#utility-default').show();
+                    $('#marketing-calling-permission').hide();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').show();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').hide();
+                }
+                else if(categoryName == "@(TemplateModuleType.Authentication.Get<DisplayAttribute>().Name)"){
+                    $('#marketing-default').hide();
+                    $('#marketing-catalog').hide();
+                    $('#utility-default').hide();
+                    $('#marketing-calling-permission').hide();
+                    $('#og-card').hide();
+                    $('#authentication').show();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').show();
+                }
+
                 $('#TemplateCategory').val(categoryValue);
 
                 $('#myTabContent').show();
@@ -216,15 +368,100 @@
             var templateCategory = $('[name="TemplateCategory"]').val();
             var templateType = $('input[name="TemplateType"]:checked').val();
 
-            if ((templateCategory == @((int)TemplateModuleType.Marketing) && templateType == @((int)MarketingTemplateType.Carousel))
-            || (templateCategory == @((int)TemplateModuleType.Utility) && templateType == @((int)UtilityTemplateType.Carousel))){
-                $('#carousel-template-preview').show();
-                $('#template-preview').hide();
+            if(templateCategory == @((int)TemplateModuleType.Marketing)){
+                if (templateType == @((int)MarketingTemplateType.Default)){
+                    $('#marketing-default').show();
+                    $('#marketing-catalog').hide();
+                    $('#marketing-calling-permission').hide();
+                    $('#utility-default').hide();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').show();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').hide();
+                }
+                else if (templateType == @((int)MarketingTemplateType.Catalogue)){
+                    $('#marketing-default').hide();
+                    $('#marketing-calling-permission').hide();
+                    $('#marketing-catalog').show();
+                    $('#utility-default').hide();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').show();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').hide();
+                }
+                else if (templateType == @((int)MarketingTemplateType.CallingPermissionsRequest)){
+                    $('#marketing-default').hide();
+                    $('#marketing-catalog').hide();
+                    $('#marketing-calling-permission').show();
+                    $('#utility-default').hide();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').show();
+                    $('#authentication-guidline').hide();
+                }
             }
-            else{
-                $('#carousel-template-preview').hide();
-                $('#template-preview').show();
+            else if(templateCategory == @((int)TemplateModuleType.Utility)){
+                if (templateType == @((int)UtilityTemplateType.Default)){
+                    $('#marketing-default').hide();
+                    $('#marketing-catalog').hide();
+                    $('#marketing-calling-permission').hide();
+                    $('#utility-default').show();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').show();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').hide();
+                }
+                else if (templateType == @((int)UtilityTemplateType.CallingPermissionsRequest)){
+                    $('#marketing-default').hide();
+                    $('#marketing-catalog').hide();
+                    $('#marketing-calling-permission').show();
+                    $('#utility-default').hide();
+                    $('#og-card').hide();
+                    $('#authentication').hide();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').show();
+                    $('#authentication-guidline').hide();
+                }
             }
+            else if(templateCategory == @((int)TemplateModuleType.Authentication)){
+                if (templateType == @((int)AuthenticationTemplateType.OneTimePasscode)){
+                    $('#marketing-default').hide();
+                    $('#marketing-catalog').hide();
+                    $('#marketing-calling-permission').hide();
+                    $('#utility-default').hide();
+                    $('#og-card').hide();
+                    $('#authentication').show();
+                    $('#marketing-default-guidline').hide();
+                    $('#utility-default-guidline').hide();
+                    $('#marketing-catalog-guidline').hide();
+                    $('#marketing-calling-guidline').hide();
+                    $('#authentication-guidline').show();
+                }
+            }
+
+            // if ((templateCategory == @((int)TemplateModuleType.Marketing) && templateType == (int)MarketingTemplateType.Carousel)
+            // || (templateCategory == @((int)TemplateModuleType.Utility) && templateType == (int)UtilityTemplateType.Carousel)){
+            //     $('#carousel-template-preview').show();
+            //     $('#template-preview').hide();
+            // }
+            // else{
+            //     $('#carousel-template-preview').hide();
+            //     $('#template-preview').show();
+            // }
         });
 
         $(document).on('click', '#marketing-tab, #utility-tab, #authentication-tab', function () {
@@ -240,6 +477,12 @@
             var templateCategory = $('[name="TemplateCategory"]').val();
             var templateTypeText = $('input[name="TemplateType"]:checked').next('label').text().trim();
             var templateType = $('input[name="TemplateType"]:checked').val();
+             $('#marketing-default').hide();
+             $('#marketing-catalog').hide();
+             $('#marketing-calling-permission').hide();
+             $('#utility-default').hide();
+             $('#og-card').show();
+             $('#authentication').hide();
 
             $('#partialForTemplateForm').show();
             var req = {
