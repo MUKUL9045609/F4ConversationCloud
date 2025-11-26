@@ -1,0 +1,100 @@
+﻿@using F4ConversationCloud.Domain.Enum
+@model F4ConversationCloud.SuperAdmin.Models.TemplateViewModel
+@{
+    this.ViewContext.FormContext = new FormContext();
+    var i = (int)(ViewData["RowIndex"] ?? 0);
+}
+
+<input asp-for="buttons[@i].ButtonCategory" type="hidden" />
+
+<div class="actionbtn d-flex align-items-end gap-2" data-index="@i">
+    <div class="w-25 flex-grow-1">
+        <label>Type of Action</label>
+        <select asp-for="buttons[@i].ButtonType"
+                asp-items="Model.buttons[@i].buttonTypes"
+                class="form-select"
+                aria-label="Default select example" disabled>
+        </select>
+        <input type="hidden" asp-for="buttons[@i].ButtonType" />
+    </div>
+    <div class="w-25 flex-grow-1">
+        <label>Button Text</label>
+        <div class="input-group">
+            <input asp-for="buttons[@i].ButtonText"
+                   type="text"
+                   class="form-control"
+                   placeholder="Visit website" maxlength="25" />
+        </div>
+        <span asp-validation-for="buttons[@i].ButtonText" class="button-text-validation" style="font-size: 12px !important;color: #D06464;"></span>
+    </div>
+    @if (Model.buttons[i].ButtonType == (int)CallToActionButtonTypes.CallOnWhatsApp)
+    {
+        <div class="w-25 flex-grow-1">
+            <label>Active For</label>
+            <div class="input-group">
+                <select class="form-select" asp-for="buttons[@i].ActiveFor" aria-label="Default select example">
+                    @for (var d = 1; d < 31; d++)
+                    {
+                        <option value="@d">@d days</option>
+                    }
+                </select>
+            </div>
+        </div>
+    }
+    @if (Model.buttons[i].ButtonType == (int)CallToActionButtonTypes.VisitWebsite)
+    {
+        <div class="w-25 flex-grow-1">
+            <label>URL Type</label>
+            <div class="input-group">
+                <select class="form-select" asp-for="buttons[@i].UrlType" aria-label="Default select example">
+                    <option value="Static">Static</option>
+                    <option value="Dynamic">Dynamic</option>
+                </select>
+            </div>
+        </div>
+        <div class="w-25 flex-grow-1">
+            <label>Website URL</label>
+            <div class="input-group">
+                <input asp-for="buttons[@i].WebsiteUrl"
+                       type="text"
+                       class="form-control"
+                       placeholder="https://example.com/" maxlength="2000" />
+            </div>
+        </div>
+    }
+    @if (Model.buttons[i].ButtonType == (int)CallToActionButtonTypes.CallPhoneNumber)
+    {
+        <div class="w-25 flex-grow-1">
+            <label>Country</label>
+            <div class="input-group">
+                <select class="form-select" asp-for="buttons[@i].CountryCode" aria-label="Default select example">
+                    <option value="India">IN +91</option>
+                </select>
+            </div>
+        </div>
+        <div class="w-25 flex-grow-1">
+            <label>Phone number</label>
+            <div class="input-group">
+                <input asp-for="buttons[@i].PhoneNumber"
+                       type="number"
+                       class="form-control"
+                       placeholder="Phone number" maxlength="10" />
+            </div>
+            <span asp-validation-for="buttons[@i].PhoneNumber" class="button-text-validation" style="font-size: 12px !important;color: #D06464;"></span>
+        </div>
+    }
+    @if (Model.buttons[i].ButtonType == (int)CallToActionButtonTypes.CopyOfferCode)
+    {
+        <div class="w-25 flex-grow-1">
+            <label>Offer code</label>
+            <div class="input-group">
+                <input asp-for="buttons[@i].OfferCode"
+                       type="text"
+                       class="form-control"
+                       placeholder="Offer code" maxlength="20" />
+            </div>
+            <span asp-validation-for="buttons[@i].OfferCode" class="button-text-validation" style="font-size: 12px !important;color: #D06464;"></span>
+        </div>
+    }
+    <a href="#" class="delete"></a>
+</div>

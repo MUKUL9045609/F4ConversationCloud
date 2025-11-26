@@ -130,13 +130,8 @@
                                         </div>
                                         <div class="time">1:59 PM</div>
                                     </div>
-                                    @* <div class="buy-link">
-                                        <a href="#"><i class="buy-icon"></i> Buy Now</a>
-                                        <a href="#"><i class="forward"></i> My Account Balance</a>
-                                        <a href="#"><i class="backward"></i> Yes </a>
-                                        <a href="#"><i class="call"></i> Call Us </a>
-                                        <a href="#"><i class="copy-code"></i> Copy Code </a>
-                                    </div> *@
+                                    <div id="button-preview">
+                                    </div>
                                 </div>
 
                                 <div class="swiper-card d-none">
@@ -149,8 +144,7 @@
                                         </div>
                                         <div class="time">1:59 PM</div>
                                     </div>
-                                    <div class="buy-link">
-                                        <a href="#"><i class="buy-icon"></i> Shop Now</a>
+                                    <div id="button-preview">
                                     </div>
                                 </div>
 
@@ -233,7 +227,7 @@
                 // $('#previous-btn').show();
                 $('#title').text('untitled');
                 $('#language-title').text('English');
-
+                $('#quick-reply-section').show();
                 var $form = $("#mainForm");
                 $form.removeData("validator").removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse($form);
@@ -243,6 +237,40 @@
                 $('#header-text-preview').text(reqModel.header);
                 $('#message-body').html(reqModel.messageBody);
                 $('#footer-text').text(reqModel.footer);
+
+                var templatebuttons = reqModel.buttons;
+                var $preview = $("#button-preview");
+                $preview.empty();
+
+                var index = 0;
+                templatebuttons.forEach(function(btn) {
+                    var text = (btn.buttonText || "").trim();
+                    var buttonLogo = '';
+                
+                    if (!text) return;
+                    if (btn.buttonType == @((int)ButtonCategory.Custom)){
+                        buttonLogo = 'backward';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.VisitWebsite)){
+                        buttonLogo = 'buy-icon';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.CallOnWhatsApp) ||
+                        btn.buttonType == @((int)ButtonCategory.CallPhoneNumber)){
+                        buttonLogo = 'call';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.CompleteFlow)){
+                        buttonLogo = 'forward';
+                    }
+                    else if (btn.buttonType == @((int)ButtonCategory.CopyOfferCode)){
+                        buttonLogo = 'copy-code';
+                    }
+
+                    var previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         `<a href="#"><i class="${buttonLogo}"></i> ${text}</a>` +
+                            '</div>';
+                    $preview.append(previewHtml);
+                    index++;
+                });
 
                 if (reqModel.headerVariableValue != ''){
                     $('#variable-card-header').show();
@@ -285,8 +313,8 @@
                         editorInstance = editor;
                         var firstcontent = editor.getData();
                         $('#message-body').html(firstcontent);
-                        let previousVariables = [];
-                        let bodyValuesCache = {};
+                        var previousVariables = [];
+                        var bodyValuesCache = {};
 
                         // Live validation on content change
                         editor.model.document.on('change:data', () => {
@@ -298,7 +326,7 @@
 
                             var variables = extractUniqueVariables(content);
 
-                            const variablesChanged =
+                            var variablesChanged =
                             variables.length !== previousVariables.length ||
                             variables.some((v, i) => v !== previousVariables[i]);
 
@@ -307,8 +335,8 @@
                             // Cache current values
                             bodyValuesCache = {};
                             document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
-                                const number = row.getAttribute('data-number');
-                                const input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                var number = row.getAttribute('data-number');
+                                var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
                                 if (input) {
                                     bodyValuesCache[number] = input.value;
                                 }
@@ -326,8 +354,8 @@
                                     $('#variable-card-body').html(html).show();
 
                                     document.querySelectorAll('#variable-card-body .body-var-row').forEach(row => {
-                                        const number = row.getAttribute('data-number');
-                                        const input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
+                                        var number = row.getAttribute('data-number');
+                                        var input = row.querySelector('input[name^="bodyVariables"][name$=".BodyVariableName"]');
                                         if (input && bodyValuesCache[number]) {
                                             input.value = bodyValuesCache[number];
                                         }
@@ -361,30 +389,30 @@
                             }
 
                             // Use current editor content to determine the next available number
-                            const currentContent = editor.getData();
-                            const nextNumber = getNextAvailableVariableNumberFromContent(currentContent);
+                            var currentContent = editor.getData();
+                            var nextNumber = getNextAvailableVariableNumberFromContent(currentContent);
 
-                            const variableText = ` {{${nextNumber}}}`;
+                            var variableText = ` {{${nextNumber}}}`;
                             editor.model.change(writer => {
-                                const insertPosition = editor.model.document.selection.getFirstPosition();
+                                var insertPosition = editor.model.document.selection.getFirstPosition();
                                 writer.insertText(variableText, insertPosition);
                             });
 
                             // Trigger validation after insertion
-                            const updatedContent = editor.getData();
+                            var updatedContent = editor.getData();
                             validateWhatsAppVariables(updatedContent);
                         });
 
                         function getNextAvailableVariableNumberFromContent(content) {
-                            const regex = /{{\d+}}/g;
-                            const matches = [...content.matchAll(regex)];
-                            const usedNumbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, ''), 10));
+                            var regex = /{{\d+}}/g;
+                            var matches = [...content.matchAll(regex)];
+                            var usedNumbers = matches.map(m => parseInt(m[0].replace(/[{}]/g, ''), 10));
 
                             if (usedNumbers.length === 0) return 1;
 
                             // Find the smallest missing positive integer starting at 1
-                            const set = new Set(usedNumbers);
-                            let i = 1;
+                            var set = new Set(usedNumbers);
+                            var i = 1;
                             while (set.has(i)) i++;
                             return i;
                         }
@@ -394,9 +422,9 @@
                     });
 
                     function extractUniqueVariables(content) {
-                        const regex = /\{\{(\d+)\}\}/g;
-                        const found = new Set();
-                        let match;
+                        var regex = /\{\{(\d+)\}\}/g;
+                        var found = new Set();
+                        var match;
                         while ((match = regex.exec(content)) !== null) {
                             found.add(match[1]); // only the number part
                         }
@@ -412,8 +440,8 @@
                     }
 
                     document.addEventListener('click', function (event) {
-                        const emojiBtn = document.getElementById('emoji-btn');
-                        const emojiCard = document.getElementById('emoji-card');
+                        var emojiBtn = document.getElementById('emoji-btn');
+                        var emojiCard = document.getElementById('emoji-card');
 
                         if (emojiBtn.contains(event.target)) {
                             // Toggle emoji picker
@@ -459,7 +487,7 @@
 
                     for (var match of matches) {
                         var index = match.index;
-                        const varLen = match[0].length;
+                        var varLen = match[0].length;
 
                         var before = content.substring(0, index);
                         var after = content.substring(index + varLen);
@@ -496,7 +524,7 @@
                     if (!text) return 0;
 
                     // 1) Normalize HTML entities that behave like spaces
-                    let clean = text.replace(/&nbsp;/gi, ' ').replace(/\u00A0/g, ' '); // non-breaking space
+                    var clean = text.replace(/&nbsp;/gi, ' ').replace(/\u00A0/g, ' '); // non-breaking space
 
                     // 2) Remove HTML tags (CKEditor outputs real <tags>, not &lt; &gt;)
                     clean = clean.replace(/<[^>]*>/g, ' ');
@@ -509,7 +537,7 @@
 
                     // 5) Count word tokens (Unicode letters/digits/underscore)
                     // If your environment doesn't support \p{L} and \p{N}, fall back to /[A-Za-z0-9_]+/g
-                    const wordMatches = clean.match(/\b[\p{L}\p{N}_]+\b/gu) || [];
+                    var wordMatches = clean.match(/\b[\p{L}\p{N}_]+\b/gu) || [];
                     return wordMatches.length;
                 }
 
@@ -614,12 +642,18 @@
             var $attachment = $('#attachment');
             var $existingFileLink = $('#existingFileLink');
             var $fileValidationMessage = $('[data-valmsg-for="File"]');
-            deleteImage();                
             $fileInput.val('');
             $existingFileLink.html('');
             $fileInput.removeAttr('accept');
-
             var hasValidationError = $fileValidationMessage.text().trim().length > 0;
+            if (selectedText == 'Image'){
+                $('#sample-image').show();
+            }
+            else{
+                $('#sample-image').hide();
+            }
+            var isSubmitEnabled = (selectedValue > 0 && $fileInput.val() == '');
+            deleteImage(isSubmitEnabled);
 
             if (selectedValue > 0 && selectedText != 'Location') {
                 $attachment.show();
@@ -640,12 +674,16 @@
             }
 
             if (selectedValue > 0){
+                $('#Header').val('');
+                $('#HeaderVariableValue').val('');
+                $('#variable-card-header').hide();
                 $("#header-add-btn").attr("disabled", true);
-                $('#Header').attr('readonly', true);
+                $('#Header').attr('disabled', true);
+                $('#header-text-preview').text('');
             }
             else{
                 $("#header-add-btn").removeAttr("disabled");
-                $('#Header').removeAttr('readonly');
+                $('#Header').removeAttr('disabled');
             }
         });
 
@@ -681,44 +719,69 @@
         });
 
         function validateSubmitButton(editor) {
-            const content = editor.getData().trim();
-            const contentEmpty = content === '';
+            var content = editor.getData().trim();
+            var contentEmpty = content === '';
 
-            const messageBodyErrorVisible = $('#messageBodyError').css('display') !== 'none';
-            //console.log(messageBodyErrorVisible);
-            const bodyInputs = document.querySelectorAll(
+            var messageBodyErrorVisible = $('#messageBodyError').css('display') == 'block';
+            var bodyInputs = document.querySelectorAll(
                 '#variable-card-body input[name^="bodyVariables"][name$=".BodyVariableName"]'
             );
-            const anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
+            var anyBodyEmpty = Array.from(bodyInputs).some(inp => !inp.value.trim());
 
             // Header variable logic
-            const headerText = $('[name="Header"]').val()?.trim() || '';
-            const headerHasVariable = headerText.includes('{{1}}');
-            const headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
-            const headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
-            const headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
-
+            var headerText = $('[name="Header"]').val()?.trim() || '';
+            var headerHasVariable = headerText.includes('{{1}}');
+            var headerVariableName = $('[name="HeaderVariableName"]').val()?.trim() || '';
+            var headerVariableValue = $('[name="HeaderVariableValue"]').val()?.trim() || '';
+            var headerInvalid = headerHasVariable && (headerVariableName === '' || headerVariableValue === '');
+            var buttonsInvalid = hasButtonValidationErrors();
+            // var con = {
+            //     contentEmpty: contentEmpty,
+            //     messageBodyErrorVisible: messageBodyErrorVisible,
+            //     anyBodyEmpty: anyBodyEmpty,
+            //     headerInvalid: headerInvalid,
+            //     buttonsInvalid: buttonsInvalid
+            // }
+            // console.log(con);
             // Final check
-            const shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid;
-
+            var shouldDisable = contentEmpty || messageBodyErrorVisible || anyBodyEmpty || headerInvalid || buttonsInvalid;
             $('#submit-btn').prop('disabled', shouldDisable);
+        }
+
+        function hasButtonValidationErrors() {
+            // 1) If any button input has the 'is-invalid' class
+            var anyInvalidClass = $('#quick-reply-list input[name^="buttons"][name$=".ButtonText"]').is('.is-invalid');
+
+            // 2) Or any validation span for buttons has non-empty text
+            var anySpanError = false;
+            $('#quick-reply-list span.button-text-validation[data-valmsg-for]').each(function () {
+                var msg = $(this).text().trim();
+                if (msg.length) {
+                    // Optionally, limit to just buttons fields:
+                    var forName = $(this).attr('data-valmsg-for') || '';
+                    if (/^buttons\[\d+\]\.ButtonText$/.test(forName) && msg.length) {
+                        anySpanError = true;
+                        return false; // break .each
+                    }
+                }
+            });
+
+            return anyInvalidClass || anySpanError;
         }
 
         $(document).on('input', '[name="Header"]', function () {
             var headerVal = $(this).val().trim();
 
-            // Enable the button only if the input is empty
             $('#header-add-btn').attr('disabled', headerVal !== '' && headerVal.includes("{{1}}"));
 
-            // Trigger validation and store result
             var isValid = $(this).valid();
 
-            // Show/hide variable card based on validity
-            if (isValid && headerVal != '' && headerVal.includes("{{1}}")) {
-                $('#variable-card').show();
-                $('#variable-card-header').show();
-                // Update the readonly input with asp-for="HeaderVariableName"
-                $('[name="HeaderVariableName"]').val("{{1}}");
+            if (isValid && headerVal != '') {
+                if (headerVal.includes("{{1}}")){
+                    $('#variable-card').show();
+                    $('#variable-card-header').show();
+                    $('[name="HeaderVariableName"]').val("{{1}}");
+                }
                 $('#header-text-preview').show();
                 $('#header-text-preview').text(headerVal);
                 $("#submit-btn").prop("disabled", true);
@@ -789,8 +852,13 @@
             location.href = '@Url.Action("ClientDetails", "ClientManagement")' + "/" + encodeURIComponent(storedData.MetaConfigId);
         });
 
-        function deleteImage() {
-            $('#submit-btn').prop('disabled', true);
+        function deleteImage(isSubmitEnabled) {
+            if (isSubmitEnabled){
+                $('#submit-btn').prop('disabled', true);
+            }
+            else{
+                $('#submit-btn').prop('disabled', false);
+            }
             var imageTag = document.querySelector('.image img');
             var cardPreviewImg = document.querySelector('#image-preview img');
             var imagePreviewSpan = document.getElementById('image-preview');
@@ -809,5 +877,220 @@
                 document.querySelector('.image-upload').style.display = 'none';
             }
         }
+
+        (function ($) {
+            var MAX_CUSTOM_BUTTONS = 10;
+
+            function getNextIndex() {
+                var max = -1;
+                $('#quick-reply-list .button-row').each(function () {
+                    var idx = parseInt($(this).attr('data-index'), 10);
+                    if (!isNaN(idx) && idx > max) max = idx;
+                });
+                return max + 1;
+            }
+
+            function getCustomCount() {
+                return $('#quick-reply-list .button-row').length;
+            }
+
+            function ensureSectionVisibility() {
+                $('#quick-reply-section').toggle($('#quick-reply-list .button-row').length > 0);
+
+                var isMax = getCustomCount() >= MAX_CUSTOM_BUTTONS;
+                $('#buttonDrpDwnBtn').prop('disabled', isMax);
+                $('.add-btn-template').toggleClass('disabled', isMax);
+            }
+
+            // Dropdown click -> add row
+            $(document).on('click', '#template-btn a.dropdown-item', function (e) {
+                e.preventDefault();
+                var link = this;
+                var value = link.dataset.value;
+                var text  = link.dataset.text;
+
+                var customText = '@(ButtonCategory.Custom.Get<DisplayAttribute>().Name)';
+
+                // Only apply limit for Custom category
+                if (text === customText) {
+                    var current = getCustomCount();
+                    if (current >= MAX_CUSTOM_BUTTONS) {
+                        commonHelper.showError('You can add a maximum of ' + MAX_CUSTOM_BUTTONS + ' buttons.');
+                        return;
+                    }
+                } else {
+                    return;
+                }
+
+                var index = getNextIndex();
+                var currentCount = getCustomCount();
+                $.ajax({
+                    type: 'POST',
+                    url: '/TemplateManagement/GetButtonPartialView',
+                    data: { value: value, text: text, index: index, currentCount: currentCount },
+                    success: function (html) {
+                        var $html = $(html);
+                        if (!$html.attr('data-category')) {
+                            $html.attr('data-category', 'Custom');
+                        }
+                        $('#quick-reply-list').append($html);
+                        var previewHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         '<a href="#"><i class="backward"></i> Quick Reply</a>' +
+                            '</div>';
+                        $('#button-preview').append(previewHtml);
+                        ensureSectionVisibility();
+                    },
+                    error: function (xhr) {
+
+                    }
+                });
+            });
+
+            // Delete a row
+            $(document).on('click', '#quick-reply-list .button-row .delete', function (e) {
+                e.preventDefault();
+                var $row = $(this).closest('.button-row');
+                var idx = $row.data('index');
+                $row.remove();
+                $('#button-preview .buy-link[data-index="' + idx + '"]').remove();
+                ensureSectionVisibility();
+                validateDuplicateButtonTexts();
+            });
+
+            $(document).on('input', '#quick-reply-list input[name^="buttons"][name$=".ButtonText"]', function () {
+                var $input = $(this);
+                validateDuplicateButtonTexts();
+                // Extract index from name: buttons[0].ButtonText -> 0
+                var name = $input.attr('name'); // e.g., "buttons[0].ButtonText"
+                var match = name.match(/^buttons\[(\d+)\]\.ButtonText$/);
+                if (!match) return;
+
+                var idx = match[1];
+                var text = $input.val().trim();
+
+                // Find the matching preview: prefer data-index, fallback to id
+                var $preview = $('#button-preview .buy-link[data-index="' + idx + '"]');
+                var $previewFallback = $('#preview-' + idx);
+
+                // Choose whichever exists
+                var $target = $preview.length ? $preview : $previewFallback;
+
+                if ($target.length) {
+                    // Update only the text inside the <a>, keep the icon intact
+                    var $anchor = $target.find('a');
+
+                    // If you want a placeholder when empty:
+                    var displayText = text.length ? text : 'Quick Reply';
+
+                    // Replace the text node after the icon
+                    // Safer approach: rebuild anchor contents
+                    $anchor.html('<i class="backward"></i> ' + displayText);
+                }
+            });
+
+            // On page load (edit mode), show/hide based on existing rows
+            $(function () {
+                ensureSectionVisibility();
+            });
+
+            function validateDuplicateButtonTexts() {
+                var FIXED_MSG = "You can't enter same text for multiple buttons.";
+
+                // Collect all ButtonText inputs
+                var $inputs = $('#quick-reply-list input[name^="buttons"][name$=".ButtonText"]');
+
+                // Group by normalized text (trim + lower)
+                var groups = new Map(); // key -> [{ $input, name }]
+                $inputs.each(function () {
+                    var $input = $(this);
+                    var name = $input.attr('name'); // e.g., buttons[3].ButtonText
+                    var match = name && name.match(/^buttons\[(\d+)\]\.ButtonText$/);
+                    if (!match) return;
+
+                    var raw = ($input.val() || '').trim();
+                    if (!raw) return; // ignore empty while typing
+
+                    var key = raw.toLowerCase();
+                    if (!groups.has(key)) groups.set(key, []);
+                    groups.get(key).push({ $input: $input, name: name });
+                });
+
+                // Determine duplicates: mark all but the first in each group
+                var duplicateNodes = new Set();
+                groups.forEach(function (entries) {
+                    if (entries.length > 1) {
+                        entries.slice(1).forEach(function (e) {
+                            duplicateNodes.add(e.$input.get(0));
+                        });
+                    }
+                });
+
+                // Apply/clear UI state and messages
+                $inputs.each(function () {
+                    var $input = $(this);
+                    var name = $input.attr('name') || '';
+                    var isDup = duplicateNodes.has(this);
+
+                    // Toggle Bootstrap invalid class
+                    $input.toggleClass('is-invalid', isDup);
+
+                    // Find the corresponding asp-validation-for span
+                    var selector = 'span.button-text-validation[data-valmsg-for="' + name.replace(/\./g, '\\.') + '"]';
+                    var $span = $(selector);
+
+                    if (isDup) {
+                        // Set the fixed duplicate message
+                        $span.text(FIXED_MSG);
+                    } else {
+                        // Clear only if our fixed message is currently shown
+                        var current = ($span.text() || '').trim();
+                        if (current === FIXED_MSG) {
+                            $span.text('');
+                        }
+                    }
+                });
+
+                // Re-evaluate submit button availability
+                if (typeof validateSubmitButton === 'function') {
+                    try { validateSubmitButton(editorInstance); } catch (_) {}
+                }
+
+                // Return true if there are no duplicates
+                return duplicateNodes.size === 0;
+            }
+
+            $(document).on('ajaxComplete', function (event, xhr, settings) {
+                if (settings && settings.url && settings.url.indexOf('/TemplateManagement/GetButtonPartialView') === 0) {
+                    // Allow DOM to update then validate
+                    setTimeout(validateDuplicateButtonTexts, 0);
+                }
+            });
+
+            document.addEventListener('change', function (e) {
+                var target = e.target;
+                if (target.matches('.button-row select[asp-for], .button-row select.form-select')) {
+                    var row = target.closest('.button-row');
+                    var index = row?.dataset.index;
+                    var selectedValue = target.value;
+                    var btnText = '';
+                    if (selectedValue == @((int)CustomButtonType.Custom)){
+                        btnText = 'Quick Reply';
+                        $('[name="buttons[' + index + '].ButtonText"]').val(btnText);
+                    }
+                    else{
+                        btnText = 'Preconfigured Response';
+                        $('[name="buttons[' + index + '].ButtonText"]').val(btnText);
+                    }
+
+                    var newHtml = '<div class="buy-link" data-index="' + index + '" id="preview-' + index + '">' +
+                         '<a href="#"><i class="backward"></i>' + btnText + '</a>' +
+                            '</div>';
+
+                    $('#preview-' + index).replaceWith(newHtml);
+
+                    validateDuplicateButtonTexts();
+                }
+            });
+        })(jQuery);
     </script>
 }

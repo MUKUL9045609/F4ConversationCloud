@@ -407,6 +407,22 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     templateRequest.TemplateHeader.Example.Format = "IMAGE";
                     templateRequest.TemplateHeader.Format = "IMAGE";
                 }
+                templateRequest.TemplateButton.Type = "BUTTONS";
+
+                var buttons = new List<Application.Common.Models.Templates.Button>();
+
+                foreach (var b in model.buttons)
+                {
+                    var button = new Application.Common.Models.Templates.Button();
+
+                    button.ButtonActionType = b.ButtonCategory == (int)ButtonCategory.Custom ? "QUICK_REPLY" : "";
+                    button.ButtonCategory = b.ButtonCategory;
+                    button.ButtonType = b.ButtonType;
+                    button.Text = b.ButtonText;
+
+                    buttons.Add(button);
+                }
+                templateRequest.TemplateButton.Buttons = buttons;
 
                 APIResponse result = await MetaEditTemplate(templateRequest);
 
