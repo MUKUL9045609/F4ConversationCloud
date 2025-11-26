@@ -16,16 +16,11 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public string WhatsAppDisplayName { get; set; }
         public string WabaPhoneNumber { get; set; }
         public string phoneNumberId { get; set; }
-
+        public string MetaConfigid { get; set; }
         public List<TemplateMessageInsightsListViewItem> TemplateInsightsList { get; set; }
     }
     public class UsageModelResponse
     {
-        public string OrganizationsName { get; set; }
-        public string ClientId { get; set; }
-        public string WhatsAppDisplayName { get; set; }
-        public string WabaPhoneNumber { get; set; }
-        public string MetaConfigIds { get; set; }
         public int TotalCount { get; set; }
         public List<UsageModel>  usageModelsItems { get; set; }
 

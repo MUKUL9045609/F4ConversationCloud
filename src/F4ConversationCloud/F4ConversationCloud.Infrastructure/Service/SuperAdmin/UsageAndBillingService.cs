@@ -52,6 +52,7 @@ namespace F4ConversationCloud.Infrastructure.Service.SuperAdmin
                     ClientId = item.ClientId,
                     WabaPhoneNumber = string.Join(",", (item.WabaPhoneNumber ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim())),
                     WhatsAppDisplayName = string.Join(",", (item.WhatsAppDisplayName ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim())),
+                    MetaConfigid = string.Join(",",(item.MetaConfigid ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x=>x.Trim())),
                     phoneNumberId = phoneIds,
                     TemplateInsightsList = templateResults
                 });

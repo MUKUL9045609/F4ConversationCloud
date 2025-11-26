@@ -56,11 +56,10 @@
                                 </div>
                             </th>
 
-                            <th> Conversation Type</th>
-                            <!-- <th>Duration</th> -->
-                            <th>Message</th>
-                            <th>Total Amount</th>
-                            <th>Actions</th>
+                            <th> @Html.DisplayNameFor(model => model.Columns.ConversationType)</th>
+                            <th> @Html.DisplayNameFor(model => model.Columns.Message)</th>
+                            <th> @Html.DisplayNameFor(model => model.Columns.TotalAmount)</th>
+                            @* <th>Actions</th> *@
                         </tr>
 
                     </thead>
@@ -79,7 +78,7 @@
                             {
                                 var phoneNumbers = (item.WabaPhoneNumber ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
                                 var displayNames = (item.WhatsAppDisplayName ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
-
+                                var metaConfigId = (item.MetaConfigid ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
                                 for (int p = 0; p < phoneNumbers.Length; p++)
                                 {
                                     int maxRows = 3;
@@ -129,7 +128,15 @@
                                             @if (i == 0)
                                             {
                                                 <td rowspan="3">
-                                                    <a method="get" asp-controller="ClientRegistration" asp-action="RegisteredBusinessDetails" asp-route-id="@item.ClientInfoId" class="mb-1 d-block" id="name-link">@phoneNumbers[p]</a>
+                                                    <a method="get"
+                                                       asp-controller="ClientManagement"
+                                                       asp-action="ClientDetails"
+                                                       asp-route-id="@metaConfigId[p]"
+                                                       asp-route-activeTab="client-tab"                                                      
+                                                       class="mb-1 d-block"
+                                                       id="name-link">
+                                                        @phoneNumbers[p]
+                                                    </a>
                                                 </td>
                                                 <td rowspan="3">
                                                     @displayNames.ElementAtOrDefault(p)
@@ -140,14 +147,14 @@
                                             <td>@(insight?.TotalMessageSentCount ?? 0)</td>
                                             <td>₹@(insight?.TotalAmount ?? 0)</td>
 
-                                            @if (p == 0 && i == 0)
+                                            @* @if (p == 0 && i == 0)
                                             {
                                                 <td rowspan="@(phoneNumbers.Length * 3)">
                                                     <div class="action justify-content-center">
                                                         <a href="#" class="download" download=""></a>
                                                     </div>
                                                 </td>
-                                            }
+                                            } *@
                                         </tr>
                                     }
                                 }
