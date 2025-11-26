@@ -43,7 +43,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
             public int UrlType { get; set; }
             public string WebsiteUrl { get; set; }
             public int ActiveFor { get; set; }
-            public string CountryCode { get; set; }
+            public int CountryCode { get; set; }
             public string PhoneNumber { get; set; }
             public string OfferCode { get; set; }
         }
