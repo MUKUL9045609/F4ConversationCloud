@@ -25,6 +25,7 @@ namespace F4ConversationCloud.Application.Common.Models.Templates
         public string ButtonActionType { get; set; }
         public int ButtonUrlType { get; set; }
         public int CountryCode { get; set; }
+        public int ButtonActiveForDays { get; set; }
 
 
     }
