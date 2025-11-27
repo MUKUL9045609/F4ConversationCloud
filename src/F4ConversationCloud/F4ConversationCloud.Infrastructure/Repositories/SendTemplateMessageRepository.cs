@@ -1,15 +1,11 @@
 ﻿using Dapper;
+using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Infrastructure.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace F4ConversationCloud.Infrastructure.Repositories
 {
-    public class SendTemplateMessageRepository
+    public class SendTemplateMessageRepository : ISendTemplateMessageRepository
     {
         private readonly IGenericRepository<string> _repository;
         public SendTemplateMessageRepository(IGenericRepository<string> repository)
@@ -17,21 +13,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             _repository = repository;
         }
 
-
-        public async Task<int> Insert(WhatsAppAccountTableModel request)
+        public async Task<int> InsertIntoTemplateInsights(string PhoneNumberId , int TemplateId , int ConversationType ,string MessageSentFrom ,string MessageSentTo , string MessageSentStatus)
         {
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@ClientInfoId", request.BusinessId);
-                parameters.Add("WABAId", request.WABAId);
-                parameters.Add("BusinessCategory", request.BusinessCategory);
-                parameters.Add("WhatsAppDisplayName", request.WhatsAppDisplayName);
-                parameters.Add("PhoneNumberId", request.PhoneNumberId);
-                parameters.Add("PhoneNumber", request.PhoneNumber);
-                parameters.Add("Status", request.Status);
+                parameters.Add("@PhoneNumberId", PhoneNumberId);
+                parameters.Add("@TemplateId", TemplateId);
+                parameters.Add("@ConversationType", ConversationType);
+                parameters.Add("@MessageSentFrom", MessageSentFrom);
+                parameters.Add("@MessageSentTo", MessageSentTo);
+                parameters.Add("@MessageSentStatus", MessageSentStatus);
 
-                return await _repository.GetCountAsync("Sp_InsertTemplateInsights", parameters);
+                return await _repository.GetCountAsync("sp_InsertTemplateInsights", parameters);
             }
             catch (Exception ex)
             {

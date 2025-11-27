@@ -97,6 +97,7 @@ namespace F4ConversationCloud.Infrastructure
             services.AddScoped<IUsageAndBillingService, UsageAndBillingService>();
             services.AddScoped<IUsageAndBillingRepository, UsageAndBillingRepository>();
             services.AddScoped<ISendTemplateMessageService, SendTemplateMessageService>();
+            services.AddScoped<ISendTemplateMessageRepository, SendTemplateMessageRepository>();
             return services;
         }
 
