@@ -21,7 +21,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 parameters.Add("@PhoneNumberId", PhoneNumberId);
                 parameters.Add("@TemplateId", TemplateId);
                 parameters.Add("@ConversationType", ConversationType);
-                parameters.Add("@MessageSentFrom", MessageSentFrom);
                 parameters.Add("@MessageSentTo", MessageSentTo);
                 parameters.Add("@MessageSentStatus", MessageSentStatus);
 
