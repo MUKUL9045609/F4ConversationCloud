@@ -116,10 +116,11 @@
                 let phoneNumberId = $("#phoneNumberId").val();
                 let StartDate = $("#fromDate").val();
                 let EndDate = $("#toDate").val();
-
+                let MetaConfigid = $("#metaConfigid").val();
             location.href = '@Url.Action("billingDetails", "Billing")' +
                 '?StartDate=' + encodeURIComponent(StartDate) +
                 '&EndDate=' + encodeURIComponent(EndDate) +
+                '&MetaConfigid=' + encodeURIComponent(MetaConfigid) +
                 '&phoneNumberId=' + encodeURIComponent(phoneNumberId);
              }
 

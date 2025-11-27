@@ -129,25 +129,51 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
 
 
         public async Task<IActionResult> DownloadInvoice(InvoiceViewModel model)
+        {
+            try
             {
-                try
+                // You must reload data or InvoiceData is null
+                var request = new InvoiceRequest
                 {
-                    string html = await this.RenderViewAsync("InvoiceTemplate", model, true);
+                    PhoneNumberId = model.PhoneNumberId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    MetaConfigid = model.MetaConfigid
+                };
 
-                    var renderer = new ChromePdfRenderer();
-                    var pdf = renderer.RenderHtmlAsPdf(html);
+                var response = await _usageAndBillingservice.GenerateInvoiceAsync(request);
 
-                    var fileName = $"Invoice_{model.InvoiceData.WhatsAppDisplayName}.pdf";
+                if (response.InvoiceDetails == null)
+                    throw new Exception("InvoiceData returned NULL from service");
 
-                    return File(pdf.BinaryData, "application/pdf", fileName);
-                }
-                catch (Exception ex)
+                var invoiceViewModel = new InvoiceViewModel
                 {
-                    TempData["Error"] = "Failed to generate invoice PDF";
-                    return RedirectToAction("BillingDetails");
-                }
+                    MetaConfigid = model.MetaConfigid,
+                    PhoneNumberId = model.PhoneNumberId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    InvoiceData = response.InvoiceDetails,
+                    TemplateMessageInsights = response.TemplateMessageInsights
+                };
+
+                string html = await RenderViewAsync("GenerateInvoice", invoiceViewModel, true);
+
+                var renderer = new ChromePdfRenderer();
+                var pdf = renderer.RenderHtmlAsPdf(html);
+
+                var fileName = $"Invoice_{invoiceViewModel.InvoiceData.WhatsAppDisplayName}_from{invoiceViewModel.StartDate}_to{invoiceViewModel.EndDate}.pdf";
+
+                return File(pdf.BinaryData, "application/pdf", fileName);
             }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Failed to generate invoice PDF: " + ex.Message;
+                return RedirectToAction("BillingDetails");
+            }
+        }
 
 
-}
+
+
+    }
 }
