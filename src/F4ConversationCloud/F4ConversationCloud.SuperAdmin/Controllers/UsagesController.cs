@@ -20,12 +20,27 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                 OrganizationsNameFilter = request.OrganizationsNameFilter,
                 WabaPhoneNumberFilter = request.WabaPhoneNumberFilter,
                 WhatsAppDisplayNameFilter = request.WhatsAppDisplayNameFilter,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize
             };
             var response = await _usageAndBillingservice.GetUsageDetailsAsync(filter);
+            
+            var usageViewModel = new UsageViewModel
+            {
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                OrganizationsNameFilter = request.OrganizationsNameFilter,
+                WabaPhoneNumberFilter = request.WabaPhoneNumberFilter,
+                WhatsAppDisplayNameFilter = request.WhatsAppDisplayNameFilter,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalCount = response.TotalCount,
+                data = response.usageModelsItems
+            };
 
-            return View(request);
+            return View(usageViewModel);
         }
     }
 }

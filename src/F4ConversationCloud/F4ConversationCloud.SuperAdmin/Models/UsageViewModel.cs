@@ -1,4 +1,6 @@
 ﻿using F4ConversationCloud.Application.Common.Models.SuperAdmin;
+using Polly.Caching;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace F4ConversationCloud.SuperAdmin.Models
@@ -9,6 +11,8 @@ namespace F4ConversationCloud.SuperAdmin.Models
         public string OrganizationsNameFilter { get; set; } = string.Empty;
         public string WabaPhoneNumberFilter { get; set; } = string.Empty;
         public string WhatsAppDisplayNameFilter { get; set; } = string.Empty;
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
@@ -37,6 +41,17 @@ namespace F4ConversationCloud.SuperAdmin.Models
             public DateTime? UpdatedOn { get; set; }
             [Display(Name = "Client Id")]
             public string? ClientId { get; set; }
+
+            [Display(Name = "Conversation Type")]
+            public string ConversationType { get; set; }
+
+            [Display(Name = "Message")]
+            public string Message { get; set; }
+
+            [Display(Name = "Total Amount")]
+
+            public string TotalAmount { get; set; }
+            
         }
     }
 }
