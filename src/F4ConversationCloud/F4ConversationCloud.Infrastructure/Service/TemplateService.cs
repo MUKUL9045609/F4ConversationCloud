@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Twilio.Converters;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace F4ConversationCloud.Infrastructure.Service
@@ -557,18 +558,17 @@ namespace F4ConversationCloud.Infrastructure.Service
             return messageTemplate;
         }
 
-        public async Task<dynamic> UploadMetaImage(string base64Image)
+        public async Task<dynamic> UploadMetaImage(string base64Image , string fileName, string fileType)
         {
             try
             {
+                fileType = base64Image.Split(':')[1].Split(';')[0];
                 string accessToken = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
                 // Step 1: Decode base64
                 var base64Data = base64Image.Substring(base64Image.IndexOf(",") + 1);
                 var imageBytes = Convert.FromBase64String(base64Data);
                 var fileLength = imageBytes.Length;
-                var fileName = "upload.jpg";
-                var fileType = "image/jpeg";
-
+                
                 // Step 2: POST to /app/uploads
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -578,7 +578,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(fileType);
                 content.Add(fileContent, "file", fileName);
                 content.Add(new StringContent(fileLength.ToString()), "file_length");
-                content.Add(new StringContent(fileType), "file_type");
+                content.Add(new StringContent(fileType) , "file_type");
                 content.Add(new StringContent(fileName), "file_name");
 
                 var uploadResponse = await client.PostAsync("https://graph.facebook.com/v23.0/app/uploads", content);
@@ -852,6 +852,53 @@ namespace F4ConversationCloud.Infrastructure.Service
             }
         }
 
+        public async Task<dynamic> SyncSendTemplateDetails(string start,string end,string TemplateId,string WabaId)
+        {
+            string apiUrl = string.Empty;
+            string methodType = "Get";
+            var headers = new Dictionary<string, string>();
+            var requestBody = string.Empty;
+            AnalyticsResponse analyticsResponse = new AnalyticsResponse();
+
+            try
+            {
+                var allTemplates = new List<WhatsappTemplateDetail>();
+
+                string token = "EAAqZAjK5EFEcBPBe6Lfoyi1pMh3cyrQbaBoyHvmLJeyMaZBnb8LsDPTxfdmAgZBcNZBQJpyOqwlQDMBTiMpmzrzZByRyHorE6U76Cffdf7KPzQZAxSEx7YZCMpZBZAN3wU9X1wTpYkrK0w6ZAHdE8SaKNU26js31LfrYB8dsJuQRF2stqwl26qKhJrLTOBUuTcygZDZD";
+
+                headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
+
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.SyncSendTemplateMessageSyncApi.ToString().Replace("{{waba_id}}", WabaId).Replace("{{start}}", start).Replace("{{end}}",end).Replace("{{templateid}}", TemplateId);
+
+                string requestJson = formattedWhatsAppEndpoint;
+
+                var result = await _logService.CallExternalAPI<dynamic>(formattedWhatsAppEndpoint,
+                                                                        methodType,
+                                                                        requestBody,
+                                                                        headers,
+                                                                        "Meta Template Usage Sync",
+                                                                        null,true);
+
+                TemplateAnalyticsResponse response = JsonConvert.DeserializeObject<TemplateAnalyticsResponse>(result.ToString());
+                analyticsResponse.Data = response;
+                analyticsResponse.Message = "";
+                analyticsResponse.Success = true;
+                analyticsResponse.Error = "";
+                analyticsResponse.StackTrace = "";
+
+                return analyticsResponse;
+            }
+            catch (Exception ex)
+            {
+                return new AnalyticsResponse
+                {
+                    Message = "Error occured while creating template.",
+                    Success = false,
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
+        }
 
 
     }

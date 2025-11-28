@@ -32,9 +32,7 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services.Meta
 
         public static Uri SendTemplateSyncApi { get; private set; } = new Uri("https://graph.facebook.com/v23.0/{{phone_id}}/messages");
 
-
-
-        
+        public static Uri SyncSendTemplateMessageSyncApi { get; private set; } = new Uri("https://graph.facebook.com/v23.0/{{waba_id}}?fields=template_analytics.start({{start}}).end({{end}}).granularity(DAILY).template_ids([{{templateid}}])");
 
     }
 }

@@ -3,12 +3,13 @@ using F4ConversationCloud.Application.Common.Interfaces.Repositories;
 using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
+using F4ConversationCloud.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace F4ConversationCloud.WebUI.Controllers
 {
-    [Authorize(Roles = "1")]
+    //[Authorize(Roles = "1")]
     [ApiController]
     [Route("MessageTemplates")]
     public class TemplateController : Controller
@@ -144,7 +145,7 @@ namespace F4ConversationCloud.WebUI.Controllers
         {
             try
             {
-                var response = await _templateService.UploadMetaImage(uploadImage.base64Image);
+                var response = await _templateService.UploadMetaImage(uploadImage.base64Image,"","");
 
                 return Ok(response);
             }
@@ -171,6 +172,30 @@ namespace F4ConversationCloud.WebUI.Controllers
 
             }
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SyncMetaTemplateUsage(DateTime From , DateTime To ,string TemplateId ,string WabaId)
+        {
+            try
+            {
+
+                var startOffset = new DateTimeOffset(From, TimeSpan.Zero);
+                var endOffset = new DateTimeOffset(To, TimeSpan.Zero);
+
+                long start = startOffset.ToUnixTimeSeconds();
+                long end = endOffset.ToUnixTimeSeconds();
+
+                var result = await _templateService.SyncSendTemplateDetails(start.ToString(), end.ToString(),TemplateId,WabaId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
 
     }
 }

@@ -88,7 +88,7 @@ namespace F4ConversationCloud.WebUI.Controllers
                 string base64 = Convert.ToBase64String(fileBytes);
                 string dataUri = $"data:{file.ContentType};base64,{base64}";
 
-                string headerFileJsonString = await _templateService.UploadMetaImage(dataUri);
+                string headerFileJsonString = await _templateService.UploadMetaImage(dataUri,"","");
                 using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
                 JsonElement root = doc.RootElement;
                 string hValue = "";

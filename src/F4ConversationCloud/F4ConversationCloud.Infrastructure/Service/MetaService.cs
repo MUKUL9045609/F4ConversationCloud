@@ -144,7 +144,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                 string base64 = Convert.ToBase64String(fileBytes);
                 string dataUri = $"data:{file.ContentType};base64,{base64}";
 
-                string headerFileJsonString = await _templateService.UploadMetaImage(dataUri);
+                string headerFileJsonString = await _templateService.UploadMetaImage(dataUri, file.FileName, file.ContentType);
                 using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
                 JsonElement root = doc.RootElement;
                 string hValue = "";

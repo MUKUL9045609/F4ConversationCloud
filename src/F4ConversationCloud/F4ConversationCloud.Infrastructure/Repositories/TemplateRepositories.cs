@@ -14,6 +14,7 @@ using System;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace F4ConversationCloud.Infrastructure.Repositories
@@ -49,7 +50,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
-                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString());
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString(),requestBody.TemplateHeader.Example.HeaderFileName, requestBody.TemplateHeader.Example.Format);
                         using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
                         JsonElement root = doc.RootElement;
 
@@ -157,7 +158,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
-                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString());
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString(), requestBody.TemplateHeader.Example.HeaderFileName, requestBody.TemplateHeader.Example.Format);
                         using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
                         JsonElement root = doc.RootElement;
 
@@ -487,6 +488,54 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     foreach (var Details in TemplateDetails)
                     {
                         var response = await _whatsAppTemplateRepository.SyncAndUpdateWhatsappTemplate(Details.TemplateId, Details.Category, Details.Status);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+
+            }
+        }
+
+
+        public async Task<bool> MetaSyncTemplateUsages()
+        {
+            try
+            {
+                var TemplateDetails = await _whatsAppTemplateRepository.GetTemplateListForSyncUsages();
+
+                foreach (var Template in TemplateDetails)
+                {
+                    var startOffset = new DateTimeOffset(DateTime.Now, TimeSpan.Zero);
+                    var endOffset = new DateTimeOffset(DateTime.Now, TimeSpan.Zero);
+
+                    long start = startOffset.ToUnixTimeSeconds();
+                    long end = endOffset.ToUnixTimeSeconds();
+
+                    TemplateAnalyticsResponse SycSndTempteDts = await _templateService.SyncSendTemplateDetails(start.ToString(),end.ToString(), Template.TemplateId.ToString(),Template.WABAID.ToString());
+
+                    foreach (var SndTempteDts in SycSndTempteDts.template_analytics.data[0].data_points)
+                    {
+                        TemplateAnalyticsDTO TADTO =  new TemplateAnalyticsDTO();
+                        TADTO.TemplateRead = SndTempteDts.read;
+                        TADTO.TemplateSend = SndTempteDts.sent;
+                        TADTO.TemplateDelivered = SndTempteDts.delivered;
+                        TADTO.TemplateReplied = SndTempteDts.replied;
+                        TADTO.TemplateAmountSpent = Convert.ToDecimal(SndTempteDts.cost[0]);
+                        TADTO.TemplateCostPerDelivered = Convert.ToDecimal(SndTempteDts.cost[1]);
+                        TADTO.TemplateCostPerUrlButtonClick = Convert.ToDecimal(SndTempteDts.cost[2]);
+                        TADTO.TemplateUrlButtonClickCount = Convert.ToInt16(SndTempteDts.clicked[0]);
+                        TADTO.TemplateUniqueUrlButtonClickCount = Convert.ToInt16(SndTempteDts.clicked[1]);
+                        TADTO.TemplateSendFrom = DateTime.Now;
+                        TADTO.TemplateSendTo = DateTime.Now;
+                        TADTO.WABAID = Template.WABAID;
+                        TADTO.ClientInfoId = Template.ClientInfoId;
+                        TADTO.TemplateId = Template.TemplateId;
+
+                         var response = await _whatsAppTemplateRepository.InsertIntoTemplateAnalytics(TADTO);
                     }
                 }
 
