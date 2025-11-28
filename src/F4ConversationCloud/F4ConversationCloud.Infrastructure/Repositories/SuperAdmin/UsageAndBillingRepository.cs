@@ -75,8 +75,8 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
                 parameters.Add("PageNumber", filter.PageNumber);
                 parameters.Add("PageSize", filter.PageSize);
 
-                var list = await _repository.GetListByValuesAsync<BillingListItem>("sp_GetUsageClientList", parameters);
-                int count = await _repository.GetCountAsync("sp_GetUsageClientCount", parameters);
+                var list = await _repository.GetListByValuesAsync<BillingListItem>("sp_GetBillingList", parameters);
+                int count = await _repository.GetCountAsync("sp_GetBillingCount", parameters);
 
                 return (list, count);
             }

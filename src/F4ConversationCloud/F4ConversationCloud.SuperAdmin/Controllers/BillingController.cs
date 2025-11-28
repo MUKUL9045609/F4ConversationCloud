@@ -1,11 +1,12 @@
 ﻿using F4ConversationCloud.Application.Common.Interfaces.Services.SuperAdmin;
 using F4ConversationCloud.Application.Common.Models.SuperAdmin;
 using F4ConversationCloud.SuperAdmin.Models;
-using IronPdf;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using PuppeteerSharp;
+using PuppeteerSharp.Media;
 namespace F4ConversationCloud.SuperAdmin.Controllers
 {
     public class BillingController : BaseController
@@ -88,7 +89,13 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     MetaConfigid=model.MetaConfigid
                 };
                 var response = await _usageAndBillingservice.GenerateInvoiceAsync(request);
-
+                var logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "logo.png");
+                string logoBase64 = "";
+                if (System.IO.File.Exists(logoPath))
+                {
+                    var logoBytes = System.IO.File.ReadAllBytes(logoPath);
+                    logoBase64 = Convert.ToBase64String(logoBytes);
+                }
                 var invoiceViewModel = new InvoiceViewModel
                 {
                     MetaConfigid = model.MetaConfigid,
@@ -96,8 +103,8 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     InvoiceData = response.InvoiceDetails,
-                    TemplateMessageInsights = response.TemplateMessageInsights
-
+                    TemplateMessageInsights = response.TemplateMessageInsights,
+                    LogoBase64 = logoBase64
 
                 };
                 return View(invoiceViewModel);
@@ -108,70 +115,89 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
             }
         }
 
-        protected async Task<string> RenderViewAsync(string viewName, object model, bool partial = false)
-        {
-            ViewData.Model = model;
-            using var writer = new StringWriter();
-            var viewResult = _viewEngine.FindView(ControllerContext, viewName, !partial);
-
-            var viewContext = new ViewContext(
-                 ControllerContext,
-                 viewResult.View,
-                 ViewData,
-                 TempData,
-                 writer,
-                 new HtmlHelperOptions()
-            );
-
-            await viewResult.View.RenderAsync(viewContext);
-            return writer.ToString();
-        }
-
-
-        public async Task<IActionResult> DownloadInvoice(InvoiceViewModel model)
+        [HttpGet("DownloadInvoicePdf")]
+        public async Task<IActionResult> DownloadInvoicePdf(string PhoneNumberId, string MetaConfigId, DateTime? StartDate, DateTime? EndDate)
         {
             try
             {
-                // You must reload data or InvoiceData is null
+               
                 var request = new InvoiceRequest
                 {
-                    PhoneNumberId = model.PhoneNumberId,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
-                    MetaConfigid = model.MetaConfigid
+                    PhoneNumberId = PhoneNumberId,
+                    StartDate = StartDate,
+                    EndDate = EndDate,
+                    MetaConfigid = MetaConfigId
                 };
 
                 var response = await _usageAndBillingservice.GenerateInvoiceAsync(request);
-
-                if (response.InvoiceDetails == null)
-                    throw new Exception("InvoiceData returned NULL from service");
-
+                var logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "logo.png");
+                string logoBase64 = "";
+                if (System.IO.File.Exists(logoPath))
+                {
+                    var logoBytes = System.IO.File.ReadAllBytes(logoPath);
+                    logoBase64 = Convert.ToBase64String(logoBytes);
+                }
                 var invoiceViewModel = new InvoiceViewModel
                 {
-                    MetaConfigid = model.MetaConfigid,
-                    PhoneNumberId = model.PhoneNumberId,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
+                    MetaConfigid = MetaConfigId,
+                    PhoneNumberId = PhoneNumberId,
+                    StartDate = StartDate,
+                    EndDate = EndDate,
                     InvoiceData = response.InvoiceDetails,
-                    TemplateMessageInsights = response.TemplateMessageInsights
+                    TemplateMessageInsights = response.TemplateMessageInsights,
+                    LogoBase64 = logoBase64
                 };
 
-                string html = await RenderViewAsync("GenerateInvoice", invoiceViewModel, true);
+                string htmlContent;
+                using (var sw = new StringWriter())
+                {
+                    ViewData.Model = invoiceViewModel;
 
-                var renderer = new ChromePdfRenderer();
-                var pdf = renderer.RenderHtmlAsPdf(html);
+                    var viewResult = _viewEngine.FindView(ControllerContext, "_InvoicePdfPartial", false);
+                    var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw, new HtmlHelperOptions());
+                    await viewResult.View.RenderAsync(viewContext);
+                    htmlContent = sw.ToString();
+                }
 
-                var fileName = $"Invoice_{invoiceViewModel.InvoiceData.WhatsAppDisplayName}_from{invoiceViewModel.StartDate}_to{invoiceViewModel.EndDate}.pdf";
+                var browserFetcher = new BrowserFetcher();
+                await browserFetcher.DownloadAsync();
 
-                return File(pdf.BinaryData, "application/pdf", fileName);
+                using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+                {
+                    Headless = true,             
+                });
+
+                //string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+                //using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+                //{
+                //    Headless = true,
+                //    ExecutablePath = chromePath
+                //});
+
+                using var page = await browser.NewPageAsync();
+                await page.SetContentAsync(htmlContent);
+                var pdfBytes = await page.PdfDataAsync(new PdfOptions
+                {
+                    Format = PaperFormat.A4,
+                    DisplayHeaderFooter = true,
+                    FooterTemplate = "<span style='font-size:10px;color:#555'>Page <span class='pageNumber'></span> / <span class='totalPages'></span></span>",
+                    MarginOptions = new MarginOptions { Top = "20px", Bottom = "40px", Left = "10px", Right = "10px" }
+                });
+
+                string startDateStr = StartDate.HasValue ? StartDate.Value.ToString("ddMMyyyy") : "";
+
+                string fileName = $"{invoiceViewModel.InvoiceData.WhatsAppDisplayName}_{startDateStr}_Invoice.pdf";
+
+                return File(pdfBytes, "application/pdf", fileName);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Error"] = "Failed to generate invoice PDF: " + ex.Message;
-                return RedirectToAction("BillingDetails");
+                TempData["ErrorMessage"] = "Something went wrong. Please contact your administrator.";
+                return RedirectToAction("GenerateInvoice", "Billing", new { PhoneNumberId = PhoneNumberId, MetaConfigId = MetaConfigId });
             }
-        }
+            
 
+        }
 
 
 

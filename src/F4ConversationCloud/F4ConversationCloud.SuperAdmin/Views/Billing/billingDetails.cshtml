@@ -87,7 +87,7 @@
                             </tr>
 
                     </tbody>
-                </table> Invoice
+                </table> 
                 <div class="d-flex justify-content-end mt-3">
                     <a href="@Url.Action("GenerateInvoice", "Billing", new { PhoneNumberId = Model.PhoneNumberId, MetaConfigId = Model.MetaConfigid, StartDate = Model.StartDate, EndDate = Model.EndDate })" class="btn primary-btn">Generate Invoice</a>
                    
@@ -106,10 +106,10 @@
             document.getElementById('fromDate').value = '';
             document.getElementById('toDate').value = '';
 
-            let phoneNumberId = $("#phoneNumberId").val(); 
-
+            let phoneNumberId = $("#phoneNumberId").val();
+            let MetaConfigid = $("#metaConfigid").val();
             window.location.href = '@Url.Action("billingDetails", "Billing")'
-                + '?phoneNumberId=' + encodeURIComponent(phoneNumberId);
+                + '?phoneNumberId=' + encodeURIComponent(phoneNumberId)+ '&MetaConfigid=' + encodeURIComponent(MetaConfigid);
         }
 
              function loadData() {

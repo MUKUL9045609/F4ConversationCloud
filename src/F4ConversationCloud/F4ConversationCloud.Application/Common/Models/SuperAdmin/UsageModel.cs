@@ -36,6 +36,10 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
         public string ConversationType { get; set; }  
         public int TotalMessageSentCount { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal CGSTTaxs { get; set; }
+        public decimal SGSTTaxs { get; set; }
+
+        public decimal IGSTTaxs { get; set; }
     }
 
 
