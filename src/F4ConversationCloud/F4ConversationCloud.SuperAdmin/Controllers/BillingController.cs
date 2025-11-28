@@ -184,9 +184,9 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
                     MarginOptions = new MarginOptions { Top = "20px", Bottom = "40px", Left = "10px", Right = "10px" }
                 });
 
-                string startDateStr = StartDate.HasValue ? StartDate.Value.ToString("ddMMyyyy") : "";
+                string todaysDate = DateTime.Today.ToString("dd/MM/yyyy");
 
-                string fileName = $"{invoiceViewModel.InvoiceData.WhatsAppDisplayName}_{startDateStr}_Invoice.pdf";
+                string fileName = $"{invoiceViewModel.InvoiceData.WhatsAppDisplayName}_Invoice_{todaysDate}.pdf";
 
                 return File(pdfBytes, "application/pdf", fileName);
             }

@@ -22,9 +22,9 @@ namespace F4ConversationCloud.Domain.Enum
         //[Display(Name = "Video")]
         //Video = 2,
 
-        //[Description("Document")]
-        //[Display(Name = "Document")]
-        //Document = 3,
+        [Description("Document")]
+        [Display(Name = "Document")]
+        Document = 3,
 
         //[Description("Location")]
         //[Display(Name = "Location")]
