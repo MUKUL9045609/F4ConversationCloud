@@ -1032,9 +1032,7 @@
             $('#template-preview-footer').text(templatefooter);
         });
         function previewHeaderFile(templateheadermediaurl) {
-
             let fileExt = templateheadermediaurl.split('.').pop().toLowerCase();
-
             $("#header-image-preview").hide();
             $("#header-pdf-preview").hide();
             if (fileExt === "pdf") {
@@ -1046,8 +1044,7 @@
                 $("#header-image-preview img")
                     .attr("src", templateheadermediaurl);
                 $("#header-image-preview").show();
-            }
-            
+            }            
         }
 
 
