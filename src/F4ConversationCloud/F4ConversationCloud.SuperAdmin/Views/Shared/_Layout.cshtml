@@ -49,10 +49,10 @@
                            
                             <li class ="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Usages" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Usages" asp-action="List" class="usages icon">Usages</a>
-                            </li> @*
+                            </li> 
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Billing" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="Billing" asp-action="List" class="billing icon">Billing</a>
-                            </li>
+                            </li>@*
                             <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "ActivityLog" && ViewContext.RouteData.Values["action"]?.ToString() == "List" ? "active" : "")">
                                 <a asp-controller="ActivityLog" asp-action="List" class="log icon">Activity Log</a> *@
                             </li>

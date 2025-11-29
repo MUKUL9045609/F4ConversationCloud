@@ -10,5 +10,9 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.SuperAd
     public interface IUsageAndBillingRepository
     {
         Task<(IEnumerable<UsageModel>, int)> GetUsageDetailsAsync(UsageListFilter filter);
+        Task<IEnumerable<TemplateMessageInsightsListViewItem>> GetTemplateMessageInsightsListAsync(TemplateMessageInsightsFilter filter);
+        Task<(IEnumerable<BillingListItem>, int)> GetBillingListAsync(BillingListFilter filter);
+        Task<InvoiceViewItem> GetInvoiceDetailsAsync(InvoiceRequest request);
+
     }
 }

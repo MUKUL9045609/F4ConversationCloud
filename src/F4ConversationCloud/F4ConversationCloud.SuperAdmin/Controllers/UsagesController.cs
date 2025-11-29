@@ -15,17 +15,41 @@ namespace F4ConversationCloud.SuperAdmin.Controllers
         [HttpGet("usage-list")]
         public async Task<IActionResult> List(UsageViewModel request)
         {
-            var filter = new UsageListFilter
+            try
             {
-                OrganizationsNameFilter = request.OrganizationsNameFilter,
-                WabaPhoneNumberFilter = request.WabaPhoneNumberFilter,
-                WhatsAppDisplayNameFilter = request.WhatsAppDisplayNameFilter,
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize
-            };
-            var response = await _usageAndBillingservice.GetUsageDetailsAsync(filter);
+                var filter = new UsageListFilter
+                {
+                    OrganizationsNameFilter = request.OrganizationsNameFilter,
+                    WabaPhoneNumberFilter = request.WabaPhoneNumberFilter,
+                    WhatsAppDisplayNameFilter = request.WhatsAppDisplayNameFilter,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    PageNumber = request.PageNumber,
+                    PageSize = request.PageSize
+                };
+                var response = await _usageAndBillingservice.GetUsageListAsync(filter);
 
-            return View(request);
+                var usageViewModel = new UsageViewModel
+                {
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    OrganizationsNameFilter = request.OrganizationsNameFilter,
+                    WabaPhoneNumberFilter = request.WabaPhoneNumberFilter,
+                    WhatsAppDisplayNameFilter = request.WhatsAppDisplayNameFilter,
+                    PageNumber = request.PageNumber,
+                    PageSize = request.PageSize,
+                    TotalCount = response.TotalCount,
+                    data = response.usageModelsItems
+                };
+
+                return View(usageViewModel);
+            }
+            catch (Exception)
+            {
+
+               return View( new UsageViewModel());  
+            }
+            
         }
     }
 }

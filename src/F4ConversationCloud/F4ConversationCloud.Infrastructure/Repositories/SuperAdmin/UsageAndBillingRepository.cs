@@ -47,5 +47,64 @@ namespace F4ConversationCloud.Infrastructure.Repositories.SuperAdmin
            
 
         }
+
+        public async Task<IEnumerable<TemplateMessageInsightsListViewItem>>GetTemplateMessageInsightsListAsync(TemplateMessageInsightsFilter filter)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@phoneNumberId", filter.PhoneNumberId);
+                parameters.Add("@startDate", filter.StartDate);
+                parameters.Add("@endDate", filter.EndDate);
+
+                return await _repository.GetListByValuesAsync<TemplateMessageInsightsListViewItem>( "sp_GetTemplateMessageInsightsList", parameters);
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<TemplateMessageInsightsListViewItem>();
+            }
+        }
+        public async Task<(IEnumerable<BillingListItem>, int)> GetBillingListAsync(BillingListFilter filter)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("organizationsNameFilter", filter.OrganizationsNameFilter);
+                parameters.Add("wabaPhoneNumberFilter", filter.WabaPhoneNumberFilter);
+                parameters.Add("WhatsAppDisplayName", filter.WhatsAppDisplayNameFilter);
+                parameters.Add("PageNumber", filter.PageNumber);
+                parameters.Add("PageSize", filter.PageSize);
+
+                var list = await _repository.GetListByValuesAsync<BillingListItem>("sp_GetUsageClientList", parameters);
+                int count = await _repository.GetCountAsync("sp_GetUsageClientCount", parameters);
+
+                return (list, count);
+            }
+            catch (Exception)
+            {
+
+                return (Enumerable.Empty<BillingListItem>(), 0);
+            }
+
+
+        }
+        public async Task<InvoiceViewItem> GetInvoiceDetailsAsync(InvoiceRequest request)
+        {
+            try
+            {
+                DynamicParameters dp = new DynamicParameters();
+                dp.Add("@MetaConfigid", request.MetaConfigid);
+
+                return await _repository.GetByValuesAsync<InvoiceViewItem>("sp_GetInvoiceDetailsByMetaConfigId", dp);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+          
+        }
+
     }
 }
+
