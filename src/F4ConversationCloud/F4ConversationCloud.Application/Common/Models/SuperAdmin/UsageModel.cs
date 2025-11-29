@@ -28,9 +28,18 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
     
     public class TemplateMessageInsightsListViewItem
     {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public DateTime StartDate{ get; set; }
+        public DateTime EndDate { get; set; }
+        public string OrganizationsName { get; set; }
         public string ConversationType { get; set; }  
         public int TotalMessageSentCount { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal CGSTTaxs { get; set; }
+        public decimal SGSTTaxs { get; set; }
+
+        public decimal IGSTTaxs { get; set; }
     }
 
 
@@ -48,6 +57,7 @@ namespace F4ConversationCloud.Application.Common.Models.SuperAdmin
     }
     public class TemplateMessageInsightsFilter
     {
+        public string MetaConfigid { get; set; }
         public string PhoneNumberId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

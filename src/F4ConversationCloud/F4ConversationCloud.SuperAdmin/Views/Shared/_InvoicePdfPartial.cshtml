@@ -1,0 +1,161 @@
+﻿@using F4ConversationCloud.Application.Common.Models.SuperAdmin
+@model F4ConversationCloud.SuperAdmin.Models.InvoiceViewModel
+<div style="margin:0px auto;border:1px solid #999">
+                    <table style="border-collapse:collapse;border-bottom:1px solid #999;" width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="200" style="padding-left:10px;">
+                                    @* <img src="~/images/logo.png" alt="" style="height: 40px;"> *@
+                                    <img src="data:image/png;base64,@Model.LogoBase64" alt="Logo" style="height: 40px;">
+
+                                </td>
+                                <td align="right" style="padding:14px 10px;">
+                                    <h3 style="margin-bottom:4px;margin-top:0;font-size: 15px;font-weight: 600;">Fortune4 Cloud Conversation</h3>
+                                    <p style="margin-top:0;margin-bottom:3px;width: 350px;">Unit No. 311, Building Number 2, Sector - 1, Millennium Business Park, Mahape, Navi Mumbai - 400710</p>
+                                    <p style="margin-top:0;margin-bottom:0;">Phone : 098035 53220 | Email : <a href="mailto:info@fortune4.in" style="color:#000;">info@fortune4.in</a></p>
+                                    <p style="margin-top:4px;margin-bottom:0;"><span style="font-weight: 600;">GSTIN  :</span> 27ABCDE1234F1Z5</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-top:1px solid #999;font-size:16px;font-weight:600;letter-spacing:1px;padding:4px 0;" colspan="2"> Invoice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="border-collapse:collapse;" vlign="top" width="100%">
+                        <tbody>
+                            <tr>
+                                <td style="border-bottom:1px solid #999;text-align: center;border-right:1px solid #999;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                    Invoice No.: <br>  F4-00001
+                                </td>
+                                <td style="border-bottom:1px solid #999;text-align: center;border-right:1px solid #999;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                Invoice Date: <br> @Model.InvoiceDate.ToString("dd MMM yyyy hh:mm tt")
+
+                                </td>
+                                <td style="border-bottom:1px solid #999;text-align: center;padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                    Purchase Date: <br>  @Model.InvoiceDate.ToString("dd MMM yyyy hh:mm tt")
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="border-collapse:collapse;" vlign="top" width="100%">
+
+                        <tbody>
+                            <tr>
+                                <td style="padding-top:12px;padding-bottom:6px;padding-left:10px;padding-right:10px;">
+                                    <p style="margin:0 0 14px 0;max-width:380px;">
+                                        To,<br>
+                                        @Model.InvoiceData.OrganizationsName
+                                    </p>
+                                    <h4 style="margin-bottom: 4px;font-size: 15px;font-weight: 600;">Billing Address</h4>
+                                    <p style="margin-bottom:9px;margin-top: 0px;width:370px"> @Model.InvoiceData.Address</p>
+                                    <p style="margin:0;">Contact :  @Model.InvoiceData.ContactNumber</p>
+                                    <p style="margin:0;">Email : <span style="color: #0d6efd;"> @Model.InvoiceData.Email</span></p>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+                    <table style="border-collapse:collapse;" vlign="top" width="100%">
+                        <thead>
+                            <tr>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Sr. No</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">WABA Number</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">WhatsApp Display Name</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Conversation </th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Duration </th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;border-left:none;">Message</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-left:none;">CGST (9%)</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-right: none;">SGST (9%)</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-right: none;">IGST (18%)</th>
+                                <th style="padding:4px 6px;font-size:14px;border:1px solid #999;text-align: right;border-right: none;">Total Amount (Rs.)</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int srNo = 1;
+                            }
+
+                            @foreach (var item in Model.TemplateMessageInsights.Select((row, index) => new { row, index }))
+                            {
+                                <tr>
+                                    @if (item.index == 0)  
+                                    {
+                                        <td rowspan="@Model.TemplateMessageInsights.Count()" style="text-align:center;border:1px solid #999;">@srNo</td>
+                                        <td rowspan="@Model.TemplateMessageInsights.Count()" style="text-align:left;border:1px solid #999;">
+                                            <a asp-controller="ClientManagement"
+                                               asp-action="ClientDetails"
+                                               asp-route-id="@Model.MetaConfigid"
+                                               asp-route-activeTab="client-tab"
+                                               style="white-space:nowrap;">
+                                                @Model.InvoiceData.WaBaNumber
+                                            </a>
+                                        </td>
+
+                                        <td rowspan="@Model.TemplateMessageInsights.Count()" style="text-align:left;border:1px solid #999;">
+                                            <p style="margin-bottom:3px;">@Model.InvoiceData.WhatsAppDisplayName</p>
+                                        </td>
+                                    }
+
+                                    <td style="border:1px solid #999;">@item.row.ConversationType</td>
+                                    <td style="border:1px solid #999;">
+                                        @item.row.StartDate.ToString("dd MMM yyyy") to @item.row.EndDate.ToString("dd MMM yyyy")
+                                    </td>
+                                    <td style="border:1px solid #999;text-align:center;">@item.row.TotalMessageSentCount</td>
+                                    <td style="border:1px solid #999;text-align:right;">₹@item.row.CGSTTaxs</td>
+                                    <td style="border:1px solid #999;text-align:right;">₹@item.row.SGSTTaxs</td>
+                                     <td style="border:1px solid #999;text-align:right;">₹@item.row.IGSTTaxs</td>
+                                    <td style="border:1px solid #999;border-right:none;text-align:right;">₹@item.row.TotalAmount</td>
+                                </tr>
+                            }
+                            
+                        </tbody>
+                         <tfoot>
+            <tr>
+                <th colspan="6" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;padding-right:10px;border-right:none;">Sub Total</th>
+                <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">@Model.TotalCGST.ToString("0.00")</th>
+                <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">₹@Model.TotalSGST.ToString("0.00")</th>
+                <th style="border:1px solid #999;padding:4px 6px;text-align:right;border-right: none;">₹@Model.TotalIGST.ToString("0.00")</th>
+                <th colspan="4" style="border:1px solid #999;padding:6px;text-align:right;">₹@Model.SubTotal.ToString("0.00")</th>
+            </tr>
+
+            <tr>
+                <th colspan="9" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;padding-right:10px;border-right:none;">Taxable Total</th>
+                <th style="border:1px solid #999;padding:6px;text-align:right;">₹@Model.SubTotal.ToString("0.00")</th>
+            </tr>
+
+            <tr>
+                <th colspan="9" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;padding-right:10px;border-right:none;">
+                    CGST (@Model.TemplateMessageInsights.First().CGSTTaxs %)
+                </th>
+                <th style="border:1px solid #999;padding:6px;text-align:right;">₹@Model.TotalCGST.ToString("0.00")</th>
+            </tr>
+
+            <tr>
+                <th colspan="9" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;padding-right:10px;border-right:none;">
+                    SGST (@Model.TemplateMessageInsights.First().SGSTTaxs %)
+                </th>
+                <th style="border:1px solid #999;padding:6px;text-align:right;">₹@Model.TotalSGST.ToString("0.00")</th>
+            </tr>
+
+            <tr>
+                <th colspan="9" style="border:1px solid #999;padding:6px 0;font-weight:600;text-align:right;padding-right:10px;border-right:none;">
+                    IGST (@Model.TemplateMessageInsights.First().IGSTTaxs %)
+                </th>
+                <th style="border:1px solid #999;padding:6px;text-align:right;">₹@Model.TotalIGST.ToString("0.00")</th>
+            </tr>
+
+            <tr>
+                <th colspan="9" style="border:1px solid #999;padding:6px 0;font-weight:700;text-align:right;padding-right:10px;border-right:none;">Grand Total</th>
+                <th style="border:1px solid #999;padding:6px;text-align:right;font-weight:700;">₹@Model.GrandTotal.ToString("0.00")</th>
+            </tr>
+        </tfoot>
+
+                    </table>
+
+                </div>

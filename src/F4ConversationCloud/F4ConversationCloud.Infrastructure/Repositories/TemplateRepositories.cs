@@ -220,6 +220,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> BuildAndCreateTemplate(TemplateViewRequestModel model)
         {
+          
             try
             {
                 var templateRequest = new TemplateRequest();
@@ -293,12 +294,19 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.CreatedBy = _context.SessionUserId.ToString();
                 if (model.File != null)
                 {
-                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
-                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
-                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
-                    templateRequest.TemplateHeader.Format = "IMAGE";
-                    templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
+                    var mediatype = EnumExtensions.GetDisplayNameById<MediaType>(model.MediaType).ToUpper();
+                    if (!string.IsNullOrEmpty(mediatype))
+                    {
+                        var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                        templateRequest.TemplateHeader.Example.HeaderFile = new List<string> { fileString };
+                        templateRequest.TemplateHeader.Example.Format = mediatype;
+                        templateRequest.TemplateHeader.Format = mediatype;
+                        templateRequest.TemplateHeader.Example.HeaderFileName = model.File.FileName;
+                    }
+                    
+                    
                 }
+
                 templateRequest.TemplateButton.Type = "BUTTONS";
 
                 var buttons = new List<Application.Common.Models.Templates.Button>();
@@ -437,10 +445,16 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                 templateRequest.TemplateId = model.TemplateId;
                 if (model.File != null)
                 {
-                    var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
-                    templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
-                    templateRequest.TemplateHeader.Example.Format = "IMAGE";
-                    templateRequest.TemplateHeader.Format = "IMAGE";
+                    var mediatype = EnumExtensions.GetDisplayNameById<MediaType>(model.MediaType).ToUpper();
+                    if (!string.IsNullOrEmpty(mediatype))
+                    {
+                        var fileString = await CommonHelper.GenerateFileToBase64String(model.File);
+                        templateRequest.TemplateHeader.Example.HeaderFile = [fileString];
+                        templateRequest.TemplateHeader.Example.Format = mediatype;
+                        templateRequest.TemplateHeader.Format = mediatype;
+                    }
+
+                   
                 }
                 templateRequest.TemplateButton.Type = "BUTTONS";
 
