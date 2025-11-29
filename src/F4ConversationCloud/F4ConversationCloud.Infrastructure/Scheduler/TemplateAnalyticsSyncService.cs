@@ -20,29 +20,18 @@ namespace F4ConversationCloud.Infrastructure.Scheduler
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _ = Task.Run(async () =>
+                var now = DateTime.Now;
+
+                if (now.Hour == 0 && now.Minute == 0)
                 {
                     using (var scope = _serviceProvider.CreateScope())
                     {
                         var syncservice = scope.ServiceProvider.GetRequiredService<ITemplateRepositories>();
                         await syncservice.MetaTemplateAnalyticsSync();
                     }
-                }, stoppingToken);
-
-                var now = DateTime.Now;
-                var nextRunTime = now.Date.AddDays(1);
-                var delay = nextRunTime - now;
-
-                try
-                {
-                    //await Task.Delay(_interval, stoppingToken);
-                    await Task.Delay(delay, stoppingToken);
+                    await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
                 }
-                catch (Exception ex)
-                {
-
-                }
-
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
     }
