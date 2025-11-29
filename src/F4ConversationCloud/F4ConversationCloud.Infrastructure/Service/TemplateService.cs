@@ -301,7 +301,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                             var Json = JsonNode.Parse(headJson);
 
-                            if (_typeValue == "image")
+                            if (_typeValue == "image" || _typeValue == "document")
                             {
 
                                 var example = Json?["Example"];
