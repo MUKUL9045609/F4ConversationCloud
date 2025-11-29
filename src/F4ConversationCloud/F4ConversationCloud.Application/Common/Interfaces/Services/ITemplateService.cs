@@ -15,10 +15,12 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Services
         Task<dynamic> DeleteTemplate(int TemplateId, string TemplateName);
         Task<dynamic> DeleteTemplateByName(string TemplateName);
         MessageTemplateDTO TryDeserializeAndAddComponent(dynamic request);
-        Task<dynamic> UploadMetaImage(string base64Image);
+        Task<dynamic> UploadMetaImage(string base64Image, string fileName, string fileType);
         Task<dynamic> Whatsappbusinessprofile(string profilepicturehandle, string PhoneNumberId);
         Task<dynamic> GetWhatsappbusinessprofile(string PhoneNumberId);
         Task<dynamic> SyncTemplateByTemplateID(string TemplateId);
         Task<dynamic> GetAllTemplatesAsync(string wabaId);
+        Task<dynamic> SyncSendTemplateDetails(string start, string end, string TemplateId, string WabaId);
+
     }
 }

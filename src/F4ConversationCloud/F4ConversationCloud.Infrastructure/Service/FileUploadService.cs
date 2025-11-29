@@ -130,9 +130,16 @@ namespace F4ConversationCloud.Infrastructure.Service
             try
             {
                 var fullPath = "";
+                var FileType = base64String.Split(':')[1].Split(';')[0].Split('/')[0].ToLower();
                 if (!string.IsNullOrEmpty(base64String))
                 {
-                    string folderName = "TemplateImage";
+                    string folderName = "Other";
+                    
+                    if (FileType == "image")
+                    {
+                         folderName = "TemplateImage";
+                    }
+                    
 
                     if (base64String.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) && base64String.Contains("base64,"))
                     {

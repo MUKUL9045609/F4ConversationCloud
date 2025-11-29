@@ -1,4 +1,5 @@
-﻿using F4ConversationCloud.Application.Common.Models.ClientModel;
+﻿using F4ConversationCloud.Application.Common.Models;
+using F4ConversationCloud.Application.Common.Models.ClientModel;
 using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using System;
@@ -26,5 +27,8 @@ namespace F4ConversationCloud.Application.Common.Interfaces.Repositories.Common
         Task<int> InsertTemplatesButtonAsync(MessageTemplateButtonDTO request);
         Task<IEnumerable<TemplateModel.Button>> GetTemplateButtonsAsync(int MetaConfigId, int TemplateId);
         Task<bool> DeleteTemplatesButtonAsync(int WhatsappTemplateId);
+        Task<IEnumerable<TemplateListForSync>> GetTemplateListForSyncUsages();
+
+        Task<int> InsertIntoTemplateAnalytics(TemplateAnalyticsDTO templateAnalyticsDTO);
     }
 }
