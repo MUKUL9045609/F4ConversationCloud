@@ -79,7 +79,7 @@
                 }
             }
         </div>
-        <div class="mt-2">
+        @* <div class="mt-2">
             <div class="image-upload" style="display:none;">
                 <div>
                     <span class="image">
@@ -89,7 +89,23 @@
                 </div>
                 <button class="close" type="button" id="remove-file"></button>
             </div>
+        </div> *@
+        <div class="mt-2">
+            <div class="image-upload" style="display:none;">
+                <div>
+                    <span class="image" style="display:inline-block;">
+                        <img src="">
+                    </span>
+
+                    <span class="pdf">
+                        <embed src="" type="application/pdf" width="30" height="30" style="display:none;">
+                    </span>
+                    <span class="file-text" id="file-name"></span>
+                </div>
+                <button class="close" type="button" id="remove-file"></button>
+            </div>
         </div>
+
         <div class="drag-file-wrapper" id="attachment" style="display: none;">
             <label class="drag-file">
                 <input asp-for="File" type="file" class="form-control file-upload-input" id="UploadedFile" accept=".jpg,.jpeg,.png" />
