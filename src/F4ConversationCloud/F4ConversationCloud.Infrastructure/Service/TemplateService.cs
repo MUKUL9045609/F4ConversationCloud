@@ -334,39 +334,6 @@ namespace F4ConversationCloud.Infrastructure.Service
                                 var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(cleanJson, options);
                                 messageTemplate.components.Add(headersComponent);
                             }
-                            else if (_typeValue == "document")
-                            {
-
-                                var example = Json?["Example"];
-
-                                if (example is not JsonObject exObj)
-                                {
-                                    Json?.AsObject().Remove("Example");
-                                }
-                                else
-                                {
-                                    bool headerFileEmpty = exObj["HeaderFile"] switch
-                                    {
-                                        JsonArray arr => arr.All(a => a is null),
-                                        JsonValue val => string.IsNullOrEmpty(val.GetValue<string>()),
-                                        _ => true
-                                    };
-
-                                    bool formatEmpty = exObj["Format"] is not JsonValue fv ||
-                                                       string.IsNullOrEmpty(fv.GetValue<string>());
-
-                                    if (headerFileEmpty && formatEmpty)
-                                    {
-                                        Json?.AsObject().Remove("Example");
-                                    }
-                                }
-
-
-
-                                var cleanJson = Json?.ToJsonString();
-                                var headersComponent = JsonSerializer.Deserialize<HeadersImageComponent>(cleanJson, options);
-                                messageTemplate.components.Add(headersComponent);
-                            }
                             else
                             {
                                 var Text = Json?["Text"] is JsonArray arr ? arr.FirstOrDefault()?.GetValue<string>()

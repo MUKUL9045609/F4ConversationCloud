@@ -758,121 +758,82 @@
                     var wordMatches = clean.match(/\b[\p{L}\p{N}_]+\b/gu) || [];
                     return wordMatches.length;
                 }
+        const uploadedFile = document.getElementById('UploadedFile');
+        const fileNameSpan = document.getElementById('file-name');
+        const imageTag = document.querySelector('.image img');
+        const pdfEmbed = document.querySelector('.pdf embed');
+        const cardPreviewImg = document.querySelector('#image-preview img');
+        const imagePreviewSpan = document.getElementById('image-preview');
+        const pdfBlock = document.getElementById('pdf-preview');
+        const submitBtn = $('#submit-btn');
+        const sampleImage = $('#sample-image');
+        const imageUpload = window.$ ? $('.image-upload') : document.querySelector('.image-upload');
 
-        document.getElementById('UploadedFile').addEventListener('change', function (event) {
-
-            var file = event.target.files[0];
-
-            var fileNameSpan = document.getElementById('file-name');
-            var imageTag = document.querySelector('.image img');        
-            var pdfEmbed = document.querySelector('.pdf embed');       
-            var cardPreviewImg = document.querySelector('#image-preview img'); 
-            var imagePreviewSpan = document.getElementById('image-preview');   
-            var pdfBlock = document.getElementById('pdf-preview');       
-            function resetPreview() {
-                $('#submit-btn').prop('disabled', true);
-
-                if (fileNameSpan) fileNameSpan.textContent = '';
-                if (imageTag) {
-                    imageTag.src = '';
-                    imageTag.style.display = 'none';
-                }
-                if (cardPreviewImg) cardPreviewImg.src = '';
-                if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
-                if (pdfEmbed) {
-                    pdfEmbed.src = '';
-                    pdfEmbed.style.display = 'none';
-                }
-                if (pdfBlock) {
-                    pdfBlock.innerHTML = '';
-                    pdfBlock.style.display = 'none';
-                }
-                if (window.$) $('.image-upload').hide();
-                else document.querySelector('.image-upload').style.display = 'none';
-
-                document.getElementById('UploadedFile').value = '';
-                //$('#sample-image').show(); // Show back default
+        // Helper to show/hide elements
+        function toggleDisplay(el, show) {
+            if (!el) return;
+            if (window.$ && el instanceof jQuery) {
+                show ? el.show() : el.hide();
+            } else {
+                el.style.display = show ? 'block' : 'none';
             }
-
+        }
+        function resetPreview() {
+            submitBtn.prop('disabled', true);
+            fileNameSpan.textContent = '';
+            if (imageTag) { imageTag.src = ''; imageTag.style.display = 'none'; }
+            if (cardPreviewImg) cardPreviewImg.src = '';
+            if (imagePreviewSpan) imagePreviewSpan.style.display = 'none';
+            if (pdfEmbed) { pdfEmbed.src = ''; pdfEmbed.style.display = 'none'; }
+            if (pdfBlock) { pdfBlock.innerHTML = ''; pdfBlock.style.display = 'none'; }
+            toggleDisplay(imageUpload, false);
+            sampleImage.show();
+        }
+        uploadedFile.addEventListener('change', function (event) {
+            const file = event.target.files[0];
             if (!file) { resetPreview(); return; }
+
             resetPreview();
             fileNameSpan.textContent = file.name;
-            if (file.type.startsWith('image/')) {
 
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    if (window.$) $('.image-upload').show();
-                    else document.querySelector('.image-upload').style.display = 'block';
-                    $('#submit-btn').prop('disabled', false);
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    toggleDisplay(imageUpload, true);
+                    submitBtn.prop('disabled', false);
                     imageTag.style.display = 'inline-block';
                     imageTag.src = e.target.result;
                     cardPreviewImg.src = e.target.result;
                     imagePreviewSpan.style.display = 'block';
-                    $('#sample-image').hide();
+                    sampleImage.hide();
                 };
                 reader.readAsDataURL(file);
-            }
-            else if (file.type === 'application/pdf') {
+            } else if (file.type === 'application/pdf') {
+                toggleDisplay(imageUpload, true);
+                submitBtn.prop('disabled', false);
+                sampleImage.hide();
 
-                $('.image-upload').show();
-                $('#submit-btn').prop('disabled', false);
-                $('#sample-image').hide();
                 imageTag.style.display = 'none';
                 imageTag.src = '';
-                pdfEmbed.src = URL.createObjectURL(file);
+
+                const fileURL = URL.createObjectURL(file);
+                pdfEmbed.src = fileURL;
                 pdfEmbed.style.display = 'inline-block';
-                pdfBlock.style.display = "block";
+                pdfBlock.style.display = 'block';
                 pdfBlock.innerHTML = `
-                    <embed src="${URL.createObjectURL(file)}" width="200" height="250">
+                    <embed src="${fileURL}" width="200" height="250">
                     <div style="font-size:13px;margin-top:5px;font-weight:600;text-align:center;">
                         ${file.name}
                     </div>
                 `;
-
-
-            }
-            else {
+            } else {
                 alert("Only Image or PDF is allowed.");
                 resetPreview();
-                return;
             }
         });
-        document.getElementById('remove-file').addEventListener('click', function () {
-
-            document.querySelector('.image img').src = '';
-            var pdfEmbed = document.querySelector('.pdf embed');
-
-            pdfEmbed.src = '';
-            pdfEmbed.style.display = 'none';
-
-            $('#file-name').text('');
-            $('.image-upload').hide();
-            $('#submit-btn').prop('disabled', true);
-            document.getElementById('UploadedFile').value = '';
-            document.querySelector('#image-preview img').src = '';
-            document.getElementById('image-preview').style.display = 'none';
-
-            document.getElementById('pdf-preview').innerHTML = '';
-            document.getElementById('pdf-preview').style.display = 'none';
-
-            $('#sample-image').show();
-        });
+        document.getElementById('remove-file').addEventListener('click', resetPreview);
         document.querySelectorAll("input[name='MediaType']").forEach(radio => {
-            radio.addEventListener("change", function () {
-                document.getElementById('UploadedFile').value = "";
-                $('#file-name').text('');
-                $('#submit-btn').prop('disabled', true);
-                document.querySelector('.image img').src = '';
-                document.querySelector('.image img').style.display = 'none';
-                document.querySelector('#image-preview img').src = '';
-                document.getElementById('image-preview').style.display = 'none';
-                document.querySelector('.pdf embed').src = '';
-                document.querySelector('.pdf embed').style.display = 'none';
-                document.getElementById('pdf-preview').innerHTML = '';
-                document.getElementById('pdf-preview').style.display = 'none';
-                $('#sample-image').show();
-                $('.image-upload').hide();
-            });
+            radio.addEventListener("change", resetPreview);
         });
 
 

@@ -220,6 +220,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
 
         public async Task<dynamic> BuildAndCreateTemplate(TemplateViewRequestModel model)
         {
+          
             try
             {
                 var templateRequest = new TemplateRequest();
