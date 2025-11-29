@@ -37,6 +37,7 @@ builder.Services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<TemplateSyncService>();
+builder.Services.AddHostedService<TemplateAnalyticsSyncService>();
 
 var app = builder.Build();
 

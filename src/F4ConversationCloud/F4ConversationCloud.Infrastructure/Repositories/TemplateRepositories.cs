@@ -50,7 +50,7 @@ namespace F4ConversationCloud.Infrastructure.Repositories
                     if (!string.IsNullOrEmpty(requestBody.TemplateHeader.Example.HeaderFile?.ToString()))
                     {
 
-                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString(),requestBody.TemplateHeader.Example.HeaderFileName, requestBody.TemplateHeader.Example.Format);
+                        string headerFileJsonString = await _templateService.UploadMetaImage(requestBody.TemplateHeader.Example.HeaderFile.FirstOrDefault().ToString(), requestBody.TemplateHeader.Example.HeaderFileName, requestBody.TemplateHeader.Example.Format);
                         using JsonDocument doc = JsonDocument.Parse(headerFileJsonString);
                         JsonElement root = doc.RootElement;
 
@@ -501,41 +501,55 @@ namespace F4ConversationCloud.Infrastructure.Repositories
         }
 
 
-        public async Task<bool> MetaSyncTemplateUsages()
+        public async Task<bool> MetaTemplateAnalyticsSync()
         {
             try
             {
                 var TemplateDetails = await _whatsAppTemplateRepository.GetTemplateListForSyncUsages();
+                //TemplateDetails = TemplateDetails.Where(x => x.TemplateId == 1148137137282481).ToList();
+
+                if (TemplateDetails == null || !TemplateDetails.Any())
+                    return true;
 
                 foreach (var Template in TemplateDetails)
                 {
-                    var startOffset = new DateTimeOffset(DateTime.Now, TimeSpan.Zero);
-                    var endOffset = new DateTimeOffset(DateTime.Now, TimeSpan.Zero);
+                    long start = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                    long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-                    long start = startOffset.ToUnixTimeSeconds();
-                    long end = endOffset.ToUnixTimeSeconds();
+                    //long start = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero).ToUnixTimeSeconds();
+                    //long end = new DateTimeOffset(2025, 10, 6, 0, 0, 0, TimeSpan.Zero).ToUnixTimeSeconds();
 
-                    TemplateAnalyticsResponse SycSndTempteDts = await _templateService.SyncSendTemplateDetails(start.ToString(),end.ToString(), Template.TemplateId.ToString(),Template.WABAID.ToString());
+                    var SycSndTempteDts = await _templateService.SyncSendTemplateDetails(
+                        start.ToString(), end.ToString(),
+                        Template.TemplateId.ToString(), Template.WABAID.ToString()
+                    );
 
-                    foreach (var SndTempteDts in SycSndTempteDts.template_analytics.data[0].data_points)
+                    if (SycSndTempteDts?.Data?.template_analytics?.data == null
+                        || SycSndTempteDts.Data.template_analytics.data.Count == 0)
+                        continue;
+
+                    var analyticsGroup = SycSndTempteDts.Data.template_analytics.data[0];
+                    if (analyticsGroup?.data_points == null)
+                        continue;
+
+                    foreach (var SndTempteDts in analyticsGroup.data_points)
                     {
-                        TemplateAnalyticsDTO TADTO =  new TemplateAnalyticsDTO();
-                        TADTO.TemplateRead = SndTempteDts.read;
+                        TemplateAnalyticsDTO TADTO = new TemplateAnalyticsDTO();
+                        TADTO.TemplateRead = SndTempteDts.read; 
                         TADTO.TemplateSend = SndTempteDts.sent;
-                        TADTO.TemplateDelivered = SndTempteDts.delivered;
+                        TADTO.TemplateDelivered = SndTempteDts.delivered; 
                         TADTO.TemplateReplied = SndTempteDts.replied;
-                        TADTO.TemplateAmountSpent = Convert.ToDecimal(SndTempteDts.cost[0]);
-                        TADTO.TemplateCostPerDelivered = Convert.ToDecimal(SndTempteDts.cost[1]);
-                        TADTO.TemplateCostPerUrlButtonClick = Convert.ToDecimal(SndTempteDts.cost[2]);
-                        TADTO.TemplateUrlButtonClickCount = Convert.ToInt16(SndTempteDts.clicked[0]);
-                        TADTO.TemplateUniqueUrlButtonClickCount = Convert.ToInt16(SndTempteDts.clicked[1]);
-                        TADTO.TemplateSendFrom = DateTime.Now;
-                        TADTO.TemplateSendTo = DateTime.Now;
+                        TADTO.TemplateAmountSpent = Convert.ToDecimal(SndTempteDts.cost?[0]?.value); 
+                        TADTO.TemplateCostPerDelivered = Convert.ToDecimal(SndTempteDts.cost?[1]?.value); 
+                        TADTO.TemplateCostPerUrlButtonClick = Convert.ToDecimal(SndTempteDts.cost?[2]?.value);
+                        TADTO.TemplateUrlButtonClickCount = Convert.ToInt16(SndTempteDts.clicked?[0]?.count); 
+                        TADTO.TemplateUniqueUrlButtonClickCount = Convert.ToInt16(SndTempteDts.clicked?[1]?.count); 
+                        TADTO.TemplateSendFrom = DateTimeOffset.FromUnixTimeSeconds(SndTempteDts.start).UtcDateTime; 
+                        TADTO.TemplateSendTo = DateTimeOffset.FromUnixTimeSeconds(SndTempteDts.end).UtcDateTime; 
                         TADTO.WABAID = Template.WABAID;
-                        TADTO.ClientInfoId = Template.ClientInfoId;
+                        TADTO.ClientInfoId = Template.ClientInfoId; 
                         TADTO.TemplateId = Template.TemplateId;
-
-                         var response = await _whatsAppTemplateRepository.InsertIntoTemplateAnalytics(TADTO);
+                        var response = await _whatsAppTemplateRepository.InsertIntoTemplateAnalytics(TADTO);
                     }
                 }
 
@@ -544,7 +558,6 @@ namespace F4ConversationCloud.Infrastructure.Repositories
             catch (Exception ex)
             {
                 return false;
-
             }
         }
     }

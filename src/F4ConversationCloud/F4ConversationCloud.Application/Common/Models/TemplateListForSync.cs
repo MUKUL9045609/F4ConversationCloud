@@ -8,7 +8,7 @@ namespace F4ConversationCloud.Application.Common.Models
 {
     public class TemplateListForSync
     {
-        public int TemplateId { get; set; }
+        public long TemplateId { get; set; }
         public int ClientInfoId { get; set; }
         public string WABAID { get; set; }
     }
