@@ -36,7 +36,10 @@
                             @if (Model.templateDetail.HeaderFormat == "DOCUMENT")
                             {
                                 <span>
-                                    <img src="@Html.Raw(Model.templateDetail.HeaderMediaUrl)" alt="Header Image">
+                                <embed src="@Model.templateDetail.HeaderMediaUrl"
+                                       type="application/pdf"
+                                       width="200"
+                                       height="250" />
                                 </span>
                             }
                         </div>

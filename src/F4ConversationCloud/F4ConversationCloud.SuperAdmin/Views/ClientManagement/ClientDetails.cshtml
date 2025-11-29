@@ -660,7 +660,17 @@
                 <div class="template-preview">
                     <div class="swiper-card">
                         <div class="template-slide-card">
-                            <span id="header-image-preview"><img src=""></span>
+                            <div id="header-image-preview" style="display:none;">
+                                <img src="" width="200" height="250" />
+                            </div>
+
+                            <embed id="header-pdf-preview"
+                                   src=""
+                                   type="application/pdf"
+                                   width="200"
+                                   height="250"
+                                   style="display:none;" />
+
                             <div class="description">
                                 <p id="template-preview-header" style="font-weight: 500;"></p>
                                 <p id="template-preview-body"></p>
@@ -1014,13 +1024,35 @@
                     var placeholder = `{{${index + 1}}}`;
                     templatebodytext = templatebodytext.replace(placeholder, value.trim());
                 });
-            }
-            $('#header-image-preview img').attr('src', templateheadermediaurl);
+            }       
+            previewHeaderFile(templateheadermediaurl);
             $('#template-preview-Label').text(templateName);
             $('#template-preview-header').text(templateheadertext);
             $('#template-preview-body').html(templatebodytext);
             $('#template-preview-footer').text(templatefooter);
         });
+        function previewHeaderFile(templateheadermediaurl) {
+
+            let fileExt = templateheadermediaurl.split('.').pop().toLowerCase();
+
+            $("#header-image-preview").hide();
+            $("#header-pdf-preview").hide();
+            if (fileExt === "pdf") {
+                $("#header-pdf-preview")
+                    .attr("src", templateheadermediaurl)
+                    .show();
+            }
+            else if (["jpg", "jpeg", "png", "gif", "webp"].includes(fileExt)) {
+                $("#header-image-preview img")
+                    .attr("src", templateheadermediaurl);
+                $("#header-image-preview").show();
+            }
+            
+        }
+
+
+
+
 
             var currentPageNumber = 1;
             var urlParams = new URLSearchParams(window.location.search);
