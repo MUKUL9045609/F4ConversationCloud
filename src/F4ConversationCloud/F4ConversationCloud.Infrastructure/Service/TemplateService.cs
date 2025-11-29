@@ -301,7 +301,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                             var Json = JsonNode.Parse(headJson);
 
-                            if (_typeValue == "image")
+                            if (_typeValue == "image" || _typeValue == "document")
                             {
 
                                 var example = Json?["Example"];
@@ -868,7 +868,7 @@ namespace F4ConversationCloud.Infrastructure.Service
 
                 headers = new Dictionary<string, string> { { "Authorization", $"Bearer {token}" } };
 
-                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.SyncSendTemplateMessageSyncApi.ToString().Replace("{{waba_id}}", WabaId).Replace("{{start}}", start).Replace("{{end}}",end).Replace("{{templateid}}", TemplateId);
+                var formattedWhatsAppEndpoint = WhatsAppBusinessRequestEndpoint.SyncSendTemplateMessageSyncApi.ToString().Replace("{{waba_id}}", WabaId).Replace("{{start}}", start).Replace("{{end}}",end).Replace("{{templateid}}", TemplateId.ToString());
 
                 string requestJson = formattedWhatsAppEndpoint;
 

@@ -141,7 +141,7 @@ namespace F4ConversationCloud.Infrastructure.Service
                     }
                     
 
-                    if (base64String.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) && base64String.Contains("base64,"))
+                    if ((base64String.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) || base64String.StartsWith("data:application/pdf", StringComparison.OrdinalIgnoreCase) ) && base64String.Contains("base64,"))
                     {
                         base64String = base64String.Substring(base64String.IndexOf("base64,") + 7);
                     }

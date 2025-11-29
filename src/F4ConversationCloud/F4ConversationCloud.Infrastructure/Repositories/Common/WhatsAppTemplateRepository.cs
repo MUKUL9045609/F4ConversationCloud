@@ -6,6 +6,7 @@ using F4ConversationCloud.Application.Common.Models.CommonModels;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Enum;
 using F4ConversationCloud.Infrastructure.Interfaces;
+using System.Collections.Generic;
 using System.Data;
 
 
@@ -318,9 +319,16 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
 
         public async Task<IEnumerable<TemplateListForSync>> GetTemplateListForSyncUsages()
         {
-            DynamicParameters parameters = new DynamicParameters();
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
 
-            return await _repository.GetListByValuesAsync<TemplateListForSync>("sp_GetTemplateListForSyncUsages", parameters);
+                return await _repository.GetListByValuesAsync<TemplateListForSync>("sp_GetTemplateListForSyncUsages", parameters);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task<int> InsertIntoTemplateAnalytics(TemplateAnalyticsDTO templateAnalyticsDTO)
@@ -328,20 +336,20 @@ namespace F4ConversationCloud.Infrastructure.Repositories.Common
             try
             {
                 var parameters = new DynamicParameters();
-                
-                parameters.Add("@TemplateRead", templateAnalyticsDTO.TemplateRead );
-                parameters.Add("@TemplateSend", templateAnalyticsDTO.TemplateSend );
-                parameters.Add("@TemplateDelivered", templateAnalyticsDTO.TemplateDelivered );
-                parameters.Add("@TemplateReplied", templateAnalyticsDTO.TemplateReplied );
-                parameters.Add("@TemplateAmountSpent", templateAnalyticsDTO.TemplateAmountSpent );
+
+                parameters.Add("@TemplateRead", templateAnalyticsDTO.TemplateRead);
+                parameters.Add("@TemplateSend", templateAnalyticsDTO.TemplateSend);
+                parameters.Add("@TemplateDelivered", templateAnalyticsDTO.TemplateDelivered);
+                parameters.Add("@TemplateReplied", templateAnalyticsDTO.TemplateReplied);
+                parameters.Add("@TemplateAmountSpent", templateAnalyticsDTO.TemplateAmountSpent);
                 parameters.Add("@TemplateCostPerDelivered", templateAnalyticsDTO.TemplateCostPerDelivered);
                 parameters.Add("@TemplateCostPerUrlButtonClick ", templateAnalyticsDTO.TemplateCostPerUrlButtonClick);
-                parameters.Add("@TemplateUrlButtonClickCount ", templateAnalyticsDTO.TemplateUrlButtonClickCount );
-                parameters.Add("@TemplateUniqueUrlButtonClickCount ", templateAnalyticsDTO.TemplateUniqueUrlButtonClickCount );
-                parameters.Add("@TemplateSendFrom ", templateAnalyticsDTO.TemplateSendFrom );
+                parameters.Add("@TemplateUrlButtonClickCount ", templateAnalyticsDTO.TemplateUrlButtonClickCount);
+                parameters.Add("@TemplateUniqueUrlButtonClickCount ", templateAnalyticsDTO.TemplateUniqueUrlButtonClickCount);
+                parameters.Add("@TemplateSendFrom ", templateAnalyticsDTO.TemplateSendFrom);
                 parameters.Add("@TemplateSendTo ", templateAnalyticsDTO.TemplateSendTo);
-                parameters.Add("@WABAID ", templateAnalyticsDTO.WABAID );
-                parameters.Add("@ClientInfoId ", templateAnalyticsDTO.ClientInfoId );
+                parameters.Add("@WABAID ", templateAnalyticsDTO.WABAID);
+                parameters.Add("@ClientInfoId ", templateAnalyticsDTO.ClientInfoId);
                 parameters.Add("@TemplateId", templateAnalyticsDTO.TemplateId);
 
                 return await _repository.InsertUpdateAsync("Sp_InsertIntoTemplateAnalytics", parameters);

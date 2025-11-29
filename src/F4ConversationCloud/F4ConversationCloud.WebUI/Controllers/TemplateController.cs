@@ -4,6 +4,7 @@ using F4ConversationCloud.Application.Common.Interfaces.Services;
 using F4ConversationCloud.Application.Common.Models;
 using F4ConversationCloud.Application.Common.Models.Templates;
 using F4ConversationCloud.Domain.Entities;
+using F4ConversationCloud.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -186,6 +187,22 @@ namespace F4ConversationCloud.WebUI.Controllers
                 long end = endOffset.ToUnixTimeSeconds();
 
                 var result = await _templateService.SyncSendTemplateDetails(start.ToString(), end.ToString(),TemplateId,WabaId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SyncMetaTemplateAnalytic()
+        {
+            try
+            {
+                var result = await _templateRepositories.MetaTemplateAnalyticsSync();
 
                 return Ok(result);
             }
